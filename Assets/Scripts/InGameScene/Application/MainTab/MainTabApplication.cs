@@ -1,18 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class MainTabApplication : MonoBehaviour
+using System;
+public class MainTabApplication : BaseApplication
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void Init()
     {
-        
+        base.Init();
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void OnEnter()
     {
-        
+        base.OnEnter();
+    }
+
+    public override void AdvanceTime(float dt_sec)
+    {
+        base.AdvanceTime(dt_sec);
+    }
+
+    public override void OnExit()
+    {
+        base.OnExit();
+    }
+
+    public override void Dispose()
+    {
+        base.Dispose();
+        PoolManager.Instance.DespawnObject(EPrefabsType.TabApplication, this.gameObject);
     }
 }

@@ -129,16 +129,14 @@ public class PoolManager : MonoBehaviour
         switch (type)
         {
             //MainTab
-            case EPrefabsType.MainTabGeneration:
-            case EPrefabsType.Connector:
-                return "Prefabs/Ingame/MainTab/Generation/";
+            case EPrefabsType.TabApplication:
+                return "Prefabs/InGame/TabApp/";
         }
         return "Prefabs/";
     }
 }
 public enum EPrefabsType
 {
-    MainTabGeneration,
-    Connector,
+    TabApplication,
 }
 
