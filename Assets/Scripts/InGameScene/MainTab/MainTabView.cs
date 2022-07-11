@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class MainTabView : MonoBehaviour
+namespace MainTab
 {
+    public class MainTabView : MonoBehaviour
+    {
+    }
 }

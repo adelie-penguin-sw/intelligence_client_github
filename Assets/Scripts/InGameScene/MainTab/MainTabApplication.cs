@@ -1,60 +1,62 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class MainTabApplication : BaseTabApplication
+namespace MainTab
 {
-    [SerializeField]
-    private BaseTabController<MainTabApplication>[] _controllers;
-    [SerializeField]
-    private MainTabView _mainTabView;
-    public MainTabView MainTabView
+    public class MainTabApplication : BaseTabApplication
     {
-        get
+        [SerializeField]
+        private BaseTabController<MainTabApplication>[] _controllers;
+        [SerializeField]
+        private MainTabView _mainTabView;
+        public MainTabView MainTabView
         {
-            return _mainTabView;
+            get
+            {
+                return _mainTabView;
+            }
         }
-    }
 
-    public override void Init()
-    {
-        base.Init();
-        foreach(var controller in _controllers)
+        public override void Init()
         {
-            controller.Init(this);
+            base.Init();
+            foreach (var controller in _controllers)
+            {
+                controller.Init(this);
+            }
         }
-    }
 
-    public override void OnEnter()
-    {
-        base.OnEnter();
-        foreach (var controller in _controllers)
+        public override void OnEnter()
         {
-            controller.Set();
+            base.OnEnter();
+            foreach (var controller in _controllers)
+            {
+                controller.Set();
+            }
         }
-    }
 
-    public override void AdvanceTime(float dt_sec)
-    {
-        base.AdvanceTime(dt_sec);
-        foreach (var controller in _controllers)
+        public override void AdvanceTime(float dt_sec)
         {
-            controller.AdvanceTime(dt_sec);
+            base.AdvanceTime(dt_sec);
+            foreach (var controller in _controllers)
+            {
+                controller.AdvanceTime(dt_sec);
+            }
         }
-    }
 
-    public override void OnExit()
-    {
-        base.OnExit();
-        foreach (var controller in _controllers)
+        public override void OnExit()
         {
-            controller.Dispose();
+            base.OnExit();
+            foreach (var controller in _controllers)
+            {
+                controller.Dispose();
+            }
         }
-    }
 
-    public override void Dispose()
-    {
-        base.Dispose();
-        PoolManager.Instance.DespawnObject(EPrefabsType.TabApplication, this.gameObject);
+        public override void Dispose()
+        {
+            base.Dispose();
+            PoolManager.Instance.DespawnObject(EPrefabsType.TabApplication, this.gameObject);
+        }
     }
 }

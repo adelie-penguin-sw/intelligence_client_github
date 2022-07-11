@@ -1,20 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class BehaviorController : BaseTabController<MainTabApplication>
+namespace MainTab
 {
-    public override void Init(MainTabApplication app)
+    public class BehaviorController : BaseTabController<MainTabApplication>
     {
-        base.Init(app);
+        public override void Init(MainTabApplication app)
+        {
+            base.Init(app);
+        }
+        public override void Set()
+        {
+        }
+        public override void AdvanceTime(float dt_sec)
+        {
+        }
+        public override void Dispose()
+        {
+        }
     }
-    public override void Set()
+
+    public enum EBehaviorState
     {
-    }
-    public override void AdvanceTime(float dt_sec)
-    {
-    }
-    public override void Dispose()
-    {
+        UNKNWON,
+        NONE,
+        CREATE_BRAIN,
+        CRATE_CHANNEL,
     }
 }
