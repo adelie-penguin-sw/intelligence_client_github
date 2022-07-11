@@ -25,6 +25,7 @@ public class Brain : MonoBehaviour
     {
     }
 
+
     private void SetNumText(double num)
     {
         _textNum.text = num.ToString();
