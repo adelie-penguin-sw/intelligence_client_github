@@ -55,7 +55,7 @@ public class InGameManager : MonoBehaviour, IDisposable
         _handlers.Clear();
 
         _goTemp = PoolManager.Instance.GrabPrefabs(EPrefabsType.TabApplication, "MainTabApp", transform);
-        _handlers.Add(EGameState.MAINTAB, _goTemp.GetComponent<MainTabApplication>());
+        _handlers.Add(EGameState.MAINTAB, _goTemp.GetComponent<MainTab.MainTabApplication>());
 
         foreach (EGameState state in _handlers.Keys)
         {
