@@ -47,7 +47,7 @@ public class InGameManager : MonoBehaviour, IDisposable
     }
 
 
-    private Dictionary<EGameState, IGameTabBasicModule> _handlers = new Dictionary<EGameState, IGameTabBasicModule>();
+    private Dictionary<EGameState, IGameStateBasicModule> _handlers = new Dictionary<EGameState, IGameStateBasicModule>();
     private EGameState _currentState = EGameState.UNKNOWN;
     private GameObject _goTemp;
     private void InitHandlers()
@@ -69,12 +69,12 @@ public class InGameManager : MonoBehaviour, IDisposable
         {
             EGameState prevState = _currentState;
             _currentState = nextState;
-            IGameTabBasicModule leaveHandler = GetStateHandler(prevState);
+            IGameStateBasicModule leaveHandler = GetStateHandler(prevState);
             if (leaveHandler != null)
             {
                 leaveHandler.OnExit();
             }
-            IGameTabBasicModule enterHandler = GetStateHandler(_currentState);
+            IGameStateBasicModule enterHandler = GetStateHandler(_currentState);
             if (enterHandler != null)
             {
                 enterHandler.OnEnter();
@@ -88,7 +88,7 @@ public class InGameManager : MonoBehaviour, IDisposable
     /// </summary>
     /// <param name="EGameState"></param>
     /// <returns>return ?? ????? ?? null, ??? ?? ?? ??? ??</returns>
-    private IGameTabBasicModule GetStateHandler(EGameState state)
+    private IGameStateBasicModule GetStateHandler(EGameState state)
     {
         if (_handlers.ContainsKey(state))
         {
