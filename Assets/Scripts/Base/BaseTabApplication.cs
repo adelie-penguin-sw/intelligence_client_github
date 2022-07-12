@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-public class BaseTabApplication : MonoBehaviour, IGameTabBasicModule, IDisposable
+public class BaseTabApplication : MonoBehaviour, IGameStateBasicModule, IDisposable
 {
     public virtual void Init()
     {

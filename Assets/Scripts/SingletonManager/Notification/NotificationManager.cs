@@ -187,6 +187,10 @@ public enum ENotiMessage
 {
     UNKNOWN = 0,
 
+    //MainTab
+    ON_CLICK_CREATE_BRAIN_BTN,
+    ON_CLICK_CREATE_CHANNEL_BTN,
+
 }
 
 public enum EDataParamKey

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IGameTabBasicModule
+public interface IGameStateBasicModule
 {
     void Init();
     void OnEnter();
