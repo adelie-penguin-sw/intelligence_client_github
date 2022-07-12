@@ -41,3 +41,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Channel
+    uniqueID: 2677494303
+    locked: 0
+  - name: Brain
+    uniqueID: 2160480775
+    locked: 0
