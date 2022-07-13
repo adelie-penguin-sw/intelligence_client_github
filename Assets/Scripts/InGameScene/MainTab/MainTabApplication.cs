@@ -16,6 +16,15 @@ namespace MainTab
                 return _mainTabView;
             }
         }
+        [SerializeField]
+        private MainTabModel _mainTabModel = new MainTabModel();
+        public MainTabModel MainTabModel
+        {
+            get
+            {
+                return _mainTabModel;
+            }
+        }
 
         public override void Init()
         {

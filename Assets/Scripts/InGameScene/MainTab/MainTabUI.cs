@@ -10,5 +10,9 @@ namespace MainTab
         {
             NotificationManager.Instance.PostNotification(ENotiMessage.ON_CLICK_CREATE_BRAIN_BTN);
         }
+        public void OnClick_CreateChannelBtn()
+        {
+            NotificationManager.Instance.PostNotification(ENotiMessage.ON_CLICK_CREATE_CHANNEL_BTN);
+        }
     }
 }
