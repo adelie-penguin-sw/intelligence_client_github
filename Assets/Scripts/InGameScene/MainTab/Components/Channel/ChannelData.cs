@@ -8,8 +8,8 @@ namespace MainTab
     struct ChannelData
     {
         public int id;
-        public Transform trFrom;
-        public Transform trTo;
+        public Brain fromBrain;
+        public Brain toBrain;
         public int fromId;
         public int toId;
     }

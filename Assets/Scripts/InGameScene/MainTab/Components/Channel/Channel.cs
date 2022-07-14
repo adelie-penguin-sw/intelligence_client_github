@@ -12,28 +12,52 @@ namespace MainTab
         [SerializeField]
         private Material _material;
 
+        public Brain FromBrain
+        {
+            get
+            {
+                return _data.fromBrain;
+            }
+        }
+        public Brain ToBrain
+        {
+            get
+            {
+                return _data.toBrain;
+            }
+        }
         public void Init(BrainSendData fromBrain, BrainSendData toBrain)
         {
-            _material.SetFloat("width", 0.5f);
-            _material.SetFloat("heigth", 0.5f);
+            //_material.SetFloat("width", 0.5f);
+            // _material.SetFloat("heigth", 0.5f);
+            Set(fromBrain, toBrain);
+        }
+
+        public void Set(BrainSendData fromBrain, BrainSendData toBrain)
+        {
             SetBrainInfo(fromBrain, EChannelBrainType.FROM);
             SetBrainInfo(toBrain, EChannelBrainType.TO);
         }
 
-        //public void Set(BrainSendData fromBrain, BrainSendData toBrain)
-        //{
-        //    SetBrainInfo(fromBrain, EChannelBrainType.FROM);
-        //    SetBrainInfo(toBrain, EChannelBrainType.TO);
-        //}
-
         public void AdvanceTime(float dt_sec)
         {
-            _lineRenderer.SetPosition(0, _data.trFrom.position);
-            _lineRenderer.SetPosition(1, _data.trTo.position);
+            if (_data.fromBrain != null)
+            {
+                _lineRenderer.SetPosition(0, _data.fromBrain.transform.position);
+            }
+            if (_data.toBrain != null)
+            {
+                _lineRenderer.SetPosition(1, _data.toBrain.transform.position);
+            }
         }
 
         public void Dispose()
         {
+        }
+
+        public void SetLineRenderToPos(Vector2 toPos)
+        {
+            _lineRenderer.SetPosition(1, toPos);
         }
 
         private void SetBrainInfo(BrainSendData data, EChannelBrainType type)
@@ -41,11 +65,11 @@ namespace MainTab
             switch (type)
             {
                 case EChannelBrainType.FROM:
-                    _data.trFrom = data.tr;
+                    _data.fromBrain = data.brain;
                     _data.fromId = data.id;
                     break;
                 case EChannelBrainType.TO:
-                    _data.trTo = data.tr;
+                    _data.toBrain = data.brain;
                     _data.toId = data.id;
                     break;
             }

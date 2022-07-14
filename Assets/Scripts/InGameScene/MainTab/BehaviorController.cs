@@ -7,7 +7,8 @@ namespace MainTab
     {
         private MainTabModel _model;
         private MainTabView _view;
-        private Brain _recentBrain;
+        [SerializeField]
+        private Brain _recentSelectBrain;
         public override void Init(MainTabApplication app)
         {
             base.Init(app);
@@ -18,13 +19,12 @@ namespace MainTab
             ChangeState(EBehaviorState.NONE);
 
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.DRAG_START_CREATEBRAIN);
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.DRAG_START_CREATECHANNEL);
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.DRAG_END_CREATEBRAIN);
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.DRAG_END_CREATECHANNEL);
 
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.MOUSE_DOWN_BRAIN);
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.MOUSE_EXIT_BRAIN);
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.MOUSE_UP_BRAIN);
+            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.MOUSE_ENTER_BRAIN);
         }
 
         public override void Set()
@@ -44,13 +44,12 @@ namespace MainTab
         public override void Dispose()
         {
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.DRAG_START_CREATEBRAIN);
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.DRAG_START_CREATECHANNEL);
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.DRAG_END_CREATEBRAIN);
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.DRAG_END_CREATECHANNEL);
 
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.MOUSE_DOWN_BRAIN);
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.MOUSE_EXIT_BRAIN);
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.MOUSE_UP_BRAIN);
+            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.MOUSE_ENTER_BRAIN);
         }
 
         private void OnNotification(Notification noti)
@@ -146,10 +145,8 @@ namespace MainTab
                     case ENotiMessage.DRAG_START_CREATEBRAIN:
                         _controller.ChangeState(EBehaviorState.CREATE_BRAIN);
                         break;
-                    case ENotiMessage.DRAG_START_CREATECHANNEL:
-                        _controller.ChangeState(EBehaviorState.CREATE_CHANNEL);
-                        break;
                     case ENotiMessage.MOUSE_DOWN_BRAIN:
+                        _controller._recentSelectBrain = (Brain)noti.data[EDataParamKey.CLASS_BRAIN];
                         _isBrainPointDown = true;
                         break;
                     case ENotiMessage.MOUSE_UP_BRAIN:
@@ -248,21 +245,44 @@ namespace MainTab
 
         protected class StateHandlerCreateChannel : IBehaviorStateModule
         {
+            private BehaviorController _controller;
+            private Channel _channel;
+            private Brain _currentEnterBrain;
             public void Init(BehaviorController controller)
             {
+                _controller = controller;
             }
 
             public void OnEnter()
             {
                 Debug.Log("CreateChannel!");
+                CreateTempChannel();
             }
 
+            private Vector2 _curPos;
             public void AdvanceTime(float dt_sec)
             {
+                _curPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                _channel.SetLineRenderToPos(_curPos);
+                _channel.AdvanceTime(dt_sec);
             }
 
             public void OnNotification(Notification noti)
             {
+                switch (noti.msg)
+                {
+                    case ENotiMessage.MOUSE_UP_BRAIN:
+                        CreateChannel();
+                        _controller.ChangeState(EBehaviorState.NONE);
+                        break;
+                    case ENotiMessage.MOUSE_ENTER_BRAIN:
+                        _currentEnterBrain = (Brain)noti.data[EDataParamKey.CLASS_BRAIN];
+                        break;
+                    case ENotiMessage.MOUSE_EXIT_BRAIN:
+                        _currentEnterBrain = null;
+                        break;
+
+                }
             }
             public void OnExit()
             {
@@ -272,6 +292,33 @@ namespace MainTab
             {
             }
 
+            private void CreateTempChannel()
+            {
+                _channel = PoolManager.Instance.GrabPrefabs(EPrefabsType.CHANNEL, "Channel", _controller._view.transform).GetComponent<Channel>();
+                _channel.Set(CreateBrainSendData(-1, _controller._recentSelectBrain), CreateBrainSendData(-1, null));
+            }
+
+            private BrainSendData CreateBrainSendData(int id,Brain brain)
+            {
+                BrainSendData data;
+                data.id = id;
+                data.brain = brain;
+                return data;
+            }
+            private void CreateChannel()
+            {
+                if (_currentEnterBrain != null && _channel.FromBrain != _currentEnterBrain)
+                {
+                    _channel.Set(CreateBrainSendData(-1, _channel.FromBrain), CreateBrainSendData(-1, _currentEnterBrain));
+                    Hashtable sendData = new Hashtable();
+                    sendData.Add(EDataParamKey.CLASS_CHANNEL, _channel);
+                    NotificationManager.Instance.PostNotification(ENotiMessage.CREATE_CHANNEL, sendData);
+                }
+                else
+                {
+                    PoolManager.Instance.DespawnObject(EPrefabsType.CHANNEL, _channel.gameObject);
+                }
+            }
         }
         #endregion
     }

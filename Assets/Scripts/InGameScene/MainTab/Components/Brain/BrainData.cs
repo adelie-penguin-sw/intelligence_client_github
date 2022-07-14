@@ -7,15 +7,17 @@ namespace MainTab
     [Serializable]
     public class BrainData
     {
-        public double intellect = 1f;
-        public EBrainType brainType = EBrainType.MAINBRAIN;
         public int id;
+        public double intellect = 1f;
+        public double standByIntellect = 0f;
+        public EBrainType brainType = EBrainType.MAINBRAIN;
+
     }
 
     public struct BrainSendData
     {
         public int id;
-        public Transform tr;
+        public Brain brain;
     }
 
     public enum EBrainType
