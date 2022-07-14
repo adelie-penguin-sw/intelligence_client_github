@@ -12,6 +12,24 @@ namespace MainTab
         private TextMeshPro _textNum;
         [SerializeField]
         private BrainData _brainData;
+        public double Intellect
+        {
+            get
+            {
+                return _brainData.intellect;
+            }
+        }
+        public double StandByIntellect
+        {
+            get
+            {
+                return _brainData.standByIntellect;
+            }
+            set
+            {
+                _brainData.standByIntellect  = value;
+            }
+        }
 
         public void Init(EBrainType type)
         {
@@ -36,6 +54,8 @@ namespace MainTab
         {
             if (_brainData.brainType != EBrainType.GUIDEBRAIN)
             {
+                _brainData.intellect += _brainData.standByIntellect;
+                _brainData.standByIntellect = 0;
                 SetNumText(_brainData.intellect);
             }
         }
@@ -44,25 +64,39 @@ namespace MainTab
         {
         }
         #region EventData
-        private Hashtable _sendData = new Hashtable();
         private void OnMouseDown()
         {
-            _sendData.Clear();
-            _sendData.Add(EDataParamKey.CLASS_BRAIN, this);
-            NotificationManager.Instance.PostNotification(ENotiMessage.MOUSE_DOWN_BRAIN, _sendData);
+            if (_brainData.brainType != EBrainType.GUIDEBRAIN)
+            {
+                Hashtable _sendData = new Hashtable();
+                _sendData.Add(EDataParamKey.CLASS_BRAIN, this);
+                NotificationManager.Instance.PostNotification(ENotiMessage.MOUSE_DOWN_BRAIN, _sendData);
+            }
         }
         private void OnMouseExit()
         {
-            _sendData.Clear();
-            _sendData.Add(EDataParamKey.CLASS_BRAIN, this);
-            NotificationManager.Instance.PostNotification(ENotiMessage.MOUSE_EXIT_BRAIN, _sendData);
+            if (_brainData.brainType != EBrainType.GUIDEBRAIN)
+            {
+                NotificationManager.Instance.PostNotification(ENotiMessage.MOUSE_EXIT_BRAIN);
+            }
         }
    
         private void OnMouseUp()
         {
-            _sendData.Clear();
-            _sendData.Add(EDataParamKey.CLASS_BRAIN, this);
-            NotificationManager.Instance.PostNotification(ENotiMessage.MOUSE_UP_BRAIN, _sendData);
+            if (_brainData.brainType != EBrainType.GUIDEBRAIN)
+            {
+                NotificationManager.Instance.PostNotification(ENotiMessage.MOUSE_UP_BRAIN);
+            }
+        }
+
+        private void OnMouseEnter()
+        {
+            if (_brainData.brainType != EBrainType.GUIDEBRAIN)
+            {
+                Hashtable _sendData = new Hashtable();
+                _sendData.Add(EDataParamKey.CLASS_BRAIN, this);
+                NotificationManager.Instance.PostNotification(ENotiMessage.MOUSE_ENTER_BRAIN, _sendData);
+            }
         }
         #endregion
         private void SetNumText(double num)
