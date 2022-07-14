@@ -7,8 +7,8 @@ namespace MainTab
     [Serializable]
     public class BrainData
     {
-        public double intellect = 0f;
-        public ECellType cellType = ECellType.MainCell;
+        public double intellect = 1f;
+        public EBrainType brainType = EBrainType.MAINBRAIN;
         public int id;
     }
 
@@ -18,9 +18,10 @@ namespace MainTab
         public Transform tr;
     }
 
-    public enum ECellType
+    public enum EBrainType
     {
-        MainCell,
-        NormalCell,
+        MAINBRAIN,
+        NORMALBRAIN,
+        GUIDEBRAIN,
     }
 }

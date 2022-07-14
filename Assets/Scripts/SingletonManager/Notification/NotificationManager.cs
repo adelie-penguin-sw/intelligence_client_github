@@ -187,12 +187,24 @@ public enum ENotiMessage
 {
     UNKNOWN = 0,
 
-    //MainTab
-    ON_CLICK_CREATE_BRAIN_BTN,
-    ON_CLICK_CREATE_CHANNEL_BTN,
+    //  <<MainTab>>
+    //  Input°ü·Ã
+    DRAG_START_CREATEBRAIN,
+    DRAG_END_CREATEBRAIN,
+    DRAG_START_CREATECHANNEL,
+    DRAG_END_CREATECHANNEL,
+
+    MOUSE_DOWN_BRAIN,
+    MOUSE_UP_BRAIN,
+    MOUSE_EXIT_BRAIN,
+
+    CREATE_BRAIN,
+    CREATE_CHANNEL,
 
 }
 
 public enum EDataParamKey
 {
+    VECTOR2,
+    CLASS_BRAIN,
 }
