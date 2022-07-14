@@ -65,7 +65,7 @@ namespace MainTab
         public override void Dispose()
         {
             base.Dispose();
-            PoolManager.Instance.DespawnObject(EPrefabsType.TabApplication, this.gameObject);
+            PoolManager.Instance.DespawnObject(EPrefabsType.TAP_APPLICATION, this.gameObject);
         }
     }
 }

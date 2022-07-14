@@ -8,11 +8,11 @@ namespace MainTab
     {
         public void OnClick_CreateBrainBtn()
         {
-            NotificationManager.Instance.PostNotification(ENotiMessage.ON_CLICK_CREATE_BRAIN_BTN);
+            //NotificationManager.Instance.PostNotification(ENotiMessage.ON_CLICK_CREATE_BRAIN_BTN);
         }
         public void OnClick_CreateChannelBtn()
         {
-            NotificationManager.Instance.PostNotification(ENotiMessage.ON_CLICK_CREATE_CHANNEL_BTN);
+            NotificationManager.Instance.PostNotification(ENotiMessage.DRAG_START_CREATECHANNEL);
         }
     }
 }

@@ -129,9 +129,9 @@ public class PoolManager : MonoBehaviour
         switch (type)
         {
             //MainTab
-            case EPrefabsType.TabApplication:
+            case EPrefabsType.TAP_APPLICATION:
                 return "Prefabs/InGame/TabApp/";
-            case EPrefabsType.Brain:
+            case EPrefabsType.BRAIN:
                 return "Prefabs/InGame/";
         }
         return "Prefabs/";
@@ -139,9 +139,9 @@ public class PoolManager : MonoBehaviour
 }
 public enum EPrefabsType
 {
-    TabApplication,
+    TAP_APPLICATION,
 
     //MainTab
-    Brain,
+    BRAIN,
 }
 

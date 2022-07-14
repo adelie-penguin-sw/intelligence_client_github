@@ -89,5 +89,18 @@ namespace MainTab
             }
         }
         #endregion
+
+        #region Behavior
+        [Header("*Behavior*")]
+        [SerializeField]
+        private float _waitBrainClickTime = 1f;
+        public float WaitBrainClickTime
+        {
+            get
+            {
+                return _waitBrainClickTime;
+            }
+        }
+        #endregion
     }
 }

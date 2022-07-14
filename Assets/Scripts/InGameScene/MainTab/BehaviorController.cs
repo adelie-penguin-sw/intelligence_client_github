@@ -7,6 +7,7 @@ namespace MainTab
     {
         private MainTabModel _model;
         private MainTabView _view;
+        private Brain _recentBrain;
         public override void Init(MainTabApplication app)
         {
             base.Init(app);
@@ -16,8 +17,14 @@ namespace MainTab
             InitHandlers();
             ChangeState(EBehaviorState.NONE);
 
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.ON_CLICK_CREATE_BRAIN_BTN);
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.ON_CLICK_CREATE_CHANNEL_BTN);
+            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.DRAG_START_CREATEBRAIN);
+            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.DRAG_START_CREATECHANNEL);
+            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.DRAG_END_CREATEBRAIN);
+            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.DRAG_END_CREATECHANNEL);
+
+            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.MOUSE_DOWN_BRAIN);
+            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.MOUSE_EXIT_BRAIN);
+            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.MOUSE_UP_BRAIN);
         }
 
         public override void Set()
@@ -26,8 +33,6 @@ namespace MainTab
 
         public override void AdvanceTime(float dt_sec)
         {
-            MoveScreen();
-            ZoomScreenPC();
             //ZoomScreenMobile();
 
             if (_currentState != EBehaviorState.UNKNOWN)
@@ -38,48 +43,24 @@ namespace MainTab
 
         public override void Dispose()
         {
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.ON_CLICK_CREATE_BRAIN_BTN);
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.ON_CLICK_CREATE_CHANNEL_BTN);
+            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.DRAG_START_CREATEBRAIN);
+            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.DRAG_START_CREATECHANNEL);
+            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.DRAG_END_CREATEBRAIN);
+            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.DRAG_END_CREATECHANNEL);
+
+            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.MOUSE_DOWN_BRAIN);
+            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.MOUSE_EXIT_BRAIN);
+            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.MOUSE_UP_BRAIN);
         }
 
         private void OnNotification(Notification noti)
         {
-            switch(noti.msg)
+            if (_currentState != EBehaviorState.UNKNOWN)
             {
-                case ENotiMessage.ON_CLICK_CREATE_BRAIN_BTN:
-                    ChangeState(EBehaviorState.CREATE_BRAIN);
-                    break;
-                case ENotiMessage.ON_CLICK_CREATE_CHANNEL_BTN:
-                    ChangeState(EBehaviorState.CREATE_CHANNEL);
-                    break;
+                GetStateHandler(_currentState).OnNotification(noti);
             }
         }
 
-        private void MoveScreen()
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                _model.PrevMousePos = Input.mousePosition;
-            }
-
-            if (Input.GetMouseButton(0))
-            {
-                _model.CurMousePos = Input.mousePosition;
-
-                _model.MainCamera.transform.Translate(_model.CameraMoveDelta * _model.DragSpeed * _model.MainCamera.orthographicSize);
-
-                _model.PrevMousePos = _model.CurMousePos;
-            }
-        }
-
-        private void ZoomScreenPC()
-        {
-            _model.CurCameraSize = Input.GetAxis("Mouse ScrollWheel");
-        }
-
-        private void ZoomScreenMobile()
-        {
-        }
         #region StateHandler Function
         private Dictionary<EBehaviorState, IBehaviorStateModule> _handlers = new Dictionary<EBehaviorState, IBehaviorStateModule>();
         private EBehaviorState _currentState = EBehaviorState.UNKNOWN;
@@ -128,18 +109,57 @@ namespace MainTab
         #region StateHandler Class
         protected class StateHandlerNone : IBehaviorStateModule
         {
+            private MainTabModel _model;
+            private BehaviorController _controller;
+            private bool _isBrainPointDown = false;
+            private float _dtBrainPointDown = 0f;
             public void Init(BehaviorController controller)
             {
+                _controller = controller;
+                _model = controller._model;
             }
 
             public void OnEnter()
             {
+                _isBrainPointDown = false;
+                _dtBrainPointDown = 0f;
             }
 
             public void AdvanceTime(float dt_sec)
             {
+                MoveScreen();
+                ZoomScreenPC();
+                if(_isBrainPointDown)
+                {
+                    _dtBrainPointDown += dt_sec;
+                    if(_dtBrainPointDown >= _model.WaitBrainClickTime)
+                    {
+                        _controller.ChangeState(EBehaviorState.CREATE_CHANNEL);
+                    }
+                }
             }
 
+            public void OnNotification(Notification noti)
+            {
+                switch (noti.msg)
+                {
+                    case ENotiMessage.DRAG_START_CREATEBRAIN:
+                        _controller.ChangeState(EBehaviorState.CREATE_BRAIN);
+                        break;
+                    case ENotiMessage.DRAG_START_CREATECHANNEL:
+                        _controller.ChangeState(EBehaviorState.CREATE_CHANNEL);
+                        break;
+                    case ENotiMessage.MOUSE_DOWN_BRAIN:
+                        _isBrainPointDown = true;
+                        break;
+                    case ENotiMessage.MOUSE_UP_BRAIN:
+                    case ENotiMessage.MOUSE_EXIT_BRAIN:
+                        _dtBrainPointDown = 0;
+                        _isBrainPointDown = false;
+                        break;
+
+                }
+            }
             public void OnExit()
             {
             }
@@ -147,17 +167,42 @@ namespace MainTab
             public void Dispose()
             {
             }
+            private void MoveScreen()
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    _model.PrevMousePos = Input.mousePosition;
+                }
 
+                if (Input.GetMouseButton(0))
+                {
+                    _model.CurMousePos = Input.mousePosition;
+
+                    _model.MainCamera.transform.Translate(_model.CameraMoveDelta * _model.DragSpeed * _model.MainCamera.orthographicSize);
+
+                    _model.PrevMousePos = _model.CurMousePos;
+                }
+            }
+
+            private void ZoomScreenPC()
+            {
+                _model.CurCameraSize = Input.GetAxis("Mouse ScrollWheel");
+            }
+
+            private void ZoomScreenMobile()
+            {
+            }
         }
 
         protected class StateHandlerCreateBrain : IBehaviorStateModule
         {
+            private BehaviorController _controller;
             private GameObject _goBrainTemp;
-            private Camera _camera;
             public void Init(BehaviorController controller)
             {
-                _camera = controller._model.MainCamera;
-                _goBrainTemp = PoolManager.Instance.GrabPrefabs(EPrefabsType.Brain, "Brain", controller._view.transform);
+                _controller = controller;
+                _goBrainTemp = PoolManager.Instance.GrabPrefabs(EPrefabsType.BRAIN, "Brain", controller._view.transform);
+                _goBrainTemp.GetComponent<Brain>().Init(EBrainType.GUIDEBRAIN);
                 _goBrainTemp.SetActive(false);
             }
 
@@ -167,11 +212,28 @@ namespace MainTab
                 _goBrainTemp.SetActive(true);
             }
 
+            private Vector2 _curPos;
             public void AdvanceTime(float dt_sec)
             {
-                _goBrainTemp.transform.position = (Vector2)_camera.transform.position;
+                if (Input.GetMouseButton(0))
+                {
+                    _curPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    _goBrainTemp.transform.position = _curPos;
+                }
             }
 
+            public void OnNotification(Notification noti)
+            {
+                switch (noti.msg)
+                {
+                    case ENotiMessage.DRAG_END_CREATEBRAIN:
+                        Hashtable sendData = new Hashtable();
+                        sendData.Add(EDataParamKey.VECTOR2, (Vector2)_goBrainTemp.transform.position);
+                        NotificationManager.Instance.PostNotification(ENotiMessage.CREATE_BRAIN, sendData);
+                        _controller.ChangeState(EBehaviorState.NONE);
+                        break;
+                }
+            }
             public void OnExit()
             {
                 _goBrainTemp.SetActive(false);
@@ -179,7 +241,7 @@ namespace MainTab
 
             public void Dispose()
             {
-                PoolManager.Instance.DespawnObject(EPrefabsType.Brain, _goBrainTemp);
+                PoolManager.Instance.DespawnObject(EPrefabsType.BRAIN, _goBrainTemp);
             }
 
         }
@@ -199,6 +261,9 @@ namespace MainTab
             {
             }
 
+            public void OnNotification(Notification noti)
+            {
+            }
             public void OnExit()
             {
             }
@@ -224,6 +289,7 @@ namespace MainTab
         void Init(BehaviorController controller);
         void OnEnter();
         void AdvanceTime(float dt_sec);
+        void OnNotification(Notification noti);
         void OnExit();
         void Dispose();
     }
