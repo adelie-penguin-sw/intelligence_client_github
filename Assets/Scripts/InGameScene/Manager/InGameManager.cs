@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-
+//develop 브랜치 추가
 public class InGameManager : MonoBehaviour, IDisposable
 {
     void Awake()
