@@ -6,12 +6,18 @@ using UnityEngine.EventSystems;
 
 namespace MainTab
 {
+    /// <summary>
+    /// Brain Component Class<br />
+    /// 모든 브레인 오브젝트는 이 클래스를 보유<br />
+    /// </summary>
     public class Brain : MonoBehaviour
     {
-        [SerializeField]
-        private TextMeshPro _textNum;
-        [SerializeField]
-        private BrainData _brainData;
+        [SerializeField] private TextMeshPro _textNum;
+        [SerializeField] private BrainData _brainData;
+
+        /// <summary>
+        /// 지능 수치
+        /// </summary>
         public double Intellect
         {
             get
@@ -19,6 +25,10 @@ namespace MainTab
                 return _brainData.intellect;
             }
         }
+
+        /// <summary>
+        /// 다음 Tick에 증가 될 예정인 지능수치
+        /// </summary>
         public double StandByIntellect
         {
             get
@@ -31,12 +41,19 @@ namespace MainTab
             }
         }
 
+        /// <summary>
+        /// 해당 브레인 오브젝트 생성시 최초 1회 실행 되어야 한다.
+        /// </summary>
+        /// <param name="type">브레인 타입</param>
         public void Init(EBrainType type)
         {
             _brainData.brainType = type;
             Set();
         }
 
+        /// <summary>
+        /// 브레인 타입에 따라 기능을 셋팅해주는 초기화 함수.
+        /// </summary>
         public void Set()
         {
             switch(_brainData.brainType)
@@ -50,6 +67,11 @@ namespace MainTab
                     break;
             }
         }
+
+        /// <summary>
+        /// Unity 기본 생명주기 Update를 대체해주는 함수 / 지속 실행 시켜주어야한다.
+        /// </summary>
+        /// <param name="dt_sec">deltaTime</param>
         public void AdvanceTime(float dt_sec)
         {
             if (_brainData.brainType != EBrainType.GUIDEBRAIN)
@@ -60,9 +82,14 @@ namespace MainTab
             }
         }
 
+        /// <summary>
+        /// 해당 오브젝트 삭제시 실행시켜주어야 한다.
+        /// </summary>
         public void Dispose()
         {
+            PoolManager.Instance.DespawnObject(EPrefabsType.BRAIN, gameObject);
         }
+
         #region EventData
         private void OnMouseDown()
         {

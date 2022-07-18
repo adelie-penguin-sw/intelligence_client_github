@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace MainTab
 {
+    /// <summary>
+    /// 사용자 조작 관리 Controller
+    /// </summary>
     public class BehaviorController : BaseTabController<MainTabApplication>
     {
         private MainTabModel _model;
         private MainTabView _view;
-        [SerializeField]
-        private Brain _recentSelectBrain;
+        [SerializeField] private Brain _recentSelectBrain;
+
+
         public override void Init(MainTabApplication app)
         {
             base.Init(app);
@@ -33,8 +37,6 @@ namespace MainTab
 
         public override void AdvanceTime(float dt_sec)
         {
-            //ZoomScreenMobile();
-
             if (_currentState != EBehaviorState.UNKNOWN)
             {
                 GetStateHandler(_currentState).AdvanceTime(dt_sec);
@@ -106,12 +108,16 @@ namespace MainTab
         #endregion
 
         #region StateHandler Class
+        /// <summary>
+        /// 기본 State class
+        /// </summary>
         protected class StateHandlerNone : IBehaviorStateModule
         {
             private MainTabModel _model;
             private BehaviorController _controller;
             private bool _isBrainPointDown = false;
             private float _dtBrainPointDown = 0f;
+
             public void Init(BehaviorController controller)
             {
                 _controller = controller;
@@ -157,6 +163,7 @@ namespace MainTab
 
                 }
             }
+
             public void OnExit()
             {
             }
@@ -164,6 +171,10 @@ namespace MainTab
             public void Dispose()
             {
             }
+
+            /// <summary>
+            /// 스크린 좌우상하 이동 메서드
+            /// </summary>
             private void MoveScreen()
             {
                 if (Input.GetMouseButtonDown(0))
@@ -181,6 +192,9 @@ namespace MainTab
                 }
             }
 
+            /// <summary>
+            /// 스크린 줌 메서드 
+            /// </summary>
             private void ZoomScreenPC()
             {
                 _model.CurCameraSize = Input.GetAxis("Mouse ScrollWheel");
@@ -191,22 +205,24 @@ namespace MainTab
             }
         }
 
+        /// <summary>
+        /// 브레인 생성 state class
+        /// </summary>
         protected class StateHandlerCreateBrain : IBehaviorStateModule
         {
             private BehaviorController _controller;
-            private GameObject _goBrainTemp;
+            private Brain _tempBrain;
             public void Init(BehaviorController controller)
             {
                 _controller = controller;
-                _goBrainTemp = PoolManager.Instance.GrabPrefabs(EPrefabsType.BRAIN, "Brain", controller._view.transform);
-                _goBrainTemp.GetComponent<Brain>().Init(EBrainType.GUIDEBRAIN);
-                _goBrainTemp.SetActive(false);
+                _tempBrain = PoolManager.Instance.GrabPrefabs(EPrefabsType.BRAIN, "Brain", controller._view.transform)
+                            .GetComponent<Brain>();
+                _tempBrain.Init(EBrainType.GUIDEBRAIN);
             }
 
             public void OnEnter()
             {
-                Debug.Log("CreateBrain!");
-                _goBrainTemp.SetActive(true);
+                _tempBrain.gameObject.SetActive(true);
             }
 
             private Vector2 _curPos;
@@ -215,7 +231,7 @@ namespace MainTab
                 if (Input.GetMouseButton(0))
                 {
                     _curPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    _goBrainTemp.transform.position = _curPos;
+                    _tempBrain.transform.position = _curPos;
                 }
             }
 
@@ -225,7 +241,7 @@ namespace MainTab
                 {
                     case ENotiMessage.DRAG_END_CREATEBRAIN:
                         Hashtable sendData = new Hashtable();
-                        sendData.Add(EDataParamKey.VECTOR2, (Vector2)_goBrainTemp.transform.position);
+                        sendData.Add(EDataParamKey.VECTOR2, (Vector2)_tempBrain.transform.position);
                         NotificationManager.Instance.PostNotification(ENotiMessage.CREATE_BRAIN, sendData);
                         _controller.ChangeState(EBehaviorState.NONE);
                         break;
@@ -233,16 +249,19 @@ namespace MainTab
             }
             public void OnExit()
             {
-                _goBrainTemp.SetActive(false);
+                _tempBrain.gameObject.SetActive(false);
             }
 
             public void Dispose()
             {
-                PoolManager.Instance.DespawnObject(EPrefabsType.BRAIN, _goBrainTemp);
+                _tempBrain.Dispose();
             }
 
         }
 
+        /// <summary>
+        /// 채널 생성 State class
+        /// </summary>
         protected class StateHandlerCreateChannel : IBehaviorStateModule
         {
             private BehaviorController _controller;
@@ -292,12 +311,21 @@ namespace MainTab
             {
             }
 
+            /// <summary>
+            /// 임시채널 보여주기용 생성
+            /// </summary>
             private void CreateTempChannel()
             {
                 _channel = PoolManager.Instance.GrabPrefabs(EPrefabsType.CHANNEL, "Channel", _controller._view.transform).GetComponent<Channel>();
-                _channel.Set(CreateBrainSendData(-1, _controller._recentSelectBrain), CreateBrainSendData(-1, null));
+                _channel.Init(CreateBrainSendData(-1, _controller._recentSelectBrain), CreateBrainSendData(-1, null));
             }
 
+            /// <summary>
+            /// SendData로 변환시켜 return 해주는 메서드
+            /// </summary>
+            /// <param name="id">브레인 아이디</param>
+            /// <param name="brain">브레인 클래스</param>
+            /// <returns>BrainSendData 생성</returns>
             private BrainSendData CreateBrainSendData(int id,Brain brain)
             {
                 BrainSendData data;
@@ -305,6 +333,11 @@ namespace MainTab
                 data.brain = brain;
                 return data;
             }
+
+            /// <summary>
+            /// 남아있는 데이터가 다른 브레인과 연결하는것으로 판별나면 임시로 만들었던 채널 오브젝트를 실제 생성시키기 위해 Noti를 날려주고
+            /// 아니면 Despawn 시키는 메서드
+            /// </summary>
             private void CreateChannel()
             {
                 if (_currentEnterBrain != null && _channel.FromBrain != _currentEnterBrain)
@@ -316,13 +349,16 @@ namespace MainTab
                 }
                 else
                 {
-                    PoolManager.Instance.DespawnObject(EPrefabsType.CHANNEL, _channel.gameObject);
+                    _channel.Dispose();
                 }
             }
         }
         #endregion
     }
 
+    /// <summary>
+    /// 사용자 행동 Enum
+    /// </summary>
     public enum EBehaviorState
     {
         UNKNOWN,
@@ -331,13 +367,38 @@ namespace MainTab
         CREATE_CHANNEL,
     }
 
+    /// <summary>
+    /// 사용자 행동 State 관리용 interface<br />
+    /// BehaviorController Inner Class가 가지는 interface<br />
+    /// </summary>
     public interface IBehaviorStateModule
     {
+        /// <summary>
+        /// state 최초 생성시 실행
+        /// </summary>
+        /// <param name="controller"></param>
         void Init(BehaviorController controller);
+        /// <summary>
+        /// 해당 조작상태 진입시 실행 
+        /// </summary>
         void OnEnter();
+        /// <summary>
+        /// 매 틱마다 지속하여 실행
+        /// </summary>
+        /// <param name="dt_sec">DeltaTime</param>
         void AdvanceTime(float dt_sec);
+        /// <summary>
+        /// 옵저버 패턴에 delegate로 등록되어 있는 메서드
+        /// </summary>
+        /// <param name="noti">받는 noti</param>
         void OnNotification(Notification noti);
+        /// <summary>
+        /// 해당 조작상태 탈출시 실행
+        /// </summary>
         void OnExit();
+        /// <summary>
+        /// 메모리 초기화용
+        /// </summary>
         void Dispose();
     }
 }

@@ -4,6 +4,9 @@ using UnityEngine;
 using System;
 namespace MainTab
 {
+    /// <summary>
+    /// 메인탭의 데이터를 가지고 있는 Model 클래스
+    /// </summary>
     [Serializable]
     public class MainTabModel
     {

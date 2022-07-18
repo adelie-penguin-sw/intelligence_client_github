@@ -5,6 +5,9 @@ using System;
 
 namespace InGame
 {
+    /// <summary>
+    /// InGameScene에서 공통적으로 가지고 있는 UI Class
+    /// </summary>
     public class InGameUI : MonoBehaviour
     {
         private BottomTab[] _bottomTabs;
@@ -17,13 +20,13 @@ namespace InGame
             }
         }
 
-        private void OnClick_Tab(EInGameTab tab)
+        private void OnClick_Tab(EGameState tab)
         {
             switch (tab)
             {
-                case EInGameTab.MAIN_TAB:
+                case EGameState.MAIN_TAB:
                     break;
-                case EInGameTab.TP_UPGRADE_TAB:
+                case EGameState.TP_UPGRADE_TAB:
                     break;
             }
         }

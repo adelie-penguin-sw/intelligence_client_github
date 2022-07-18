@@ -7,12 +7,4 @@ namespace InGame
     public class UIEnums : MonoBehaviour
     {
     }
-
-
-    [Serializable]
-    public enum EInGameTab
-    {
-        MAIN_TAB,
-        TP_UPGRADE_TAB,
-    }
 }

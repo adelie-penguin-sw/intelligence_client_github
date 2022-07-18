@@ -70,7 +70,14 @@ public class PoolManager : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// 해당하는 오브젝트가 풀에 존재한다면 풀에서 꺼내오고<br />
+    /// 없으면 생성시켜 반환해준다.<br />
+    /// </summary>
+    /// <param name="type">프리팹 타입</param>
+    /// <param name="name">프리팹 이름</param>
+    /// <param name="layer">생성시킬 레이어</param>
+    /// <returns>꺼내온 GameObject 반환</returns>
     public GameObject GrabPrefabs(EPrefabsType type, string name, Transform layer)
     {
         if (!_dicPool[type].ContainsKey(name))
@@ -90,6 +97,11 @@ public class PoolManager : MonoBehaviour
         return (obj.gameObject);
     }
 
+    /// <summary>
+    /// 해당 오브젝트를 다시 풀에 돌려준다.
+    /// </summary>
+    /// <param name="type">프리팹 타입</param>
+    /// <param name="obj">반환 할 오브젝트</param>
     public void DespawnObject(EPrefabsType type, GameObject obj)
     {
         if (obj.TryGetComponent<PoolObject>(out PoolObject poolObj))
@@ -138,6 +150,10 @@ public class PoolManager : MonoBehaviour
         return "Prefabs/";
     }
 }
+
+/// <summary>
+/// 프리팹 타입을 나타내는 Enum
+/// </summary>
 public enum EPrefabsType
 {
     TAP_APPLICATION,
