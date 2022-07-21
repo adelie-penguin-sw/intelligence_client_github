@@ -11,6 +11,8 @@ namespace InGame
     /// </summary>
     public class InGameManager : MonoBehaviour, IDisposable
     {
+        [SerializeField] private Canvas _canvas;
+        [SerializeField] private GameObject _anchor;
         void Awake()
         {
 

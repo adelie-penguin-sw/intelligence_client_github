@@ -14,7 +14,7 @@ namespace MainTab
     {
         [SerializeField] private TextMeshPro _textNum;
         [SerializeField] private BrainData _brainData;
-
+        private static int tempBrainID = 0;
         /// <summary>
         /// 지능 수치
         /// </summary>
@@ -37,7 +37,15 @@ namespace MainTab
             }
             set
             {
-                _brainData.standByIntellect  = value;
+                _brainData.standByIntellect = value;
+            }
+        }
+
+        public int ID
+        {
+            get
+            {
+                return _brainData.id;
             }
         }
 
@@ -47,7 +55,11 @@ namespace MainTab
         /// <param name="type">브레인 타입</param>
         public void Init(EBrainType type)
         {
+            _brainData = new BrainData();
             _brainData.brainType = type;
+            _brainData.id = tempBrainID++;
+            if (type == EBrainType.GUIDEBRAIN)
+                gameObject.SetActive(false);
             Set();
         }
 

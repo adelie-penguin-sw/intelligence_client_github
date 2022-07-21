@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
-public class AlertPopup : PopupBase
+public class DestroyOnClickPopup : PopupBase
 {
     [SerializeField]
     public TextMeshProUGUI text;
@@ -11,10 +10,6 @@ public class AlertPopup : PopupBase
     public override void Init()
     {
         base.Init();
-        GameObject go = transform.GetChild(0).gameObject;
-        go.transform.Translate(new Vector3(Random.Range(-400, 400), Random.Range(-500, 500), 0));
-        text.text = "ALERT!!!";
-        gameObject.name = text.text;
     }
 
     public override void Set()
@@ -30,6 +25,5 @@ public class AlertPopup : PopupBase
     public override void Dispose()
     {
         base.Dispose();
-        PoolManager.Instance.DespawnObject(EPrefabsType.Popup, gameObject);
     }
 }

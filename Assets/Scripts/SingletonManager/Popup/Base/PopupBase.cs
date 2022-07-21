@@ -13,13 +13,13 @@ public class PopupBase : MonoBehaviour
     #endregion
 
     #region attributes
-    [SerializeField]
-    private Button _closeBtn; // 닫는 버튼
+    [SerializeField] private Button[] _closeBtn; // 닫는 버튼
+    /*[SerializeField] private EPopupType _popupType = EPopupType.Normal;*/ //필요없어 보임
+    [SerializeField] private EPrefabsType _prefabType = EPrefabsType.POPUP;
 
     private PopupBase _next;
     private PopupBase _prev;
 
-    private EPopupType _popupType = EPopupType.Normal;
     #endregion
 
     #region [get, set]
@@ -47,7 +47,10 @@ public class PopupBase : MonoBehaviour
         }
         gameObject.GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);
         gameObject.GetComponent<RectTransform>().offsetMax = new Vector2(0, 0);
-        _closeBtn.onClick.AddListener(Dispose);
+        foreach(var closeBtn in _closeBtn)
+        {
+            closeBtn.onClick.AddListener(Dispose);
+        }
     }
 
     public virtual void AdvanceTime(float dt_sec)
@@ -79,7 +82,11 @@ public class PopupBase : MonoBehaviour
         }
         _next = null;
         _prev = null;
-        _closeBtn.onClick.RemoveAllListeners();
+        foreach (var closeBtn in _closeBtn)
+        {
+            closeBtn.onClick.RemoveAllListeners();
+        }
+        PoolManager.Instance.DespawnObject(_prefabType, gameObject);
     }
 }
 
