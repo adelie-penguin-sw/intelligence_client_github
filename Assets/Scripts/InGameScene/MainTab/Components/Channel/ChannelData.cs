@@ -17,19 +17,19 @@ namespace MainTab
         /// <summary>
         /// 보내는 Brain Class
         /// </summary>
-        public Brain fromBrain;
+        public Brain senderBrain;
         /// <summary>
         /// 받는 Brain Class
         /// </summary>
-        public Brain toBrain;
+        public Brain receiverBrain;
         /// <summary>
         /// 보내는 Brain의 ID
         /// </summary>
-        public int fromId;
+        public int senderId;
         /// <summary>
         /// 받는 Brain의 ID
         /// </summary>
-        public int toId;
+        public int receiverId;
     }
 
     /// <summary>
@@ -37,7 +37,7 @@ namespace MainTab
     /// </summary>
     public enum EChannelBrainType
     {
-        FROM,
-        TO,
+        SENDER,
+        RECEIVER,
     }
 }

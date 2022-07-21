@@ -8,6 +8,15 @@ namespace MainTab
     /// </summary>
     public class MainTabView : MonoBehaviour
     {
-       
+        [SerializeField] private Canvas _canvas;
+        [SerializeField] private MainTabUI _ui;
+
+        public MainTabUI UI
+        {
+            get
+            {
+                return _ui;
+            }
+        }
     }
 }

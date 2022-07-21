@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using TMPro;
 
-public class FullscreenPopup : PopupBase
+public class AlertPopup : PopupBase
 {
     [SerializeField]
     public TextMeshProUGUI text;
@@ -11,9 +11,6 @@ public class FullscreenPopup : PopupBase
     public override void Init()
     {
         base.Init();
-        GameObject go = transform.GetChild(0).gameObject;
-        text.text = "FullscreenPopup";
-        gameObject.name = text.text;
     }
 
     public override void Set()
@@ -29,6 +26,5 @@ public class FullscreenPopup : PopupBase
     public override void Dispose()
     {
         base.Dispose();
-        PoolManager.Instance.DespawnObject(EPrefabsType.Popup, gameObject);
     }
 }

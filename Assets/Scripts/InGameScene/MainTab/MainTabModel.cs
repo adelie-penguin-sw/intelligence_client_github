@@ -96,12 +96,29 @@ namespace MainTab
         #region Behavior
         [Header("*Behavior*")]
         [SerializeField]
-        private float _waitBrainClickTime = 1f;
+        private float _waitBrainClickTime = 0.5f;
         public float WaitBrainClickTime
         {
             get
             {
                 return _waitBrainClickTime;
+            }
+        }
+        #endregion
+
+        #region Player Info
+        [Header("*Player Info*")]
+        [SerializeField]
+        private int _np = 0;
+        public int NP
+        {
+            get
+            {
+                return _np;
+            }
+            set
+            {
+                _np = value;
             }
         }
         #endregion

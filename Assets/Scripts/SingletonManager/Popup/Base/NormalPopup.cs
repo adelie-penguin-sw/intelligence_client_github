@@ -1,16 +1,15 @@
 ﻿using UnityEngine;
-using TMPro;
 using System.Collections;
+using UnityEngine.UI;
+using TMPro;
 
-public class DestroyOnClickPopup : PopupBase
+public class NormalPopup : PopupBase
 {
-    [SerializeField]
-    public TextMeshProUGUI text;
+    [SerializeField] public TextMeshProUGUI text;
 
     public override void Init()
     {
         base.Init();
-        text.text = "Popup1";
     }
 
     public override void Set()
@@ -26,9 +25,5 @@ public class DestroyOnClickPopup : PopupBase
     public override void Dispose()
     {
         base.Dispose();
-
-
-
-        PoolManager.Instance.DespawnObject(EPrefabsType.Popup, gameObject);
     }
 }

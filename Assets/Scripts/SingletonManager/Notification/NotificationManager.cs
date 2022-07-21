@@ -248,6 +248,8 @@ public enum ENotiMessage
     CREATE_BRAIN,
     CREATE_CHANNEL,
 
+    ONCLICK_SELL_BRAIN,
+
 }
 
 /// <summary>

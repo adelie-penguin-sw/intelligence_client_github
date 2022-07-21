@@ -15,22 +15,22 @@ namespace MainTab
         /// <summary>
         /// 지능을 보내는 brain class
         /// </summary>
-        public Brain FromBrain
+        public Brain SenderBrain
         {
             get
             {
-                return _data.fromBrain;
+                return _data.senderBrain;
             }
         }
 
         /// <summary>
         /// 지능을 받는 brain class
         /// </summary>
-        public Brain ToBrain
+        public Brain ReceiverBrain
         {
             get
             {
-                return _data.toBrain;
+                return _data.receiverBrain;
             }
         }
 
@@ -39,25 +39,25 @@ namespace MainTab
         /// fromBrain, toBrain이 반드시 Init을 하며 초기화 될 필요는 없음.<br />
         /// 허나 추후 Set()을 통해 설정해주어야 한다.<br />
         /// </summary>
-        /// <param name="fromBrain">지능을 보내는 BrainData</param>
-        /// <param name="toBrain">지능을 받는 BrainData</param>
-        public void Init(BrainSendData fromBrain, BrainSendData toBrain)
+        /// <param name="senderBrain">지능을 보내는 BrainData</param>
+        /// <param name="receiverBrain">지능을 받는 BrainData</param>
+        public void Init(BrainSendData senderBrain, BrainSendData receiverBrain)
         {
             //_material.SetFloat("width", 0.5f);
             // _material.SetFloat("heigth", 0.5f);
-            Set(fromBrain, toBrain);
+            Set(senderBrain, receiverBrain);
         }
 
         /// <summary>
         /// 채널 오브젝트 설정시 사용.<br />
         /// 초기화/재설정용 으로 사용가능.<br />
         /// </summary>
-        /// <param name="fromBrain">지능을 보내는 BrainData</param>
-        /// <param name="toBrain">지능을 받는 BrainData</param>
-        public void Set(BrainSendData fromBrain, BrainSendData toBrain)
+        /// <param name="senderBrain">지능을 보내는 BrainData</param>
+        /// <param name="receiverBrain">지능을 받는 BrainData</param>
+        public void Set(BrainSendData senderBrain, BrainSendData receiverBrain)
         {
-            SetBrainInfo(fromBrain, EChannelBrainType.FROM);
-            SetBrainInfo(toBrain, EChannelBrainType.TO);
+            SetBrainInfo(senderBrain, EChannelBrainType.SENDER);
+            SetBrainInfo(receiverBrain, EChannelBrainType.RECEIVER);
         }
 
 
@@ -68,13 +68,13 @@ namespace MainTab
         /// <param name="dt_sec">deltaTime</param>
         public void AdvanceTime(float dt_sec)
         {
-            if (_data.fromBrain != null)
+            if (_data.senderBrain != null)
             {
-                _lineRenderer.SetPosition(0, _data.fromBrain.transform.position);
+                _lineRenderer.SetPosition(0, _data.senderBrain.transform.position);
             }
-            if (_data.toBrain != null)
+            if (_data.receiverBrain != null)
             {
-                _lineRenderer.SetPosition(1, _data.toBrain.transform.position);
+                _lineRenderer.SetPosition(1, _data.receiverBrain.transform.position);
             }
         }
 
@@ -100,13 +100,13 @@ namespace MainTab
         {
             switch (type)
             {
-                case EChannelBrainType.FROM:
-                    _data.fromBrain = data.brain;
-                    _data.fromId = data.id;
+                case EChannelBrainType.SENDER:
+                    _data.senderBrain = data.brain;
+                    _data.senderId = data.id;
                     break;
-                case EChannelBrainType.TO:
-                    _data.toBrain = data.brain;
-                    _data.toId = data.id;
+                case EChannelBrainType.RECEIVER:
+                    _data.receiverBrain = data.brain;
+                    _data.receiverId = data.id;
                     break;
             }
         }
