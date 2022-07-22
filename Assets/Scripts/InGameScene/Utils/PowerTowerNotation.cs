@@ -25,6 +25,7 @@ public class PowerTowerNotation
             _coeffArr[0] = number;
             return;
         }
+        _layer += 1;
 
         float power = Mathf.Floor(Mathf.Log10(Mathf.Abs(number)));
         float coeff = number / Mathf.Pow(10, power);
@@ -36,6 +37,7 @@ public class PowerTowerNotation
             _coeffArr[1] = power;
             return;
         }
+        _layer += 1;
 
         number = power;
         power = Mathf.Floor(Mathf.Log10(number));
