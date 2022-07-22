@@ -20,7 +20,7 @@ public class PowerTowerNotation
 
     private void Convert(float number)
     {
-        if (Mathf.Abs(number) < 10f)
+        if (Mathf.Abs(number) < _coeffMax)
         {
             _coeffArr[0] = number;
             return;
@@ -31,7 +31,7 @@ public class PowerTowerNotation
 
         _coeffArr[0] = coeff;
 
-        if (Mathf.Abs(power) < 10f)
+        if (Mathf.Abs(power) < _coeffMax)
         {
             _coeffArr[1] = power;
             return;
@@ -47,29 +47,29 @@ public class PowerTowerNotation
 
     public PowerTowerNotation()
     {
-        Debug.Log(_coeffArr[0]);
-        Debug.Log(_coeffArr[1]);
-        Debug.Log(_coeffArr[2]);
+        
     }
 
     public PowerTowerNotation(float number)
     {
         Convert(number);
-        Debug.Log(_coeffArr[0]);
-        Debug.Log(_coeffArr[1]);
-        Debug.Log(_coeffArr[2]);
     }
 
     public PowerTowerNotation(int number)
     {
         Convert(number);
-        Debug.Log(_coeffArr[0]);
-        Debug.Log(_coeffArr[1]);
-        Debug.Log(_coeffArr[2]);
     }
 
     public override string ToString()
     {
-        return base.ToString();
+        if (_coeffArr[2] == 0f)
+        {
+            return (_coeffArr[0] * Mathf.Pow(10, _coeffArr[1])).ToString("N0");
+        }
+
+        string powerString = (_coeffArr[1] * Mathf.Pow(10, _coeffArr[2])).ToString("N0");
+        string coeffString = _coeffArr[0].ToString("N2");
+
+        return coeffString + "x10^" + powerString;
     }
 }
