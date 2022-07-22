@@ -8,7 +8,7 @@ public class Test : MonoBehaviour
     void Start()
     {
         PowerTowerNotation a = new PowerTowerNotation(3141592653589793238f);
-        Debug.Log(a);
+        Debug.Log(-a);
         Debug.Log(a.Layer);
     }
 
