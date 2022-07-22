@@ -74,4 +74,24 @@ public class PowerTowerNotation
 
         return coeffString + "x10^" + powerString;
     }
+
+    public PowerTowerNotation Copy()
+    {
+        PowerTowerNotation copiedNumber = new PowerTowerNotation();
+        copiedNumber._coeffArr[0] = _coeffArr[0];
+        copiedNumber._coeffArr[1] = _coeffArr[1];
+        copiedNumber._coeffArr[2] = _coeffArr[2];
+        copiedNumber._layer = _layer;
+
+        return copiedNumber;
+    }
+
+    public static PowerTowerNotation operator +(PowerTowerNotation a) => a;
+
+    public static PowerTowerNotation operator -(PowerTowerNotation a)
+    {
+        PowerTowerNotation result = a.Copy();
+        result._coeffArr[0] *= -1;
+        return result;
+    }
 }
