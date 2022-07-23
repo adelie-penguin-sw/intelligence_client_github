@@ -5,7 +5,6 @@ using UnityEngine;
 public class PowerTowerNotation
 {
     private static float _coeffMax = 10f;
-    private static float _coeffMin = -10f;
 
     private float[] _coeffArr = {0f, 0f, 0f};
     private int _layer = 1;
@@ -94,4 +93,75 @@ public class PowerTowerNotation
         result._coeffArr[0] *= -1;
         return result;
     }
+
+    private PowerTowerNotation Add(PowerTowerNotation other)
+    {
+        PowerTowerNotation result = new PowerTowerNotation();
+
+        float coeff = _coeffArr[0];
+        float power = Mathf.Round(_coeffArr[1] * Mathf.Pow(10, _coeffArr[2]));
+        float otherCoeff = other._coeffArr[0];
+        float otherPower = Mathf.Round(other._coeffArr[1] * Mathf.Pow(10, other._coeffArr[2]));
+
+        float powerDiff = Mathf.Abs(power - otherPower);
+        float resultPower;
+
+        if (power >= otherPower)
+        {
+            result._coeffArr[0] = coeff + otherCoeff / Mathf.Pow(10, powerDiff);
+            resultPower = power;
+        }
+        else
+        {
+            result._coeffArr[0] = otherCoeff + coeff / Mathf.Pow(10, powerDiff);
+            resultPower = otherPower;
+        }
+
+        if (Mathf.Abs(result._coeffArr[0]) >= _coeffMax)
+        {
+            result._coeffArr[0] /= 10f;
+            resultPower += 1f;
+        }
+
+        if (resultPower >= _coeffMax)
+        {
+            result._coeffArr[2] = Mathf.Floor(Mathf.Log10(resultPower));
+            result._coeffArr[1] = resultPower / Mathf.Pow(10, result._coeffArr[2]);
+        }
+        else
+        {
+            result._coeffArr[1] = resultPower;
+        }
+
+        if (result._coeffArr[1] >= 1f)
+        {
+            result._layer = 2;
+        }
+        if (result._coeffArr[2] >= 1f)
+        {
+            result._layer = 3;
+        }
+
+        return result;
+    }
+
+    public static PowerTowerNotation operator +(PowerTowerNotation a, PowerTowerNotation b) => a.Add(b);
+
+    public static PowerTowerNotation operator +(PowerTowerNotation a, float b) => a.Add(new PowerTowerNotation(b));
+
+    public static PowerTowerNotation operator +(PowerTowerNotation a, int b) => a.Add(new PowerTowerNotation(b));
+
+    public static PowerTowerNotation operator +(float a, PowerTowerNotation b) => (new PowerTowerNotation(a)).Add(b);
+
+    public static PowerTowerNotation operator +(int a, PowerTowerNotation b) => (new PowerTowerNotation(a)).Add(b);
+
+    public static PowerTowerNotation operator -(PowerTowerNotation a, PowerTowerNotation b) => a.Add(-b);
+
+    public static PowerTowerNotation operator -(PowerTowerNotation a, float b) => a.Add(-(new PowerTowerNotation(b)));
+
+    public static PowerTowerNotation operator -(PowerTowerNotation a, int b) => a.Add(-(new PowerTowerNotation(b)));
+
+    public static PowerTowerNotation operator -(float a, PowerTowerNotation b) => (new PowerTowerNotation(a)).Add(-b);
+
+    public static PowerTowerNotation operator -(int a, PowerTowerNotation b) => (new PowerTowerNotation(a)).Add(-b);
 }
