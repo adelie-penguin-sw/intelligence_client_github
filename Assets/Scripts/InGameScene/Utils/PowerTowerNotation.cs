@@ -454,4 +454,121 @@ public class PowerTowerNotation
     public static PowerTowerNotation operator ^(float a, PowerTowerNotation b) => (new PowerTowerNotation(a)) ^ b;
 
     public static PowerTowerNotation operator ^(int a, PowerTowerNotation b) => (new PowerTowerNotation(a)) ^ b;
+
+    /// <summary>
+    /// 두 파라미터의 모든 속성이 같은지에 대한 진리값을 반환합니다. 타입이 다른 경우 PowerTowerNotation으로 변환한 후 비교합니다.
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns>두 파라미터가 같은지에 대한 진리값</returns>
+    public static bool operator ==(PowerTowerNotation a, PowerTowerNotation b)
+    {
+        for (int i=0; i<3; i++)
+        {
+            if (a._coeffArr[i] != b._coeffArr[0])
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static bool operator ==(PowerTowerNotation a, float b) => a == (new PowerTowerNotation(b));
+
+    public static bool operator ==(PowerTowerNotation a, int b) => a == (new PowerTowerNotation(b));
+
+    public static bool operator ==(float a, PowerTowerNotation b) => (new PowerTowerNotation(a)) == b;
+
+    public static bool operator ==(int a, PowerTowerNotation b) => (new PowerTowerNotation(a)) == b;
+
+    /// <summary>
+    /// 두 파라미터의 속성 중 다른 부분이 있는지에 대한 진리값을 반환합니다. 타입이 다른 경우 PowerTowerNotation으로 변환한 후 비교합니다.
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns>두 파라미터가 다른지에 대한 진리값</returns>
+    public static bool operator !=(PowerTowerNotation a, PowerTowerNotation b) => !(a == b);
+
+    public static bool operator !=(PowerTowerNotation a, float b) => a != (new PowerTowerNotation(b));
+
+    public static bool operator !=(PowerTowerNotation a, int b) => a != (new PowerTowerNotation(b));
+
+    public static bool operator !=(float a, PowerTowerNotation b) => (new PowerTowerNotation(a)) != b;
+
+    public static bool operator !=(int a, PowerTowerNotation b) => (new PowerTowerNotation(a)) != b;
+
+    /// <summary>
+    /// 첫째 파라미터의 값이 둘째 파라미터의 값보다 큰지에 대한 진리값을 반환합니다. 타입이 다른 경우 PowerTowerNotation으로 변환한 후 비교합니다.
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns>첫째 파라미터의 값이 둘째 파라미터의 값보다 큰지에 대한 진리값</returns>
+    public static bool operator >(PowerTowerNotation a, PowerTowerNotation b)
+    {
+        for (int i = 2; i >= 0; i--)
+        {
+            if (a._coeffArr[i] > b._coeffArr[i])
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static bool operator >(PowerTowerNotation a, float b) => a > (new PowerTowerNotation(b));
+
+    public static bool operator >(PowerTowerNotation a, int b) => a > (new PowerTowerNotation(b));
+
+    public static bool operator >(float a, PowerTowerNotation b) => (new PowerTowerNotation(a)) > b;
+
+    public static bool operator >(int a, PowerTowerNotation b) => (new PowerTowerNotation(a)) > b;
+
+    /// <summary>
+    /// 첫째 파라미터의 값이 둘째 파라미터의 값보다 크거나 같은지에 대한 진리값을 반환합니다. 타입이 다른 경우 PowerTowerNotation으로 변환한 후 비교합니다.
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns>첫째 파라미터의 값이 둘째 파라미터의 값보다 크거나 같은지에 대한 진리값</returns>
+    public static bool operator >=(PowerTowerNotation a, PowerTowerNotation b) => (a > b) || (a == b);
+
+    public static bool operator >=(PowerTowerNotation a, float b) => a >= (new PowerTowerNotation(b));
+
+    public static bool operator >=(PowerTowerNotation a, int b) => a >= (new PowerTowerNotation(b));
+
+    public static bool operator >=(float a, PowerTowerNotation b) => (new PowerTowerNotation(a)) >= b;
+
+    public static bool operator >=(int a, PowerTowerNotation b) => (new PowerTowerNotation(a)) >= b;
+
+    /// <summary>
+    /// 첫째 파라미터의 값이 둘째 파라미터의 값보다 작거나 같은지에 대한 진리값을 반환합니다. 타입이 다른 경우 PowerTowerNotation으로 변환한 후 비교합니다.
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns>첫째 파라미터의 값이 둘째 파라미터의 값보다 작거나 같은지에 대한 진리값</returns>
+    public static bool operator <=(PowerTowerNotation a, PowerTowerNotation b) => !(a > b);
+
+    public static bool operator <=(PowerTowerNotation a, float b) => a <= (new PowerTowerNotation(b));
+
+    public static bool operator <=(PowerTowerNotation a, int b) => a <= (new PowerTowerNotation(b));
+
+    public static bool operator <=(float a, PowerTowerNotation b) => (new PowerTowerNotation(a)) <= b;
+
+    public static bool operator <=(int a, PowerTowerNotation b) => (new PowerTowerNotation(a)) <= b;
+
+    /// <summary>
+    /// 첫째 파라미터의 값이 둘째 파라미터의 값보다 작은지에 대한 진리값을 반환합니다. 타입이 다른 경우 PowerTowerNotation으로 변환한 후 비교합니다.
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns>첫째 파라미터의 값이 둘째 파라미터의 값보다 작은지에 대한 진리값</returns>
+    public static bool operator <(PowerTowerNotation a, PowerTowerNotation b) => !(a >= b);
+
+    public static bool operator <(PowerTowerNotation a, float b) => a < (new PowerTowerNotation(b));
+
+    public static bool operator <(PowerTowerNotation a, int b) => a < (new PowerTowerNotation(b));
+
+    public static bool operator <(float a, PowerTowerNotation b) => (new PowerTowerNotation(a)) < b;
+
+    public static bool operator <(int a, PowerTowerNotation b) => (new PowerTowerNotation(a)) < b;
 }
