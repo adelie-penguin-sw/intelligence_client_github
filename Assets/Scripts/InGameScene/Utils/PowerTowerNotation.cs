@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PowerTowerNotation
 {
@@ -251,7 +252,7 @@ public class PowerTowerNotation
     /// <summary>
     /// 현재 객체를 역수로 변환합니다.
     /// </summary>
-    public void Reciprocate()                   // Exception NOT Handled Yet
+    public void Reciprocate()
     {
         _coeffArr[1] *= -1f;
 
@@ -260,7 +261,15 @@ public class PowerTowerNotation
             return;
         }
 
-        _coeffArr[0] = 10f / _coeffArr[0];      // NOT ACCURATE !!!!!
+        try
+        {
+            _coeffArr[0] = 10f / _coeffArr[0];      // NOT ACCURATE !!!!!
+        }
+        catch (DivideByZeroException e)
+        {
+            Debug.Log(e.Message);
+            return;
+        }
         _coeffArr[1] -= 1f;
     }
 
@@ -390,7 +399,7 @@ public class PowerTowerNotation
             }
             else
             {
-                // Exception
+                throw new DivideByZeroException("Base and Exponent cannot be 0 at once");
             }
         }
 
@@ -422,7 +431,7 @@ public class PowerTowerNotation
     {
         if (a._coeffArr[0] == 0f && b._coeffArr[0] == 0f)
         {
-            // Exception
+            throw new DivideByZeroException("Base and Exponent cannot be 0 at once");
         }
 
         PowerTowerNotation result = new PowerTowerNotation();
@@ -436,6 +445,8 @@ public class PowerTowerNotation
             result._coeffArr[0] = 1f;
             return result;
         }
+
+        // Some Calculation ...
 
         return result;
     }
