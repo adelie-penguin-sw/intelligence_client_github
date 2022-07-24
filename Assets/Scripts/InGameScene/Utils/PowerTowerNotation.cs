@@ -312,4 +312,44 @@ public class PowerTowerNotation
         b.Reciprocate();
         return temp.Multiply(b);
     }
+
+    public static PowerTowerNotation operator ^(PowerTowerNotation a, float b)
+    {
+        PowerTowerNotation result = new PowerTowerNotation();
+
+        if (a._coeffArr[0] == 0f)
+        {
+            if (b != 0f)
+            {
+                return result;
+            }
+            else
+            {
+                // Exception
+            }
+        }
+
+        if (b == 0f)
+        {
+            result._coeffArr[0] = 1f;
+            return result;
+        }
+
+        float inputCoeff = a._coeffArr[0];
+        float inputPower = Mathf.Round(a._coeffArr[1] * Mathf.Pow(10, a._coeffArr[2]));
+
+        float resultPower = (Mathf.Log10(inputCoeff) + inputPower) * b;
+        float tempFrac = resultPower % 1;
+        float resultCoeff = Mathf.Pow(10, tempFrac);
+
+        result._coeffArr[0] = resultCoeff;
+
+        resultPower -= tempFrac;
+        result._coeffArr[2] = Mathf.Floor(Mathf.Log10(Mathf.Abs(resultPower)));
+        result._coeffArr[1] = resultPower / Mathf.Pow(10, result._coeffArr[2]);
+
+        return result;
+    }
+
+    public static PowerTowerNotation operator ^(PowerTowerNotation a, int b) => a ^ ((float)b);
 }
