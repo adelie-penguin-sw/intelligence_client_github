@@ -145,6 +145,11 @@ public class PowerTowerNotation
             resultPower = otherPower;
         }
 
+        if (result._coeffArr[0] == 0f)
+        {
+            return result;
+        }
+
         if (Mathf.Abs(result._coeffArr[0]) >= _coeffMax)
         {
             result._coeffArr[0] /= 10f;
@@ -157,9 +162,9 @@ public class PowerTowerNotation
             resultPower -= 1f;
         }
 
-        if (resultPower >= _coeffMax)
+        if (Mathf.Abs(resultPower) >= _coeffMax)
         {
-            result._coeffArr[2] = Mathf.Floor(Mathf.Log10(resultPower));
+            result._coeffArr[2] = Mathf.Floor(Mathf.Log10(Mathf.Abs(resultPower)));
             result._coeffArr[1] = resultPower / Mathf.Pow(10, result._coeffArr[2]);
         }
         else
@@ -199,6 +204,19 @@ public class PowerTowerNotation
 
     public static PowerTowerNotation operator -(int a, PowerTowerNotation b) => (new PowerTowerNotation(a)).Add(-b);
 
+    public void Reciprocate()                   // Exception NOT Handled Yet
+    {
+        _coeffArr[1] *= -1f;
+
+        if (_coeffArr[0] == 1f)
+        {
+            return;
+        }
+
+        _coeffArr[0] = 10f / _coeffArr[0];      // NOT ACCURATE !!!!!
+        _coeffArr[1] -= 1f;
+    }
+
     private PowerTowerNotation Multiply(PowerTowerNotation other)
     {
         PowerTowerNotation result = new PowerTowerNotation();
@@ -212,6 +230,11 @@ public class PowerTowerNotation
 
         result._coeffArr[0] = coeff * otherCoeff;
 
+        if (result._coeffArr[0] == 0f)
+        {
+            return result;
+        }
+
         if (Mathf.Abs(result._coeffArr[0]) >= _coeffMax)
         {
             result._coeffArr[0] /= 10f;
@@ -224,9 +247,9 @@ public class PowerTowerNotation
             resultPower -= 1f;
         }
 
-        if (resultPower >= _coeffMax)
+        if (Mathf.Abs(resultPower) >= _coeffMax)
         {
-            result._coeffArr[2] = Mathf.Floor(Mathf.Log10(resultPower));
+            result._coeffArr[2] = Mathf.Floor(Mathf.Log10(Mathf.Abs(resultPower)));
             result._coeffArr[1] = resultPower / Mathf.Pow(10, result._coeffArr[2]);
         }
         else
@@ -244,5 +267,49 @@ public class PowerTowerNotation
         }
 
         return result;
+    }
+
+    public static PowerTowerNotation operator *(PowerTowerNotation a, PowerTowerNotation b) => a.Multiply(b);
+
+    public static PowerTowerNotation operator *(PowerTowerNotation a, float b) => a.Multiply(new PowerTowerNotation(b));
+
+    public static PowerTowerNotation operator *(PowerTowerNotation a, int b) => a.Multiply(new PowerTowerNotation(b));
+
+    public static PowerTowerNotation operator *(float a, PowerTowerNotation b) => (new PowerTowerNotation(a)).Multiply(b);
+
+    public static PowerTowerNotation operator *(int a, PowerTowerNotation b) => (new PowerTowerNotation(a)).Multiply(b);
+
+    public static PowerTowerNotation operator /(PowerTowerNotation a, PowerTowerNotation b)
+    {
+        b.Reciprocate();
+        return a.Multiply(b);
+    }
+
+    public static PowerTowerNotation operator /(PowerTowerNotation a, float b)
+    {
+        PowerTowerNotation temp = new PowerTowerNotation(b);
+        temp.Reciprocate();
+        return a.Multiply(temp);
+    }
+
+    public static PowerTowerNotation operator /(PowerTowerNotation a, int b)
+    {
+        PowerTowerNotation temp = new PowerTowerNotation(b);
+        temp.Reciprocate();
+        return a.Multiply(temp);
+    }
+
+    public static PowerTowerNotation operator /(float a, PowerTowerNotation b)
+    {
+        PowerTowerNotation temp = new PowerTowerNotation(a);
+        b.Reciprocate();
+        return temp.Multiply(b);
+    }
+
+    public static PowerTowerNotation operator /(int a, PowerTowerNotation b)
+    {
+        PowerTowerNotation temp = new PowerTowerNotation(a);
+        b.Reciprocate();
+        return temp.Multiply(b);
     }
 }
