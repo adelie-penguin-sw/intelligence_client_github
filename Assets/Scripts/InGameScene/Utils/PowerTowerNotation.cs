@@ -9,6 +9,9 @@ public class PowerTowerNotation
     private float[] _coeffArr = {0f, 0f, 0f};
     private int _layer = 1;
 
+    /// <summary>
+    /// 레이어 값은 레이어링 표현식에서 사용되며, 본 클래스 내부적으로 직접 사용되지는 않고 수의 크기에 따라 값만 결정됩니다.
+    /// </summary>
     public int Layer
     {
         get
@@ -67,21 +70,36 @@ public class PowerTowerNotation
         }
     }
 
+    /// <summary>
+    /// 파라미터 없이 객체를 생성하면 모든 레이어의 계수가 0으로 초기화됩니다.
+    /// </summary>
     public PowerTowerNotation()
     {
         
     }
 
+    /// <summary>
+    /// 일반 숫자 타입을 파라미터로 받아 내부적으로 계수와 지수로 분해합니다.
+    /// </summary>
+    /// <param name="number"></param>
     public PowerTowerNotation(float number)
     {
         Convert(number);
     }
 
+    /// <summary>
+    /// 일반 숫자 타입을 파라미터로 받아 내부적으로 계수와 지수로 분해합니다.
+    /// </summary>
+    /// <param name="number"></param>
     public PowerTowerNotation(int number)
     {
         Convert(number);
     }
 
+    /// <summary>
+    /// 화면에 출력하는 형식을 결정하여 문자열화합니다.
+    /// </summary>
+    /// <returns>문자열화된 숫자표현식</returns>
     public override string ToString()
     {
         if (_coeffArr[2] == 0f)
@@ -102,6 +120,10 @@ public class PowerTowerNotation
         return coeffString + "x10^" + powerString;
     }
 
+    /// <summary>
+    /// 완전히 똑같은 값을 갖는 새로운 객체를 복사하여 반환합니다.
+    /// </summary>
+    /// <returns>동일한 값을 갖는 새 객체</returns>
     public PowerTowerNotation Copy()
     {
         PowerTowerNotation copiedNumber = new PowerTowerNotation();
@@ -113,8 +135,18 @@ public class PowerTowerNotation
         return copiedNumber;
     }
 
+    /// <summary>
+    /// 양의 부호에 해당하는 단항 연산으로, 자기 자신을 반환합니다.
+    /// </summary>
+    /// <param name="a"></param>
+    /// <returns>자기 자신을 그대로 반환</returns>
     public static PowerTowerNotation operator +(PowerTowerNotation a) => a;
 
+    /// <summary>
+    /// 음의 부호에 해당하는 단항 연산으로, 최하층 계수의 부호를 뒤집은 새 객체를 반환합니다.
+    /// </summary>
+    /// <param name="a"></param>
+    /// <returns>부호가 바뀐 새 객처</returns>
     public static PowerTowerNotation operator -(PowerTowerNotation a)
     {
         PowerTowerNotation result = a.Copy();
@@ -184,6 +216,12 @@ public class PowerTowerNotation
         return result;
     }
 
+    /// <summary>
+    /// 두 수의 합에 해당하는 새 객체를 반환합니다.
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns>합</returns>
     public static PowerTowerNotation operator +(PowerTowerNotation a, PowerTowerNotation b) => a.Add(b);
 
     public static PowerTowerNotation operator +(PowerTowerNotation a, float b) => a.Add(new PowerTowerNotation(b));
@@ -194,6 +232,12 @@ public class PowerTowerNotation
 
     public static PowerTowerNotation operator +(int a, PowerTowerNotation b) => (new PowerTowerNotation(a)).Add(b);
 
+    /// <summary>
+    /// 첫째 파라미터에서 둘째 파라미터를 뺀 값에 해당하는 새 객체를 반환합니다.
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns>차</returns>
     public static PowerTowerNotation operator -(PowerTowerNotation a, PowerTowerNotation b) => a.Add(-b);
 
     public static PowerTowerNotation operator -(PowerTowerNotation a, float b) => a.Add(-(new PowerTowerNotation(b)));
@@ -204,6 +248,9 @@ public class PowerTowerNotation
 
     public static PowerTowerNotation operator -(int a, PowerTowerNotation b) => (new PowerTowerNotation(a)).Add(-b);
 
+    /// <summary>
+    /// 현재 객체를 역수로 변환합니다.
+    /// </summary>
     public void Reciprocate()                   // Exception NOT Handled Yet
     {
         _coeffArr[1] *= -1f;
@@ -269,6 +316,12 @@ public class PowerTowerNotation
         return result;
     }
 
+    /// <summary>
+    /// 두 수의 곱에 해당하는 새 객체를 반환합니다.
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns>곱</returns>
     public static PowerTowerNotation operator *(PowerTowerNotation a, PowerTowerNotation b) => a.Multiply(b);
 
     public static PowerTowerNotation operator *(PowerTowerNotation a, float b) => a.Multiply(new PowerTowerNotation(b));
@@ -279,6 +332,12 @@ public class PowerTowerNotation
 
     public static PowerTowerNotation operator *(int a, PowerTowerNotation b) => (new PowerTowerNotation(a)).Multiply(b);
 
+    /// <summary>
+    /// 첫째 파라미터를 둘째 파라미터로 나눈 값에 해당하는 새 객체를 반환합니다.
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns>몫</returns>
     public static PowerTowerNotation operator /(PowerTowerNotation a, PowerTowerNotation b)
     {
         b.Reciprocate();
@@ -313,6 +372,12 @@ public class PowerTowerNotation
         return temp.Multiply(b);
     }
 
+    /// <summary>
+    /// 첫째 파라미터를 밑수, 둘째 파라미터를 지수로 두는 지수 연산식의 계산값에 해당하는 새 객체를 반환합니다.
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns>지수 연산값</returns>
     public static PowerTowerNotation operator ^(PowerTowerNotation a, float b)
     {
         PowerTowerNotation result = new PowerTowerNotation();
