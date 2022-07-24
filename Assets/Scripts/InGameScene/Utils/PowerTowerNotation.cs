@@ -17,33 +17,54 @@ public class PowerTowerNotation
         }
     }
 
+    struct CoeffAndPower
+    {
+        public float coeff;
+        public float power;
+    }
+
+    private CoeffAndPower Decompose(float number)
+    {
+        CoeffAndPower cap = new CoeffAndPower();
+
+        if (number == 0f)
+        {
+            cap.coeff = 0f;
+            cap.power = 0f;
+            return cap;
+        }
+
+        cap.power = Mathf.Floor(Mathf.Log10(Mathf.Abs(number)));
+        cap.coeff = number / Mathf.Pow(10, cap.power);
+
+        return cap;
+    }
+
     private void Convert(float number)
     {
-        if (Mathf.Abs(number) < _coeffMax)
+        CoeffAndPower cap = Decompose(number);
+        _coeffArr[0] = cap.coeff;
+
+        float tmpPower = cap.power;
+        if (tmpPower == 0f)
         {
-            _coeffArr[0] = number;
+            _layer = 1;
             return;
         }
-        _layer += 1;
-
-        float power = Mathf.Floor(Mathf.Log10(Mathf.Abs(number)));
-        float coeff = number / Mathf.Pow(10, power);
-
-        _coeffArr[0] = coeff;
-
-        if (Mathf.Abs(power) < _coeffMax)
+        else if (Mathf.Abs(tmpPower) < _coeffMax)
         {
-            _coeffArr[1] = power;
+            _layer = 2;
+            _coeffArr[1] = tmpPower;
             return;
         }
-        _layer += 1;
-
-        number = power;
-        power = Mathf.Floor(Mathf.Log10(number));
-        coeff = number / Mathf.Pow(10, power);
-
-        _coeffArr[1] = coeff;
-        _coeffArr[2] = power;
+        else
+        {
+            _layer = 3;
+            cap = Decompose(tmpPower);
+            _coeffArr[1] = cap.coeff;
+            _coeffArr[2] = cap.power;
+            return;
+        }
     }
 
     public PowerTowerNotation()
@@ -65,7 +86,14 @@ public class PowerTowerNotation
     {
         if (_coeffArr[2] == 0f)
         {
-            return (_coeffArr[0] * Mathf.Pow(10, _coeffArr[1])).ToString("N0");
+            if (_coeffArr[1] >= 0f)
+            {
+                return (_coeffArr[0] * Mathf.Pow(10, _coeffArr[1])).ToString("N0");
+            }
+            else
+            {
+                return (_coeffArr[0] * Mathf.Pow(10, _coeffArr[1])).ToString("N" + (-_coeffArr[1]).ToString("N0"));
+            }
         }
 
         string powerString = (_coeffArr[1] * Mathf.Pow(10, _coeffArr[2])).ToString("N0");
@@ -123,6 +151,12 @@ public class PowerTowerNotation
             resultPower += 1f;
         }
 
+        while (Mathf.Abs(result._coeffArr[0]) < 1f)
+        {
+            result._coeffArr[0] *= 10f;
+            resultPower -= 1f;
+        }
+
         if (resultPower >= _coeffMax)
         {
             result._coeffArr[2] = Mathf.Floor(Mathf.Log10(resultPower));
@@ -164,4 +198,51 @@ public class PowerTowerNotation
     public static PowerTowerNotation operator -(float a, PowerTowerNotation b) => (new PowerTowerNotation(a)).Add(-b);
 
     public static PowerTowerNotation operator -(int a, PowerTowerNotation b) => (new PowerTowerNotation(a)).Add(-b);
+
+    private PowerTowerNotation Multiply(PowerTowerNotation other)
+    {
+        PowerTowerNotation result = new PowerTowerNotation();
+
+        float coeff = _coeffArr[0];
+        float power = Mathf.Round(_coeffArr[1] * Mathf.Pow(10, _coeffArr[2]));
+        float otherCoeff = other._coeffArr[0];
+        float otherPower = Mathf.Round(other._coeffArr[1] * Mathf.Pow(10, other._coeffArr[2]));
+
+        float resultPower = power + otherPower;
+
+        result._coeffArr[0] = coeff * otherCoeff;
+
+        if (Mathf.Abs(result._coeffArr[0]) >= _coeffMax)
+        {
+            result._coeffArr[0] /= 10f;
+            resultPower += 1f;
+        }
+
+        while (Mathf.Abs(result._coeffArr[0]) < 1f)
+        {
+            result._coeffArr[0] *= 10f;
+            resultPower -= 1f;
+        }
+
+        if (resultPower >= _coeffMax)
+        {
+            result._coeffArr[2] = Mathf.Floor(Mathf.Log10(resultPower));
+            result._coeffArr[1] = resultPower / Mathf.Pow(10, result._coeffArr[2]);
+        }
+        else
+        {
+            result._coeffArr[1] = resultPower;
+        }
+
+        if (result._coeffArr[1] >= 1f)
+        {
+            result._layer = 2;
+        }
+        if (result._coeffArr[2] >= 1f)
+        {
+            result._layer = 3;
+        }
+
+        return result;
+    }
 }
