@@ -243,7 +243,7 @@ namespace MainTab
                 _controller = controller;
                 _tempBrain = PoolManager.Instance.GrabPrefabs(EPrefabsType.BRAIN, "Brain", controller._view.transform)
                             .GetComponent<Brain>();
-                _tempBrain.Init(EBrainType.GUIDEBRAIN);
+                _tempBrain.Init(new BrainData(-1,EBrainType.GUIDEBRAIN));
             }
 
             public void OnEnter()
