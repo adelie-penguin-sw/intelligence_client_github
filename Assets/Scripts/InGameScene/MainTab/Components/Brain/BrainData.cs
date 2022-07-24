@@ -27,6 +27,25 @@ namespace MainTab
         /// </summary>
         public EBrainType brainType = EBrainType.MAINBRAIN;
 
+
+        public BrainData()
+        {
+        }
+
+        public BrainData(int id, EBrainType brainType)
+        {
+            this.id = id;
+            this.intellect = 1;
+            this.brainType = brainType;
+            this.standByIntellect = 0;
+        }
+        public BrainData(int id, double intellect, EBrainType brainType)
+        {
+            this.id = id;
+            this.intellect = intellect;
+            this.brainType = brainType;
+            this.standByIntellect = 0;
+        }
     }
 
     /// <summary>

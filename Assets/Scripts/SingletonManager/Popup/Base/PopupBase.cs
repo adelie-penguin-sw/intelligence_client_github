@@ -47,7 +47,7 @@ public class PopupBase : MonoBehaviour
         }
         gameObject.GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);
         gameObject.GetComponent<RectTransform>().offsetMax = new Vector2(0, 0);
-        foreach(var closeBtn in _closeBtn)
+        foreach (var closeBtn in _closeBtn)
         {
             closeBtn.onClick.AddListener(Dispose);
         }
@@ -55,7 +55,7 @@ public class PopupBase : MonoBehaviour
 
     public virtual void AdvanceTime(float dt_sec)
     {
-        
+
     }
 
     public virtual void Dispose()
@@ -88,13 +88,4 @@ public class PopupBase : MonoBehaviour
         }
         PoolManager.Instance.DespawnObject(_prefabType, gameObject);
     }
-}
-
-public enum EPopupType
-{
-    Normal, 
-    Alert, 
-    DestroyOnClick, 
-    CursorFollower, 
-    FullScreen, 
 }
