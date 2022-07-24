@@ -7,9 +7,8 @@ public class Test : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        PowerTowerNotation a = new PowerTowerNotation(300000000000000000f);
-        PowerTowerNotation b = a.Copy();
-        Debug.Log(a * b);
+        PowerTowerNotation a = new PowerTowerNotation(5300000000f);
+        Debug.Log(a ^ 10);
     }
 
     // Update is called once per frame
