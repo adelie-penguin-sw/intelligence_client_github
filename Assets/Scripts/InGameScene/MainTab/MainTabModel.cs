@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Sirenix.OdinInspector;
+
 namespace MainTab
 {
     /// <summary>
@@ -11,55 +13,20 @@ namespace MainTab
     public class MainTabModel
     {
         #region Camera
-        [Header("*Camera*")]
-        [SerializeField]
-        private Vector3 _curMousePos;
-        public Vector3 CurMousePos
-        {
-            get
-            {
-                return _curMousePos;
-            }
-            set
-            {
-                _curMousePos = value;
-            }
-        }
+        [BoxGroup("Camera")]
+        [SerializeField] private Vector3 _curMousePos;
+        public Vector3 CurMousePos { get; set; }
 
-        [SerializeField]
-        private Vector3 _prevMousePos;
-        public Vector3 PrevMousePos
-        {
-            get
-            {
-                return _prevMousePos;
-            }
-            set
-            {
-                _prevMousePos = value;
-            }
-        }
+        [BoxGroup("Camera")]
+        [SerializeField] private Vector3 _prevMousePos;
+        public Vector3 PrevMousePos { get; set; }
 
-        public Vector3 CameraMoveDelta
-        {
-            get
-            {
-                return _prevMousePos - _curMousePos;
-            }
-        }
+        [BoxGroup("Camera")]
+        [SerializeField] private float _dragSpeed = 0.003f;
+        public float DragSpeed { get; }
 
-        [SerializeField]
-        private float _dragSpeed = 0.003f;
-        public float DragSpeed
-        {
-            get
-            {
-                return _dragSpeed;
-            }
-        }
-
-        [SerializeField]
-        private Camera _mainCamera;
+        [BoxGroup("Camera")]
+        [SerializeField] private Camera _mainCamera;
         public Camera MainCamera
         {
             get
@@ -70,20 +37,20 @@ namespace MainTab
             }
         }
 
-        [SerializeField]
-        private float _minSize = 1;
-        [SerializeField]
-        private float _maxSize = 20;
-        [SerializeField]
-        private float _resizeSpeedScale = 2;
-        [SerializeField]
-        private float _curCameraSize = 5;
+        [BoxGroup("Camera")]
+        [SerializeField] private float _minSize = 1;
+
+        [BoxGroup("Camera")]
+        [SerializeField] private float _maxSize = 20;
+
+        [BoxGroup("Camera")]
+        [SerializeField] private float _resizeSpeedScale = 2;
+
+        [BoxGroup("Camera")]
+        [SerializeField] private float _curCameraSize = 5;
         public float CurCameraSize
         {
-            get
-            {
-                return _curCameraSize;
-            }
+            get { return _curCameraSize; }
             set
             {
                 _curCameraSize *= Mathf.Pow(_resizeSpeedScale, -value);
@@ -91,36 +58,37 @@ namespace MainTab
                 Camera.main.orthographicSize = _curCameraSize;
             }
         }
+
+        public Vector3 CameraMoveDelta
+        {
+            get { return _prevMousePos - _curMousePos; }
+        }
+
         #endregion
 
         #region Behavior
-        [Header("*Behavior*")]
-        [SerializeField]
-        private float _waitBrainClickTime = 0.5f;
+        [BoxGroup("Behavior")]
+        [SerializeField] private float _waitBrainClickTime = 0.5f;
+
         public float WaitBrainClickTime
         {
-            get
-            {
-                return _waitBrainClickTime;
-            }
+            get { return _waitBrainClickTime; }
         }
         #endregion
 
         #region Player Info
-        [Header("*Player Info*")]
-        [SerializeField]
-        private int _np = 0;
-        public int NP
-        {
+        [BoxGroup("Player Info")]
+        [SerializeField] private int _np = 0;
+        public int NP { get; set; }
+        #endregion
+
+        [BoxGroup("Brain Network")]
+        [SerializeField] private BrainNetwork _brainNetwork = new BrainNetwork();
+        public BrainNetwork BrainNetwork {
             get
             {
-                return _np;
-            }
-            set
-            {
-                _np = value;
+                return _brainNetwork;
             }
         }
-        #endregion
     }
 }
