@@ -217,7 +217,7 @@ public class PowerTowerNotation
     }
 
     /// <summary>
-    /// 두 수의 합에 해당하는 새 객체를 반환합니다.
+    /// 두 수의 합에 해당하는 새 객체를 반환합니다. PowerTowerNotation 타입을 리턴합니다.
     /// </summary>
     /// <param name="a"></param>
     /// <param name="b"></param>
@@ -233,7 +233,7 @@ public class PowerTowerNotation
     public static PowerTowerNotation operator +(int a, PowerTowerNotation b) => (new PowerTowerNotation(a)).Add(b);
 
     /// <summary>
-    /// 첫째 파라미터에서 둘째 파라미터를 뺀 값에 해당하는 새 객체를 반환합니다.
+    /// 첫째 파라미터에서 둘째 파라미터를 뺀 값에 해당하는 새 객체를 반환합니다. PowerTowerNotation 타입을 리턴합니다.
     /// </summary>
     /// <param name="a"></param>
     /// <param name="b"></param>
@@ -317,7 +317,7 @@ public class PowerTowerNotation
     }
 
     /// <summary>
-    /// 두 수의 곱에 해당하는 새 객체를 반환합니다.
+    /// 두 수의 곱에 해당하는 새 객체를 반환합니다. PowerTowerNotation 타입을 리턴합니다.
     /// </summary>
     /// <param name="a"></param>
     /// <param name="b"></param>
@@ -333,7 +333,7 @@ public class PowerTowerNotation
     public static PowerTowerNotation operator *(int a, PowerTowerNotation b) => (new PowerTowerNotation(a)).Multiply(b);
 
     /// <summary>
-    /// 첫째 파라미터를 둘째 파라미터로 나눈 값에 해당하는 새 객체를 반환합니다.
+    /// 첫째 파라미터를 둘째 파라미터로 나눈 값에 해당하는 새 객체를 반환합니다. PowerTowerNotation 타입을 리턴합니다.
     /// </summary>
     /// <param name="a"></param>
     /// <param name="b"></param>
@@ -373,7 +373,7 @@ public class PowerTowerNotation
     }
 
     /// <summary>
-    /// 첫째 파라미터를 밑수, 둘째 파라미터를 지수로 두는 지수 연산식의 계산값에 해당하는 새 객체를 반환합니다.
+    /// 첫째 파라미터를 밑수, 둘째 파라미터를 지수로 두는 지수 연산식의 계산값에 해당하는 새 객체를 반환합니다. PowerTowerNotation 타입을 리턴합니다.
     /// </summary>
     /// <param name="a"></param>
     /// <param name="b"></param>
@@ -417,4 +417,30 @@ public class PowerTowerNotation
     }
 
     public static PowerTowerNotation operator ^(PowerTowerNotation a, int b) => a ^ ((float)b);
+
+    public static PowerTowerNotation operator ^(PowerTowerNotation a, PowerTowerNotation b)
+    {
+        if (a._coeffArr[0] == 0f && b._coeffArr[0] == 0f)
+        {
+            // Exception
+        }
+
+        PowerTowerNotation result = new PowerTowerNotation();
+
+        if (a._coeffArr[0] == 0f)
+        {
+            return result;
+        }
+        if (b._coeffArr[0] == 0f)
+        {
+            result._coeffArr[0] = 1f;
+            return result;
+        }
+
+        return result;
+    }
+
+    public static PowerTowerNotation operator ^(float a, PowerTowerNotation b) => (new PowerTowerNotation(a)) ^ b;
+
+    public static PowerTowerNotation operator ^(int a, PowerTowerNotation b) => (new PowerTowerNotation(a)) ^ b;
 }
