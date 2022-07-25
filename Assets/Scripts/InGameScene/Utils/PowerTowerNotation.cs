@@ -27,7 +27,7 @@ public class PowerTowerNotation
         public float power;
     }
 
-    private CoeffAndPower Decompose(float number)
+    private static CoeffAndPower Decompose(float number)
     {
         CoeffAndPower cap = new CoeffAndPower();
 
@@ -446,7 +446,34 @@ public class PowerTowerNotation
             return result;
         }
 
-        // Some Calculation ...
+        float aCoeff = a._coeffArr[0];
+        float aPower = Mathf.Round(a._coeffArr[1] * Mathf.Pow(10, a._coeffArr[2]));
+        float bCoeff = b._coeffArr[0];
+        float bPower = Mathf.Round(b._coeffArr[1] * Mathf.Pow(10, b._coeffArr[2]));
+
+        if (aCoeff == 1f || bPower >= 10f)
+        {
+            result._coeffArr[0] = 1f;
+
+            CoeffAndPower cap = Decompose(aPower * bCoeff);
+            result._coeffArr[1] = cap.coeff;
+            bPower += cap.power;
+            result._coeffArr[2] = bPower;
+        }
+        else
+        {
+            float powerOfCoeff = Mathf.Log10(aCoeff) * bCoeff * Mathf.Pow(10, bPower);
+            float tempFrac = powerOfCoeff % 1;
+            float additionalPower = Mathf.Floor(powerOfCoeff);
+
+            result._coeffArr[0] = Mathf.Pow(10, tempFrac);
+
+            additionalPower /= Mathf.Pow(10, bPower);
+            CoeffAndPower cap = Decompose(additionalPower + aPower * bCoeff);
+            result._coeffArr[1] = cap.coeff;
+            bPower += cap.power;
+            result._coeffArr[2] = bPower;
+        }
 
         return result;
     }
