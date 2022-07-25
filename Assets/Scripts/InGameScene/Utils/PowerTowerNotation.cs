@@ -8,18 +8,6 @@ public class PowerTowerNotation
     private static float _coeffMax = 10f;
 
     private float[] _coeffArr = {0f, 0f, 0f};
-    private int _layer = 1;
-
-    /// <summary>
-    /// 레이어 값은 레이어링 표현식에서 사용되며, 본 클래스 내부적으로 직접 사용되지는 않고 수의 크기에 따라 값만 결정됩니다.
-    /// </summary>
-    public int Layer
-    {
-        get
-        {
-            return _layer;
-        }
-    }
 
     struct CoeffAndPower
     {
@@ -52,18 +40,15 @@ public class PowerTowerNotation
         float tmpPower = cap.power;
         if (tmpPower == 0f)
         {
-            _layer = 1;
             return;
         }
         else if (Mathf.Abs(tmpPower) < _coeffMax)
         {
-            _layer = 2;
             _coeffArr[1] = tmpPower;
             return;
         }
         else
         {
-            _layer = 3;
             cap = Decompose(tmpPower);
             _coeffArr[1] = cap.coeff;
             _coeffArr[2] = cap.power;
@@ -131,7 +116,6 @@ public class PowerTowerNotation
         copiedNumber._coeffArr[0] = _coeffArr[0];
         copiedNumber._coeffArr[1] = _coeffArr[1];
         copiedNumber._coeffArr[2] = _coeffArr[2];
-        copiedNumber._layer = _layer;
 
         return copiedNumber;
     }
@@ -203,15 +187,6 @@ public class PowerTowerNotation
         else
         {
             result._coeffArr[1] = resultPower;
-        }
-
-        if (result._coeffArr[1] >= 1f)
-        {
-            result._layer = 2;
-        }
-        if (result._coeffArr[2] >= 1f)
-        {
-            result._layer = 3;
         }
 
         return result;
@@ -311,15 +286,6 @@ public class PowerTowerNotation
         else
         {
             result._coeffArr[1] = resultPower;
-        }
-
-        if (result._coeffArr[1] >= 1f)
-        {
-            result._layer = 2;
-        }
-        if (result._coeffArr[2] >= 1f)
-        {
-            result._layer = 3;
         }
 
         return result;
