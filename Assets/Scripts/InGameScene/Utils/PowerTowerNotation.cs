@@ -7,7 +7,7 @@ public class PowerTowerNotation
 {
     private static float _coeffMax = 10f;
 
-    private float[] _coeffArr = {0f, 0f, 0f};
+    public float[] _coeffArr = {0f, 0f, 0f};
 
     struct CoeffAndPower
     {
