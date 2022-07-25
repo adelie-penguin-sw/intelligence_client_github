@@ -7,9 +7,11 @@ public class Test : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        PowerTowerNotation a = new PowerTowerNotation(2237194820940239f);
-        PowerTowerNotation b = new PowerTowerNotation(40f);
-        Debug.Log(a ^ b);
+        UpArrowNotation a = new UpArrowNotation(1f, 1f, 1f, 123456789);
+        for (int i = 0; i < 9; i++)
+        {
+            Debug.Log(a._operatorLayerCount[i]);
+        }
     }
 
     // Update is called once per frame
