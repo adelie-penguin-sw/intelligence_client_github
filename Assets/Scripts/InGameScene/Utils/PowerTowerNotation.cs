@@ -564,4 +564,26 @@ public class PowerTowerNotation
     public static bool operator <(float a, PowerTowerNotation b) => (new PowerTowerNotation(a)) < b;
 
     public static bool operator <(int a, PowerTowerNotation b) => (new PowerTowerNotation(a)) < b;
+
+    /// <summary>
+    /// 최상위 계층의 수가 너무 커질 때 레이어를 추가하는 함수입니다. 이 객체를 속성으로 갖는 클래스에서 호출합니다.
+    /// </summary>
+    public void AscendLayer()
+    {
+        CoeffAndPower cap = Decompose(_coeffArr[2]);
+
+        _coeffArr[0] = _coeffArr[1];
+        _coeffArr[1] = cap.coeff;
+        _coeffArr[2] = cap.power;
+    }
+
+    /// <summary>
+    /// 최상위 계층의 수가 0이고 하위 레이어가 존재할 때 최상위 레이어 한 개를 삭제하는 함수입니다. 이 객체를 속성으로 갖는 클래스에서 호출합니다.
+    /// </summary>
+    public void DescendLayer()
+    {
+        _coeffArr[2] = Mathf.Round(_coeffArr[1] * Mathf.Pow(10, _coeffArr[2]));
+        _coeffArr[1] = _coeffArr[0];
+        _coeffArr[0] = 1f;
+    }
 }
