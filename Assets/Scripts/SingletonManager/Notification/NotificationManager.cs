@@ -260,4 +260,5 @@ public enum EDataParamKey
     VECTOR2,
     CLASS_BRAIN,
     CLASS_CHANNEL,
+    STRUCT_BRAINRELATION,
 }
