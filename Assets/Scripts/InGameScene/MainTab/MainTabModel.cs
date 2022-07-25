@@ -15,15 +15,15 @@ namespace MainTab
         #region Camera
         [BoxGroup("Camera")]
         [SerializeField] private Vector3 _curMousePos;
-        public Vector3 CurMousePos { get; set; }
+        public Vector3 CurMousePos { get { return _curMousePos; } set { _curMousePos = value; } }
 
         [BoxGroup("Camera")]
         [SerializeField] private Vector3 _prevMousePos;
-        public Vector3 PrevMousePos { get; set; }
+        public Vector3 PrevMousePos { get { return _prevMousePos; } set { _prevMousePos = value; } }
 
         [BoxGroup("Camera")]
         [SerializeField] private float _dragSpeed = 0.003f;
-        public float DragSpeed { get; }
+        public float DragSpeed { get { return _dragSpeed; } }
 
         [BoxGroup("Camera")]
         [SerializeField] private Camera _mainCamera;
@@ -79,7 +79,7 @@ namespace MainTab
         #region Player Info
         [BoxGroup("Player Info")]
         [SerializeField] private int _np = 0;
-        public int NP { get; set; }
+        public int NP { get { return _np; } set { _np = value; } }
         #endregion
 
         [BoxGroup("Brain Network")]

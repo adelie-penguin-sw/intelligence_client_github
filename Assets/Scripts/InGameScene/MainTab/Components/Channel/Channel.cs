@@ -8,58 +8,66 @@ namespace MainTab
     /// </summary>
     public class Channel : MonoBehaviour
     {
-        [SerializeField] private ChannelData _data;
         [SerializeField] private LineRenderer _lineRenderer;
         [SerializeField] private Material _material;
 
-        /// <summary>
-        /// 지능을 보내는 brain class
-        /// </summary>
-        public Brain SenderBrain
-        {
-            get
-            {
-                return _data.senderBrain;
-            }
-        }
+        private EChannelType _type;
+        private Transform _trSender;
+        private Transform _trReceiver;
 
         /// <summary>
-        /// 지능을 받는 brain class
+        /// 해당 채널 오브젝트 생성시 최초 1회 실행되어야 한다.<br />
+        /// sender와 receiver가 반드시 Init을 하며 초기화 될 필요는 없음.<br />
+        /// 허나 추후 Set()을 통해 설정해주어야 한다.<br />
         /// </summary>
-        public Brain ReceiverBrain
+        /// <param name="type">채널 타입</param>
+        /// <param name="sender">senderBrain Transform</param>
+        public void Init(EChannelType type, Transform sender)
         {
-            get
-            {
-                return _data.receiverBrain;
-            }
+            _type = type;
+            Set(sender, null);
         }
 
         /// <summary>
         /// 해당 채널 오브젝트 생성시 최초 1회 실행되어야 한다.<br />
-        /// fromBrain, toBrain이 반드시 Init을 하며 초기화 될 필요는 없음.<br />
-        /// 허나 추후 Set()을 통해 설정해주어야 한다.<br />
         /// </summary>
-        /// <param name="senderBrain">지능을 보내는 BrainData</param>
-        /// <param name="receiverBrain">지능을 받는 BrainData</param>
-        public void Init(BrainSendData senderBrain, BrainSendData receiverBrain)
+        /// <param name="type">채널 타입</param>
+        /// <param name="sender">senderBrain Transform</param>
+        /// <param name="receiver">receiverBrain Transform</param>
+        public void Init(EChannelType type, Transform sender, Transform receiver)
         {
-            //_material.SetFloat("width", 0.5f);
-            // _material.SetFloat("heigth", 0.5f);
-            Set(senderBrain, receiverBrain);
+            _type = type;
+            Set(_trSender, receiver);
         }
 
         /// <summary>
-        /// 채널 오브젝트 설정시 사용.<br />
-        /// 초기화/재설정용 으로 사용가능.<br />
+        /// sender와 receiver Transform 모두 초기화시 사용한다.
         /// </summary>
-        /// <param name="senderBrain">지능을 보내는 BrainData</param>
-        /// <param name="receiverBrain">지능을 받는 BrainData</param>
-        public void Set(BrainSendData senderBrain, BrainSendData receiverBrain)
+        /// <param name="sender">sender Brain</param>
+        /// <param name="receiver">receiver Brain</param>
+        public void Set(Transform sender, Transform receiver)
         {
-            SetBrainInfo(senderBrain, EChannelBrainType.SENDER);
-            SetBrainInfo(receiverBrain, EChannelBrainType.RECEIVER);
+            if (sender != null)
+            {
+                _trSender = sender;
+                _lineRenderer.SetPosition(0, (Vector2)_trSender.position);
+            }
+
+            if (receiver != null)
+            {
+                _trReceiver = receiver;
+                _lineRenderer.SetPosition(1, (Vector2)_trReceiver.position);
+            }
         }
 
+        /// <summary>
+        /// 이미 sender를 Init에서 설정해준 경우 다음 Set을 사용한다.
+        /// </summary>
+        /// <param name="receiver">receiver Transform</param>
+        public void Set(Transform receiver)
+        {
+            Set(null, receiver);
+        }
 
         /// <summary>
         /// Unity 기본 생명주기 Update를 대체해주는 함수<br />
@@ -68,47 +76,49 @@ namespace MainTab
         /// <param name="dt_sec">deltaTime</param>
         public void AdvanceTime(float dt_sec)
         {
-            if (_data.senderBrain != null)
+            if (_type != EChannelType.UNKNOWN)
             {
-                _lineRenderer.SetPosition(0, _data.senderBrain.transform.position);
-            }
-            if (_data.receiverBrain != null)
-            {
-                _lineRenderer.SetPosition(1, _data.receiverBrain.transform.position);
+                if (_trSender != null)
+                {
+                    _lineRenderer.SetPosition(0, (Vector2)_trSender.position);
+                }
+
+                if (_trReceiver != null)
+                {
+                    _lineRenderer.SetPosition(1, (Vector2)_trReceiver.position);
+                }
             }
         }
-
 
         /// <summary>
         /// 해당 오브젝트 Despawn시 실행시켜주어야 한다.
         /// </summary>
         public void Dispose()
         {
+            _trSender = null;
+            _trReceiver = null;
+            _type = EChannelType.UNKNOWN;
             PoolManager.Instance.DespawnObject(EPrefabsType.CHANNEL, this.gameObject);
         }
 
         /// <summary>
-        /// 그려지는 Line의 도착부분의 좌표를 설정해주는 메서드
+        /// 그려지는 Line의 도착부분의 좌표를 설정해주는 메서드<br />
+        /// 채널 타입이 TEMP일 때 작동한다.<br />
         /// </summary>
         /// <param name="toPos">도착 좌표</param>
         public void SetLineRenderToPos(Vector2 toPos)
         {
-            _lineRenderer.SetPosition(1, toPos);
-        }
-
-        private void SetBrainInfo(BrainSendData data, EChannelBrainType type)
-        {
-            switch (type)
+            if (_type == EChannelType.TEMP)
             {
-                case EChannelBrainType.SENDER:
-                    _data.senderBrain = data.brain;
-                    _data.senderId = data.id;
-                    break;
-                case EChannelBrainType.RECEIVER:
-                    _data.receiverBrain = data.brain;
-                    _data.receiverId = data.id;
-                    break;
+                _lineRenderer.SetPosition(1, toPos);
             }
         }
+    }
+
+    public enum EChannelType
+    {
+        UNKNOWN,
+        TEMP,
+        NORMAL,
     }
 }

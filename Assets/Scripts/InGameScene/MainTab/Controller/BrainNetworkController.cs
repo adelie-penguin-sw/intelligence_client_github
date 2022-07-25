@@ -53,11 +53,9 @@ namespace MainTab
                     AddBrain(brainPos);
                     break;
                 case ENotiMessage.CREATE_CHANNEL:
-                    Channel channel = (Channel)noti.data[EDataParamKey.CLASS_CHANNEL];
-                    //if (channel != null)
-                    //{
-                    //    ReservationAddChannel(channel);
-                    //}
+                    BrainRelation relation = (BrainRelation)noti.data[EDataParamKey.STRUCT_BRAINRELATION];
+                    if(!AddChannel(relation))
+                        Debug.LogError("채널 추가 실패!");
                     break;
                 case ENotiMessage.ONCLICK_SELL_BRAIN:
                     Brain sellBrain = (Brain)noti.data[EDataParamKey.CLASS_BRAIN];
@@ -77,17 +75,16 @@ namespace MainTab
             Brain brain = go.GetComponent<Brain>();
             brain.Init(new BrainData(_tempBrainID++, EBrainType.NORMALBRAIN));
 
-            _app.MainTabModel.BrainNetwork.AddBrain(brain);
+            _brainNetwork.AddBrain(brain);
         }
 
-        /// <summary>
-        /// Channel 생성 예약 메서드
-        /// </summary>
-        /// <param name="channel">생성될 채널의 class</param>
-        private void ReservationAddChannel(Channel channel)
+        private bool AddChannel(BrainRelation relation)
         {
-            //_reservationChannels.Add(channel);
+            if (!_brainNetwork.AddBrainRelation(relation))
+                return false;
+            return true;
         }
+
     }
 
 }
