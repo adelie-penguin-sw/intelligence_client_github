@@ -83,6 +83,35 @@ public class PowerTowerNotation
     }
 
     /// <summary>
+    /// 세 개의 실수를 입력으로 받아 이들을 각 레이어의 계수로 갖는 객체를 생성합니다. 세 입력의 절댓값은 10 이상이 될 수 없습니다.
+    /// 특정 파라미터가 0이면 이후의 모든 파라미터 또한 0이 됩니다.
+    /// </summary>
+    /// <param name="layer1Coeff"></param>
+    /// <param name="layer2Coeff"></param>
+    /// <param name="layer3Coeff"></param>
+    public PowerTowerNotation(float layer1Coeff, float layer2Coeff, float layer3Coeff)
+    {
+        if (Mathf.Abs(layer1Coeff) >= 10f || Mathf.Abs(layer2Coeff) >= 10f || Mathf.Abs(layer3Coeff) >= 10f)
+        {
+            throw new ArgumentOutOfRangeException("All three parameters must have values between -10 and 10.");
+        }
+
+        if (layer1Coeff == 0f)
+        {
+            layer2Coeff = 0f;
+            layer3Coeff = 0f;
+        }
+        if (layer2Coeff == 0f)
+        {
+            layer3Coeff = 0f;
+        }
+
+        _coeffArr[0] = layer1Coeff;
+        _coeffArr[1] = layer2Coeff;
+        _coeffArr[2] = layer3Coeff;
+    }
+
+    /// <summary>
     /// 화면에 출력하는 형식을 결정하여 문자열화합니다.
     /// </summary>
     /// <returns>문자열화된 숫자표현식</returns>
