@@ -297,6 +297,7 @@ namespace MainTab
             private BehaviorController _controller;
             private Channel _channel;
             private Brain _currentEnterBrain;
+            private Brain _currentSenderBrain;
             public void Init(BehaviorController controller)
             {
                 _controller = controller;
@@ -305,6 +306,7 @@ namespace MainTab
             public void OnEnter()
             {
                 Debug.Log("CreateChannel!");
+                _currentSenderBrain = _controller._recentSelectBrain;
                 CreateTempChannel();
             }
 
@@ -347,21 +349,8 @@ namespace MainTab
             private void CreateTempChannel()
             {
                 _channel = PoolManager.Instance.GrabPrefabs(EPrefabsType.CHANNEL, "Channel", _controller._view.transform).GetComponent<Channel>();
-                _channel.Init(CreateBrainSendData(-1, _controller._recentSelectBrain), CreateBrainSendData(-1, null));
-            }
-
-            /// <summary>
-            /// SendData로 변환시켜 return 해주는 메서드
-            /// </summary>
-            /// <param name="id">브레인 아이디</param>
-            /// <param name="brain">브레인 클래스</param>
-            /// <returns>BrainSendData 생성</returns>
-            private BrainSendData CreateBrainSendData(int id,Brain brain)
-            {
-                BrainSendData data;
-                data.id = id;
-                data.brain = brain;
-                return data;
+                _channel.Init(EChannelType.TEMP, _currentSenderBrain.transform);
+                //_channel.Init(CreateBrainSendData(-1, _controller._recentSelectBrain), CreateBrainSendData(-1, null));
             }
 
             /// <summary>
@@ -370,16 +359,16 @@ namespace MainTab
             /// </summary>
             private void CreateChannel()
             {
-                if (_currentEnterBrain != null && _channel.SenderBrain != _currentEnterBrain)
+                _channel.Dispose();
+                if (_currentEnterBrain == null || _currentSenderBrain.Type == EBrainType.MAINBRAIN)
+                    return;
+
+                if (_currentSenderBrain != _currentEnterBrain)
                 {
-                    _channel.Set(CreateBrainSendData(-1, _channel.SenderBrain), CreateBrainSendData(-1, _currentEnterBrain));
                     Hashtable sendData = new Hashtable();
-                    sendData.Add(EDataParamKey.CLASS_CHANNEL, _channel);
+                    BrainRelation relation = new BrainRelation( _currentSenderBrain.ID, _currentEnterBrain.ID );
+                    sendData.Add(EDataParamKey.STRUCT_BRAINRELATION, relation);
                     NotificationManager.Instance.PostNotification(ENotiMessage.CREATE_CHANNEL, sendData);
-                }
-                else
-                {
-                    _channel.Dispose();
                 }
             }
         }
