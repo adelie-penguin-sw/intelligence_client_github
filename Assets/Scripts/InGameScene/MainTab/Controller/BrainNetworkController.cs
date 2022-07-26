@@ -59,6 +59,9 @@ namespace MainTab
                     break;
                 case ENotiMessage.ONCLICK_SELL_BRAIN:
                     Brain sellBrain = (Brain)noti.data[EDataParamKey.CLASS_BRAIN];
+                    RemoveBrain(sellBrain);
+
+
                     break;
             }
         }
@@ -85,6 +88,11 @@ namespace MainTab
             return true;
         }
 
+        private void RemoveBrain(Brain brain)
+        {
+            _app.MainTabModel.NP += _brainNetwork.RemoveBrain(brain); 
+            _app.MainTabView.UI.SetNPText(_app.MainTabModel.NP);
+        }
     }
 
 }
