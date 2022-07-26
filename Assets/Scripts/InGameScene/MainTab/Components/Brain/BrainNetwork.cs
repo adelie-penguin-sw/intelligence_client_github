@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
@@ -11,20 +11,20 @@ namespace MainTab
         private Transform _brainLayer;
 
         [ShowInInspector] private Dictionary<int, Brain> _brainNetWork = new Dictionary<int, Brain>();
-        private List<Brain> _removeList = new List<Brain>();
-        private List<Brain> _addList = new List<Brain>();
+        [SerializeField] private List<Brain> _removeList = new List<Brain>();
+        [SerializeField] private List<Brain> _addList = new List<Brain>();
 
         [SerializeField] private List<Channel> _channelList = new List<Channel>();
         public void Init(Transform brainLayer)
         {
             _brainLayer = brainLayer;
-            //¿©±â¼­ ÃÖÃÊ ºê·¹ÀÎ µ¥ÀÌÅÍ ¹Ş¾Æ¿Í¼­ ÃÊ±âÈ­ ÇØÁÖ¸é µÉµí.
-            //¸¸¾à ±âÁ¸¿¡ »ı¼ºµÈ ºê·¹ÀÎÀÌ Á¸ÀçÇÒ °æ¿ì -> ex ) ¼­¹ö µ¥ÀÌÅÍ¸¦ ¹Ş¾Æ¿Â ÈÄ
+            //ì—¬ê¸°ì„œ ìµœì´ˆ ë¸Œë ˆì¸ ë°ì´í„° ë°›ì•„ì™€ì„œ ì´ˆê¸°í™” í•´ì£¼ë©´ ë ë“¯.
+            //ë§Œì•½ ê¸°ì¡´ì— ìƒì„±ëœ ë¸Œë ˆì¸ì´ ì¡´ì¬í•  ê²½ìš° -> ex ) ì„œë²„ ë°ì´í„°ë¥¼ ë°›ì•„ì˜¨ í›„
 
-            //Init½ÃÅ³ MainBrain µ¥ÀÌÅÍ ÀÓÀÇ »ı¼º
+            //Initì‹œí‚¬ MainBrain ë°ì´í„° ì„ì˜ ìƒì„±
             BrainData data = new BrainData(1, 1, EBrainType.MAINBRAIN);
 
-            //ÀÏ´Ü ÀÓ½Ã·Î ¹«Á¶°Ç MainBrain»ı¼ºµÇ°Ô ±¸Çö
+            //ì¼ë‹¨ ì„ì‹œë¡œ ë¬´ì¡°ê±´ MainBrainìƒì„±ë˜ê²Œ êµ¬í˜„
             Brain brain = PoolManager.Instance.GrabPrefabs(EPrefabsType.BRAIN, "Brain", _brainLayer)
                 .GetComponent<Brain>();
             brain.Init(data);
@@ -38,31 +38,39 @@ namespace MainTab
                 brain.Set();
             }
         }
-
-        private float _elapseTime = 0f;
+         private float _elapseTime = 0f;
         private const float _countingTime = 1f;
         public void AdvanceTime(float dt_sec)
         {
-            foreach (var brain in _removeList)
+            if (_removeList.Count > 0)
             {
-                if (_brainNetWork.ContainsKey(brain.ID))
-                    _brainNetWork.Remove(brain.ID);
-                else
-                    Debug.LogError("Á¸ÀçÇÏÁö ¾Ê´Â ºê·¹ÀÎÀ» Áö¿ì·Á°í ½Ãµµ");
+                foreach (var brain in _removeList)
+                {
+                    if (_brainNetWork.ContainsKey(brain.ID))
+                    {
+                        _brainNetWork.Remove(brain.ID);
+                        brain.Dispose();
+                    }
+                    else
+                    {
+                        Debug.LogError("ì¡´ì¬í•˜ì§€ ì•ŠëŠ” ë¸Œë ˆì¸ì„ ì§€ìš°ë ¤ê³  ì‹œë„");
+                    }
+                }
+                ClearAndDrawChannel();
+                _removeList.Clear();
             }
-            _removeList.Clear();
 
             foreach (var brain in _addList)
             {
                 if (_brainNetWork.ContainsKey(brain.ID))
-                    Debug.LogError("ÀÌ¹Ì Á¸ÀçÇÏ´Â ID¸¦ °¡Áø ºê·¹ÀÎÀ» Ãß°¡ ½Ãµµ");
+                    Debug.LogError("ì´ë¯¸ ì¡´ì¬í•˜ëŠ” IDë¥¼ ê°€ì§„ ë¸Œë ˆì¸ì„ ì¶”ê°€ ì‹œë„");
                 else
                     _brainNetWork.Add(brain.ID, brain);
             }
             _addList.Clear();
 
             _elapseTime += dt_sec;
-            if(_elapseTime>= _countingTime)
+            if (_elapseTime >= _countingTime)
             {
                 _elapseTime = 0f;
 
@@ -82,6 +90,7 @@ namespace MainTab
             }
         }
 
+       
         public void Dispose()
         {
             foreach (var channel in _channelList)
@@ -98,9 +107,9 @@ namespace MainTab
         }
 
         /// <summary>
-        /// ºê·¹ÀÎ Ãß°¡
+        /// ë¸Œë ˆì¸ ì¶”ê°€
         /// </summary>
-        /// <param name="brain">Ãß°¡ÇÒ ºê·¹ÀÎ</param>
+        /// <param name="brain">ì¶”ê°€í•  ë¸Œë ˆì¸</param>
         public void AddBrain(Brain brain)
         {
             _addList.Add(brain);
@@ -108,20 +117,63 @@ namespace MainTab
         }
 
         /// <summary>
-        /// ºê·¹ÀÎ »èÁ¦
+        /// ë¸Œë ˆì¸ ì‚­ì œ
         /// </summary>
-        /// <param name="brain">Á¦°ÅÇÒ ºê·¹ÀÎ</param>
-        public void RemoveBrain(Brain brain)
+        /// <param name="brain">ì§€ì›Œì§ˆ ë¸Œë ˆì¸</param>
+        /// <returns>ì–»ì„ NPë°˜í™˜</returns>
+        public int RemoveBrain(Brain brain)
         {
-            _removeList.Add(brain);
-            ClearAndDrawChannel();
+            //_removeList.Add(brain);
+            // ClearAndDrawChannel();
+            Queue<Brain> brainQ = new Queue<Brain>();
+            HashSet<int> visitID = new HashSet<int>();
+            brainQ.Enqueue(brain);
+            while (brainQ.Count > 0)
+            {
+                Brain curBrain = brainQ.Dequeue();
+                visitID.Add(curBrain.ID);
+                _removeList.Add(curBrain);
+
+                foreach (var receiver in curBrain.ReceiverIdList) //í˜„ì¬ ë¸Œë ˆì¸ì—ê²Œ ì§€ëŠ¥ì„ ë°›ëŠ” ë¸Œë ˆì¸ì—ê²Œ ë‚´ ë¸Œë ˆì¸ ì •ë³´ë¥¼ ì§€ì›Œì¤€ë‹¤
+                {
+                    if (_brainNetWork[receiver].SenderIdList.Contains(curBrain.ID))
+                        _brainNetWork[receiver].SenderIdList.Remove(curBrain.ID);
+                }
+
+                foreach (var sender in curBrain.SenderIdList) // í˜„ì¬ ë¸Œë ˆì¸ì—ê²Œ ì§€ëŠ¥ì„ ë³´ë‚´ëŠ” ë¸Œë ˆì¸ ì•„ì´ë”” ëª¨ìŒì„ ë¶ˆëŸ¬ì˜´
+                {
+                    if (!visitID.Contains(_brainNetWork[sender].ID)) // ë³´ë‚´ëŠ” ë¸Œë ˆì¸ì„ ì•„ì§ ë°©ë¬¸í•˜ì§€ ì•Šì€ ë¸Œë ˆì¸ì¸ ê²½ìš°
+                    {
+                        //ë³´ë‚´ëŠ” ë¸Œë ˆì¸ì´ í˜„ì¬ ë¸Œë ˆì¸ ì•„ì´ë””ë¥¼ ë¦¬ì‹œë¸Œë¡œ ê°€ì§€ê³ ìˆëŠ”ì§€ ë”ë¸”ì²´í¬
+                        if (_brainNetWork[sender].ReceiverIdList.Contains(curBrain.ID))
+                        {
+                            //ì¡´ì¬í•˜ë©´ receiverIdListì—ì„œ í˜„ì¬ ë¸Œë ˆì¸ idë¥¼ ì§€ì›Œì¤€ë‹¤.
+                            _brainNetWork[sender].ReceiverIdList.Remove(curBrain.ID);
+                        }
+
+                        //ì§€ìš°ê³  ë‚˜ì„œ ë³´ë‚´ëŠ” ë¸Œë ˆì¸ì´ ì „ì†¡ì—­í• ì„ í•˜ì§€ì•ŠëŠ” ê²½ìš°
+                        if (_brainNetWork[sender].ReceiverIdList.Count <= 0)
+                        {
+                            brainQ.Enqueue(_brainNetWork[sender]);
+                        }
+                    }
+                }
+            }
+
+            int returnNP = 0;
+            //ì§€ì›Œì§€ëŠ” ë¸Œë ˆì¸ì˜ ê²°ê³¼ì— ë”°ë¼ ì–»ëŠ” NP ì—…ë°ì´íŠ¸
+            foreach (var remove in _removeList)
+            {
+                returnNP += (int)remove.Intellect; //ì„ì‹œë¡œ 1:1ë¡œ ë°˜í™˜í•´ì¤€ë‹¤.
+            }
+            return returnNP;
         }
-     
+
         /// <summary>
-        /// ÇöÀç ºê·¹ÀÎ ³×Æ®¿öÅ©¿¡¼­ ÇØ´ç °ü°è¸¦ °¡Áö°í ÀÖÁö ¾ÊÀ» °æ¿ì ÇØ´ç °ü°è¸¦ Ãß°¡
+        /// í˜„ì¬ ë¸Œë ˆì¸ ë„¤íŠ¸ì›Œí¬ì—ì„œ í•´ë‹¹ ê´€ê³„ë¥¼ ê°€ì§€ê³  ìˆì§€ ì•Šì„ ê²½ìš° í•´ë‹¹ ê´€ê³„ë¥¼ ì¶”ê°€
         /// </summary>
-        /// <param name="relation">Ãß°¡ÇÒ</param>
-        /// <returns>Ãß°¡ ¼º°ø½Ã true, ½ÇÆĞ½Ã false</returns>
+        /// <param name="relation">ì¶”ê°€í• </param>
+        /// <returns>ì¶”ê°€ ì„±ê³µì‹œ true, ì‹¤íŒ¨ì‹œ false</returns>
         public bool AddBrainRelation(BrainRelation relation)
         {
             if (_brainNetWork[relation.receiverId].Type != EBrainType.MAINBRAIN)
@@ -132,18 +184,21 @@ namespace MainTab
                 }
             }
 
-            if( ! _brainNetWork[relation.receiverId].IsContainsSender(relation.senderId) &&
-                ! _brainNetWork[relation.senderId].IsContainsReceiver(relation.receiverId))
+            if (!_brainNetWork[relation.receiverId].IsContainsSender(relation.senderId) &&
+                !_brainNetWork[relation.senderId].IsContainsReceiver(relation.receiverId))
             {
                 _brainNetWork[relation.receiverId].AddSender(relation.senderId);
                 _brainNetWork[relation.senderId].AddReceiver(relation.receiverId);
                 _brainNetWork[relation.senderId].Distance = _brainNetWork[relation.receiverId].Distance + 1;
-                 ClearAndDrawChannel();
+                ClearAndDrawChannel();
                 return true;
             }
             return false;
         }
 
+        /// <summary>
+        /// í˜„ì¬ ì±„ë„ ë¦¬ìŠ¤íŠ¸ì— ìˆëŠ” ëª¨ë“  ì±„ë„ì„ ì§€ìš°ê³  ë‹¤ì‹œ ì¬ìƒì„±
+        /// </summary>
         private void ClearAndDrawChannel()
         {
             foreach (var channel in _channelList)
@@ -156,13 +211,9 @@ namespace MainTab
             {
                 foreach (var receiver in brain.ReceiverIdList)
                 {
-                    var channel = 
+                    var channel =
                         PoolManager.Instance.GrabPrefabs(EPrefabsType.CHANNEL, "Channel", _brainLayer).GetComponent<Channel>();
-                    Debug.LogError("=========================================");
-                    Debug.LogError(brain.ID);
-                    Debug.LogError(receiver);
-                    Debug.LogError("=========================================");
-                    channel.Init(EChannelType.NORMAL, _brainNetWork[brain.ID].transform, _brainNetWork[receiver].transform );
+                    channel.Init(EChannelType.NORMAL, brain.transform, _brainNetWork[receiver].transform);
                     _channelList.Add(channel);
                 }
             }
@@ -170,13 +221,13 @@ namespace MainTab
     }
 
     /// <summary>
-    /// ºê·¹ÀÎ °ü°è¸¦ Ç¥½ÃÇÏ±â À§ÇØ »ç¿ëÇÏ´Â ±¸Á¶Ã¼
+    /// ë¸Œë ˆì¸ ê´€ê³„ë¥¼ í‘œì‹œí•˜ê¸° ìœ„í•´ ì‚¬ìš©í•˜ëŠ” êµ¬ì¡°ì²´
     /// </summary>
     public struct BrainRelation
     {
         public int senderId;
         public int receiverId;
-        public BrainRelation(int sender,int receiver)
+        public BrainRelation(int sender, int receiver)
         {
             senderId = sender;
             receiverId = receiver;

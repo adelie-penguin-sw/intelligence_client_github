@@ -520,7 +520,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _closeBtn:
   - {fileID: 1888505951678991029}
-  - {fileID: 6004626915054514353}
   _prefabType: 0
   _sellBtn: {fileID: 6004626915054514353}
   _brain: {fileID: 0}
