@@ -46,4 +46,38 @@ public class UpArrowNotation
             operatorLayerCounts /= 10;
         }
     }
+
+    public override string ToString()
+    {
+        string resultString = _top3Layer.ToString();
+
+        int layerCountTest = 1;
+        for (int i=1; i<9; i++)
+        {
+            layerCountTest *= _operatorLayerCount[i];
+        }
+
+        if (_top3Layer._coeffArr[2] > 0f && (_operatorLayerCount[0] > 3 || layerCountTest > 1))
+        {
+            resultString = "(" + resultString + ")";
+        }
+
+        string operatorString = "^";
+        for (int i=0; i<_operatorLayerCount[0]-3; i++)
+        {
+            resultString = "10" + operatorString + resultString;
+        }
+
+        for (int i=1; i<9; i++)
+        {
+            operatorString += "^";
+
+            for (int j=0; j<_operatorLayerCount[i]-1; j++)
+            {
+                resultString = "10" + operatorString + resultString;
+            }
+        }
+
+        return resultString;
+    }
 }
