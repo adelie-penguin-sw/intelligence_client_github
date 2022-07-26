@@ -37,7 +37,7 @@ namespace MainTab
         public void Init(EChannelType type, Transform sender, Transform receiver)
         {
             _type = type;
-            Set(_trSender, receiver);
+            Set(sender, receiver);
         }
 
         /// <summary>
