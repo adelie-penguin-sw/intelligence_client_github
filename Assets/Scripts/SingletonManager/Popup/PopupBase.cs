@@ -77,8 +77,10 @@ public class PopupBase : MonoBehaviour
         }
         else
         {
-            this.Prev.Next = this.Next;
-            this.Next.Prev = this.Prev;
+            if (this.Next != null)
+                this.Prev.Next = this.Next;
+            if (this.Prev != null)
+                this.Next.Prev = this.Prev;
         }
         _next = null;
         _prev = null;
