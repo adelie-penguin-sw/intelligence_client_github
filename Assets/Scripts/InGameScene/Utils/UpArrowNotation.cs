@@ -80,4 +80,26 @@ public class UpArrowNotation
 
         return resultString;
     }
+
+    public UpArrowNotation Copy()
+    {
+        UpArrowNotation copiedNumber = new UpArrowNotation();
+
+        copiedNumber._top3Layer = _top3Layer.Copy();
+        for (int i=0; i<9; i++)
+        {
+            copiedNumber._operatorLayerCount[i] = _operatorLayerCount[i];
+        }
+
+        return copiedNumber;
+    }
+
+    public static UpArrowNotation operator +(UpArrowNotation a) => a;
+
+    public static UpArrowNotation operator -(UpArrowNotation a)
+    {
+        UpArrowNotation result = a.Copy();
+        result._top3Layer = -result._top3Layer;
+        return result;
+    }
 }
