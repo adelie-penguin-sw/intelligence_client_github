@@ -60,8 +60,6 @@ namespace MainTab
                 case ENotiMessage.ONCLICK_SELL_BRAIN:
                     Brain sellBrain = (Brain)noti.data[EDataParamKey.CLASS_BRAIN];
                     RemoveBrain(sellBrain);
-
-
                     break;
             }
         }

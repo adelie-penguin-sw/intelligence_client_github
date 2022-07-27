@@ -10,7 +10,7 @@ namespace InGame
     /// </summary>
     public class InGameUI : MonoBehaviour
     {
-        private BottomTab[] _bottomTabs;
+        [SerializeField]private BottomTab[] _bottomTabs;
         public void Init()
         {
             foreach(var tab in _bottomTabs)
