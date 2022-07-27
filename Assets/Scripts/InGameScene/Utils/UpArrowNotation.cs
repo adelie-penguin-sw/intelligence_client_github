@@ -94,6 +94,33 @@ public class UpArrowNotation
         return copiedNumber;
     }
 
+    private void CheckLayer()
+    {
+        if (_operatorLayerCount[0] < 4)
+        {
+            if (_top3Layer._coeffArr[1] != 0f)
+            {
+                _operatorLayerCount[0] = 2;
+            }
+            if (_top3Layer._coeffArr[2] != 0f)
+            {
+                _operatorLayerCount[0] = 3;
+            }
+        }
+
+        if (_top3Layer._coeffArr[2] >= 10f)
+        {
+            _top3Layer.AscendLayer();
+            _operatorLayerCount[0] += 1;
+        }
+
+        if (_top3Layer._coeffArr[2] < 1f && _operatorLayerCount[0] > 3)
+        {
+            _top3Layer.DescendLayer();
+            _operatorLayerCount[0] -= 1;
+        }
+    }
+
     public static UpArrowNotation operator +(UpArrowNotation a) => a;
 
     public static UpArrowNotation operator -(UpArrowNotation a)
@@ -101,6 +128,33 @@ public class UpArrowNotation
         UpArrowNotation result = a.Copy();
         result._top3Layer = -result._top3Layer;
         return result;
+    }
+
+    public void Add(UpArrowNotation other)
+    {
+        _top3Layer += other._top3Layer;
+        CheckLayer();
+    }
+
+    public void Sub(UpArrowNotation other)
+    {
+
+    }
+
+    public void Mul(UpArrowNotation other)
+    {
+        _top3Layer *= other._top3Layer;
+        CheckLayer();
+    }
+
+    public void Div(UpArrowNotation other)
+    {
+
+    }
+
+    public void Pow(UpArrowNotation other)
+    {
+
     }
 
     public static bool operator ==(UpArrowNotation a, UpArrowNotation b)
