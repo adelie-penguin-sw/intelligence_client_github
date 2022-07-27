@@ -102,4 +102,86 @@ public class UpArrowNotation
         result._top3Layer = -result._top3Layer;
         return result;
     }
+
+    public static bool operator ==(UpArrowNotation a, UpArrowNotation b)
+    {
+        for (int i=0; i<9; i++)
+        {
+            if (a._operatorLayerCount[i] != b._operatorLayerCount[i])
+            {
+                return false;
+            }
+        }
+
+        return a._top3Layer == b._top3Layer;
+    }
+
+    public static bool operator ==(UpArrowNotation a, float b) => a == (new UpArrowNotation(b));
+
+    public static bool operator ==(UpArrowNotation a, int b) => a == (new UpArrowNotation(b));
+
+    public static bool operator ==(float a, UpArrowNotation b) => (new UpArrowNotation(a)) == b;
+
+    public static bool operator ==(int a, UpArrowNotation b) => (new UpArrowNotation(a)) == b;
+
+    public static bool operator !=(UpArrowNotation a, UpArrowNotation b) => !(a == b);
+
+    public static bool operator !=(UpArrowNotation a, float b) => a != (new UpArrowNotation(b));
+
+    public static bool operator !=(UpArrowNotation a, int b) => a != (new UpArrowNotation(b));
+
+    public static bool operator !=(float a, UpArrowNotation b) => (new UpArrowNotation(a)) != b;
+
+    public static bool operator !=(int a, UpArrowNotation b) => (new UpArrowNotation(a)) != b;
+
+    public static bool operator >(UpArrowNotation a, UpArrowNotation b)
+    {
+        for (int i = 8; i > -1; i--)
+        {
+            if (a._operatorLayerCount[i] > b._operatorLayerCount[i])
+            {
+                return true;
+            }
+        }
+
+        return a._top3Layer > b._top3Layer;
+    }
+
+    public static bool operator >(UpArrowNotation a, float b) => a > (new UpArrowNotation(b));
+
+    public static bool operator >(UpArrowNotation a, int b) => a > (new UpArrowNotation(b));
+
+    public static bool operator >(float a, UpArrowNotation b) => (new UpArrowNotation(a)) > b;
+
+    public static bool operator >(int a, UpArrowNotation b) => (new UpArrowNotation(a)) > b;
+
+    public static bool operator <=(UpArrowNotation a, UpArrowNotation b) => !(a > b);
+
+    public static bool operator <=(UpArrowNotation a, float b) => a <= (new UpArrowNotation(b));
+
+    public static bool operator <=(UpArrowNotation a, int b) => a <= (new UpArrowNotation(b));
+
+    public static bool operator <=(float a, UpArrowNotation b) => (new UpArrowNotation(a)) <= b;
+
+    public static bool operator <=(int a, UpArrowNotation b) => (new UpArrowNotation(a)) <= b;
+
+    public static bool operator >=(UpArrowNotation a, UpArrowNotation b) => (a > b) || (a == b);
+
+    public static bool operator >=(UpArrowNotation a, float b) => a >= (new UpArrowNotation(b));
+
+    public static bool operator >=(UpArrowNotation a, int b) => a >= (new UpArrowNotation(b));
+
+    public static bool operator >=(float a, UpArrowNotation b) => (new UpArrowNotation(a)) >= b;
+
+    public static bool operator >=(int a, UpArrowNotation b) => (new UpArrowNotation(a)) >= b;
+
+    public static bool operator <(UpArrowNotation a, UpArrowNotation b) => !(a >= b);
+
+    public static bool operator <(UpArrowNotation a, float b) => a < (new UpArrowNotation(b));
+
+    public static bool operator <(UpArrowNotation a, int b) => a < (new UpArrowNotation(b));
+
+    public static bool operator <(float a, UpArrowNotation b) => (new UpArrowNotation(a)) < b;
+
+    public static bool operator <(int a, UpArrowNotation b) => (new UpArrowNotation(a)) < b;
 }
