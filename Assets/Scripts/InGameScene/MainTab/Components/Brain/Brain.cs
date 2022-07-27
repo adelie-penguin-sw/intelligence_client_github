@@ -49,6 +49,7 @@ namespace MainTab
         public void Init(BrainData data)
         {
             _brainData = data;
+            SetNumText(data.intellect);
             _brainData.distance = -1;
             if (_brainData.brainType == EBrainType.GUIDEBRAIN)
                 gameObject.SetActive(false);

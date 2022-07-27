@@ -64,6 +64,8 @@ namespace MainTab
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.MOUSE_EXIT_BRAIN);
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.MOUSE_UP_BRAIN);
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.MOUSE_ENTER_BRAIN);
+
+            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.CLOSE_BRAININFO_POPUP);
         }
         private void RemoveObservers()
         {
@@ -74,6 +76,8 @@ namespace MainTab
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.MOUSE_EXIT_BRAIN);
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.MOUSE_UP_BRAIN);
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.MOUSE_ENTER_BRAIN);
+
+            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.CLOSE_BRAININFO_POPUP);
         }
         #region StateHandler Function
         private Dictionary<EBehaviorState, IBehaviorStateModule> _handlers = new Dictionary<EBehaviorState, IBehaviorStateModule>();
@@ -84,6 +88,7 @@ namespace MainTab
             _handlers.Add(EBehaviorState.NONE, new StateHandlerNone());
             _handlers.Add(EBehaviorState.CREATE_BRAIN, new StateHandlerCreateBrain());
             _handlers.Add(EBehaviorState.CREATE_CHANNEL, new StateHandlerCreateChannel());
+            _handlers.Add(EBehaviorState.SHOW_POPUP, new StateHandlerShowPopup());
 
             foreach (EBehaviorState state in _handlers.Keys)
             {
@@ -147,10 +152,11 @@ namespace MainTab
             {
                 MoveScreen();
                 ZoomScreenPC();
-                if(_isBrainPointDown)
+
+                if (_isBrainPointDown)
                 {
                     _dtBrainPointDown += dt_sec;
-                    if(_dtBrainPointDown >= _model.WaitBrainClickTime)
+                    if (_dtBrainPointDown >= _model.WaitBrainClickTime)
                     {
                         _controller.ChangeState(EBehaviorState.CREATE_CHANNEL);
                     }
@@ -171,10 +177,14 @@ namespace MainTab
                     case ENotiMessage.MOUSE_UP_BRAIN:
                         if (_isBrainPointDown)
                         {
-                            InGame.BrainInfoPopup infoPopup =  
-                                PopupManager.Instance.CreatePopup(EPrefabsType.POPUP, "BrainInfoPopup")
+                            //PoolManager.Instance.GrabPrefabs(EPrefabsType.UI, "Notification_Error", _controller._view.UI.transform)
+                            //    .GetComponent<UltimateClean.Notification>()
+                            //    .Launch(UltimateClean.NotificationType.Pop, UltimateClean.NotificationPositionType.TopRight,
+                            //    3f, "ㅌㅔ스트알", "테스트 내용");
+                            InGame.BrainInfoPopup infoPopup = PopupManager.Instance.CreatePopup(EPrefabsType.POPUP, "BrainInfoPopup")
                                 .GetComponent<InGame.BrainInfoPopup>();
                             infoPopup.Init(_controller._recentSelectBrain);
+                            _controller.ChangeState(EBehaviorState.SHOW_POPUP);
                         }
                         else
                         {
@@ -192,6 +202,8 @@ namespace MainTab
 
             public void OnExit()
             {
+                _isBrainPointDown = false;
+                _dtBrainPointDown = 0f;
             }
 
             public void Dispose()
@@ -315,7 +327,7 @@ namespace MainTab
             {
                 _curPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 _channel.SetLineRenderToPos(_curPos);
-                _channel.AdvanceTime(dt_sec);
+                //_channel.AdvanceTime(dt_sec);
             }
 
             public void OnNotification(Notification noti)
@@ -341,6 +353,9 @@ namespace MainTab
 
             public void Dispose()
             {
+                _channel = null;
+                _currentEnterBrain = null;
+                _currentSenderBrain = null;
             }
 
             /// <summary>
@@ -349,7 +364,7 @@ namespace MainTab
             private void CreateTempChannel()
             {
                 _channel = PoolManager.Instance.GrabPrefabs(EPrefabsType.CHANNEL, "Channel", _controller._view.transform).GetComponent<Channel>();
-                _channel.Init(EChannelType.TEMP, _currentSenderBrain.transform);
+                _channel.Init(EChannelType.TEMP, _currentSenderBrain.transform, _currentSenderBrain.transform);
                 //_channel.Init(CreateBrainSendData(-1, _controller._recentSelectBrain), CreateBrainSendData(-1, null));
             }
 
@@ -372,6 +387,43 @@ namespace MainTab
                 }
             }
         }
+
+        /// <summary>
+        /// popup state class
+        /// </summary>
+        protected class StateHandlerShowPopup : IBehaviorStateModule
+        {
+            private BehaviorController _controller;
+            public void Init(BehaviorController controller)
+            {
+                _controller = controller;
+            }
+
+            public void OnEnter()
+            {
+            }
+
+            public void AdvanceTime(float dt_sec)
+            {
+            }
+
+            public void OnNotification(Notification noti)
+            {
+                switch (noti.msg)
+                {
+                    case ENotiMessage.CLOSE_BRAININFO_POPUP:
+                        _controller.ChangeState(EBehaviorState.NONE);
+                        break;
+                }
+            }
+            public void OnExit()
+            {
+            }
+
+            public void Dispose()
+            {
+            }
+        }
         #endregion
     }
 
@@ -384,6 +436,7 @@ namespace MainTab
         NONE,
         CREATE_BRAIN,
         CREATE_CHANNEL,
+        SHOW_POPUP,
     }
 
     /// <summary>
