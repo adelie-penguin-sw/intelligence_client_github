@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// UGUI에 해당하는 오브젝트의 터치 이벤트를 관리해주는 Class
+/// </summary>
 public class EventObject : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     [SerializeField]
@@ -16,37 +19,66 @@ public class EventObject : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [SerializeField]
     protected Vector2 _posStartDown;
 
+    /// <summary>
+    /// 드래그 시작시 실행
+    /// </summary>
+    /// <param name="eventData"></param>
     public virtual void OnBeginDrag(PointerEventData eventData)
     {
         _posStartDrag = eventData.position;
     }
 
+    /// <summary>
+    /// 드래그중에 실행
+    /// </summary>
+    /// <param name="eventData"></param>
     public virtual void OnDrag(PointerEventData eventData)
     {
         _posCurDrag = eventData.position;
     }
 
+    /// <summary>
+    /// 드래그가 끝났을때 실행
+    /// </summary>
+    /// <param name="eventData"></param>
     public virtual void OnEndDrag(PointerEventData eventData)
     {
         _posEndDrag = eventData.position;
     }
 
+    /// <summary>
+    /// 이 오브젝트가 눌렸을때 실행
+    /// </summary>
+    /// <param name="eventData"></param>
     public virtual void OnPointerDown(PointerEventData eventData)
     {
         _posStartDown = eventData.position;
     }
 
+    /// <summary>
+    /// 이 오브젝트로부터 포인터가 나갔을때 실행
+    /// </summary>
+    /// <param name="eventData"></param>
     public virtual void OnPointerExit(PointerEventData eventData)
     {
     }
 
+    /// <summary>
+    /// 터치가 끝났을때 실행
+    /// </summary>
+    /// <param name="eventData"></param>
     public virtual void OnPointerUp(PointerEventData eventData)
     {
     }
 }
 
+/// <summary>
+/// 실행되는 EvenetObject의 종류
+/// </summary>
 public enum EEventObjectType
 {
+    /// <summary>
+    /// 브레인 생성 UI
+    /// </summary>
     CREATE_BRAIN_UI,
-
 }
