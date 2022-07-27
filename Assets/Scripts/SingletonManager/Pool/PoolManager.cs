@@ -148,6 +148,8 @@ public class PoolManager : MonoBehaviour
                 return "Prefabs/InGame/";
             case EPrefabsType.POPUP:
                 return "Prefabs/Popup/";
+            case EPrefabsType.UI:
+                return "Prefabs/InGame/UI/";
         }
         return "Prefabs/";
     }
@@ -167,6 +169,8 @@ public enum EPrefabsType
     //MainTab
     BRAIN,
     CHANNEL,
+
+    UI,
 
 }
 
