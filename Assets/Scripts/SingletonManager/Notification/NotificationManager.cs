@@ -250,6 +250,7 @@ public enum ENotiMessage
 
     ONCLICK_SELL_BRAIN,
 
+    CLOSE_BRAININFO_POPUP,
 }
 
 /// <summary>
