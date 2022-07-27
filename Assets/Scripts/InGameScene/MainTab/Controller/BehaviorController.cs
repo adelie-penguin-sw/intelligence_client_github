@@ -177,10 +177,6 @@ namespace MainTab
                     case ENotiMessage.MOUSE_UP_BRAIN:
                         if (_isBrainPointDown)
                         {
-                            //PoolManager.Instance.GrabPrefabs(EPrefabsType.UI, "Notification_Error", _controller._view.UI.transform)
-                            //    .GetComponent<UltimateClean.Notification>()
-                            //    .Launch(UltimateClean.NotificationType.Pop, UltimateClean.NotificationPositionType.TopRight,
-                            //    3f, "ㅌㅔ스트알", "테스트 내용");
                             InGame.BrainInfoPopup infoPopup = PopupManager.Instance.CreatePopup(EPrefabsType.POPUP, "BrainInfoPopup")
                                 .GetComponent<InGame.BrainInfoPopup>();
                             infoPopup.Init(_controller._recentSelectBrain);
