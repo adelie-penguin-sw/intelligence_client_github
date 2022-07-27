@@ -99,9 +99,24 @@ public class PopupManager : MonoBehaviour
 
     private void SetCanvas()
     {
-        _canvas = GameObject.Find("PopupCanvas").GetComponent<Canvas>();
-        if (_canvas != null) return;
-        _canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+        GameObject go = GameObject.Find("PopupCanvas");
+        if (go == null)
+            go = PoolManager.Instance.GrabPrefabs(EPrefabsType.POPUP, "PopupCanvas", transform);
+
+        if (go.TryGetComponent(out Canvas canvas))
+            _canvas = canvas;
+        else
+            _canvas = go.AddComponent<Canvas>();
+
+        _canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        //_canvas = GameObject.Find("PopupCanvas").GetComponent<Canvas>();
+        //if(_canvas == null)
+        //{
+        //    GameObject go = new GameObject("PopupCanvas");
+        //    _canvas = go.AddComponent<Canvas>();
+        //}
+        //if (_canvas != null) return;
+        //_canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
     }
 
     private Canvas _canvas = null;

@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using static NotificationManager;
 
+/// <summary>
+/// ??? ??? ??? ??? <br />
+/// ????? ???? ?? <br />
+/// </summary>
 public class NotificationManager : MonoBehaviour
 {
     #region Singelton
@@ -38,6 +42,7 @@ public class NotificationManager : MonoBehaviour
             return _instance;
         }
     }
+
     void OnApplicationQuit()
     {
         // release reference on exit
@@ -47,10 +52,18 @@ public class NotificationManager : MonoBehaviour
 
     Hashtable _notifications = new Hashtable();
 
+    /// <summary>
+    /// ???? ??? ??? ??? ?? ??
+    /// </summary>
+    /// <param name="noti"></param>
     public delegate void DelFunction(Notification noti);
 
     #region Add Observer
-
+    /// <summary>
+    /// ??? ?? ???
+    /// </summary>
+    /// <param name="observer">?? ?? Delegate</param>
+    /// <param name="msg">?? ???</param>
     public void AddObserver(DelFunction observer, ENotiMessage msg/*, Component sender*/)
     {
         if (_notifications[msg] == null)
@@ -65,6 +78,11 @@ public class NotificationManager : MonoBehaviour
     #endregion
 
     #region Remove Observer
+    /// <summary>
+    /// ??? ?? ???
+    /// </summary>
+    /// <param name="observer">?? ?????? Delegate</param>
+    /// <param name="msg">?? ???</param>
     public void RemoveObserver(DelFunction observer, ENotiMessage msg)
     {
         List<DelFunction> notifyList = (List<DelFunction>)_notifications[msg];
@@ -85,17 +103,30 @@ public class NotificationManager : MonoBehaviour
     #endregion
 
     #region Post Notification
+    /// <summary>
+    /// ?? ???? ???? ?? ?? ??
+    /// </summary>
+    /// <param name="aMsg">???</param>
     public void PostNotification(ENotiMessage aMsg)
     {
         PostNotification(aMsg, null);
     }
 
+    /// <summary>
+    /// ?? ???? ???? ?? ?? ??
+    /// </summary>
+    /// <param name="aMsg">???</param>
+    /// <param name="aData">??? ???</param>
     public void PostNotification(ENotiMessage aMsg, Hashtable aData)
     {
         //PostNotification(new Notification(aMsg, aData));
         PostNotification(Notification.Instantiate(aMsg, aData));
     }
 
+    /// <summary>
+    /// ?? ???? ???? ?? ?? ??
+    /// </summary>
+    /// <param name="aNotification">Notification class</param>
     public void PostNotification(Notification aNotification)
     {
         List<DelFunction> notifyList = (List<DelFunction>)_notifications[aNotification.msg];
@@ -127,6 +158,10 @@ public class NotificationManager : MonoBehaviour
     #endregion
 
 }
+
+/// <summary>
+/// ??? ??? ?? ??? ? ? ?? Data ???
+/// </summary>
 public class Notification
 {
     public ENotiMessage msg;
@@ -139,18 +174,13 @@ public class Notification
         msg = aMsg;
     }
 
-    //public Notification(ENotiMessage aMsg)
-    //{
-    //    msg = aMsg;
-    //    data = null;
-    //}
-
-    //public Notification(ENotiMessage aMsg, Hashtable aData)
-    //{
-    //    msg = aMsg;
-    //    data = aData;
-    //}
-
+    /// <summary>
+    /// Notification ??? ??<br />
+    /// ?? ???? ???? ??<br />
+    /// </summary>
+    /// <param name="aMsg">???</param>
+    /// <param name="aData">?? ??? ?????</param>
+    /// <returns>Notification? ???? ??</returns>
     public static Notification Instantiate(ENotiMessage aMsg, Hashtable aData)
     {
         _instance.msg = aMsg;
@@ -162,6 +192,15 @@ public class Notification
         return _instance;
     }
 
+    /// <summary>
+    /// Notification ??? ??<br />
+    /// ?? ???? ??? ??<br />
+    /// </summary>
+    /// <typeparam name="T">?? ???? ???</typeparam>
+    /// <param name="aMsg">???</param>
+    /// <param name="dataParam">?? ???? ?? Enum</param>
+    /// <param name="data">???</param>
+    /// <returns></returns>
     public static Notification Instantiate<T>(ENotiMessage aMsg, EDataParamKey dataParam, T data)
     {
         _instance.msg = aMsg;
@@ -174,6 +213,12 @@ public class Notification
         return _instance;
     }
 
+    /// <summary>
+    /// Notification ??? ??<br />
+    /// ???? ?? ??<br />
+    /// </summary>
+    /// <param name="aMsg">???</param>
+    /// <returns></returns>
     public static Notification Instantiate(ENotiMessage aMsg)
     {
         _instance.msg = aMsg;
@@ -183,12 +228,15 @@ public class Notification
 
 }
 
+/// <summary>
+/// ??? ??? Enum
+/// </summary>
 public enum ENotiMessage
 {
     UNKNOWN = 0,
 
     //  <<MainTab>>
-    //  Input°ü·Ã
+    //  Input????
     DRAG_START_CREATEBRAIN,
     DRAG_END_CREATEBRAIN,
 
@@ -200,8 +248,13 @@ public enum ENotiMessage
     CREATE_BRAIN,
     CREATE_CHANNEL,
 
+    ONCLICK_SELL_BRAIN,
+
 }
 
+/// <summary>
+/// ??? ?? ??? Enum
+/// </summary>
 public enum EDataParamKey
 {
     VECTOR2,
