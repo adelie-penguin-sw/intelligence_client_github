@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace MainTab
 {
+    /// <summary>
+    /// 메인 탭 어플리케이션
+    /// </summary>
     public class MainTabApplication : BaseTabApplication
     {
-        [SerializeField]
-        private BaseTabController<MainTabApplication>[] _controllers;
-        [SerializeField]
-        private MainTabView _mainTabView;
+        [SerializeField] private BaseTabController<MainTabApplication>[] _controllers;
+        [SerializeField] private MainTabView _mainTabView;
         public MainTabView MainTabView
         {
             get
@@ -16,8 +17,7 @@ namespace MainTab
                 return _mainTabView;
             }
         }
-        [SerializeField]
-        private MainTabModel _mainTabModel = new MainTabModel();
+        [SerializeField] private MainTabModel _mainTabModel = new MainTabModel();
         public MainTabModel MainTabModel
         {
             get
