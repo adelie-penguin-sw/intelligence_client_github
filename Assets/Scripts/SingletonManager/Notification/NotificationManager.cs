@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using static NotificationManager;
@@ -250,6 +250,7 @@ public enum ENotiMessage
 
     ONCLICK_SELL_BRAIN,
 
+    CLOSE_BRAININFO_POPUP,
 }
 
 /// <summary>
@@ -258,6 +259,11 @@ public enum ENotiMessage
 public enum EDataParamKey
 {
     VECTOR2,
+    INTEGER,
+
     CLASS_BRAIN,
     CLASS_CHANNEL,
+    STRUCT_BRAINRELATION,
+
+
 }
