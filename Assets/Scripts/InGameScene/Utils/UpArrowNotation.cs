@@ -117,7 +117,27 @@ public class UpArrowNotation
 
         if (_operatorLayerCount[0] > 9)
         {
+            _operatorLayerCount[1] += 1;
+            _operatorLayerCount[0] = 2;
+            _top3Layer = new PowerTowerNotation(1f, 1f, 0f);
+        }
 
+        for (int i=1; i<8; i++)
+        {
+            if (_operatorLayerCount[i] > 9)
+            {
+                _operatorLayerCount[i] = 1;
+                _operatorLayerCount[i + 1] += 1;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        if (_operatorLayerCount[8] > 9)
+        {
+            // If number gets SOOOOOOOOOOOOO large..??
         }
 
         if (_top3Layer._coeffArr[2] < 1f && _operatorLayerCount[0] > 3)
