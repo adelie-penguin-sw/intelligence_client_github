@@ -18,11 +18,11 @@ namespace MainTab
         /// <summary>
         /// 지능
         /// </summary>
-        public double intellect = 1f;
+        public UpArrowNotation intellect = new UpArrowNotation(1f);
         /// <summary>
         /// 다음 tick에 증가 될 지능
         /// </summary>
-        public double standByIntellect = 0f;
+        public UpArrowNotation standByIntellect = new UpArrowNotation();
         /// <summary>
         /// 거리
         /// </summary>
@@ -43,18 +43,18 @@ namespace MainTab
         public BrainData(int id, EBrainType brainType)
         {
             this.id = id;
-            this.intellect = 1;
+            this.intellect = new UpArrowNotation(1);
             this.brainType = brainType;
-            this.standByIntellect = 0;
+            this.standByIntellect = new UpArrowNotation();
             _receiverIdList = new HashSet<int>();
             _senderIdList = new HashSet<int>();
         }
-        public BrainData(int id, double intellect, EBrainType brainType)
+        public BrainData(int id, UpArrowNotation intellect, EBrainType brainType)
         {
             this.id = id;
             this.intellect = intellect;
             this.brainType = brainType;
-            this.standByIntellect = 0;
+            this.standByIntellect = new UpArrowNotation();
             _receiverIdList = new HashSet<int>();
             _senderIdList = new HashSet<int>();
         }

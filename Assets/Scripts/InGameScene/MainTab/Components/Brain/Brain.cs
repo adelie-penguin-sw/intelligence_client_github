@@ -19,12 +19,12 @@ namespace MainTab
         /// <summary>
         /// 지능 수치
         /// </summary>
-        public double Intellect { get { return _brainData.intellect; } }
+        public UpArrowNotation Intellect { get { return _brainData.intellect; } }
 
         /// <summary>
         /// 다음 Tick에 증가 될 예정인 지능수치
         /// </summary>
-        public double StandByIntellect
+        public UpArrowNotation StandByIntellect
         {
             get { return _brainData.standByIntellect; }
             set { _brainData.standByIntellect = value; }
@@ -78,8 +78,8 @@ namespace MainTab
         {
             if (_brainData.brainType != EBrainType.GUIDEBRAIN)
             {
-                _brainData.intellect += _brainData.standByIntellect;
-                _brainData.standByIntellect = 0;
+                _brainData.intellect.Add(_brainData.standByIntellect);
+                _brainData.standByIntellect = new UpArrowNotation();
                 SetNumText(_brainData.intellect);
             }
         }
@@ -131,7 +131,7 @@ namespace MainTab
             return _brainData._receiverIdList.Contains(id);
         }
 
-        private void SetNumText(double num)
+        private void SetNumText(UpArrowNotation num)
         {
             _textNum.text = num.ToString();
         }

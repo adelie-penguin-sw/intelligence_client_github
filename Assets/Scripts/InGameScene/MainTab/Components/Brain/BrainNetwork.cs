@@ -22,7 +22,7 @@ namespace MainTab
             //만약 기존에 생성된 브레인이 존재할 경우 -> ex ) 서버 데이터를 받아온 후
 
             //Init시킬 MainBrain 데이터 임의 생성
-            BrainData data = new BrainData(1, 1, EBrainType.MAINBRAIN);
+            BrainData data = new BrainData(1, new UpArrowNotation(1), EBrainType.MAINBRAIN);
 
             //일단 임시로 무조건 MainBrain생성되게 구현
             Brain brain = PoolManager.Instance.GrabPrefabs(EPrefabsType.BRAIN, "Brain", _brainLayer)
@@ -79,7 +79,7 @@ namespace MainTab
                     foreach (var sender in brain.SenderIdList)
                     {
                         if (_brainNetWork.ContainsKey(sender))
-                            brain.StandByIntellect += _brainNetWork[sender].Intellect;
+                            brain.StandByIntellect.Add(_brainNetWork[sender].Intellect);
                     }
                 }
 
@@ -164,7 +164,7 @@ namespace MainTab
             //지워지는 브레인의 결과에 따라 얻는 NP 업데이트
             foreach (var remove in _removeList)
             {
-                returnNP += (int)remove.Intellect; //임시로 1:1로 반환해준다.
+                returnNP += (int)remove.Intellect.CalculateFull(); //임시로 1:1로 반환해준다.
             }
             return returnNP;
         }
