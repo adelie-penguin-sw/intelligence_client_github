@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class UpArrowNotation
 {
@@ -114,11 +115,18 @@ public class UpArrowNotation
             _operatorLayerCount[0] += 1;
         }
 
+        if (_operatorLayerCount[0] > 9)
+        {
+
+        }
+
         if (_top3Layer._coeffArr[2] < 1f && _operatorLayerCount[0] > 3)
         {
             _top3Layer.DescendLayer();
             _operatorLayerCount[0] -= 1;
         }
+
+        // Decrease Layer ...
     }
 
     public static UpArrowNotation operator +(UpArrowNotation a) => a;
@@ -155,6 +163,29 @@ public class UpArrowNotation
     public void Pow(UpArrowNotation other)
     {
 
+    }
+
+    public float CalculatePower()
+    {
+        float coeff = _top3Layer._coeffArr[1];
+        float power = _top3Layer._coeffArr[2];
+
+        return coeff * Mathf.Pow(10, power);
+    }
+
+    public float CalculateFull()
+    {
+        float coeff = _top3Layer._coeffArr[0];
+        float power = this.CalculatePower();
+
+        try
+        {
+            return coeff * Mathf.Pow(10, power);
+        }
+        catch (OverflowException e)
+        {
+            return Mathf.Infinity;
+        }
     }
 
     public static bool operator ==(UpArrowNotation a, UpArrowNotation b)
