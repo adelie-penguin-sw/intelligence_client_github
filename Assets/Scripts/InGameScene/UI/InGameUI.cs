@@ -25,8 +25,10 @@ namespace InGame
             switch (tab)
             {
                 case EGameState.MAIN_TAB:
+                    Debug.Log("Main_Tab Click");
                     break;
                 case EGameState.TP_UPGRADE_TAB:
+                    Debug.Log("TP_UPGRADE_TAB Click");
                     break;
             }
         }
