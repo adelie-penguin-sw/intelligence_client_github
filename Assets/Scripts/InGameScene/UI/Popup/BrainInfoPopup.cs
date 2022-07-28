@@ -18,6 +18,7 @@ namespace InGame
         [SerializeField] private TextMeshProUGUI _infoText;
         public void Init(Brain brain)
         {
+            base.Init();
             _brain = brain;
 
         }
