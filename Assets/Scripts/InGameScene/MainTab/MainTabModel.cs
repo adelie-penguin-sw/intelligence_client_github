@@ -80,6 +80,9 @@ namespace MainTab
         [BoxGroup("Player Info")]
         [SerializeField] private int _np = 0;
         public int NP { get { return _np; } set { _np = value; } }
+
+        [SerializeField] private int _tp = 0;
+        public int TP { get { return _tp; } set { _tp = value; } }
         #endregion
 
         [BoxGroup("Brain Network")]
@@ -88,6 +91,10 @@ namespace MainTab
             get
             {
                 return _brainNetwork;
+            }
+            set
+            {
+                _brainNetwork = value;
             }
         }
     }
