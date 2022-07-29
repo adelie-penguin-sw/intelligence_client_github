@@ -533,6 +533,10 @@ public class PowerTowerNotation
             {
                 return true;
             }
+            else if (a._coeffArr[i] < b._coeffArr[i])
+            {
+                return false;
+            }
         }
 
         return false;
