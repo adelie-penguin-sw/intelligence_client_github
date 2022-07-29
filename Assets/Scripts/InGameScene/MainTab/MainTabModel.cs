@@ -78,11 +78,11 @@ namespace MainTab
 
         #region Player Info
         [BoxGroup("Player Info")]
-        [SerializeField] private int _np = 0;
-        public int NP { get { return _np; } set { _np = value; } }
+        [SerializeField] private PowerTowerNotation _np = new PowerTowerNotation();
+        public PowerTowerNotation NP { get { return _np; } set { _np = value; } }
 
-        [SerializeField] private int _tp = 0;
-        public int TP { get { return _tp; } set { _tp = value; } }
+        [SerializeField] private PowerTowerNotation _tp = new PowerTowerNotation();
+        public PowerTowerNotation TP { get { return _tp; } set { _tp = value; } }
         #endregion
 
         [BoxGroup("Brain Network")]
