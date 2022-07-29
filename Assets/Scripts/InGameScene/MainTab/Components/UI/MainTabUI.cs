@@ -29,7 +29,7 @@ namespace MainTab
         /// 상단 NP Text를 해당 인자로 변경한다.
         /// </summary>
         /// <param name="np">변경할 np</param>
-        public void SetNPText(int np)
+        public void SetNPText(PowerTowerNotation np)
         {
             _txtNP.text = string.Format("NP: {0}", np);
         }
@@ -38,7 +38,7 @@ namespace MainTab
         /// 상단 TP Text를 해당 인자로 변경한다.
         /// </summary>
         /// <param name="tp">변경할 tp</param>
-        public void SetTPText(int tp)
+        public void SetTPText(PowerTowerNotation tp)
         {
             _txtTP.text = string.Format("TP: {0}", tp);
         }

@@ -5,8 +5,10 @@ using System;
 
 public class UpArrowNotation
 {
-    public PowerTowerNotation _top3Layer;
+    private PowerTowerNotation _top3Layer;
     public int[] _operatorLayerCount = {1, 1, 1, 1, 1, 1, 1, 1, 1};
+
+    public PowerTowerNotation Top3Layer { get { return _top3Layer; } }
 
     private void Convert(float number)
     {
