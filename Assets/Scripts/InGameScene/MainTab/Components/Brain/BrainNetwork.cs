@@ -132,7 +132,7 @@ namespace MainTab
         /// </summary>
         /// <param name="brain">지워질 브레인</param>
         /// <returns>얻을 NP반환</returns>
-        public int RemoveBrain(Brain brain)
+        public PowerTowerNotation RemoveBrain(Brain brain)
         {
             //_removeList.Add(brain);
             // ClearAndDrawChannel();
@@ -171,11 +171,11 @@ namespace MainTab
                 }
             }
 
-            int returnNP = 0;
+            PowerTowerNotation returnNP = new PowerTowerNotation();
             //지워지는 브레인의 결과에 따라 얻는 NP 업데이트
             foreach (var remove in _removeList)
             {
-                returnNP += (int)remove.Intellect.CalculateFull(); //임시로 1:1로 반환해준다.
+                returnNP += remove.Intellect.Top3Layer; //임시로 1:1로 반환해준다.
             }
             return returnNP;
         }

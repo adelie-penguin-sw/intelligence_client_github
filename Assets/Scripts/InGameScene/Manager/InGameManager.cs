@@ -22,7 +22,7 @@ namespace InGame
         /// <summary>
         /// 연구 달성 목표치
         /// </summary>
-        public static double experimentGoal = 1000;
+        public static UpArrowNotation experimentGoal = new UpArrowNotation(1000);
 
         void Awake()
         {
