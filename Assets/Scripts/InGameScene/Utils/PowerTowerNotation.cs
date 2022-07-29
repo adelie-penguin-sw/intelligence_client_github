@@ -5,17 +5,17 @@ using System;
 
 public class PowerTowerNotation
 {
-    private static float _coeffMax = 10f;
+    private static double _coeffMax = 10f;
 
-    public float[] _coeffArr = {0f, 0f, 0f};
+    public double[] _coeffArr = {0f, 0f, 0f};
 
     struct CoeffAndPower
     {
-        public float coeff;
-        public float power;
+        public double coeff;
+        public double power;
     }
 
-    private static CoeffAndPower Decompose(float number)
+    private static CoeffAndPower Decompose(double number)
     {
         CoeffAndPower cap = new CoeffAndPower();
 
@@ -26,23 +26,23 @@ public class PowerTowerNotation
             return cap;
         }
 
-        cap.power = Mathf.Floor(Mathf.Log10(Mathf.Abs(number)));
-        cap.coeff = number / Mathf.Pow(10, cap.power);
+        cap.power = Math.Floor(Math.Log10(Math.Abs(number)));
+        cap.coeff = number / Math.Pow(10, cap.power);
 
         return cap;
     }
 
-    private void Convert(float number)
+    private void Convert(double number)
     {
         CoeffAndPower cap = Decompose(number);
         _coeffArr[0] = cap.coeff;
 
-        float tmpPower = cap.power;
+        double tmpPower = cap.power;
         if (tmpPower == 0f)
         {
             return;
         }
-        else if (Mathf.Abs(tmpPower) < _coeffMax)
+        else if (Math.Abs(tmpPower) < _coeffMax)
         {
             _coeffArr[1] = tmpPower;
             return;
@@ -68,7 +68,7 @@ public class PowerTowerNotation
     /// 일반 숫자 타입을 파라미터로 받아 내부적으로 계수와 지수로 분해합니다.
     /// </summary>
     /// <param name="number"></param>
-    public PowerTowerNotation(float number)
+    public PowerTowerNotation(double number)
     {
         Convert(number);
     }
@@ -89,9 +89,9 @@ public class PowerTowerNotation
     /// <param name="layer1Coeff"></param>
     /// <param name="layer2Coeff"></param>
     /// <param name="layer3Coeff"></param>
-    public PowerTowerNotation(float layer1Coeff, float layer2Coeff, float layer3Coeff)
+    public PowerTowerNotation(double layer1Coeff, double layer2Coeff, double layer3Coeff)
     {
-        if (Mathf.Abs(layer1Coeff) >= 10f || Mathf.Abs(layer2Coeff) >= 10f || Mathf.Abs(layer3Coeff) >= 10f)
+        if (Math.Abs(layer1Coeff) >= 10f || Math.Abs(layer2Coeff) >= 10f || Math.Abs(layer3Coeff) >= 10f)
         {
             throw new ArgumentOutOfRangeException("All three parameters must have values between -10 and 10.");
         }
@@ -121,15 +121,15 @@ public class PowerTowerNotation
         {
             if (_coeffArr[1] >= 0f)
             {
-                return (_coeffArr[0] * Mathf.Pow(10, _coeffArr[1])).ToString("N0");
+                return (_coeffArr[0] * Math.Pow(10, _coeffArr[1])).ToString("N0");
             }
             else
             {
-                return (_coeffArr[0] * Mathf.Pow(10, _coeffArr[1])).ToString("N" + (-_coeffArr[1]).ToString("N0"));
+                return (_coeffArr[0] * Math.Pow(10, _coeffArr[1])).ToString("N" + (-_coeffArr[1]).ToString("N0"));
             }
         }
 
-        string powerString = (_coeffArr[1] * Mathf.Pow(10, _coeffArr[2])).ToString("N0");
+        string powerString = (_coeffArr[1] * Math.Pow(10, _coeffArr[2])).ToString("N0");
         string coeffString = _coeffArr[0].ToString("N2");
 
         return coeffString + "x10^" + powerString;
@@ -172,22 +172,22 @@ public class PowerTowerNotation
     {
         PowerTowerNotation result = new PowerTowerNotation();
 
-        float coeff = _coeffArr[0];
-        float power = Mathf.Round(_coeffArr[1] * Mathf.Pow(10, _coeffArr[2]));
-        float otherCoeff = other._coeffArr[0];
-        float otherPower = Mathf.Round(other._coeffArr[1] * Mathf.Pow(10, other._coeffArr[2]));
+        double coeff = _coeffArr[0];
+        double power = Math.Round(_coeffArr[1] * Math.Pow(10, _coeffArr[2]));
+        double otherCoeff = other._coeffArr[0];
+        double otherPower = Math.Round(other._coeffArr[1] * Math.Pow(10, other._coeffArr[2]));
 
-        float powerDiff = Mathf.Abs(power - otherPower);
-        float resultPower;
+        double powerDiff = Math.Abs(power - otherPower);
+        double resultPower;
 
         if (power >= otherPower)
         {
-            result._coeffArr[0] = coeff + otherCoeff / Mathf.Pow(10, powerDiff);
+            result._coeffArr[0] = coeff + otherCoeff / Math.Pow(10, powerDiff);
             resultPower = power;
         }
         else
         {
-            result._coeffArr[0] = otherCoeff + coeff / Mathf.Pow(10, powerDiff);
+            result._coeffArr[0] = otherCoeff + coeff / Math.Pow(10, powerDiff);
             resultPower = otherPower;
         }
 
@@ -196,22 +196,22 @@ public class PowerTowerNotation
             return result;
         }
 
-        if (Mathf.Abs(result._coeffArr[0]) >= _coeffMax)
+        if (Math.Abs(result._coeffArr[0]) >= _coeffMax)
         {
             result._coeffArr[0] /= 10f;
             resultPower += 1f;
         }
 
-        while (Mathf.Abs(result._coeffArr[0]) < 1f)
+        while (Math.Abs(result._coeffArr[0]) < 1f)
         {
             result._coeffArr[0] *= 10f;
             resultPower -= 1f;
         }
 
-        if (Mathf.Abs(resultPower) >= _coeffMax)
+        if (Math.Abs(resultPower) >= _coeffMax)
         {
-            result._coeffArr[2] = Mathf.Floor(Mathf.Log10(Mathf.Abs(resultPower)));
-            result._coeffArr[1] = resultPower / Mathf.Pow(10, result._coeffArr[2]);
+            result._coeffArr[2] = Math.Floor(Math.Log10(Math.Abs(resultPower)));
+            result._coeffArr[1] = resultPower / Math.Pow(10, result._coeffArr[2]);
         }
         else
         {
@@ -229,11 +229,11 @@ public class PowerTowerNotation
     /// <returns>합</returns>
     public static PowerTowerNotation operator +(PowerTowerNotation a, PowerTowerNotation b) => a.Add(b);
 
-    public static PowerTowerNotation operator +(PowerTowerNotation a, float b) => a.Add(new PowerTowerNotation(b));
+    public static PowerTowerNotation operator +(PowerTowerNotation a, double b) => a.Add(new PowerTowerNotation(b));
 
     public static PowerTowerNotation operator +(PowerTowerNotation a, int b) => a.Add(new PowerTowerNotation(b));
 
-    public static PowerTowerNotation operator +(float a, PowerTowerNotation b) => (new PowerTowerNotation(a)).Add(b);
+    public static PowerTowerNotation operator +(double a, PowerTowerNotation b) => (new PowerTowerNotation(a)).Add(b);
 
     public static PowerTowerNotation operator +(int a, PowerTowerNotation b) => (new PowerTowerNotation(a)).Add(b);
 
@@ -245,11 +245,11 @@ public class PowerTowerNotation
     /// <returns>차</returns>
     public static PowerTowerNotation operator -(PowerTowerNotation a, PowerTowerNotation b) => a.Add(-b);
 
-    public static PowerTowerNotation operator -(PowerTowerNotation a, float b) => a.Add(-(new PowerTowerNotation(b)));
+    public static PowerTowerNotation operator -(PowerTowerNotation a, double b) => a.Add(-(new PowerTowerNotation(b)));
 
     public static PowerTowerNotation operator -(PowerTowerNotation a, int b) => a.Add(-(new PowerTowerNotation(b)));
 
-    public static PowerTowerNotation operator -(float a, PowerTowerNotation b) => (new PowerTowerNotation(a)).Add(-b);
+    public static PowerTowerNotation operator -(double a, PowerTowerNotation b) => (new PowerTowerNotation(a)).Add(-b);
 
     public static PowerTowerNotation operator -(int a, PowerTowerNotation b) => (new PowerTowerNotation(a)).Add(-b);
 
@@ -281,12 +281,12 @@ public class PowerTowerNotation
     {
         PowerTowerNotation result = new PowerTowerNotation();
 
-        float coeff = _coeffArr[0];
-        float power = Mathf.Round(_coeffArr[1] * Mathf.Pow(10, _coeffArr[2]));
-        float otherCoeff = other._coeffArr[0];
-        float otherPower = Mathf.Round(other._coeffArr[1] * Mathf.Pow(10, other._coeffArr[2]));
+        double coeff = _coeffArr[0];
+        double power = Math.Round(_coeffArr[1] * Math.Pow(10, _coeffArr[2]));
+        double otherCoeff = other._coeffArr[0];
+        double otherPower = Math.Round(other._coeffArr[1] * Math.Pow(10, other._coeffArr[2]));
 
-        float resultPower = power + otherPower;
+        double resultPower = power + otherPower;
 
         result._coeffArr[0] = coeff * otherCoeff;
 
@@ -295,22 +295,22 @@ public class PowerTowerNotation
             return result;
         }
 
-        if (Mathf.Abs(result._coeffArr[0]) >= _coeffMax)
+        if (Math.Abs(result._coeffArr[0]) >= _coeffMax)
         {
             result._coeffArr[0] /= 10f;
             resultPower += 1f;
         }
 
-        while (Mathf.Abs(result._coeffArr[0]) < 1f)
+        while (Math.Abs(result._coeffArr[0]) < 1f)
         {
             result._coeffArr[0] *= 10f;
             resultPower -= 1f;
         }
 
-        if (Mathf.Abs(resultPower) >= _coeffMax)
+        if (Math.Abs(resultPower) >= _coeffMax)
         {
-            result._coeffArr[2] = Mathf.Floor(Mathf.Log10(Mathf.Abs(resultPower)));
-            result._coeffArr[1] = resultPower / Mathf.Pow(10, result._coeffArr[2]);
+            result._coeffArr[2] = Math.Floor(Math.Log10(Math.Abs(resultPower)));
+            result._coeffArr[1] = resultPower / Math.Pow(10, result._coeffArr[2]);
         }
         else
         {
@@ -328,11 +328,11 @@ public class PowerTowerNotation
     /// <returns>곱</returns>
     public static PowerTowerNotation operator *(PowerTowerNotation a, PowerTowerNotation b) => a.Multiply(b);
 
-    public static PowerTowerNotation operator *(PowerTowerNotation a, float b) => a.Multiply(new PowerTowerNotation(b));
+    public static PowerTowerNotation operator *(PowerTowerNotation a, double b) => a.Multiply(new PowerTowerNotation(b));
 
     public static PowerTowerNotation operator *(PowerTowerNotation a, int b) => a.Multiply(new PowerTowerNotation(b));
 
-    public static PowerTowerNotation operator *(float a, PowerTowerNotation b) => (new PowerTowerNotation(a)).Multiply(b);
+    public static PowerTowerNotation operator *(double a, PowerTowerNotation b) => (new PowerTowerNotation(a)).Multiply(b);
 
     public static PowerTowerNotation operator *(int a, PowerTowerNotation b) => (new PowerTowerNotation(a)).Multiply(b);
 
@@ -348,7 +348,7 @@ public class PowerTowerNotation
         return a.Multiply(b);
     }
 
-    public static PowerTowerNotation operator /(PowerTowerNotation a, float b)
+    public static PowerTowerNotation operator /(PowerTowerNotation a, double b)
     {
         PowerTowerNotation temp = new PowerTowerNotation(b);
         temp.Reciprocate();
@@ -362,7 +362,7 @@ public class PowerTowerNotation
         return a.Multiply(temp);
     }
 
-    public static PowerTowerNotation operator /(float a, PowerTowerNotation b)
+    public static PowerTowerNotation operator /(double a, PowerTowerNotation b)
     {
         PowerTowerNotation temp = new PowerTowerNotation(a);
         b.Reciprocate();
@@ -382,7 +382,7 @@ public class PowerTowerNotation
     /// <param name="a"></param>
     /// <param name="b"></param>
     /// <returns>지수 연산값</returns>
-    public static PowerTowerNotation operator ^(PowerTowerNotation a, float b)
+    public static PowerTowerNotation operator ^(PowerTowerNotation a, double b)
     {
         PowerTowerNotation result = new PowerTowerNotation();
 
@@ -404,23 +404,23 @@ public class PowerTowerNotation
             return result;
         }
 
-        float inputCoeff = a._coeffArr[0];
-        float inputPower = Mathf.Round(a._coeffArr[1] * Mathf.Pow(10, a._coeffArr[2]));
+        double inputCoeff = a._coeffArr[0];
+        double inputPower = Math.Round(a._coeffArr[1] * Math.Pow(10, a._coeffArr[2]));
 
-        float resultPower = (Mathf.Log10(inputCoeff) + inputPower) * b;
-        float tempFrac = resultPower % 1;
-        float resultCoeff = Mathf.Pow(10, tempFrac);
+        double resultPower = (Math.Log10(inputCoeff) + inputPower) * b;
+        double tempFrac = resultPower % 1;
+        double resultCoeff = Math.Pow(10, tempFrac);
 
         result._coeffArr[0] = resultCoeff;
 
         resultPower -= tempFrac;
-        result._coeffArr[2] = Mathf.Floor(Mathf.Log10(Mathf.Abs(resultPower)));
-        result._coeffArr[1] = resultPower / Mathf.Pow(10, result._coeffArr[2]);
+        result._coeffArr[2] = Math.Floor(Math.Log10(Math.Abs(resultPower)));
+        result._coeffArr[1] = resultPower / Math.Pow(10, result._coeffArr[2]);
 
         return result;
     }
 
-    public static PowerTowerNotation operator ^(PowerTowerNotation a, int b) => a ^ ((float)b);
+    public static PowerTowerNotation operator ^(PowerTowerNotation a, int b) => a ^ ((double)b);
 
     public static PowerTowerNotation operator ^(PowerTowerNotation a, PowerTowerNotation b)
     {
@@ -441,10 +441,10 @@ public class PowerTowerNotation
             return result;
         }
 
-        float aCoeff = a._coeffArr[0];
-        float aPower = Mathf.Round(a._coeffArr[1] * Mathf.Pow(10, a._coeffArr[2]));
-        float bCoeff = b._coeffArr[0];
-        float bPower = Mathf.Round(b._coeffArr[1] * Mathf.Pow(10, b._coeffArr[2]));
+        double aCoeff = a._coeffArr[0];
+        double aPower = Math.Round(a._coeffArr[1] * Math.Pow(10, a._coeffArr[2]));
+        double bCoeff = b._coeffArr[0];
+        double bPower = Math.Round(b._coeffArr[1] * Math.Pow(10, b._coeffArr[2]));
 
         if (aCoeff == 1f || bPower >= 10f)
         {
@@ -457,13 +457,13 @@ public class PowerTowerNotation
         }
         else
         {
-            float powerOfCoeff = Mathf.Log10(aCoeff) * bCoeff * Mathf.Pow(10, bPower);
-            float tempFrac = powerOfCoeff % 1;
-            float additionalPower = Mathf.Floor(powerOfCoeff);
+            double powerOfCoeff = Math.Log10(aCoeff) * bCoeff * Math.Pow(10, bPower);
+            double tempFrac = powerOfCoeff % 1;
+            double additionalPower = Math.Floor(powerOfCoeff);
 
-            result._coeffArr[0] = Mathf.Pow(10, tempFrac);
+            result._coeffArr[0] = Math.Pow(10, tempFrac);
 
-            additionalPower /= Mathf.Pow(10, bPower);
+            additionalPower /= Math.Pow(10, bPower);
             CoeffAndPower cap = Decompose(additionalPower + aPower * bCoeff);
             result._coeffArr[1] = cap.coeff;
             bPower += cap.power;
@@ -473,7 +473,7 @@ public class PowerTowerNotation
         return result;
     }
 
-    public static PowerTowerNotation operator ^(float a, PowerTowerNotation b) => (new PowerTowerNotation(a)) ^ b;
+    public static PowerTowerNotation operator ^(double a, PowerTowerNotation b) => (new PowerTowerNotation(a)) ^ b;
 
     public static PowerTowerNotation operator ^(int a, PowerTowerNotation b) => (new PowerTowerNotation(a)) ^ b;
 
@@ -495,11 +495,11 @@ public class PowerTowerNotation
         return true;
     }
 
-    public static bool operator ==(PowerTowerNotation a, float b) => a == (new PowerTowerNotation(b));
+    public static bool operator ==(PowerTowerNotation a, double b) => a == (new PowerTowerNotation(b));
 
     public static bool operator ==(PowerTowerNotation a, int b) => a == (new PowerTowerNotation(b));
 
-    public static bool operator ==(float a, PowerTowerNotation b) => (new PowerTowerNotation(a)) == b;
+    public static bool operator ==(double a, PowerTowerNotation b) => (new PowerTowerNotation(a)) == b;
 
     public static bool operator ==(int a, PowerTowerNotation b) => (new PowerTowerNotation(a)) == b;
 
@@ -511,11 +511,11 @@ public class PowerTowerNotation
     /// <returns>두 파라미터가 다른지에 대한 진리값</returns>
     public static bool operator !=(PowerTowerNotation a, PowerTowerNotation b) => !(a == b);
 
-    public static bool operator !=(PowerTowerNotation a, float b) => a != (new PowerTowerNotation(b));
+    public static bool operator !=(PowerTowerNotation a, double b) => a != (new PowerTowerNotation(b));
 
     public static bool operator !=(PowerTowerNotation a, int b) => a != (new PowerTowerNotation(b));
 
-    public static bool operator !=(float a, PowerTowerNotation b) => (new PowerTowerNotation(a)) != b;
+    public static bool operator !=(double a, PowerTowerNotation b) => (new PowerTowerNotation(a)) != b;
 
     public static bool operator !=(int a, PowerTowerNotation b) => (new PowerTowerNotation(a)) != b;
 
@@ -542,11 +542,11 @@ public class PowerTowerNotation
         return false;
     }
 
-    public static bool operator >(PowerTowerNotation a, float b) => a > (new PowerTowerNotation(b));
+    public static bool operator >(PowerTowerNotation a, double b) => a > (new PowerTowerNotation(b));
 
     public static bool operator >(PowerTowerNotation a, int b) => a > (new PowerTowerNotation(b));
 
-    public static bool operator >(float a, PowerTowerNotation b) => (new PowerTowerNotation(a)) > b;
+    public static bool operator >(double a, PowerTowerNotation b) => (new PowerTowerNotation(a)) > b;
 
     public static bool operator >(int a, PowerTowerNotation b) => (new PowerTowerNotation(a)) > b;
 
@@ -558,11 +558,11 @@ public class PowerTowerNotation
     /// <returns>첫째 파라미터의 값이 둘째 파라미터의 값보다 크거나 같은지에 대한 진리값</returns>
     public static bool operator >=(PowerTowerNotation a, PowerTowerNotation b) => (a > b) || (a == b);
 
-    public static bool operator >=(PowerTowerNotation a, float b) => a >= (new PowerTowerNotation(b));
+    public static bool operator >=(PowerTowerNotation a, double b) => a >= (new PowerTowerNotation(b));
 
     public static bool operator >=(PowerTowerNotation a, int b) => a >= (new PowerTowerNotation(b));
 
-    public static bool operator >=(float a, PowerTowerNotation b) => (new PowerTowerNotation(a)) >= b;
+    public static bool operator >=(double a, PowerTowerNotation b) => (new PowerTowerNotation(a)) >= b;
 
     public static bool operator >=(int a, PowerTowerNotation b) => (new PowerTowerNotation(a)) >= b;
 
@@ -574,11 +574,11 @@ public class PowerTowerNotation
     /// <returns>첫째 파라미터의 값이 둘째 파라미터의 값보다 작거나 같은지에 대한 진리값</returns>
     public static bool operator <=(PowerTowerNotation a, PowerTowerNotation b) => !(a > b);
 
-    public static bool operator <=(PowerTowerNotation a, float b) => a <= (new PowerTowerNotation(b));
+    public static bool operator <=(PowerTowerNotation a, double b) => a <= (new PowerTowerNotation(b));
 
     public static bool operator <=(PowerTowerNotation a, int b) => a <= (new PowerTowerNotation(b));
 
-    public static bool operator <=(float a, PowerTowerNotation b) => (new PowerTowerNotation(a)) <= b;
+    public static bool operator <=(double a, PowerTowerNotation b) => (new PowerTowerNotation(a)) <= b;
 
     public static bool operator <=(int a, PowerTowerNotation b) => (new PowerTowerNotation(a)) <= b;
 
@@ -590,11 +590,11 @@ public class PowerTowerNotation
     /// <returns>첫째 파라미터의 값이 둘째 파라미터의 값보다 작은지에 대한 진리값</returns>
     public static bool operator <(PowerTowerNotation a, PowerTowerNotation b) => !(a >= b);
 
-    public static bool operator <(PowerTowerNotation a, float b) => a < (new PowerTowerNotation(b));
+    public static bool operator <(PowerTowerNotation a, double b) => a < (new PowerTowerNotation(b));
 
     public static bool operator <(PowerTowerNotation a, int b) => a < (new PowerTowerNotation(b));
 
-    public static bool operator <(float a, PowerTowerNotation b) => (new PowerTowerNotation(a)) < b;
+    public static bool operator <(double a, PowerTowerNotation b) => (new PowerTowerNotation(a)) < b;
 
     public static bool operator <(int a, PowerTowerNotation b) => (new PowerTowerNotation(a)) < b;
 
@@ -615,7 +615,7 @@ public class PowerTowerNotation
     /// </summary>
     public void DescendLayer()
     {
-        _coeffArr[2] = Mathf.Round(_coeffArr[1] * Mathf.Pow(10, _coeffArr[2]));
+        _coeffArr[2] = Math.Round(_coeffArr[1] * Math.Pow(10, _coeffArr[2]));
         _coeffArr[1] = _coeffArr[0];
         _coeffArr[0] = 1f;
     }
