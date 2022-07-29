@@ -13,6 +13,17 @@ namespace InGame
     {
         [SerializeField] private Canvas _canvas;
         [SerializeField] private GameObject _anchor;
+
+        /// <summary>
+        /// 연구 달성 상태 여부
+        /// </summary>
+        public static bool IsCompleteExp = false;
+
+        /// <summary>
+        /// 연구 달성 목표치
+        /// </summary>
+        public static double experimentGoal = 1000;
+
         void Awake()
         {
 
