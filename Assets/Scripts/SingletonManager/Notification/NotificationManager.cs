@@ -249,8 +249,12 @@ public enum ENotiMessage
     CREATE_CHANNEL,
 
     ONCLICK_SELL_BRAIN,
+    ONCLICK_RESET_NETWORK,
 
     CLOSE_BRAININFO_POPUP,
+    CLOSE_RESET_POPUP,
+
+    EXPERIMENT_COMPLETE,
 }
 
 /// <summary>
@@ -264,6 +268,4 @@ public enum EDataParamKey
     CLASS_BRAIN,
     CLASS_CHANNEL,
     STRUCT_BRAINRELATION,
-
-
 }

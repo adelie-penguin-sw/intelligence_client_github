@@ -66,6 +66,7 @@ namespace MainTab
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.MOUSE_ENTER_BRAIN);
 
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.CLOSE_BRAININFO_POPUP);
+            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.CLOSE_RESET_POPUP);
         }
         private void RemoveObservers()
         {
@@ -78,6 +79,7 @@ namespace MainTab
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.MOUSE_ENTER_BRAIN);
 
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.CLOSE_BRAININFO_POPUP);
+            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.CLOSE_RESET_POPUP);
         }
         #region StateHandler Function
         private Dictionary<EBehaviorState, IBehaviorStateModule> _handlers = new Dictionary<EBehaviorState, IBehaviorStateModule>();
@@ -153,6 +155,14 @@ namespace MainTab
                 MoveScreen();
                 ZoomScreenPC();
 
+                if (InGame.InGameManager.IsCompleteExp)
+                {
+                    CompletePopup infoPopup = PopupManager.Instance.CreatePopup(EPrefabsType.POPUP, "CompletePopup")
+                        .GetComponent<CompletePopup>();
+                    infoPopup.Init();
+                    _controller.ChangeState(EBehaviorState.SHOW_POPUP);
+                }
+
                 if (_isBrainPointDown)
                 {
                     _dtBrainPointDown += dt_sec;
@@ -165,6 +175,9 @@ namespace MainTab
 
             public void OnNotification(Notification noti)
             {
+                if (InGame.InGameManager.IsCompleteExp)
+                    return;
+
                 switch (noti.msg)
                 {
                     case ENotiMessage.DRAG_START_CREATEBRAIN:
@@ -408,6 +421,7 @@ namespace MainTab
                 switch (noti.msg)
                 {
                     case ENotiMessage.CLOSE_BRAININFO_POPUP:
+                    case ENotiMessage.CLOSE_RESET_POPUP:
                         _controller.ChangeState(EBehaviorState.NONE);
                         break;
                 }

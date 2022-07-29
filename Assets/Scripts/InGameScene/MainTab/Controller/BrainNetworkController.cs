@@ -18,18 +18,23 @@ namespace MainTab
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.CREATE_BRAIN);
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.CREATE_CHANNEL);
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.ONCLICK_SELL_BRAIN);
+            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.ONCLICK_RESET_NETWORK);
         }
         public override void Set()
         {
             _brainNetwork = _app.MainTabModel.BrainNetwork;
             _brainNetwork.Init(_app.MainTabView.transform);
+            _brainNetwork.Set();
         }
 
         public override void AdvanceTime(float dt_sec)
         {
             if (_brainNetwork != null)
             {
-                _brainNetwork.AdvanceTime(dt_sec);
+                if (!InGame.InGameManager.IsCompleteExp)
+                {
+                    _brainNetwork.AdvanceTime(dt_sec);
+                }
             }
         }
 
@@ -38,6 +43,7 @@ namespace MainTab
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.CREATE_BRAIN);
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.CREATE_CHANNEL);
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_SELL_BRAIN);
+            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_RESET_NETWORK);
 
             _brainNetwork.Dispose();
             _brainNetwork = null;
@@ -60,6 +66,9 @@ namespace MainTab
                 case ENotiMessage.ONCLICK_SELL_BRAIN:
                     Brain sellBrain = (Brain)noti.data[EDataParamKey.CLASS_BRAIN];
                     RemoveBrain(sellBrain);
+                    break;
+                case ENotiMessage.ONCLICK_RESET_NETWORK:
+                    RemoveBrain(_brainNetwork.MainBrain);
                     break;
             }
         }
@@ -88,9 +97,28 @@ namespace MainTab
 
         private void RemoveBrain(Brain brain)
         {
-            _app.MainTabModel.NP += _brainNetwork.RemoveBrain(brain); 
-            _app.MainTabView.UI.SetNPText(_app.MainTabModel.NP);
+            if (brain.Type == EBrainType.MAINBRAIN)
+            {
+                _app.MainTabModel.TP += _brainNetwork.RemoveBrain(brain);
+                _app.MainTabView.UI.SetTPText(_app.MainTabModel.TP);
+                ResetBrainNetWork();
+            }
+            else if(brain.Type == EBrainType.NORMALBRAIN)
+            {
+                _app.MainTabModel.NP += _brainNetwork.RemoveBrain(brain);
+                _app.MainTabView.UI.SetNPText(_app.MainTabModel.NP);
+            }
         }
+
+        private void ResetBrainNetWork()
+        {
+            _app.MainTabModel.BrainNetwork.Dispose();
+            _app.MainTabModel.BrainNetwork = new BrainNetwork();
+            Set();
+            InGame.InGameManager.IsCompleteExp = false;
+            _brainNetwork.ClearAndDrawChannel();
+        }
+
     }
 
 }
