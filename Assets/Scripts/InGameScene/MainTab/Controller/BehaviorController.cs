@@ -287,6 +287,7 @@ namespace MainTab
                 switch (noti.msg)
                 {
                     case ENotiMessage.DRAG_END_CREATEBRAIN:
+                        PostServer_CreateBrain();
                         PostNoti_CreateBrain();
                         _controller.ChangeState(EBehaviorState.NONE);
                         break;
@@ -302,6 +303,13 @@ namespace MainTab
                 _tempBrain.Dispose();
             }
 
+            private void PostServer_CreateBrain()
+            {
+                CreateSingleNetworkBrainRequest req = new CreateSingleNetworkBrainRequest();
+                req.x = _tempBrain.transform.position.x;
+                req.y = _tempBrain.transform.position.y;
+                NetworkManager.Instance.API_CreateSingleNetworkBrain(req);
+            }
             private void PostNoti_CreateBrain()
             {
                 Hashtable sendData = new Hashtable();
