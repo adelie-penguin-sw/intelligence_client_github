@@ -30,8 +30,7 @@ public struct Coordinates
 public struct Distances
 {
     public int id;
-    public float x;
-    public float y;
+    public int distance;
 }
 
 

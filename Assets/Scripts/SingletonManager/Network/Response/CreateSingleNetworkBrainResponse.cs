@@ -7,7 +7,7 @@ public class CreateSingleNetworkBrainResponse
 {
 	public int statusCode;
 	public List<AnsEquations> ansEquations;
-	public List<Distances> distance;
+	public List<Distances> distances;
 	public int newBrain;
 	public double NP;
 	public int calcTime;

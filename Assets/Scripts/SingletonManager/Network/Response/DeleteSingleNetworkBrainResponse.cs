@@ -7,7 +7,7 @@ public class DeleteSingleNetworkBrainResponse
 {
 	public int statusCode;
 	public List<AnsEquations> ansEquations;
-	public List<Distances> distance;
+	public List<Distances> distances;
 	public List<int> deletedBrains;
 	public double NP;
 	public int calcTime;
