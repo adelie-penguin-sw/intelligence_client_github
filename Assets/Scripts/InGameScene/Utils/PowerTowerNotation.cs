@@ -34,26 +34,12 @@ public class PowerTowerNotation
 
     private void Convert(double number)
     {
-        CoeffAndPower cap = Decompose(number);
-        _coeffArr[0] = cap.coeff;
+        CoeffAndPower cap1 = Decompose(number);
+        CoeffAndPower cap2 = Decompose(cap1.power);
 
-        double tmpPower = cap.power;
-        if (tmpPower == 0f)
-        {
-            return;
-        }
-        else if (Math.Abs(tmpPower) < _coeffMax)
-        {
-            _coeffArr[1] = tmpPower;
-            return;
-        }
-        else
-        {
-            cap = Decompose(tmpPower);
-            _coeffArr[1] = cap.coeff;
-            _coeffArr[2] = cap.power;
-            return;
-        }
+        _coeffArr[0] = cap1.coeff;
+        _coeffArr[1] = cap2.coeff;
+        _coeffArr[2] = cap2.power;
     }
 
     /// <summary>
@@ -93,17 +79,31 @@ public class PowerTowerNotation
     {
         if (Math.Abs(layer1Coeff) >= 10f || Math.Abs(layer2Coeff) >= 10f || Math.Abs(layer3Coeff) >= 10f)
         {
-            throw new ArgumentOutOfRangeException("All three parameters must have values between -10 and 10.");
+            throw new ArgumentOutOfRangeException("abs value of each coefficients cannot exceed 10");
         }
 
         if (layer1Coeff == 0f)
         {
             layer2Coeff = 0f;
             layer3Coeff = 0f;
+            return;
         }
         if (layer2Coeff == 0f)
         {
             layer3Coeff = 0f;
+        }
+
+        if (Math.Abs(_coeffArr[0]) < 1f)
+        {
+            throw new ArgumentOutOfRangeException("use negative value on second layer instead of using small value on first layer");
+        }
+        if (Math.Abs(_coeffArr[1]) < 1f || Math.Abs(_coeffArr[2]) < 1f)
+        {
+            throw new ArgumentOutOfRangeException("nonzero values less than 1 are not allowed");
+        }
+        if (_coeffArr[2] < 0f)
+        {
+            throw new ArgumentOutOfRangeException("negative values are not allowed at top layer");
         }
 
         _coeffArr[0] = layer1Coeff;
