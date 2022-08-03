@@ -48,6 +48,19 @@ public class UpArrowNotation
             _operatorLayerCount[i] = operatorLayerCounts % 10;
             operatorLayerCounts /= 10;
         }
+
+        if (_operatorLayerCount[0] < 4)
+        {
+            _operatorLayerCount[0] = 1;
+            if (_top3Layer._coeffArr[1] >= 1f)
+            {
+                _operatorLayerCount[0] = 2;
+            }
+            if (_top3Layer._coeffArr[2] >= 1f)
+            {
+                _operatorLayerCount[0] = 3;
+            }
+        }
     }
 
     public override string ToString()
@@ -168,7 +181,8 @@ public class UpArrowNotation
 
     public void Sub(UpArrowNotation other)
     {
-
+        _top3Layer -= other._top3Layer;
+        CheckLayer();
     }
 
     public void Mul(UpArrowNotation other)
@@ -179,12 +193,14 @@ public class UpArrowNotation
 
     public void Div(UpArrowNotation other)
     {
-
+        _top3Layer /= other._top3Layer;
+        CheckLayer();
     }
 
     public void Pow(UpArrowNotation other)
     {
-
+        _top3Layer ^= other._top3Layer;
+        CheckLayer();
     }
 
     public double CalculatePower()
