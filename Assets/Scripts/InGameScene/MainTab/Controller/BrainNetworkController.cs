@@ -15,8 +15,6 @@ namespace MainTab
         public override void Init(MainTabApplication app)
         {
             base.Init(app);
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.CREATE_BRAIN);
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.CREATE_CHANNEL);
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.ONCLICK_SELL_BRAIN);
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.ONCLICK_RESET_NETWORK);
 
@@ -24,9 +22,15 @@ namespace MainTab
         }
         public override void Set()
         {
-            _brainNetwork = _app.MainTabModel.BrainNetwork;
-            _brainNetwork.Init(_app.MainTabView.transform);
-            _brainNetwork.Set(_app.MainTabModel.SingleNetworkWrapper);
+            if (_app != null)
+            {
+                if (_app.MainTabModel != null)
+                {
+                    _brainNetwork = _app.MainTabModel.BrainNetwork;
+                    _brainNetwork.Init(_app.MainTabView.transform);
+                    _brainNetwork.Set(_app.MainTabModel.SingleNetworkWrapper);
+                }
+            }
         }
 
         public override void AdvanceTime(float dt_sec)
@@ -42,8 +46,6 @@ namespace MainTab
 
         public override void Dispose()
         {
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.CREATE_BRAIN);
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.CREATE_CHANNEL);
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_SELL_BRAIN);
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_RESET_NETWORK);
 
@@ -58,15 +60,6 @@ namespace MainTab
         {
             switch(noti.msg)
             {
-                case ENotiMessage.CREATE_BRAIN:
-                    Vector2 brainPos = (Vector2)noti.data[EDataParamKey.VECTOR2];
-                    AddBrain(brainPos);
-                    break;
-                case ENotiMessage.CREATE_CHANNEL:
-                    BrainRelation relation = (BrainRelation)noti.data[EDataParamKey.STRUCT_BRAINRELATION];
-                    if(!AddChannel(relation))
-                        Debug.LogError("채널 추가 실패!");
-                    break;
                 case ENotiMessage.ONCLICK_SELL_BRAIN:
                     Brain sellBrain = (Brain)noti.data[EDataParamKey.CLASS_BRAIN];
                     RemoveBrain(sellBrain);
@@ -75,32 +68,9 @@ namespace MainTab
                     RemoveBrain(_brainNetwork.MainBrain);
                     break;
                 case ENotiMessage.UPDATE_BRAIN_NETWORK:
-
+                    _brainNetwork.UpdateBrainNetwork(_app.MainTabModel.SingleNetworkWrapper);
                     break;
             }
-        }
-
-        /// <summary>
-        /// BrainNetwork에 좌표에 해당하는 브레인을 생성시킨 후 추가시켜줌
-        /// </summary>
-        /// <param name="pos">생성될 브레인의 position</param>
-        private void AddBrain(Vector2 pos)
-        {
-           // GameObject go = PoolManager.Instance.GrabPrefabs(EPrefabsType.BRAIN, "Brain", _app.MainTabView.transform);
-           // go.transform.position = pos;
-           //
-           // Brain brain = go.GetComponent<Brain>();
-           // brain.Init(new BrainData(_tempBrainID++, EBrainType.NORMALBRAIN));
-           //
-           // _brainNetwork.AddBrain(brain);
-        }
-
-        private bool AddChannel(BrainRelation relation)
-        {
-            //if (!_brainNetwork.AddBrainRelation(relation))
-            // return false;
-            // return true;
-            return true;
         }
 
         private void RemoveBrain(Brain brain)

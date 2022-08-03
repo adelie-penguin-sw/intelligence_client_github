@@ -20,10 +20,6 @@ namespace MainTab
         /// </summary>
         public UpArrowNotation intellect = new UpArrowNotation(1f);
         /// <summary>
-        /// 다음 tick에 증가 될 지능
-        /// </summary>
-        public UpArrowNotation standByIntellect = new UpArrowNotation();
-        /// <summary>
         /// 거리
         /// </summary>
         public int distance = -1;
@@ -31,6 +27,18 @@ namespace MainTab
         /// 현재 브레인 타입
         /// </summary>
         public EBrainType brainType = EBrainType.MAINBRAIN;
+        /// <summary>
+        /// 브레인 좌표
+        /// </summary>
+        public Vector2 coordinates;
+        /// <summary>
+        /// 브레인 스킨 코드
+        /// </summary>
+        public int skinCode;
+        /// <summary>
+        /// 업그레이드 상태
+        /// </summary>
+        public int UpgradeCondition;
 
         [ShowInInspector] public HashSet<int> _receiverIdList;
         [ShowInInspector] public HashSet<int> _senderIdList;
@@ -45,16 +53,15 @@ namespace MainTab
             this.id = id;
             this.intellect = new UpArrowNotation(1);
             this.brainType = brainType;
-            this.standByIntellect = new UpArrowNotation();
             _receiverIdList = new HashSet<int>();
             _senderIdList = new HashSet<int>();
         }
-        public BrainData(int id, UpArrowNotation intellect, EBrainType brainType)
+        public BrainData(int id, UpArrowNotation intellect, int distance, EBrainType brainType)
         {
             this.id = id;
             this.intellect = intellect;
             this.brainType = brainType;
-            this.standByIntellect = new UpArrowNotation();
+            this.distance = distance;
             _receiverIdList = new HashSet<int>();
             _senderIdList = new HashSet<int>();
         }

@@ -24,6 +24,7 @@ public class PopupManager : MonoBehaviour
                 if (_instance == null)
                 {
                     GameObject go = new GameObject("PopupManager");
+                    go.layer = LayerMask.NameToLayer("Popup");
                     _instance = go.AddComponent<PopupManager>();
                 }
             }

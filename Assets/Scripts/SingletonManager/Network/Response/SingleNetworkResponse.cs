@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MainTab;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -70,6 +71,93 @@ public class SingleNetworkWrapper
             calcTime = res.calcTime;
 
             achievements = res.achievements;
+        }
+    }
+
+    public BrainData GetBrainDataForID(int id)
+    {
+        BrainData data = new BrainData();
+
+        data.id = id;
+        data.brainType = (id == 1) ? EBrainType.MAINBRAIN : EBrainType.NORMALBRAIN;
+
+        if (ansEquationsDic.ContainsKey(id))
+            data.intellect = new UpArrowNotation(ansEquationsDic[id].ansEquation);
+
+
+        if (distancesDic.ContainsKey(id))
+            data.distance = distancesDic[id].distance;
+
+        if(coordinatesDic.ContainsKey(id))
+            data.coordinates = new Vector2(coordinatesDic[id].x, coordinatesDic[id].y);
+
+        if (structuresDic.ContainsKey(id))
+        {
+            foreach (var receiverId in structuresDic[id].structure)
+            {
+                data._receiverIdList.Add(receiverId);
+            }
+        }
+
+        //data.skinCode = skinDic[id].skincode;
+        //data.UpgradeCondition = upgradeConditionDic[id].upgrade;
+        return data;
+    }
+
+    /// <summary>
+    /// 브레인 추가시 받는 데이터 업데이트 해주는 함수
+    /// </summary>
+    /// <param name="req"></param>
+    /// <param name="res"></param>
+    public void UpdateSingleNetworkData(CreateSingleNetworkBrainRequest req, CreateSingleNetworkBrainResponse res)
+    {
+        UserData.NP = res.NP;
+        ansEquationsDic.Clear();
+        foreach (var data in res.ansEquations)
+        {
+            ansEquationsDic.Add(data.id, data);
+        }
+
+        calcTime = res.calcTime;
+
+        distancesDic.Clear();
+        foreach (var data in res.distances)
+        {
+            distancesDic.Add(data.id, data);
+        }
+
+        Coordinates coordinates = new Coordinates();
+        coordinates.x = req.x;
+        coordinates.y = req.y;
+        coordinatesDic.Add(res.newBrain, coordinates);
+    }
+
+    /// <summary>
+    /// 채널 추가시 받는 데이터 업데이트 해주는 함수
+    /// </summary>
+    /// <param name="req"></param>
+    /// <param name="res"></param>
+    public void UpdateSingleNetworkData(CreateSingleNetworkChannelRequest req, CreateSingleNetworkChannelResponse res)
+    {
+        UserData.NP = res.NP;
+
+        ansEquationsDic.Clear();
+        foreach (var data in res.ansEquations)
+        {
+            ansEquationsDic.Add(data.id, data);
+        }
+
+        calcTime = res.calcTime;
+
+        distancesDic.Clear();
+        foreach (var data in res.distances)
+        {
+            distancesDic.Add(data.id, data);
+        }
+
+        if (structuresDic.ContainsKey(req.from))
+        {
+            structuresDic[req.from].structure.Add(req.to);
         }
     }
 }
