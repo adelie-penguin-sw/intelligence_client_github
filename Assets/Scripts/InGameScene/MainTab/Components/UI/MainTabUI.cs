@@ -15,10 +15,13 @@ namespace MainTab
 
         public void Init()
         {
+
         }
 
         public void Set()
         {
+            UpdateNPText();
+            UpdateTPText();
         }
 
         public void AdvanceTime(float dt_sec)
@@ -29,18 +32,18 @@ namespace MainTab
         /// 상단 NP Text를 해당 인자로 변경한다.
         /// </summary>
         /// <param name="np">변경할 np</param>
-        public void SetNPText(PowerTowerNotation np)
+        public void UpdateNPText()
         {
-            _txtNP.text = string.Format("NP: {0}", np);
+            _txtNP.text = string.Format("NP: {0}", UserData.NP);
         }
 
         /// <summary>
         /// 상단 TP Text를 해당 인자로 변경한다.
         /// </summary>
         /// <param name="tp">변경할 tp</param>
-        public void SetTPText(PowerTowerNotation tp)
+        public void UpdateTPText()
         {
-            _txtTP.text = string.Format("TP: {0}", tp);
+            _txtTP.text = string.Format("TP: {0}", UserData.TP);
         }
 
         public void Dispose()

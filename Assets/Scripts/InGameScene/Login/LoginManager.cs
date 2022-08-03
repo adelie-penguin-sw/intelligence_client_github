@@ -29,7 +29,6 @@ public class LoginManager : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(UserData.token))
         {
-            NetworkManager.Instance.API_LoadUserData();
             SceneManager.LoadScene("InGameScene");
         }
     }

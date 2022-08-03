@@ -43,7 +43,7 @@ public class NetworkManager : MonoBehaviour
     }
 
 #region �⺻ APIƲ
-    private const string _baseUrl = "http://ec2-3-38-74-157.ap-northeast-2.compute.amazonaws.com:8080";
+    private const string _baseUrl = "http://ec2-3-39-5-11.ap-northeast-2.compute.amazonaws.com:8080";
     private IEnumerator API_Post<Request>(string path , Request request)
     {
         string json = JsonUtility.ToJson(request);
@@ -248,11 +248,22 @@ public class NetworkManager : MonoBehaviour
 
         }));
     }
+
     public void API_CreateSingleNetworkChannel(CreateSingleNetworkChannelRequest req)
     {
         Debug.Log("API_CreateSingleNetworkBrain");
         string path = "/v1/experiment/single/network/channel";
         StartCoroutine(API_PostWithToken<CreateSingleNetworkChannelRequest, CreateSingleNetworkChannelResponse>(path, req, res =>
+        {
+
+        }));
+    }
+
+    public void API_CreateSingleNetworkBrainNumber(CreateSingleNetworkBrainNumberRequest req)
+    {
+        Debug.Log("API_CreateSingleNetworkBrainNumber");
+        string path = "/v1/experiment/single/network/brain/intelligence";
+        StartCoroutine(API_PostWithToken<CreateSingleNetworkBrainNumberRequest, CreateSingleNetworkBrainNumberResponse>(path, req, res =>
         {
 
         }));
@@ -263,13 +274,30 @@ public class NetworkManager : MonoBehaviour
     public void API_LoadUserData()
     {
         string path = "/v1/experiment/single/network";
-        StartCoroutine(API_Get<SingleNetworkResponse>(path, res => 
+        StartCoroutine(API_Get<SingleNetworkResponse>(path, res =>
         {
-            TextAsset textAsset = Resources.Load<TextAsset>("temp");
-            SingleNetworkResponse re = JsonUtility.FromJson<SingleNetworkResponse>(textAsset.text);
-            
-            string resJson = JsonUtility.ToJson(re);
-            Debug.LogError(resJson);
+            //wrapper = new SingleNetworkWrapper(res);
+            NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
+        }));
+    }
+    public void API_LoadUserData(Action<SingleNetworkWrapper> callback)
+    {
+        string path = "/v1/experiment/single/network";
+        StartCoroutine(API_Get<SingleNetworkResponse>(path, res =>
+        {
+            SingleNetworkWrapper wrapper = new SingleNetworkWrapper(res);
+            callback(wrapper);
+            NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
+        }));
+    }
+    #endregion
+
+    #region DELETE
+    public void API_DeleteSingleNetworkBrain(int brainID)
+    {
+        string path = "/v1/experiment/single/network/brain/"+brainID.ToString();
+        StartCoroutine(API_Get<DeleteSingleNetworkBrainResponse>(path, res =>
+        {
         }));
     }
     #endregion

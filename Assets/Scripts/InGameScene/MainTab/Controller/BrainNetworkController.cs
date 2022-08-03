@@ -19,12 +19,14 @@ namespace MainTab
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.CREATE_CHANNEL);
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.ONCLICK_SELL_BRAIN);
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.ONCLICK_RESET_NETWORK);
+
+            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.UPDATE_BRAIN_NETWORK);
         }
         public override void Set()
         {
             _brainNetwork = _app.MainTabModel.BrainNetwork;
             _brainNetwork.Init(_app.MainTabView.transform);
-            _brainNetwork.Set();
+            _brainNetwork.Set(_app.MainTabModel.SingleNetworkWrapper);
         }
 
         public override void AdvanceTime(float dt_sec)
@@ -44,6 +46,8 @@ namespace MainTab
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.CREATE_CHANNEL);
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_SELL_BRAIN);
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_RESET_NETWORK);
+
+            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.UPDATE_BRAIN_NETWORK);
 
             _brainNetwork.Dispose();
             _brainNetwork = null;
@@ -70,6 +74,9 @@ namespace MainTab
                 case ENotiMessage.ONCLICK_RESET_NETWORK:
                     RemoveBrain(_brainNetwork.MainBrain);
                     break;
+                case ENotiMessage.UPDATE_BRAIN_NETWORK:
+
+                    break;
             }
         }
 
@@ -79,19 +86,20 @@ namespace MainTab
         /// <param name="pos">생성될 브레인의 position</param>
         private void AddBrain(Vector2 pos)
         {
-            GameObject go = PoolManager.Instance.GrabPrefabs(EPrefabsType.BRAIN, "Brain", _app.MainTabView.transform);
-            go.transform.position = pos;
-
-            Brain brain = go.GetComponent<Brain>();
-            brain.Init(new BrainData(_tempBrainID++, EBrainType.NORMALBRAIN));
-
-            _brainNetwork.AddBrain(brain);
+           // GameObject go = PoolManager.Instance.GrabPrefabs(EPrefabsType.BRAIN, "Brain", _app.MainTabView.transform);
+           // go.transform.position = pos;
+           //
+           // Brain brain = go.GetComponent<Brain>();
+           // brain.Init(new BrainData(_tempBrainID++, EBrainType.NORMALBRAIN));
+           //
+           // _brainNetwork.AddBrain(brain);
         }
 
         private bool AddChannel(BrainRelation relation)
         {
-            if (!_brainNetwork.AddBrainRelation(relation))
-                return false;
+            //if (!_brainNetwork.AddBrainRelation(relation))
+            // return false;
+            // return true;
             return true;
         }
 
@@ -99,14 +107,14 @@ namespace MainTab
         {
             if (brain.Type == EBrainType.MAINBRAIN)
             {
-                _app.MainTabModel.TP += _brainNetwork.RemoveBrain(brain);
-                _app.MainTabView.UI.SetTPText(_app.MainTabModel.TP);
+               // UserData.TP += _brainNetwork.RemoveBrain(brain);
+                _app.MainTabView.UI.UpdateTPText();
                 ResetBrainNetWork();
             }
             else if(brain.Type == EBrainType.NORMALBRAIN)
             {
-                _app.MainTabModel.NP += _brainNetwork.RemoveBrain(brain);
-                _app.MainTabView.UI.SetNPText(_app.MainTabModel.NP);
+                //UserData.NP += _brainNetwork.RemoveBrain(brain);
+                _app.MainTabView.UI.UpdateNPText();
             }
         }
 
@@ -116,7 +124,6 @@ namespace MainTab
             _app.MainTabModel.BrainNetwork = new BrainNetwork();
             Set();
             InGame.InGameManager.IsCompleteExp = false;
-            _brainNetwork.ClearAndDrawChannel();
         }
 
     }

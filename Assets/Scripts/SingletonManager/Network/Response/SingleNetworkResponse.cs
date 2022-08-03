@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,58 +10,66 @@ public class SingleNetworkResponse
     public int statusCode;
     public List<AnsEquations> ansEquations;
     public List<Distances> distances;
-    public float NP;
-    public float TP;
+    public double NP; //나중에 뭔가 서버랑 이야기해서 바꿔야할듯? 
+    public double TP; //이것두
     public List<Structure> structures;
     public List<Coordinates> coordinates;
     public List<Skin> skin;
     public List<UpgradeCondition> upgradeCondition;
     public int calcTime;
-    public Dictionary<int, float> achievements;
+    public List<Achievements> achievements;
 }
 
-[Serializable]
-public struct AnsEquations
+public class SingleNetworkWrapper
 {
-    public int id;
-    public List<int> ansEquation;
-}
+    public Dictionary<int, AnsEquations> ansEquationsDic = new Dictionary<int, AnsEquations>();
+    public Dictionary<int, Distances> distancesDic = new Dictionary<int, Distances>();
+    public Dictionary<int, Structure> structuresDic = new Dictionary<int, Structure>();
+    public Dictionary<int, Coordinates> coordinatesDic = new Dictionary<int, Coordinates>();
+    public Dictionary<int, Skin> skinDic = new Dictionary<int, Skin>();
+    public Dictionary<int, UpgradeCondition> upgradeConditionDic = new Dictionary<int, UpgradeCondition>();
+    public int calcTime;
+    public List<Achievements> achievements = new List<Achievements>();
 
-[Serializable]
-public struct Coordinates
-{
-    public int id;
-    public float x;
-    public float y;
-}
+    public SingleNetworkWrapper(SingleNetworkResponse res)
+    {
+        if (res != null)
+        {
+            foreach (var data in res.ansEquations)
+            {
+                ansEquationsDic.Add(data.id, data);
+            }
 
+            foreach (var data in res.distances)
+            {
+                distancesDic.Add(data.id, data);
+            }
 
-[Serializable]
-public struct Distances
-{
-    public int id;
-    public float x;
-    public float y;
-}
+            foreach (var data in res.structures)
+            {
+                structuresDic.Add(data.id, data);
+            }
 
+            foreach (var data in res.coordinates)
+            {
+                coordinatesDic.Add(data.id, data);
+            }
 
-[Serializable]
-public struct Skin
-{
-    public int id;
-    public int skincode;
-}
+            foreach (var data in res.skin)
+            {
+                skinDic.Add(data.id, data);
+            }
 
-[Serializable]
-public struct Structure
-{
-    public int id;
-    public List<int> structure;
-}
+            foreach (var data in res.upgradeCondition)
+            {
+                upgradeConditionDic.Add(data.id, data);
+            }
 
-[Serializable]
-public struct UpgradeCondition
-{
-    public int id;
-    public int upgrade;
+            UserData.NP = res.NP;
+            UserData.TP = res.TP;
+            calcTime = res.calcTime;
+
+            achievements = res.achievements;
+        }
+    }
 }
