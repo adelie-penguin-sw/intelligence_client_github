@@ -29,19 +29,29 @@ namespace MainTab
         public override void Init()
         {
             base.Init();
-            foreach (var controller in _controllers)
+            NetworkManager.Instance.API_LoadUserData(wrapper =>
             {
-                controller.Init(this);
-            }
+                _mainTabModel.SingleNetworkWrapper = wrapper;
+
+                foreach (var controller in _controllers)
+                {
+                    controller.Init(this);
+                }
+            });
         }
 
         public override void OnEnter()
         {
             base.OnEnter();
-            foreach (var controller in _controllers)
+
+            NetworkManager.Instance.API_LoadUserData(wrapper =>
             {
-                controller.Set();
-            }
+                _mainTabModel.SingleNetworkWrapper = wrapper;
+                foreach (var controller in _controllers)
+                {
+                    controller.Set();
+                }
+            });
         }
 
         public override void AdvanceTime(float dt_sec)

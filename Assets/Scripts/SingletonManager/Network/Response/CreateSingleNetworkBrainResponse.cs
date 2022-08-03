@@ -6,10 +6,10 @@ using UnityEngine;
 public class CreateSingleNetworkBrainResponse
 {
 	public int statusCode;
-	public int ansEquations;
-	public int distance;
+	public List<AnsEquations> ansEquations;
+	public List<Distances> distance;
 	public int newBrain;
-	public float NP;
+	public double NP;
 	public int calcTime;
 }
 

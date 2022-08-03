@@ -38,7 +38,13 @@ namespace MainTab
                 GetStateHandler(_currentState).AdvanceTime(dt_sec);
             }
 
-            _view.UI.AdvanceTime(dt_sec);
+            if (_view != null)
+            {
+                if (_view.UI != null)
+                {
+                    _view.UI.AdvanceTime(dt_sec);
+                }
+            }
         }
 
         public override void Dispose()

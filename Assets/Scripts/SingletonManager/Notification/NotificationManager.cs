@@ -255,6 +255,9 @@ public enum ENotiMessage
     CLOSE_RESET_POPUP,
 
     EXPERIMENT_COMPLETE,
+
+    //server 통신 관련
+    UPDATE_BRAIN_NETWORK,
 }
 
 /// <summary>
@@ -268,4 +271,5 @@ public enum EDataParamKey
     CLASS_BRAIN,
     CLASS_CHANNEL,
     STRUCT_BRAINRELATION,
+
 }

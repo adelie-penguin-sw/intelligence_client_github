@@ -76,15 +76,6 @@ namespace MainTab
         }
         #endregion
 
-        #region Player Info
-        [BoxGroup("Player Info")]
-        [SerializeField] private PowerTowerNotation _np = new PowerTowerNotation();
-        public PowerTowerNotation NP { get { return _np; } set { _np = value; } }
-
-        [SerializeField] private PowerTowerNotation _tp = new PowerTowerNotation();
-        public PowerTowerNotation TP { get { return _tp; } set { _tp = value; } }
-        #endregion
-
         [BoxGroup("Brain Network")]
         [SerializeField] private BrainNetwork _brainNetwork = new BrainNetwork();
         public BrainNetwork BrainNetwork {
@@ -97,5 +88,20 @@ namespace MainTab
                 _brainNetwork = value;
             }
         }
+
+        #region UserData
+        [SerializeField] private SingleNetworkWrapper _singleNetworkWrapper;
+        public SingleNetworkWrapper SingleNetworkWrapper
+        {
+            get
+            {
+                return _singleNetworkWrapper;
+            }
+            set
+            {
+                _singleNetworkWrapper = value;
+            }
+        }
+        #endregion
     }
 }
