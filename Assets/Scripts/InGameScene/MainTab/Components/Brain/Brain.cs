@@ -20,16 +20,6 @@ namespace MainTab
         /// 지능 수치
         /// </summary>
         public UpArrowNotation Intellect { get { return _brainData.intellect; } }
-
-        /// <summary>
-        /// 다음 Tick에 증가 될 예정인 지능수치
-        /// </summary>
-        public UpArrowNotation StandByIntellect
-        {
-            get { return _brainData.standByIntellect; }
-            set { _brainData.standByIntellect = value; }
-        }
-
         /// <summary>
         /// 해당 브레인의 ID
         /// </summary>
@@ -50,7 +40,6 @@ namespace MainTab
         {
             _brainData = data;
             SetNumText(data.intellect);
-            _brainData.distance = -1;
             if (_brainData.brainType == EBrainType.GUIDEBRAIN)
                 gameObject.SetActive(false);
             Set();
@@ -67,10 +56,14 @@ namespace MainTab
                         break;
                     case EBrainType.MAINBRAIN:
                         _brainData.distance = 0;
+                        transform.localScale = new Vector2(1.2f, 1.2f);
                         break;
                     case EBrainType.NORMALBRAIN:
+                        transform.localScale = new Vector2(1, 1);
                         break;
                 }
+
+                transform.position = new Vector2(_brainData.coordinates.x, _brainData.coordinates.y);
             }
         }
 
@@ -78,8 +71,6 @@ namespace MainTab
         {
             if (_brainData.brainType != EBrainType.GUIDEBRAIN)
             {
-                _brainData.intellect.Add(_brainData.standByIntellect);
-                _brainData.standByIntellect = new UpArrowNotation();
                 SetNumText(_brainData.intellect);
             }
         }

@@ -30,8 +30,8 @@ namespace InGame
             base.AdvanceTime(dt_sec);
 
             _infoText.text =
-                string.Format("Intelligence: {0}\n\nStore NP: {1}\n\nDistance: {2}"
-                , _brain.Intellect, _brain.Intellect, _brain.Distance);
+                string.Format("Brain ID: {0}\n\nBrain Type: {1}\n\nIntelligence: {2}\n\nStore NP: {3}\n\nDistance: {4}",
+               _brain.ID,_brain.Type.ToString(), _brain.Intellect, _brain.Intellect, _brain.Distance); 
         }
         public override void Dispose()
         {

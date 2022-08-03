@@ -28,7 +28,13 @@ namespace MainTab
 
         public override void Set()
         {
-            _view.UI.Set();
+            if (_view != null)
+            {
+                if (_view.UI != null)
+                {
+                    _view.UI.Set();
+                }
+            }
         }
 
         public override void AdvanceTime(float dt_sec)
@@ -87,6 +93,7 @@ namespace MainTab
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.CLOSE_BRAININFO_POPUP);
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.CLOSE_RESET_POPUP);
         }
+
         #region StateHandler Function
         private Dictionary<EBehaviorState, IBehaviorStateModule> _handlers = new Dictionary<EBehaviorState, IBehaviorStateModule>();
         private EBehaviorState _currentState = EBehaviorState.UNKNOWN;
@@ -132,6 +139,7 @@ namespace MainTab
             return null;
         }
         #endregion
+
 
         #region StateHandler Class
         /// <summary>
@@ -293,8 +301,7 @@ namespace MainTab
                 switch (noti.msg)
                 {
                     case ENotiMessage.DRAG_END_CREATEBRAIN:
-                        PostServer_CreateBrain();
-                        PostNoti_CreateBrain();
+                        CreateBrain();
                         _controller.ChangeState(EBehaviorState.NONE);
                         break;
                 }
@@ -309,18 +316,16 @@ namespace MainTab
                 _tempBrain.Dispose();
             }
 
-            private void PostServer_CreateBrain()
+            private void CreateBrain()
             {
                 CreateSingleNetworkBrainRequest req = new CreateSingleNetworkBrainRequest();
                 req.x = _tempBrain.transform.position.x;
                 req.y = _tempBrain.transform.position.y;
-                NetworkManager.Instance.API_CreateSingleNetworkBrain(req);
-            }
-            private void PostNoti_CreateBrain()
-            {
-                Hashtable sendData = new Hashtable();
-                sendData.Add(EDataParamKey.VECTOR2, (Vector2)_tempBrain.transform.position);
-                NotificationManager.Instance.PostNotification(ENotiMessage.CREATE_BRAIN, sendData);
+                NetworkManager.Instance.API_CreateSingleNetworkBrain(req, res =>
+                {
+                    _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(req,res);
+                    NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
+                });
             }
         }
 
@@ -350,7 +355,6 @@ namespace MainTab
             {
                 _curPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 _channel.SetLineRenderToPos(_curPos);
-                //_channel.AdvanceTime(dt_sec);
             }
 
             public void OnNotification(Notification noti)
@@ -403,10 +407,14 @@ namespace MainTab
 
                 if (_currentSenderBrain != _currentEnterBrain)
                 {
-                    Hashtable sendData = new Hashtable();
-                    BrainRelation relation = new BrainRelation( _currentSenderBrain.ID, _currentEnterBrain.ID );
-                    sendData.Add(EDataParamKey.STRUCT_BRAINRELATION, relation);
-                    NotificationManager.Instance.PostNotification(ENotiMessage.CREATE_CHANNEL, sendData);
+                    CreateSingleNetworkChannelRequest req = new CreateSingleNetworkChannelRequest();
+                    req.from = _currentSenderBrain.ID;
+                    req.to = _currentEnterBrain.ID;
+                    NetworkManager.Instance.API_CreateSingleNetworkChannel(req, res =>
+                    {
+                        _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(req, res);
+                        NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
+                    });
                 }
             }
         }
