@@ -1,10 +1,15 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Player Prefers로 저장되는 데이터 , 글로벌 유저 데이터 저장
+/// </summary>
 public class UserData
 {
     public static string token;
+    public static double TP;
+    public static double NP;
     public static void SetString(string key, string value)
     {
         PlayerPrefs.SetString(key, value);

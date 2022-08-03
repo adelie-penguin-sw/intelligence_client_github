@@ -39,11 +39,30 @@ public class UpArrowNotation
         Convert(number);
     }
 
-    public UpArrowNotation(float layer1Coeff, float layer2Coeff, float layer3Coeff, int operatorLayerCounts)
+    public UpArrowNotation(float layer1Coeff, float layer2Coeff, float layer3Coeff, int operatorLayerCounts = 1)
     {
         _top3Layer = new PowerTowerNotation(layer1Coeff, layer2Coeff, layer3Coeff);
 
         for (int i=8; i>=0; i--)
+        {
+            _operatorLayerCount[i] = operatorLayerCounts % 10;
+            operatorLayerCounts /= 10;
+        }
+    }
+
+    public UpArrowNotation(List<float> layerCoeff, int operatorLayerCounts = 1)
+    {
+        float layer1Coeff = 0, layer2Coeff = 0, layer3Coeff = 0;
+        if(layerCoeff.Count >= 1)
+            layer1Coeff = layerCoeff[0];
+        if (layerCoeff.Count >= 2)
+            layer2Coeff = layerCoeff[1];
+        if (layerCoeff.Count >= 3)
+            layer3Coeff = layerCoeff[2];
+
+        _top3Layer = new PowerTowerNotation(layer1Coeff, layer2Coeff, layer3Coeff);
+
+        for (int i = 8; i >= 0; i--)
         {
             _operatorLayerCount[i] = operatorLayerCounts % 10;
             operatorLayerCounts /= 10;
