@@ -61,11 +61,7 @@ MonoBehaviour:
     _resizeSpeedScale: 2
     _curCameraSize: 5
     _waitBrainClickTime: 0.4
-    _np: 0
-    _tp: 0
     _brainNetwork:
-      _removeList: []
-      _addList: []
       _channelList: []
 --- !u!1 &1095789831457245672
 GameObject:
@@ -336,7 +332,7 @@ GameObject:
   - component: {fileID: 5066772353450249811}
   - component: {fileID: 6762278990806105111}
   - component: {fileID: 6405339457816439620}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: MainTabView
   m_TagString: Untagged
   m_Icon: {fileID: 0}

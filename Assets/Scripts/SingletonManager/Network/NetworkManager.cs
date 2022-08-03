@@ -43,11 +43,10 @@ public class NetworkManager : MonoBehaviour
     }
 
 #region �⺻ APIƲ
-    private const string _baseUrl = "http://ec2-3-39-5-11.ap-northeast-2.compute.amazonaws.com:8080";
+    private const string _baseUrl = "http://ec2-3-38-74-157.ap-northeast-2.compute.amazonaws.com:8080";
     private IEnumerator API_Post<Request>(string path , Request request)
     {
         string json = JsonUtility.ToJson(request);
-        Debug.Log(json);
         using (UnityWebRequest www = UnityWebRequest.Post(_baseUrl+path, json))
         {
             byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
@@ -75,14 +74,14 @@ public class NetworkManager : MonoBehaviour
             {
                 Debug.Log(www.downloadHandler.text);
             }
+
+            www.Dispose();
         }
 
     }
     private IEnumerator API_Post<Request,Response>(string path, Request request, Action<Response> callback)
     {
-        Debug.Log("API_Post");
         string json = JsonUtility.ToJson(request);
-        Debug.Log(json);
         using (UnityWebRequest www = UnityWebRequest.Post(_baseUrl + path, json))
         {
             byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
@@ -114,15 +113,14 @@ public class NetworkManager : MonoBehaviour
                 string tempjson = JsonUtility.ToJson(res);
                 Debug.Log(tempjson);
             }
+
             www.Dispose();
         }
 
     }
     private IEnumerator API_PostWithToken<Request, Response>(string path, Request request, Action<Response> callback)
     {
-        Debug.Log("API_Post");
         string json = JsonUtility.ToJson(request);
-        Debug.Log(json);
         using (UnityWebRequest www = UnityWebRequest.Post(_baseUrl + path, json))
         {
             byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
@@ -155,6 +153,7 @@ public class NetworkManager : MonoBehaviour
                 string tempjson = JsonUtility.ToJson(res);
                 Debug.Log(tempjson);
             }
+
             www.Dispose();
         }
 
@@ -193,6 +192,8 @@ public class NetworkManager : MonoBehaviour
                 Debug.Log(resJson);
                 callback(res);
             }
+
+            www.Dispose();
         }
     }
 
@@ -224,6 +225,8 @@ public class NetworkManager : MonoBehaviour
             {
                 Debug.Log(www.downloadHandler.text);
             }
+
+            www.Dispose();
         }
     }
     #endregion
@@ -239,23 +242,23 @@ public class NetworkManager : MonoBehaviour
         }));
     }
 
-    public void API_CreateSingleNetworkBrain(CreateSingleNetworkBrainRequest req)
+    public void API_CreateSingleNetworkBrain(CreateSingleNetworkBrainRequest req, Action<CreateSingleNetworkBrainResponse> callback)
     {
         Debug.Log("API_CreateSingleNetworkBrain");
         string path = "/v1/experiment/single/network/brain";
         StartCoroutine(API_PostWithToken<CreateSingleNetworkBrainRequest, CreateSingleNetworkBrainResponse>(path, req, res =>
         {
-
+            callback(res);
         }));
     }
 
-    public void API_CreateSingleNetworkChannel(CreateSingleNetworkChannelRequest req)
+    public void API_CreateSingleNetworkChannel(CreateSingleNetworkChannelRequest req, Action<CreateSingleNetworkChannelResponse> callback)
     {
         Debug.Log("API_CreateSingleNetworkBrain");
         string path = "/v1/experiment/single/network/channel";
         StartCoroutine(API_PostWithToken<CreateSingleNetworkChannelRequest, CreateSingleNetworkChannelResponse>(path, req, res =>
         {
-
+            callback(res);
         }));
     }
 
@@ -277,7 +280,6 @@ public class NetworkManager : MonoBehaviour
         StartCoroutine(API_Get<SingleNetworkResponse>(path, res =>
         {
             //wrapper = new SingleNetworkWrapper(res);
-            NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
         }));
     }
     public void API_LoadUserData(Action<SingleNetworkWrapper> callback)
@@ -287,7 +289,6 @@ public class NetworkManager : MonoBehaviour
         {
             SingleNetworkWrapper wrapper = new SingleNetworkWrapper(res);
             callback(wrapper);
-            NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
         }));
     }
     #endregion
