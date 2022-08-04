@@ -10,7 +10,7 @@ public class Exchange
     /// <exception cref="Exception"></exception>
     public static double Slog10(UpArrowNotation number)
     {
-        if (number._operatorLayerCount > 9)
+        if (number.OperatorLayerCount > 9)
         {
             throw new Exception("Expressions with tetration or higher are not allowed");
         }
@@ -18,7 +18,7 @@ public class Exchange
         double topLayerValue;
         PowerTowerNotation top3Layer = number.Top3Layer;
 
-        switch (number._operatorLayerCount)
+        switch (number.OperatorLayerCount)
         {
             case 0:
                 topLayerValue = top3Layer._top1Coeff;
@@ -34,7 +34,7 @@ public class Exchange
         double ln10 = Math.Log(10);
         double fracPart = Math.Log(Math.Log10(topLayerValue) * (ln10 - 1) + 1, ln10);
 
-        return number._operatorLayerCount + fracPart;
+        return number.OperatorLayerCount + fracPart;
     }
 
     /// <summary>
