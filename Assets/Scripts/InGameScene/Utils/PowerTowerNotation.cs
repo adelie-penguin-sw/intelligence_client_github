@@ -7,7 +7,9 @@ public class PowerTowerNotation
 {
     private static double _coeffMax = 10f;
 
-    public double[] _coeffArr = {0f, 0f, 0f};
+    public double _top1Coeff = 0f;
+    public double _top2Coeff = 0f;
+    public double _top3Coeff = 0f;
 
     struct CoeffAndPower
     {
@@ -37,9 +39,9 @@ public class PowerTowerNotation
         CoeffAndPower cap1 = Decompose(number);
         CoeffAndPower cap2 = Decompose(cap1.power);
 
-        _coeffArr[0] = cap1.coeff;
-        _coeffArr[1] = cap2.coeff;
-        _coeffArr[2] = cap2.power;
+        _top1Coeff = cap1.coeff;
+        _top2Coeff = cap2.coeff;
+        _top3Coeff = cap2.power;
     }
 
     /// <summary>
@@ -84,31 +86,33 @@ public class PowerTowerNotation
 
         if (layer1Coeff == 0f)
         {
-            layer2Coeff = 0f;
-            layer3Coeff = 0f;
+            _top1Coeff = 0f;
+            _top2Coeff = 0f;
+            _top3Coeff = 0f;
             return;
         }
         if (layer2Coeff == 0f)
         {
-            layer3Coeff = 0f;
+            _top2Coeff = 0f;
+            _top3Coeff = 0f;
         }
 
-        if (Math.Abs(_coeffArr[0]) < 1f)
+        if (Math.Abs(_top1Coeff) < 1f)
         {
             throw new ArgumentOutOfRangeException("use negative value on second layer instead of using small value on first layer");
         }
-        if (Math.Abs(_coeffArr[1]) < 1f || Math.Abs(_coeffArr[2]) < 1f)
+        if (Math.Abs(_top2Coeff) < 1f || Math.Abs(_top3Coeff) < 1f)
         {
             throw new ArgumentOutOfRangeException("nonzero values less than 1 are not allowed");
         }
-        if (_coeffArr[2] < 0f)
+        if (_top3Coeff < 0f)
         {
             throw new ArgumentOutOfRangeException("negative values are not allowed at top layer");
         }
 
-        _coeffArr[0] = layer1Coeff;
-        _coeffArr[1] = layer2Coeff;
-        _coeffArr[2] = layer3Coeff;
+        _top1Coeff = layer1Coeff;
+        _top2Coeff = layer2Coeff;
+        _top3Coeff = layer3Coeff;
     }
 
     /// <summary>
@@ -117,20 +121,20 @@ public class PowerTowerNotation
     /// <returns>문자열화된 숫자표현식</returns>
     public override string ToString()
     {
-        if (_coeffArr[2] == 0f)
+        if (_top3Coeff == 0f)
         {
-            if (_coeffArr[1] >= 0f)
+            if (_top2Coeff >= 0f)
             {
-                return (_coeffArr[0] * Math.Pow(10, _coeffArr[1])).ToString("N0");
+                return (_top1Coeff * Math.Pow(10, _top2Coeff)).ToString("N0");
             }
             else
             {
-                return (_coeffArr[0] * Math.Pow(10, _coeffArr[1])).ToString("N" + (-_coeffArr[1]).ToString("N0"));
+                return (_top1Coeff * Math.Pow(10, _top2Coeff)).ToString("N" + (-_top2Coeff).ToString("N0"));
             }
         }
 
-        string powerString = (_coeffArr[1] * Math.Pow(10, _coeffArr[2])).ToString("N0");
-        string coeffString = _coeffArr[0].ToString("N2");
+        string powerString = (_top2Coeff * Math.Pow(10, _top3Coeff)).ToString("N0");
+        string coeffString = _top1Coeff.ToString("N2");
 
         return coeffString + "x10^" + powerString;
     }
@@ -142,9 +146,9 @@ public class PowerTowerNotation
     public PowerTowerNotation Copy()
     {
         PowerTowerNotation copiedNumber = new PowerTowerNotation();
-        copiedNumber._coeffArr[0] = _coeffArr[0];
-        copiedNumber._coeffArr[1] = _coeffArr[1];
-        copiedNumber._coeffArr[2] = _coeffArr[2];
+        copiedNumber._top1Coeff = _top1Coeff;
+        copiedNumber._top2Coeff = _top2Coeff;
+        copiedNumber._top3Coeff = _top3Coeff;
 
         return copiedNumber;
     }
@@ -164,7 +168,7 @@ public class PowerTowerNotation
     public static PowerTowerNotation operator -(PowerTowerNotation a)
     {
         PowerTowerNotation result = a.Copy();
-        result._coeffArr[0] *= -1;
+        result._top1Coeff *= -1;
         return result;
     }
 
@@ -172,50 +176,50 @@ public class PowerTowerNotation
     {
         PowerTowerNotation result = new PowerTowerNotation();
 
-        double coeff = _coeffArr[0];
-        double power = Math.Round(_coeffArr[1] * Math.Pow(10, _coeffArr[2]));
-        double otherCoeff = other._coeffArr[0];
-        double otherPower = Math.Round(other._coeffArr[1] * Math.Pow(10, other._coeffArr[2]));
+        double coeff = _top1Coeff;
+        double power = Math.Round(_top2Coeff * Math.Pow(10, _top3Coeff));
+        double otherCoeff = other._top1Coeff;
+        double otherPower = Math.Round(other._top2Coeff * Math.Pow(10, other._top3Coeff));
 
         double powerDiff = Math.Abs(power - otherPower);
         double resultPower;
 
         if (power >= otherPower)
         {
-            result._coeffArr[0] = coeff + otherCoeff / Math.Pow(10, powerDiff);
+            result._top1Coeff = coeff + otherCoeff / Math.Pow(10, powerDiff);
             resultPower = power;
         }
         else
         {
-            result._coeffArr[0] = otherCoeff + coeff / Math.Pow(10, powerDiff);
+            result._top1Coeff = otherCoeff + coeff / Math.Pow(10, powerDiff);
             resultPower = otherPower;
         }
 
-        if (result._coeffArr[0] == 0f)
+        if (result._top1Coeff == 0f)
         {
             return result;
         }
 
-        if (Math.Abs(result._coeffArr[0]) >= _coeffMax)
+        if (Math.Abs(result._top1Coeff) >= _coeffMax)
         {
-            result._coeffArr[0] /= 10f;
+            result._top1Coeff /= 10f;
             resultPower += 1f;
         }
 
-        while (Math.Abs(result._coeffArr[0]) < 1f)
+        while (Math.Abs(result._top1Coeff) < 1f)
         {
-            result._coeffArr[0] *= 10f;
+            result._top1Coeff *= 10f;
             resultPower -= 1f;
         }
 
         if (Math.Abs(resultPower) >= _coeffMax)
         {
-            result._coeffArr[2] = Math.Floor(Math.Log10(Math.Abs(resultPower)));
-            result._coeffArr[1] = resultPower / Math.Pow(10, result._coeffArr[2]);
+            result._top3Coeff = Math.Floor(Math.Log10(Math.Abs(resultPower)));
+            result._top2Coeff = resultPower / Math.Pow(10, result._top3Coeff);
         }
         else
         {
-            result._coeffArr[1] = resultPower;
+            result._top2Coeff = resultPower;
         }
 
         return result;
@@ -258,63 +262,63 @@ public class PowerTowerNotation
     /// </summary>
     public void Reciprocate()
     {
-        _coeffArr[1] *= -1f;
+        _top2Coeff *= -1f;
 
-        if (_coeffArr[0] == 1f)
+        if (_top1Coeff == 1f)
         {
             return;
         }
 
         try
         {
-            _coeffArr[0] = 10f / _coeffArr[0];      // NOT ACCURATE !!!!!
+            _top1Coeff = 10f / _top1Coeff;      // NOT ACCURATE !!!!!
         }
         catch (DivideByZeroException e)
         {
             Debug.Log(e.Message);
             return;
         }
-        _coeffArr[1] -= 1f;
+        _top2Coeff -= 1f;
     }
 
     private PowerTowerNotation Multiply(PowerTowerNotation other)
     {
         PowerTowerNotation result = new PowerTowerNotation();
 
-        double coeff = _coeffArr[0];
-        double power = Math.Round(_coeffArr[1] * Math.Pow(10, _coeffArr[2]));
-        double otherCoeff = other._coeffArr[0];
-        double otherPower = Math.Round(other._coeffArr[1] * Math.Pow(10, other._coeffArr[2]));
+        double coeff = _top1Coeff;
+        double power = Math.Round(_top2Coeff * Math.Pow(10, _top3Coeff));
+        double otherCoeff = other._top1Coeff;
+        double otherPower = Math.Round(other._top2Coeff * Math.Pow(10, other._top3Coeff));
 
         double resultPower = power + otherPower;
 
-        result._coeffArr[0] = coeff * otherCoeff;
+        result._top1Coeff = coeff * otherCoeff;
 
-        if (result._coeffArr[0] == 0f)
+        if (result._top1Coeff == 0f)
         {
             return result;
         }
 
-        if (Math.Abs(result._coeffArr[0]) >= _coeffMax)
+        if (Math.Abs(result._top1Coeff) >= _coeffMax)
         {
-            result._coeffArr[0] /= 10f;
+            result._top1Coeff /= 10f;
             resultPower += 1f;
         }
 
-        while (Math.Abs(result._coeffArr[0]) < 1f)
+        while (Math.Abs(result._top1Coeff) < 1f)
         {
-            result._coeffArr[0] *= 10f;
+            result._top1Coeff *= 10f;
             resultPower -= 1f;
         }
 
         if (Math.Abs(resultPower) >= _coeffMax)
         {
-            result._coeffArr[2] = Math.Floor(Math.Log10(Math.Abs(resultPower)));
-            result._coeffArr[1] = resultPower / Math.Pow(10, result._coeffArr[2]);
+            result._top3Coeff = Math.Floor(Math.Log10(Math.Abs(resultPower)));
+            result._top2Coeff = resultPower / Math.Pow(10, result._top3Coeff);
         }
         else
         {
-            result._coeffArr[1] = resultPower;
+            result._top2Coeff = resultPower;
         }
 
         return result;
@@ -377,6 +381,20 @@ public class PowerTowerNotation
     }
 
     /// <summary>
+    /// PowerTowerNotation 타입의 상용로그 값을 실수로 반환합니다. 파라미터가 양수가 아닌 경우 예외처리됩니다.
+    /// </summary>
+    /// <returns>상용로그값</returns>
+    /// <exception cref="ArithmeticException"></exception>
+    public static double Log10(PowerTowerNotation a)
+    {
+        if (a._top1Coeff < 0f)
+        {
+            throw new ArithmeticException("Only positive values allowed");
+        }
+        return a._top2Coeff * Math.Pow(10.0, a._top3Coeff) + Math.Log10(a._top1Coeff);
+    }
+
+    /// <summary>
     /// 첫째 파라미터를 밑수, 둘째 파라미터를 지수로 두는 지수 연산식의 계산값에 해당하는 새 객체를 반환합니다. PowerTowerNotation 타입을 리턴합니다.
     /// </summary>
     /// <param name="a"></param>
@@ -386,7 +404,7 @@ public class PowerTowerNotation
     {
         PowerTowerNotation result = new PowerTowerNotation();
 
-        if (a._coeffArr[0] == 0f)
+        if (a._top1Coeff == 0f)
         {
             if (b != 0f)
             {
@@ -400,22 +418,22 @@ public class PowerTowerNotation
 
         if (b == 0f)
         {
-            result._coeffArr[0] = 1f;
+            result._top1Coeff = 1f;
             return result;
         }
 
-        double inputCoeff = a._coeffArr[0];
-        double inputPower = Math.Round(a._coeffArr[1] * Math.Pow(10, a._coeffArr[2]));
+        double inputCoeff = a._top1Coeff;
+        double inputPower = Math.Round(a._top2Coeff * Math.Pow(10, a._top3Coeff));
 
         double resultPower = (Math.Log10(inputCoeff) + inputPower) * b;
         double tempFrac = resultPower % 1;
         double resultCoeff = Math.Pow(10, tempFrac);
 
-        result._coeffArr[0] = resultCoeff;
+        result._top1Coeff = resultCoeff;
 
         resultPower -= tempFrac;
-        result._coeffArr[2] = Math.Floor(Math.Log10(Math.Abs(resultPower)));
-        result._coeffArr[1] = resultPower / Math.Pow(10, result._coeffArr[2]);
+        result._top3Coeff = Math.Floor(Math.Log10(Math.Abs(resultPower)));
+        result._top2Coeff = resultPower / Math.Pow(10, result._top3Coeff);
 
         return result;
     }
@@ -424,36 +442,36 @@ public class PowerTowerNotation
 
     public static PowerTowerNotation operator ^(PowerTowerNotation a, PowerTowerNotation b)
     {
-        if (a._coeffArr[0] == 0f && b._coeffArr[0] == 0f)
+        if (a._top1Coeff == 0f && b._top1Coeff == 0f)
         {
             throw new DivideByZeroException("Base and Exponent cannot be 0 at once");
         }
 
         PowerTowerNotation result = new PowerTowerNotation();
 
-        if (a._coeffArr[0] == 0f)
+        if (a._top1Coeff == 0f)
         {
             return result;
         }
-        if (b._coeffArr[0] == 0f)
+        if (b._top1Coeff == 0f)
         {
-            result._coeffArr[0] = 1f;
+            result._top1Coeff = 1f;
             return result;
         }
 
-        double aCoeff = a._coeffArr[0];
-        double aPower = Math.Round(a._coeffArr[1] * Math.Pow(10, a._coeffArr[2]));
-        double bCoeff = b._coeffArr[0];
-        double bPower = Math.Round(b._coeffArr[1] * Math.Pow(10, b._coeffArr[2]));
+        double aCoeff = a._top1Coeff;
+        double aPower = Math.Round(a._top2Coeff * Math.Pow(10, a._top3Coeff));
+        double bCoeff = b._top1Coeff;
+        double bPower = Math.Round(b._top2Coeff * Math.Pow(10, b._top3Coeff));
 
         if (aCoeff == 1f || bPower >= 10f)
         {
-            result._coeffArr[0] = 1f;
+            result._top1Coeff = 1f;
 
             CoeffAndPower cap = Decompose(aPower * bCoeff);
-            result._coeffArr[1] = cap.coeff;
+            result._top2Coeff = cap.coeff;
             bPower += cap.power;
-            result._coeffArr[2] = bPower;
+            result._top3Coeff = bPower;
         }
         else
         {
@@ -461,13 +479,13 @@ public class PowerTowerNotation
             double tempFrac = powerOfCoeff % 1;
             double additionalPower = Math.Floor(powerOfCoeff);
 
-            result._coeffArr[0] = Math.Pow(10, tempFrac);
+            result._top1Coeff = Math.Pow(10, tempFrac);
 
             additionalPower /= Math.Pow(10, bPower);
             CoeffAndPower cap = Decompose(additionalPower + aPower * bCoeff);
-            result._coeffArr[1] = cap.coeff;
+            result._top2Coeff = cap.coeff;
             bPower += cap.power;
-            result._coeffArr[2] = bPower;
+            result._top3Coeff = bPower;
         }
 
         return result;
@@ -485,12 +503,17 @@ public class PowerTowerNotation
     /// <returns>두 파라미터가 같은지에 대한 진리값</returns>
     public static bool operator ==(PowerTowerNotation a, PowerTowerNotation b)
     {
-        for (int i=0; i<3; i++)
+        if (a._top1Coeff != b._top1Coeff)
         {
-            if (a._coeffArr[i] != b._coeffArr[0])
-            {
-                return false;
-            }
+            return false;
+        }
+        if (a._top2Coeff != b._top2Coeff)
+        {
+            return false;
+        }
+        if (a._top3Coeff != b._top3Coeff)
+        {
+            return false;
         }
         return true;
     }
@@ -527,18 +550,26 @@ public class PowerTowerNotation
     /// <returns>첫째 파라미터의 값이 둘째 파라미터의 값보다 큰지에 대한 진리값</returns>
     public static bool operator >(PowerTowerNotation a, PowerTowerNotation b)
     {
-        for (int i = 2; i >= 0; i--)
+        if (a._top3Coeff > b._top3Coeff)
         {
-            if (a._coeffArr[i] > b._coeffArr[i])
-            {
-                return true;
-            }
-            else if (a._coeffArr[i] < b._coeffArr[i])
-            {
-                return false;
-            }
+            return true;
         }
-
+        else if (a._top3Coeff < b._top3Coeff)
+        {
+            return false;
+        }
+        if (a._top2Coeff > b._top2Coeff)
+        {
+            return true;
+        }
+        else if (a._top2Coeff < b._top2Coeff)
+        {
+            return false;
+        }
+        if (a._top1Coeff > b._top1Coeff)
+        {
+            return true;
+        }
         return false;
     }
 
@@ -603,11 +634,11 @@ public class PowerTowerNotation
     /// </summary>
     public void AscendLayer()
     {
-        CoeffAndPower cap = Decompose(_coeffArr[2]);
+        CoeffAndPower cap = Decompose(_top3Coeff);
 
-        _coeffArr[0] = _coeffArr[1];
-        _coeffArr[1] = cap.coeff;
-        _coeffArr[2] = cap.power;
+        _top1Coeff = _top2Coeff;
+        _top2Coeff = cap.coeff;
+        _top3Coeff = cap.power;
     }
 
     /// <summary>
@@ -615,8 +646,8 @@ public class PowerTowerNotation
     /// </summary>
     public void DescendLayer()
     {
-        _coeffArr[2] = Math.Round(_coeffArr[1] * Math.Pow(10, _coeffArr[2]));
-        _coeffArr[1] = _coeffArr[0];
-        _coeffArr[0] = 1f;
+        _top3Coeff = Math.Round(_top2Coeff * Math.Pow(10, _top3Coeff));
+        _top2Coeff = _top1Coeff;
+        _top1Coeff = 1f;
     }
 }
