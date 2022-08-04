@@ -289,6 +289,111 @@ public class UpArrowNotation
     }
 
     /// <summary>
+    /// 두 수의 합에 해당하는 새 객체를 반환합니다. UpArrowNotation 타입을 리턴합니다.
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns>합</returns>
+    public static UpArrowNotation operator +(UpArrowNotation a, UpArrowNotation b)
+    {
+        UpArrowNotation result = a.Copy();
+        result.Add(b);
+        return result;
+    }
+
+    public static UpArrowNotation operator +(UpArrowNotation a, double b) => a + new UpArrowNotation(b);
+
+    public static UpArrowNotation operator +(UpArrowNotation a, int b) => a + new UpArrowNotation(b);
+
+    public static UpArrowNotation operator +(double a, UpArrowNotation b) => new UpArrowNotation(a) + b;
+
+    public static UpArrowNotation operator +(int a, UpArrowNotation b) => new UpArrowNotation(a) + b;
+
+    /// <summary>
+    /// 두 수의 차에 해당하는 새 객체를 반환합니다. UpArrowNotation 타입을 리턴합니다.
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns>차</returns>
+    public static UpArrowNotation operator -(UpArrowNotation a, UpArrowNotation b)
+    {
+        UpArrowNotation result = a.Copy();
+        result.Sub(b);
+        return result;
+    }
+
+    public static UpArrowNotation operator -(UpArrowNotation a, double b) => a - new UpArrowNotation(b);
+
+    public static UpArrowNotation operator -(UpArrowNotation a, int b) => a - new UpArrowNotation(b);
+
+    public static UpArrowNotation operator -(double a, UpArrowNotation b) => new UpArrowNotation(a) - b;
+
+    public static UpArrowNotation operator -(int a, UpArrowNotation b) => new UpArrowNotation(a) - b;
+
+    /// <summary>
+    /// 두 수의 곱에 해당하는 새 객체를 반환합니다. UpArrowNotation 타입을 리턴합니다.
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns>곱</returns>
+    public static UpArrowNotation operator *(UpArrowNotation a, UpArrowNotation b)
+    {
+        UpArrowNotation result = a.Copy();
+        result.Mul(b);
+        return result;
+    }
+
+    public static UpArrowNotation operator *(UpArrowNotation a, double b) => a * new UpArrowNotation(b);
+
+    public static UpArrowNotation operator *(UpArrowNotation a, int b) => a * new UpArrowNotation(b);
+
+    public static UpArrowNotation operator *(double a, UpArrowNotation b) => new UpArrowNotation(a) * b;
+
+    public static UpArrowNotation operator *(int a, UpArrowNotation b) => new UpArrowNotation(a) * b;
+
+    /// <summary>
+    /// 첫째 파라미터를 둘째 파라미터로 나눈 값에 해당하는 새 객체를 반환합니다. UpArrowNotation 타입을 리턴합니다.
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns>몫</returns>
+    public static UpArrowNotation operator /(UpArrowNotation a, UpArrowNotation b)
+    {
+        UpArrowNotation result = a.Copy();
+        result.Div(b);
+        return result;
+    }
+
+    public static UpArrowNotation operator /(UpArrowNotation a, double b) => a / new UpArrowNotation(b);
+
+    public static UpArrowNotation operator /(UpArrowNotation a, int b) => a / new UpArrowNotation(b);
+
+    public static UpArrowNotation operator /(double a, UpArrowNotation b) => new UpArrowNotation(a) / b;
+
+    public static UpArrowNotation operator /(int a, UpArrowNotation b) => new UpArrowNotation(a) / b;
+
+    /// <summary>
+    /// 첫째 파라미터를 밑수, 둘째 파라미터를 지수로 두는 지수 연산식의 계산값에 해당하는 새 객체를 반환합니다. UpArrowNotation 타입을 리턴합니다.
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns>지수 연산값</returns>
+    public static UpArrowNotation operator ^(UpArrowNotation a, UpArrowNotation b)
+    {
+        UpArrowNotation result = a.Copy();
+        result.Pow(b);
+        return result;
+    }
+
+    public static UpArrowNotation operator ^(UpArrowNotation a, double b) => a ^ new UpArrowNotation(b);
+
+    public static UpArrowNotation operator ^(UpArrowNotation a, int b) => a ^ new UpArrowNotation(b);
+
+    public static UpArrowNotation operator ^(double a, UpArrowNotation b) => new UpArrowNotation(a) ^ b;
+
+    public static UpArrowNotation operator ^(int a, UpArrowNotation b) => new UpArrowNotation(a) ^ b;
+
+    /// <summary>
     /// 두 파라미터의 모든 속성이 같은지에 대한 진리값을 반환합니다. 타입이 다른 경우 UpArrowNotation으로 변환한 후 비교합니다.
     /// </summary>
     /// <param name="a"></param>
