@@ -6,7 +6,7 @@ using System;
 public class UpArrowNotation
 {
     private PowerTowerNotation _top3Layer;
-    public int[] _operatorLayerCount = {1, 1, 1, 1, 1, 1, 1, 1, 1};
+    public int _operatorLayerCount = 0;
 
     public PowerTowerNotation Top3Layer { get { return _top3Layer; } }
 
@@ -14,13 +14,13 @@ public class UpArrowNotation
     {
         _top3Layer = new PowerTowerNotation(number);
 
-        if (_top3Layer._coeffArr[1] != 0f)
+        if (_top3Layer._top2Coeff != 0f)
         {
-            _operatorLayerCount[0] = 2;
+            _operatorLayerCount = 1;
         }
-        if (_top3Layer._coeffArr[2] != 0f)
+        if (_top3Layer._top3Coeff != 0f)
         {
-            _operatorLayerCount[0] = 3;
+            _operatorLayerCount = 2;
         }
     }
 
@@ -39,28 +39,27 @@ public class UpArrowNotation
         Convert(number);
     }
 
-    public UpArrowNotation(double layer1Coeff, double layer2Coeff, double layer3Coeff, int operatorLayerCounts)
+    public UpArrowNotation(double layer1Coeff, double layer2Coeff, double layer3Coeff, int operatorLayerCounts = 0)
     {
         _top3Layer = new PowerTowerNotation(layer1Coeff, layer2Coeff, layer3Coeff);
 
-        for (int i=8; i>=0; i--)
+        int expoLayerCount = operatorLayerCounts % 10;
+
+        if (expoLayerCount < 3)
         {
-            _operatorLayerCount[i] = operatorLayerCounts % 10;
             operatorLayerCounts /= 10;
+            operatorLayerCounts *= 10;
+
+            if (layer2Coeff >= 1f)
+            {
+                operatorLayerCounts += 1;
+            }
+            if (layer3Coeff >= 1f) {
+                operatorLayerCounts += 1;
+            }
         }
 
-        if (_operatorLayerCount[0] < 4)
-        {
-            _operatorLayerCount[0] = 1;
-            if (_top3Layer._coeffArr[1] >= 1f)
-            {
-                _operatorLayerCount[0] = 2;
-            }
-            if (_top3Layer._coeffArr[2] >= 1f)
-            {
-                _operatorLayerCount[0] = 3;
-            }
-        }
+        _operatorLayerCount = operatorLayerCounts;
     }
 
     public override string ToString()
@@ -68,30 +67,30 @@ public class UpArrowNotation
         string resultString = _top3Layer.ToString();
 
         int layerCountTest = 1;
-        for (int i=1; i<9; i++)
-        {
-            layerCountTest *= _operatorLayerCount[i];
+        int layerCount = _operatorLayerCount / 10;
+
+        for (int i = 0; i < 8; i++) {
+            layerCountTest *= layerCount % 10;
+            layerCount /= 10;
         }
 
-        if (_top3Layer._coeffArr[2] > 0f && (_operatorLayerCount[0] > 3 || layerCountTest > 1))
-        {
+        if (_top3Layer._top3Coeff > 0.0 && (_operatorLayerCount % 10 > 3 || layerCountTest > 1)) {
             resultString = "(" + resultString + ")";
         }
 
         string operatorString = "^";
-        for (int i=0; i<_operatorLayerCount[0]-3; i++)
-        {
+        for (int i = 0; i < _operatorLayerCount % 10 - 3; i++) {
             resultString = "10" + operatorString + resultString;
         }
 
-        for (int i=1; i<9; i++)
-        {
+        int higherLevelCounts = _operatorLayerCount / 10;
+        for (int i = 0; i < 8; i++) {
             operatorString += "^";
 
-            for (int j=0; j<_operatorLayerCount[i]-1; j++)
-            {
+            for (int j = 0; j < higherLevelCounts % 10; j++) {
                 resultString = "10" + operatorString + resultString;
             }
+            higherLevelCounts /= 10;
         }
 
         return resultString;
@@ -102,66 +101,78 @@ public class UpArrowNotation
         UpArrowNotation copiedNumber = new UpArrowNotation();
 
         copiedNumber._top3Layer = _top3Layer.Copy();
-        for (int i=0; i<9; i++)
-        {
-            copiedNumber._operatorLayerCount[i] = _operatorLayerCount[i];
-        }
+        copiedNumber._operatorLayerCount = _operatorLayerCount;
 
         return copiedNumber;
     }
 
+    public double CalculatePower()
+    {
+        return _top3Layer._top2Coeff * Math.Pow(10.0, _top3Layer._top3Coeff);
+    }
+
+    public double CalculateFull()
+    {
+        try
+        {
+            double power = _top3Layer._top2Coeff * Math.Pow(10.0, _top3Layer._top3Coeff);
+            return _top3Layer._top1Coeff * Math.Pow(10.0, power);
+        }
+        catch (OverflowException e)
+        {
+            return double.PositiveInfinity;
+        }
+    }
+
     private void CheckLayer()
     {
-        if (_operatorLayerCount[0] < 4)
-        {
-            if (_top3Layer._coeffArr[1] != 0f)
-            {
-                _operatorLayerCount[0] = 2;
+        int expoLayerCount = _operatorLayerCount % 10;
+
+
+        if (expoLayerCount < 3) {
+            _operatorLayerCount /= 10;
+            _operatorLayerCount *= 10;
+
+            if (_top3Layer._top2Coeff != 0.0) {
+                _operatorLayerCount += 1;
             }
-            if (_top3Layer._coeffArr[2] != 0f)
-            {
-                _operatorLayerCount[0] = 3;
+            if (_top3Layer._top3Coeff != 0.0) {
+                _operatorLayerCount += 1;
             }
         }
 
-        if (_top3Layer._coeffArr[2] >= 10f)
-        {
+        if (_top3Layer._top3Coeff >= 10.0) {
             _top3Layer.AscendLayer();
-            _operatorLayerCount[0] += 1;
+            _operatorLayerCount += 1;
         }
 
-        if (_operatorLayerCount[0] > 9)
-        {
-            _operatorLayerCount[1] += 1;
-            _operatorLayerCount[0] = 2;
-            _top3Layer = new PowerTowerNotation(1f, 1f, 0f);
+        if (_operatorLayerCount % 10 == 0) {
+            _operatorLayerCount += 1;
+            _top3Layer = new PowerTowerNotation(1.1f, 1.0f, 0f);
         }
 
-        for (int i=1; i<8; i++)
-        {
-            if (_operatorLayerCount[i] > 9)
-            {
-                _operatorLayerCount[i] = 1;
-                _operatorLayerCount[i + 1] += 1;
-            }
-            else
-            {
-                break;
-            }
-        }
+        // if uan.operatorLayerCount >= 1000000000 {
+        // 	// If number gets SOOOOOOOOOOOOO large..??
+        // }
 
-        if (_operatorLayerCount[8] > 9)
-        {
-            // If number gets SOOOOOOOOOOOOO large..??
-        }
-
-        if (_top3Layer._coeffArr[2] < 1f && _operatorLayerCount[0] > 3)
-        {
+        if (_top3Layer._top3Coeff < 1.0 && _operatorLayerCount % 10 > 2) {
             _top3Layer.DescendLayer();
-            _operatorLayerCount[0] -= 1;
+            _operatorLayerCount -= 1;
         }
 
-        // Decrease Layer ...
+        int totalLayerCounts = 0;
+        int higherLevelCounts = _operatorLayerCount / 10;
+
+        for (int i = 0; i < 8; i++) {
+            totalLayerCounts += higherLevelCounts % 10;
+            higherLevelCounts /= 10;
+        }
+
+        if (totalLayerCounts > 0 && _operatorLayerCount % 10 == 0) {
+            _operatorLayerCount -= 1;
+            _top3Layer = new PowerTowerNotation(9.999f, 9.999f, 9f);
+            _operatorLayerCount -= 1;
+        }
     }
 
     public static UpArrowNotation operator +(UpArrowNotation a) => a;
@@ -203,40 +214,9 @@ public class UpArrowNotation
         CheckLayer();
     }
 
-    public double CalculatePower()
-    {
-        double coeff = _top3Layer._coeffArr[1];
-        double power = _top3Layer._coeffArr[2];
-
-        return coeff * Math.Pow(10, power);
-    }
-
-    public double CalculateFull()
-    {
-        double coeff = _top3Layer._coeffArr[0];
-        double power = this.CalculatePower();
-
-        try
-        {
-            return coeff * Math.Pow(10, power);
-        }
-        catch (OverflowException e)
-        {
-            return double.PositiveInfinity;
-        }
-    }
-
     public static bool operator ==(UpArrowNotation a, UpArrowNotation b)
     {
-        for (int i=0; i<9; i++)
-        {
-            if (a._operatorLayerCount[i] != b._operatorLayerCount[i])
-            {
-                return false;
-            }
-        }
-
-        return a._top3Layer == b._top3Layer;
+        return a._top3Layer == b._top3Layer && a._operatorLayerCount == b._operatorLayerCount;
     }
 
     public static bool operator ==(UpArrowNotation a, double b) => a == (new UpArrowNotation(b));
@@ -259,12 +239,13 @@ public class UpArrowNotation
 
     public static bool operator >(UpArrowNotation a, UpArrowNotation b)
     {
-        for (int i = 8; i > -1; i--)
+        if (a._operatorLayerCount > b._operatorLayerCount)
         {
-            if (a._operatorLayerCount[i] > b._operatorLayerCount[i])
-            {
-                return true;
-            }
+            return true;
+        }
+        else if (a._operatorLayerCount < b._operatorLayerCount)
+        {
+            return false;
         }
 
         return a._top3Layer > b._top3Layer;
