@@ -97,18 +97,18 @@ public class PowerTowerNotation
             _top3Coeff = 0f;
         }
 
-        if (Math.Abs(_top1Coeff) < 1f)
-        {
-            throw new ArgumentOutOfRangeException("use negative value on second layer instead of using small value on first layer");
-        }
-        if (Math.Abs(_top2Coeff) < 1f || Math.Abs(_top3Coeff) < 1f)
-        {
-            throw new ArgumentOutOfRangeException("nonzero values less than 1 are not allowed");
-        }
-        if (_top3Coeff < 0f)
-        {
-            throw new ArgumentOutOfRangeException("negative values are not allowed at top layer");
-        }
+        //if (Math.Abs(_top1Coeff) < 1f)
+        //{
+        //    throw new ArgumentOutOfRangeException("use negative value on second layer instead of using small value on first layer");
+        //}
+        //if (Math.Abs(_top2Coeff) < 1f || Math.Abs(_top3Coeff) < 1f)
+        //{
+        //    throw new ArgumentOutOfRangeException("nonzero values less than 1 are not allowed");
+        //}
+        //if (_top3Coeff < 0f)
+        //{
+        //    throw new ArgumentOutOfRangeException("negative values are not allowed at top layer");
+        //}
 
         _top1Coeff = layer1Coeff;
         _top2Coeff = layer2Coeff;
