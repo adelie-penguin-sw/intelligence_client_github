@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-    UpArrowNotation a = new UpArrowNotation(1f);
-    UpArrowNotation b = new UpArrowNotation(1823748924352273f);
-    UpArrowNotation c = new UpArrowNotation(1128925342354912f);
-    UpArrowNotation d = new UpArrowNotation(112423523534789127f);
+    UpArrowNotation i = new UpArrowNotation(1f);
+    UpArrowNotation j = new UpArrowNotation(2f);
 
     // Start is called before the first frame update
     void Start()
@@ -18,10 +16,9 @@ public class Test : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        c.Mul(d);
-        b.Mul(c);
-        a.Mul(b);
-        Debug.Log(a._operatorLayerCount);
-        Debug.Log(a);
+        Debug.Log(i);
+        Debug.Log(Exchange.Slog10(i));
+        i.Mul(j);
+        j.Mul(new UpArrowNotation(2f));
     }
 }
