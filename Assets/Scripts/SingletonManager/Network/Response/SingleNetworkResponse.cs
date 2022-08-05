@@ -11,8 +11,8 @@ public class SingleNetworkResponse
     public int statusCode;
     public List<AnsEquations> ansEquations;
     public List<Distances> distances;
-    public double NP; //나중에 뭔가 서버랑 이야기해서 바꿔야할듯? 
-    public double TP; //이것두
+    public AnsEquation NP; //나중에 뭔가 서버랑 이야기해서 바꿔야할듯? 
+    public AnsEquation TP; //이것두
     public List<Structure> structures;
     public List<Coordinates> coordinates;
     public List<Skin> skin;
@@ -66,8 +66,17 @@ public class SingleNetworkWrapper
                 upgradeConditionDic.Add(data.id, data);
             }
 
-            UserData.NP = res.NP;
-            UserData.TP = res.TP;
+            UserData.NP = new UpArrowNotation(
+            res.NP.top3Layer.top1Coeff,
+            res.NP.top3Layer.top2Coeff,
+            res.NP.top3Layer.top3Coeff,
+            res.NP.operatorLayerCount);
+
+            UserData.TP = new UpArrowNotation(
+            res.TP.top3Layer.top1Coeff,
+            res.TP.top3Layer.top2Coeff,
+            res.TP.top3Layer.top3Coeff,
+            res.TP.operatorLayerCount);
             calcTime = res.calcTime;
 
             achievements = res.achievements;
@@ -79,10 +88,13 @@ public class SingleNetworkWrapper
         BrainData data = new BrainData();
 
         data.id = id;
-        data.brainType = (id == 1) ? EBrainType.MAINBRAIN : EBrainType.NORMALBRAIN;
+        data.brainType = (id == 0) ? EBrainType.MAINBRAIN : EBrainType.NORMALBRAIN;
 
         if (ansEquationsDic.ContainsKey(id))
-            data.intellect = new UpArrowNotation(ansEquationsDic[id].ansEquation);
+            data.intellect = new UpArrowNotation(ansEquationsDic[id].ansEquation.top3Layer.top1Coeff,
+                                                 ansEquationsDic[id].ansEquation.top3Layer.top2Coeff,
+                                                 ansEquationsDic[id].ansEquation.top3Layer.top3Coeff,
+                                                 ansEquationsDic[id].ansEquation.operatorLayerCount);
 
 
         if (distancesDic.ContainsKey(id))
@@ -111,7 +123,18 @@ public class SingleNetworkWrapper
     /// <param name="res"></param>
     public void UpdateSingleNetworkData(CreateSingleNetworkBrainRequest req, CreateSingleNetworkBrainResponse res)
     {
-        UserData.NP = res.NP;
+        UserData.NP = new UpArrowNotation(
+            res.NP.top3Layer.top1Coeff,
+            res.NP.top3Layer.top2Coeff,
+            res.NP.top3Layer.top3Coeff,
+            res.NP.operatorLayerCount);
+
+        UserData.TP = new UpArrowNotation(
+            res.TP.top3Layer.top1Coeff,
+            res.TP.top3Layer.top2Coeff,
+            res.TP.top3Layer.top3Coeff,
+            res.TP.operatorLayerCount);
+
         ansEquationsDic.Clear();
         foreach (var data in res.ansEquations)
         {
@@ -137,9 +160,13 @@ public class SingleNetworkWrapper
     /// </summary>
     /// <param name="req"></param>
     /// <param name="res"></param>
-    public void UpdateSingleNetworkData(CreateSingleNetworkChannelRequest req, CreateSingleNetworkChannelResponse res)
+    public void UpdateSingleNetworkData(CreateSingleNetworkChannelRequest req, CreateSingleNetworkChannelResponse res, Action callback)
     {
-        UserData.NP = res.NP;
+        UserData.NP = new UpArrowNotation(
+            res.NP.top3Layer.top1Coeff,
+            res.NP.top3Layer.top2Coeff,
+            res.NP.top3Layer.top3Coeff,
+            res.NP.operatorLayerCount);
 
         ansEquationsDic.Clear();
         foreach (var data in res.ansEquations)
@@ -155,9 +182,16 @@ public class SingleNetworkWrapper
             distancesDic.Add(data.id, data);
         }
 
-        if (structuresDic.ContainsKey(req.from))
+        if (!structuresDic.ContainsKey(req.from))
         {
-            structuresDic[req.from].structure.Add(req.to);
+            Debug.LogError("ㅊㅐㄴㅓㄹ ㅊㅜㄱㅏ ㅇㅗㅏㄴㄹㅛ");
+            Structure data = new Structure();
+            data.id = req.from;
+            data.structure = new List<int>();
+            structuresDic.Add(req.from, data);
         }
+        structuresDic[req.from].structure.Add(req.to);
+
+        callback();
     }
 }

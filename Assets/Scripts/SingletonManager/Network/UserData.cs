@@ -8,8 +8,8 @@ using UnityEngine;
 public class UserData
 {
     public static string token;
-    public static double TP;
-    public static double NP;
+    public static UpArrowNotation TP = new UpArrowNotation();
+    public static UpArrowNotation NP = new UpArrowNotation();
     public static void SetString(string key, string value)
     {
         PlayerPrefs.SetString(key, value);

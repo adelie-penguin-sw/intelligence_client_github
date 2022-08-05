@@ -10,7 +10,6 @@ namespace MainTab
     /// </summary>
     public class BrainNetworkController : BaseTabController<MainTabApplication>
     {
-        private static int _tempBrainID = 2; //임시 브레인 아이디 생성용
         private BrainNetwork _brainNetwork;
         public override void Init(MainTabApplication app)
         {
