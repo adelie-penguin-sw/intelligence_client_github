@@ -10,7 +10,7 @@ namespace MainTab
     {
         private Transform _brainLayer;
 
-        [ShowInInspector] private Dictionary<int, Brain> _brainNetWork = new Dictionary<int, Brain>();
+        [ShowInInspector] private Dictionary<long, Brain> _brainNetWork = new Dictionary<long, Brain>();
         [SerializeField] private List<Channel> _channelList = new List<Channel>();
 
 

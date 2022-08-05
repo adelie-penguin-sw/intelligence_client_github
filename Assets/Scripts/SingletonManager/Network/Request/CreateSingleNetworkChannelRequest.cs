@@ -4,6 +4,6 @@ using UnityEngine;
 [System.Serializable]
 public class CreateSingleNetworkChannelRequest
 {
-    public int from;
-    public int to;
+    public long from;
+    public long to;
 }

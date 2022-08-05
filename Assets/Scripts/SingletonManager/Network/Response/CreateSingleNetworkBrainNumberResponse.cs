@@ -7,6 +7,6 @@ public class CreateSingleNetworkBrainNumberResponse
     public int statusCode;
     public List<AnsEquations> ansEquations;
     public List<Distances> distances;
-    public AnsEquation NP;
-    public int calcTime;
+    public TopCoeffs NP;
+    public long calcTime;
 }

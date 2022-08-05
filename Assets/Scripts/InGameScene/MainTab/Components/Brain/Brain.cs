@@ -13,8 +13,8 @@ namespace MainTab
         [SerializeField] private BrainData _brainData;
 
         #region property
-        public HashSet<int> ReceiverIdList { get { return _brainData._receiverIdList; } }
-        public HashSet<int> SenderIdList { get { return _brainData._senderIdList; } }
+        public HashSet<long> ReceiverIdList { get { return _brainData._receiverIdList; } }
+        public HashSet<long> SenderIdList { get { return _brainData._senderIdList; } }
 
         /// <summary>
         /// 지능 수치
@@ -23,7 +23,7 @@ namespace MainTab
         /// <summary>
         /// 해당 브레인의 ID
         /// </summary>
-        public int ID { get { return _brainData.id; } }
+        public long ID { get { return _brainData.id; } }
 
         /// <summary>
         /// 브레인 타입
@@ -33,7 +33,7 @@ namespace MainTab
         /// <summary>
         /// 브레인 거리
         /// </summary>
-        public int Distance { get { return _brainData.distance; } set { _brainData.distance = value; } }
+        public long Distance { get { return _brainData.distance; } set { _brainData.distance = value; } }
         #endregion
 
         public void Init(BrainData data)
