@@ -83,6 +83,11 @@ public class SingleNetworkWrapper
         }
     }
 
+    /// <summary>
+    /// 인자값에 해당하는 id를 가진 brain 데이터 가져오는 함수
+    /// </summary>
+    /// <param name="id">브레인 아이</param>
+    /// <returns>brainData</returns>
     public BrainData GetBrainDataForID(int id)
     {
         BrainData data = new BrainData();
