@@ -11,26 +11,26 @@ public class SingleNetworkResponse
     public int statusCode;
     public List<AnsEquations> ansEquations;
     public List<Distances> distances;
-    public AnsEquation NP; //나중에 뭔가 서버랑 이야기해서 바꿔야할듯? 
-    public AnsEquation TP; //이것두
+    public TopCoeffs NP; //나중에 뭔가 서버랑 이야기해서 바꿔야할듯? 
+    public TopCoeffs TP; //이것두
     public List<Structure> structures;
     public List<Coordinates> coordinates;
     public List<Skin> skin;
     public List<UpgradeCondition> upgradeCondition;
-    public int calcTime;
+    public long calcTime;
     public List<Achievements> achievements;
 }
 
 [Serializable]
 public class SingleNetworkWrapper
 {
-    [ShowInInspector] public Dictionary<int, AnsEquations> ansEquationsDic = new Dictionary<int, AnsEquations>();
-    [ShowInInspector] public Dictionary<int, Distances> distancesDic = new Dictionary<int, Distances>();
-    [ShowInInspector] public Dictionary<int, Structure> structuresDic = new Dictionary<int, Structure>();
-    [ShowInInspector] public Dictionary<int, Coordinates> coordinatesDic = new Dictionary<int, Coordinates>();
-    [ShowInInspector] public Dictionary<int, Skin> skinDic = new Dictionary<int, Skin>();
-    [ShowInInspector] public Dictionary<int, UpgradeCondition> upgradeConditionDic = new Dictionary<int, UpgradeCondition>();
-    public int calcTime;
+    [ShowInInspector] public Dictionary<long, AnsEquations> ansEquationsDic = new Dictionary<long, AnsEquations>();
+    [ShowInInspector] public Dictionary<long, Distances> distancesDic = new Dictionary<long, Distances>();
+    [ShowInInspector] public Dictionary<long, Structure> structuresDic = new Dictionary<long, Structure>();
+    [ShowInInspector] public Dictionary<long, Coordinates> coordinatesDic = new Dictionary<long, Coordinates>();
+    [ShowInInspector] public Dictionary<long, Skin> skinDic = new Dictionary<long, Skin>();
+    [ShowInInspector] public Dictionary<long, UpgradeCondition> upgradeConditionDic = new Dictionary<long, UpgradeCondition>();
+    public long calcTime;
     public List<Achievements> achievements = new List<Achievements>();
 
     public SingleNetworkWrapper(SingleNetworkResponse res)
@@ -68,16 +68,14 @@ public class SingleNetworkWrapper
             }
 
             UserData.NP = new UpArrowNotation(
-            res.NP.top3Layer.top1Coeff,
-            res.NP.top3Layer.top2Coeff,
-            res.NP.top3Layer.top3Coeff,
-            res.NP.operatorLayerCount);
+            res.NP.top1Coeff,
+            res.NP.top2Coeff,
+            res.NP.top3Coeff);
 
             UserData.TP = new UpArrowNotation(
-            res.TP.top3Layer.top1Coeff,
-            res.TP.top3Layer.top2Coeff,
-            res.TP.top3Layer.top3Coeff,
-            res.TP.operatorLayerCount);
+            res.TP.top1Coeff,
+            res.TP.top2Coeff,
+            res.TP.top3Coeff);
             calcTime = res.calcTime;
 
             achievements = res.achievements;
@@ -89,7 +87,7 @@ public class SingleNetworkWrapper
     /// </summary>
     /// <param name="id">브레인 아이</param>
     /// <returns>brainData</returns>
-    public BrainData GetBrainDataForID(int id)
+    public BrainData GetBrainDataForID(long id)
     {
         BrainData data = new BrainData();
 
@@ -107,7 +105,7 @@ public class SingleNetworkWrapper
             data.distance = distancesDic[id].distance;
 
         if(coordinatesDic.ContainsKey(id))
-            data.coordinates = new Vector2(coordinatesDic[id].x, coordinatesDic[id].y);
+            data.coordinates = new Vector2((float)coordinatesDic[id].x, (float)coordinatesDic[id].y);
 
         if (structuresDic.ContainsKey(id))
         {
@@ -130,16 +128,14 @@ public class SingleNetworkWrapper
     public void UpdateSingleNetworkData(CreateSingleNetworkBrainRequest req, CreateSingleNetworkBrainResponse res)
     {
         UserData.NP = new UpArrowNotation(
-            res.NP.top3Layer.top1Coeff,
-            res.NP.top3Layer.top2Coeff,
-            res.NP.top3Layer.top3Coeff,
-            res.NP.operatorLayerCount);
+            res.NP.top1Coeff,
+            res.NP.top2Coeff,
+            res.NP.top3Coeff);
 
         UserData.TP = new UpArrowNotation(
-            res.TP.top3Layer.top1Coeff,
-            res.TP.top3Layer.top2Coeff,
-            res.TP.top3Layer.top3Coeff,
-            res.TP.operatorLayerCount);
+            res.TP.top1Coeff,
+            res.TP.top2Coeff,
+            res.TP.top3Coeff);
 
         ansEquationsDic.Clear();
         foreach (var data in res.ansEquations)
@@ -190,10 +186,9 @@ public class SingleNetworkWrapper
 
         if (!structuresDic.ContainsKey(req.from))
         {
-            Debug.LogError("ㅊㅐㄴㅓㄹ ㅊㅜㄱㅏ ㅇㅗㅏㄴㄹㅛ");
             Structure data = new Structure();
             data.id = req.from;
-            data.structure = new List<int>();
+            data.structure = new List<long>();
             structuresDic.Add(req.from, data);
         }
         structuresDic[req.from].structure.Add(req.to);

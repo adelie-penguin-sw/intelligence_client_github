@@ -5,6 +5,6 @@ using UnityEngine;
 [System.Serializable]
 public class CreateSingleNetworkBrainRequest
 {
-    public float x;
-    public float y;
+    public double x;
+    public double y;
 }
