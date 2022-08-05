@@ -20,9 +20,10 @@ public class LoginManager : MonoBehaviour
         req.email = _textEmail.text;
         req.domain = _textDomain.text;
         Debug.Log("Onclick_Login");
-        NetworkManager.Instance.API_Login(req);
-
-        CheckChangeScene();
+        NetworkManager.Instance.API_Login(req, ()=>
+        {
+            CheckChangeScene();
+        });
     }
 
     private void CheckChangeScene()
