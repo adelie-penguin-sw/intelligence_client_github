@@ -43,12 +43,12 @@ public class NetworkManager : MonoBehaviour
     }
 
 #region ???? API??
-    private const string _baseUrl = "http://ec2-3-38-74-157.ap-northeast-2.compute.amazonaws.com:8080";
-    //private const string _baseUrl = "http://ec2-3-39-5-11.ap-northeast-2.compute.amazonaws.com:8080";
+    //private const string _baseUrl = "http://ec2-3-38-74-157.ap-northeast-2.compute.amazonaws.com:8080";
+    private const string _baseUrl = "http://ec2-3-39-5-11.ap-northeast-2.compute.amazonaws.com:8080";
     private IEnumerator API_Post<Request>(string path , Request request)
     {
         string json = JsonUtility.ToJson(request);
-        using (UnityWebRequest www = UnityWebRequest.Post(_baseUrl+path, json))
+        using UnityWebRequest www = UnityWebRequest.Post(_baseUrl + path, json);
         {
             byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
             www.uploadHandler = new UploadHandlerRaw(jsonToSend);
@@ -83,7 +83,7 @@ public class NetworkManager : MonoBehaviour
     private IEnumerator API_Post<Request,Response>(string path, Request request, Action<Response> callback)
     {
         string json = JsonUtility.ToJson(request);
-        using (UnityWebRequest www = UnityWebRequest.Post(_baseUrl + path, json))
+        using UnityWebRequest www = UnityWebRequest.Post(_baseUrl + path, json);
         {
             byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
             www.uploadHandler = new UploadHandlerRaw(jsonToSend);
@@ -122,7 +122,7 @@ public class NetworkManager : MonoBehaviour
     private IEnumerator API_PostWithToken<Request, Response>(string path, Request request, Action<Response> callback)
     {
         string json = JsonUtility.ToJson(request);
-        using (UnityWebRequest www = UnityWebRequest.Post(_baseUrl + path, json))
+        using UnityWebRequest www = UnityWebRequest.Post(_baseUrl + path, json);
         {
             byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
             www.uploadHandler = new UploadHandlerRaw(jsonToSend);
@@ -162,7 +162,7 @@ public class NetworkManager : MonoBehaviour
 
     IEnumerator API_Get<Response>(string path, Action<Response> callback)
     {
-        using (UnityWebRequest www = UnityWebRequest.Get(_baseUrl+path))
+        using UnityWebRequest www = UnityWebRequest.Get(_baseUrl + path);
         {
             www.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
             www.SetRequestHeader("Authorization", "Bearer " + UserData.token);
@@ -200,7 +200,7 @@ public class NetworkManager : MonoBehaviour
 
     IEnumerator API_Delete(string path)
     {
-        using (UnityWebRequest www = UnityWebRequest.Delete(_baseUrl + path))
+        using UnityWebRequest www = UnityWebRequest.Delete(_baseUrl + path);
         {
             www.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
             www.SetRequestHeader("Authorization", "Bearer " + UserData.token);
@@ -225,6 +225,43 @@ public class NetworkManager : MonoBehaviour
             else
             {
                 Debug.Log(www.downloadHandler.text);
+            }
+
+            //www.Dispose();
+        }
+    }
+
+    IEnumerator API_Delete<Response>(string path, Action<Response> callback)
+    {
+        using UnityWebRequest www = UnityWebRequest.Delete(_baseUrl + path);
+        {
+            www.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+            www.SetRequestHeader("Authorization", "Bearer " + UserData.token);
+
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.ConnectionError)
+            {
+                Debug.LogError(www.error);
+                Debug.LogError(www.downloadHandler.text);
+            }
+            else if (www.result == UnityWebRequest.Result.DataProcessingError)
+            {
+                Debug.LogError(www.error);
+                Debug.LogError(www.downloadHandler.text);
+            }
+            else if (www.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.LogError(www.error);
+                Debug.LogError(www.downloadHandler.text);
+            }
+            else
+            {
+                Debug.Log(www.downloadHandler.text);
+                Response res = JsonUtility.FromJson<Response>(www.downloadHandler.text);
+                string resJson = JsonUtility.ToJson(res);
+                Debug.Log(resJson);
+                callback(res);
             }
 
             //www.Dispose();
@@ -298,9 +335,11 @@ public class NetworkManager : MonoBehaviour
     #region DELETE
     public void API_DeleteSingleNetworkBrain(int brainID)
     {
-        string path = "/v1/experiment/single/network/brain/"+brainID.ToString();
-        StartCoroutine(API_Get<DeleteSingleNetworkBrainResponse>(path, res =>
+        string path = "/v1/experiment/single/network/brain/" + brainID.ToString();
+        Debug.LogError(path);
+        StartCoroutine(API_Delete<DeleteSingleNetworkBrainResponse>(path, res =>
         {
+
         }));
     }
     #endregion

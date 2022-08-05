@@ -9,5 +9,5 @@ public class CreateSingleNetworkChannelResponse
 	public List<AnsEquations> ansEquations;
 	public List<Distances> distances; 
 	public AnsEquation NP;
-	public int calcTime;
+	public long calcTime;
 }

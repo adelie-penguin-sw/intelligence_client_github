@@ -4,5 +4,5 @@ using UnityEngine;
 [System.Serializable]
 public class CreateSingleNetworkBrainNumberRequest
 {
-    public int brain;
+    public long brain;
 }

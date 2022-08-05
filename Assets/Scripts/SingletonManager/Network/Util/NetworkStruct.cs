@@ -13,7 +13,7 @@ public class NetworkStruct
 [Serializable]
 public struct AnsEquations
 {
-    public int id;
+    public long id;
     public AnsEquation ansEquation;
 }
 [Serializable]
@@ -26,52 +26,52 @@ public struct AnsEquation
 [Serializable]
 public struct TopCoeffs
 {
-    public float top1Coeff;
-    public float top2Coeff;
-    public float top3Coeff;
+    public double top1Coeff;
+    public double top2Coeff;
+    public double top3Coeff;
 }
 
 [Serializable]
 public struct Coordinates
 {
-    public int id;
-    public float x;
-    public float y;
+    public long id;
+    public double x;
+    public double y;
 }
 
 
 [Serializable]
 public struct Distances
 {
-    public int id;
-    public int distance;
+    public long id;
+    public long distance;
 }
 
 
 [Serializable]
 public struct Skin
 {
-    public int id;
-    public int skincode;
+    public long id;
+    public long skincode;
 }
 
 [Serializable]
 public struct Structure
 {
-    public int id;
-    public List<int> structure;
+    public long id;
+    public List<long> structure;
 }
 
 [Serializable]
 public struct UpgradeCondition
 {
-    public int id;
-    public int upgrade;
+    public long id;
+    public long upgrade;
 }
 
 [Serializable]
 public struct Achievements
 {
-    public int id;
-    public int achievement;
+    public long id;
+    public long achievement;
 }

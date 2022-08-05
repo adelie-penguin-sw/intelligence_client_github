@@ -8,10 +8,10 @@ public class CreateSingleNetworkBrainResponse
 	public int statusCode;
 	public List<AnsEquations> ansEquations;
 	public List<Distances> distances; 
-	public int newBrain;
-	public AnsEquation NP;
-	public AnsEquation TP;
-	public int calcTime;
+	public long newBrain;
+	public TopCoeffs NP;
+	public TopCoeffs TP;
+	public long calcTime;
 }
 
 

@@ -14,7 +14,7 @@ namespace MainTab
         /// <summary>
         /// 아이디
         /// </summary>
-        public int id;
+        public long id;
         /// <summary>
         /// 지능
         /// </summary>
@@ -22,7 +22,7 @@ namespace MainTab
         /// <summary>
         /// 거리
         /// </summary>
-        public int distance = -1;
+        public long distance = -1;
         /// <summary>
         /// 현재 브레인 타입
         /// </summary>
@@ -34,18 +34,18 @@ namespace MainTab
         /// <summary>
         /// 브레인 스킨 코드
         /// </summary>
-        public int skinCode;
+        public long skinCode;
         /// <summary>
         /// 업그레이드 상태
         /// </summary>
-        public int UpgradeCondition;
+        public long UpgradeCondition;
 
-        [ShowInInspector] public HashSet<int> _receiverIdList;
-        [ShowInInspector] public HashSet<int> _senderIdList;
+        [ShowInInspector] public HashSet<long> _receiverIdList;
+        [ShowInInspector] public HashSet<long> _senderIdList;
         public BrainData()
         {
-            _receiverIdList = new HashSet<int>();
-            _senderIdList = new HashSet<int>();
+            _receiverIdList = new HashSet<long>();
+            _senderIdList = new HashSet<long>();
         }
 
         public BrainData(int id, EBrainType brainType)
@@ -53,8 +53,8 @@ namespace MainTab
             this.id = id;
             this.intellect = new UpArrowNotation(1);
             this.brainType = brainType;
-            _receiverIdList = new HashSet<int>();
-            _senderIdList = new HashSet<int>();
+            _receiverIdList = new HashSet<long>();
+            _senderIdList = new HashSet<long>();
         }
         public BrainData(int id, UpArrowNotation intellect, int distance, EBrainType brainType)
         {
@@ -62,8 +62,8 @@ namespace MainTab
             this.intellect = intellect;
             this.brainType = brainType;
             this.distance = distance;
-            _receiverIdList = new HashSet<int>();
-            _senderIdList = new HashSet<int>();
+            _receiverIdList = new HashSet<long>();
+            _senderIdList = new HashSet<long>();
         }
     }
 
