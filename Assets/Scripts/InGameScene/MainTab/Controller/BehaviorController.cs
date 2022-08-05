@@ -391,7 +391,6 @@ namespace MainTab
             {
                 _channel = PoolManager.Instance.GrabPrefabs(EPrefabsType.CHANNEL, "Channel", _controller._view.transform).GetComponent<Channel>();
                 _channel.Init(EChannelType.TEMP, _currentSenderBrain.transform, _currentSenderBrain.transform);
-                //_channel.Init(CreateBrainSendData(-1, _controller._recentSelectBrain), CreateBrainSendData(-1, null));
             }
 
             /// <summary>
@@ -417,6 +416,10 @@ namespace MainTab
                             _controller.ChangeState(EBehaviorState.NONE);
                         });
                     });
+                }
+                else
+                {
+                    _controller.ChangeState(EBehaviorState.NONE);
                 }
             }
         }
