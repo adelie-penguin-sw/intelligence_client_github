@@ -7,7 +7,7 @@ public class CreateSingleNetworkChannelResponse
 {
 	public int statusCode;
 	public List<AnsEquations> ansEquations;
-	public List<Distances> distances;
-	public double NP;
+	public List<Distances> distances; 
+	public AnsEquation NP;
 	public int calcTime;
 }

@@ -42,8 +42,9 @@ public class NetworkManager : MonoBehaviour
 
     }
 
-#region �⺻ APIƲ
-    private const string _baseUrl = "http://ec2-3-38-74-157.ap-northeast-2.compute.amazonaws.com:8080";
+#region ???? API??
+    //private const string _baseUrl = "http://ec2-3-38-74-157.ap-northeast-2.compute.amazonaws.com:8080";
+    private const string _baseUrl = "http://ec2-3-39-5-11.ap-northeast-2.compute.amazonaws.com:8080";
     private IEnumerator API_Post<Request>(string path , Request request)
     {
         string json = JsonUtility.ToJson(request);
@@ -75,7 +76,7 @@ public class NetworkManager : MonoBehaviour
                 Debug.Log(www.downloadHandler.text);
             }
 
-            www.Dispose();
+            //www.Dispose();
         }
 
     }
@@ -114,7 +115,7 @@ public class NetworkManager : MonoBehaviour
                 Debug.Log(tempjson);
             }
 
-            www.Dispose();
+            //www.Dispose();
         }
 
     }
@@ -154,7 +155,7 @@ public class NetworkManager : MonoBehaviour
                 Debug.Log(tempjson);
             }
 
-            www.Dispose();
+            //www.Dispose();
         }
 
     }
@@ -193,7 +194,7 @@ public class NetworkManager : MonoBehaviour
                 callback(res);
             }
 
-            www.Dispose();
+            //www.Dispose();
         }
     }
 
@@ -226,7 +227,7 @@ public class NetworkManager : MonoBehaviour
                 Debug.Log(www.downloadHandler.text);
             }
 
-            www.Dispose();
+            //www.Dispose();
         }
     }
     #endregion
