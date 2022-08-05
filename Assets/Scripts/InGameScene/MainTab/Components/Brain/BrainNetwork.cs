@@ -77,7 +77,6 @@ namespace MainTab
 
             foreach (var id in wrapper.ansEquationsDic.Keys)
             {
-                if (id == 0) continue;
                 BrainData data = wrapper.GetBrainDataForID(id);
                 if (data != null)
                 {

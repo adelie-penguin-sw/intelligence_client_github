@@ -15,7 +15,8 @@ namespace MainTab
 
         public void Init()
         {
-
+            UpdateNPText();
+            UpdateTPText();
         }
 
         public void Set()
