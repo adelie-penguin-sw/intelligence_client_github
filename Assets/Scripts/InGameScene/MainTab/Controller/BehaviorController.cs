@@ -363,7 +363,6 @@ namespace MainTab
                 {
                     case ENotiMessage.MOUSE_UP_BRAIN:
                         CreateChannel();
-                        _controller.ChangeState(EBehaviorState.NONE);
                         break;
                     case ENotiMessage.MOUSE_ENTER_BRAIN:
                         _currentEnterBrain = (Brain)noti.data[EDataParamKey.CLASS_BRAIN];
@@ -405,15 +404,18 @@ namespace MainTab
                 if (_currentEnterBrain == null || _currentSenderBrain.Type == EBrainType.MAINBRAIN)
                     return;
 
-                if (_currentSenderBrain != _currentEnterBrain)
+                if (_currentSenderBrain.ID != _currentEnterBrain.ID)
                 {
                     CreateSingleNetworkChannelRequest req = new CreateSingleNetworkChannelRequest();
                     req.from = _currentSenderBrain.ID;
                     req.to = _currentEnterBrain.ID;
                     NetworkManager.Instance.API_CreateSingleNetworkChannel(req, res =>
                     {
-                        _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(req, res);
-                        NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
+                        _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(req, res, ()=>
+                        {
+                            NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
+                            _controller.ChangeState(EBehaviorState.NONE);
+                        });
                     });
                 }
             }

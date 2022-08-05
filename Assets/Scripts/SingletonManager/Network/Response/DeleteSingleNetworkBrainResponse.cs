@@ -9,6 +9,6 @@ public class DeleteSingleNetworkBrainResponse
 	public List<AnsEquations> ansEquations;
 	public List<Distances> distances;
 	public List<int> deletedBrains;
-	public double NP;
+	public AnsEquation NP;
 	public int calcTime;
 }

@@ -14,7 +14,21 @@ public class NetworkStruct
 public struct AnsEquations
 {
     public int id;
-    public List<float> ansEquation;
+    public AnsEquation ansEquation;
+}
+[Serializable]
+public struct AnsEquation
+{
+    public TopCoeffs top3Layer;
+    public int operatorLayerCount;
+}
+
+[Serializable]
+public struct TopCoeffs
+{
+    public float top1Coeff;
+    public float top2Coeff;
+    public float top3Coeff;
 }
 
 [Serializable]
