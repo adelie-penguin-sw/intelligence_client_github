@@ -401,7 +401,10 @@ namespace MainTab
             {
                 _channel.Dispose();
                 if (_currentEnterBrain == null || _currentSenderBrain.Type == EBrainType.MAINBRAIN)
+                {
+                    _controller.ChangeState(EBehaviorState.NONE);
                     return;
+                }
 
                 if (_currentSenderBrain.ID != _currentEnterBrain.ID)
                 {
