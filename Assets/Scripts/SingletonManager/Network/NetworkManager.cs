@@ -233,13 +233,14 @@ public class NetworkManager : MonoBehaviour
     #endregion
 
     #region POST
-    public void API_Login(TemporaryRequest req)
+    public void API_Login(TemporaryRequest req, Action callback)
     {
         Debug.Log("API_Login");
         string path = "/v1/auth/temporary";
         StartCoroutine(API_Post<TemporaryRequest, TemporaryResponse>(path, req, res=>
         {
             UserData.SetString("Token", res.token);
+            callback();
         }));
     }
 
