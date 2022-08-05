@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Sirenix.OdinInspector;
 
 [System.Serializable]
 public class SingleNetworkResponse
@@ -21,14 +21,15 @@ public class SingleNetworkResponse
     public List<Achievements> achievements;
 }
 
+[Serializable]
 public class SingleNetworkWrapper
 {
-    public Dictionary<int, AnsEquations> ansEquationsDic = new Dictionary<int, AnsEquations>();
-    public Dictionary<int, Distances> distancesDic = new Dictionary<int, Distances>();
-    public Dictionary<int, Structure> structuresDic = new Dictionary<int, Structure>();
-    public Dictionary<int, Coordinates> coordinatesDic = new Dictionary<int, Coordinates>();
-    public Dictionary<int, Skin> skinDic = new Dictionary<int, Skin>();
-    public Dictionary<int, UpgradeCondition> upgradeConditionDic = new Dictionary<int, UpgradeCondition>();
+    [ShowInInspector] public Dictionary<int, AnsEquations> ansEquationsDic = new Dictionary<int, AnsEquations>();
+    [ShowInInspector] public Dictionary<int, Distances> distancesDic = new Dictionary<int, Distances>();
+    [ShowInInspector] public Dictionary<int, Structure> structuresDic = new Dictionary<int, Structure>();
+    [ShowInInspector] public Dictionary<int, Coordinates> coordinatesDic = new Dictionary<int, Coordinates>();
+    [ShowInInspector] public Dictionary<int, Skin> skinDic = new Dictionary<int, Skin>();
+    [ShowInInspector] public Dictionary<int, UpgradeCondition> upgradeConditionDic = new Dictionary<int, UpgradeCondition>();
     public int calcTime;
     public List<Achievements> achievements = new List<Achievements>();
 
