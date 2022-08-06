@@ -56,27 +56,11 @@ public class NetworkManager : MonoBehaviour
             www.SetRequestHeader("Content-Type", "application/json");
 
             yield return www.SendWebRequest();
-            if(www.result == UnityWebRequest.Result.ConnectionError)
-            {
-                Debug.LogError(www.error);
-                Debug.LogError(www.downloadHandler.text);
-            }
-            else if(www.result == UnityWebRequest.Result.DataProcessingError)
-            {
-                Debug.LogError(www.error);
-                Debug.LogError(www.downloadHandler.text);
-            }
-            else if (www.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.LogError(www.error);
-                Debug.LogError(www.downloadHandler.text);
-            }
-            else
+
+            if (ErrorCheck(www))
             {
                 Debug.Log(www.downloadHandler.text);
             }
-
-            //www.Dispose();
         }
 
     }
@@ -91,22 +75,8 @@ public class NetworkManager : MonoBehaviour
             www.SetRequestHeader("Content-Type", "application/json");
 
             yield return www.SendWebRequest();
-            if (www.result == UnityWebRequest.Result.ConnectionError)
-            {
-                Debug.LogError(www.error);
-                Debug.LogError(www.downloadHandler.text);
-            }
-            else if (www.result == UnityWebRequest.Result.DataProcessingError)
-            {
-                Debug.LogError(www.error);
-                Debug.LogError(www.downloadHandler.text);
-            }
-            else if (www.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.LogError(www.error);
-                Debug.LogError(www.downloadHandler.text);
-            }
-            else
+
+            if (ErrorCheck(www))
             {
                 Debug.Log(www.downloadHandler.text);
                 Response res = JsonUtility.FromJson<Response>(www.downloadHandler.text);
@@ -114,8 +84,6 @@ public class NetworkManager : MonoBehaviour
                 string tempjson = JsonUtility.ToJson(res);
                 Debug.Log(tempjson);
             }
-
-            //www.Dispose();
         }
 
     }
@@ -131,22 +99,8 @@ public class NetworkManager : MonoBehaviour
             www.SetRequestHeader("Content-Type", "application/json");
 
             yield return www.SendWebRequest();
-            if (www.result == UnityWebRequest.Result.ConnectionError)
-            {
-                Debug.LogError(www.error);
-                Debug.LogError(www.downloadHandler.text);
-            }
-            else if (www.result == UnityWebRequest.Result.DataProcessingError)
-            {
-                Debug.LogError(www.error);
-                Debug.LogError(www.downloadHandler.text);
-            }
-            else if (www.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.LogError(www.error);
-                Debug.LogError(www.downloadHandler.text);
-            }
-            else
+
+            if (ErrorCheck(www))
             {
                 Debug.Log(www.downloadHandler.text);
                 Response res = JsonUtility.FromJson<Response>(www.downloadHandler.text);
@@ -154,8 +108,6 @@ public class NetworkManager : MonoBehaviour
                 string tempjson = JsonUtility.ToJson(res);
                 Debug.Log(tempjson);
             }
-
-            //www.Dispose();
         }
 
     }
@@ -170,22 +122,7 @@ public class NetworkManager : MonoBehaviour
 
             yield return www.SendWebRequest();
 
-            if (www.result == UnityWebRequest.Result.ConnectionError)
-            {
-                Debug.LogError(www.error);
-                Debug.LogError(www.downloadHandler.text);
-            }
-            else if (www.result == UnityWebRequest.Result.DataProcessingError)
-            {
-                Debug.LogError(www.error);
-                Debug.LogError(www.downloadHandler.text);
-            }
-            else if (www.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.LogError(www.error);
-                Debug.LogError(www.downloadHandler.text);
-            }
-            else
+            if (ErrorCheck(www))
             {
                 Debug.Log(www.downloadHandler.text);
                 Response res = JsonUtility.FromJson<Response>(www.downloadHandler.text);
@@ -193,8 +130,6 @@ public class NetworkManager : MonoBehaviour
                 Debug.Log(resJson);
                 callback(res);
             }
-
-            //www.Dispose();
         }
     }
 
@@ -207,27 +142,10 @@ public class NetworkManager : MonoBehaviour
 
             yield return www.SendWebRequest();
 
-            if (www.result == UnityWebRequest.Result.ConnectionError)
-            {
-                Debug.LogError(www.error);
-                Debug.LogError(www.downloadHandler.text);
-            }
-            else if (www.result == UnityWebRequest.Result.DataProcessingError)
-            {
-                Debug.LogError(www.error);
-                Debug.LogError(www.downloadHandler.text);
-            }
-            else if (www.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.LogError(www.error);
-                Debug.LogError(www.downloadHandler.text);
-            }
-            else
+            if (ErrorCheck(www))
             {
                 Debug.Log(www.downloadHandler.text);
             }
-
-            //www.Dispose();
         }
     }
 
@@ -240,22 +158,7 @@ public class NetworkManager : MonoBehaviour
 
             yield return www.SendWebRequest();
 
-            if (www.result == UnityWebRequest.Result.ConnectionError)
-            {
-                Debug.LogError(www.error);
-                Debug.LogError(www.downloadHandler.text);
-            }
-            else if (www.result == UnityWebRequest.Result.DataProcessingError)
-            {
-                Debug.LogError(www.error);
-                Debug.LogError(www.downloadHandler.text);
-            }
-            else if (www.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.LogError(www.error);
-                Debug.LogError(www.downloadHandler.text);
-            }
-            else
+            if (ErrorCheck(www))
             {
                 Debug.Log(www.downloadHandler.text);
                 Response res = JsonUtility.FromJson<Response>(www.downloadHandler.text);
@@ -263,13 +166,30 @@ public class NetworkManager : MonoBehaviour
                 Debug.Log(resJson);
                 callback(res);
             }
+        }
+    }
 
-            //www.Dispose();
+    private bool ErrorCheck(UnityWebRequest www)
+    {
+        switch(www.result)
+        {
+            case UnityWebRequest.Result.Success:
+                return true;
+            default:
+                Debug.LogError(www.error);
+                Debug.LogError(www.downloadHandler.text);
+                return false;
+
         }
     }
     #endregion
 
     #region POST
+    /// <summary>
+    /// ??? API
+    /// </summary>
+    /// <param name="req"></param>
+    /// <param name="callback"></param>
     public void API_Login(TemporaryRequest req, Action callback)
     {
         Debug.Log("API_Login");
@@ -281,6 +201,11 @@ public class NetworkManager : MonoBehaviour
         }));
     }
 
+    /// <summary>
+    /// ??? ?? API
+    /// </summary>
+    /// <param name="req"></param>
+    /// <param name="callback"></param>
     public void API_CreateSingleNetworkBrain(CreateSingleNetworkBrainRequest req, Action<CreateSingleNetworkBrainResponse> callback)
     {
         Debug.Log("API_CreateSingleNetworkBrain");
@@ -291,6 +216,11 @@ public class NetworkManager : MonoBehaviour
         }));
     }
 
+    /// <summary>
+    /// ?? ?? API
+    /// </summary>
+    /// <param name="req"></param>
+    /// <param name="callback"></param>
     public void API_CreateSingleNetworkChannel(CreateSingleNetworkChannelRequest req, Action<CreateSingleNetworkChannelResponse> callback)
     {
         Debug.Log("API_CreateSingleNetworkBrain");
@@ -301,6 +231,10 @@ public class NetworkManager : MonoBehaviour
         }));
     }
 
+    /// <summary>
+    /// ??? ????? API
+    /// </summary>
+    /// <param name="req"></param>
     public void API_CreateSingleNetworkBrainNumber(CreateSingleNetworkBrainNumberRequest req)
     {
         Debug.Log("API_CreateSingleNetworkBrainNumber");
@@ -313,6 +247,9 @@ public class NetworkManager : MonoBehaviour
     #endregion
 
     #region GET
+    /// <summary>
+    /// ?? ??? ???? API
+    /// </summary>
     public void API_LoadUserData()
     {
         string path = "/v1/experiment/single/network";
@@ -321,6 +258,11 @@ public class NetworkManager : MonoBehaviour
             //wrapper = new SingleNetworkWrapper(res);
         }));
     }
+
+
+    /// <summary>
+    /// ?? ??? ???? API 
+    /// </summary>
     public void API_LoadUserData(Action<SingleNetworkWrapper> callback)
     {
         string path = "/v1/experiment/single/network";
@@ -333,6 +275,10 @@ public class NetworkManager : MonoBehaviour
     #endregion
 
     #region DELETE
+    /// <summary>
+    /// ??? ?? API
+    /// </summary>
+    /// <param name="brainID"></param>
     public void API_DeleteSingleNetworkBrain(int brainID)
     {
         string path = "/v1/experiment/single/network/brain/" + brainID.ToString();
@@ -343,4 +289,12 @@ public class NetworkManager : MonoBehaviour
         }));
     }
     #endregion
+}
+
+public enum StatusCode
+{
+    JWT_REFRESH = 202,
+    BAD_REQUEST  = 400,
+    Forbidden = 403,
+
 }
