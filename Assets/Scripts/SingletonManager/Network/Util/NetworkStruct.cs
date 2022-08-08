@@ -14,7 +14,7 @@ public class NetworkStruct
 public struct AnsEquations
 {
     public long id;
-    public AnsEquation ansEquation;
+    public List<AnsEquation> ansEquation;
 }
 [Serializable]
 public struct AnsEquation
