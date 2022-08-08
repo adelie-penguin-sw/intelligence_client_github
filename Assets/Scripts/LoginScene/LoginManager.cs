@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.Threading.Tasks;
+
 public class LoginManager : MonoBehaviour
 {
     [SerializeField] private TMP_InputField _textEmail;
@@ -14,16 +16,13 @@ public class LoginManager : MonoBehaviour
         CheckChangeScene();
     }
 
-    public void OnClick_Login()
+    public async void OnClick_Login()
     {
         TemporaryRequest req = new TemporaryRequest();
         req.email = _textEmail.text;
         req.domain = _textDomain.text;
-        Debug.Log("Onclick_Login");
-        NetworkManager.Instance.API_Login(req, ()=>
-        {
-            CheckChangeScene();
-        });
+        await NetworkManager.Instance.API_Login(req);
+        CheckChangeScene();
     }
 
     private void CheckChangeScene()
