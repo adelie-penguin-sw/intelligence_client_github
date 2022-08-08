@@ -26,33 +26,33 @@ namespace MainTab
             }
         }
 
-        public override void Init()
+        public override async void Init()
         {
             base.Init();
+            var res = await NetworkManager.Instance.API_LoadUserData();
+            SingleNetworkWrapper wrapper = new SingleNetworkWrapper(res);
 
-            NetworkManager.Instance.API_LoadUserData(wrapper =>
+            _mainTabModel.SingleNetworkWrapper = wrapper;
+
+            foreach (var controller in _controllers)
             {
-                _mainTabModel.SingleNetworkWrapper = wrapper;
-
-                foreach (var controller in _controllers)
-                {
-                    controller.Init(this);
-                }
-            });
+                controller.Init(this);
+            }
         }
 
-        public override void OnEnter()
+        public override async void OnEnter()
         {
             base.OnEnter();
 
-            NetworkManager.Instance.API_LoadUserData(wrapper =>
+            var res = await NetworkManager.Instance.API_LoadUserData();
+            SingleNetworkWrapper wrapper = new SingleNetworkWrapper(res);
+
+            _mainTabModel.SingleNetworkWrapper = wrapper;
+
+            foreach (var controller in _controllers)
             {
-                _mainTabModel.SingleNetworkWrapper = wrapper;
-                foreach (var controller in _controllers)
-                {
-                    controller.Set();
-                }
-            });
+                controller.Set();
+            }
         }
 
         public override void AdvanceTime(float dt_sec)
@@ -77,6 +77,12 @@ namespace MainTab
         {
             base.Dispose();
             PoolManager.Instance.DespawnObject(EPrefabsType.TAP_APPLICATION, this.gameObject);
+        }
+
+        private async void LoadUserData()
+        {
+
+            await NetworkManager.Instance.API_LoadUserData();
         }
     }
 }
