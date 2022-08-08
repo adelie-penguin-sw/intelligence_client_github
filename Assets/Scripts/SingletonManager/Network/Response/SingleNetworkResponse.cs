@@ -9,7 +9,6 @@ using Sirenix.OdinInspector;
 public class SingleNetworkResponse
 {
     public int statusCode;
-    public string token;
     public List<AnsEquations> ansEquations;
     public List<Distances> distances;
     public TopCoeffs NP; //나중에 뭔가 서버랑 이야기해서 바꿔야할듯? 

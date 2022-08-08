@@ -316,16 +316,16 @@ namespace MainTab
                 _tempBrain.Dispose();
             }
 
-            private void CreateBrain()
+            private async void CreateBrain()
             {
                 CreateSingleNetworkBrainRequest req = new CreateSingleNetworkBrainRequest();
                 req.x = _tempBrain.transform.position.x;
                 req.y = _tempBrain.transform.position.y;
-                NetworkManager.Instance.API_CreateSingleNetworkBrain(req, res =>
-                {
-                    _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(req,res);
-                    NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
-                });
+
+                var res = await NetworkManager.Instance.API_CreateBrain(req);
+
+                _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(req, res);
+                NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
             }
         }
 
@@ -397,7 +397,7 @@ namespace MainTab
             /// 남아있는 데이터가 다른 브레인과 연결하는것으로 판별나면 임시로 만들었던 채널 오브젝트를 실제 생성시키기 위해 Noti를 날려주고
             /// 아니면 Despawn 시키는 메서드
             /// </summary>
-            private void CreateChannel()
+            private async void CreateChannel()
             {
                 _channel.Dispose();
                 if (_currentEnterBrain == null || _currentSenderBrain.Type == EBrainType.MAINBRAIN)
@@ -411,13 +411,13 @@ namespace MainTab
                     CreateSingleNetworkChannelRequest req = new CreateSingleNetworkChannelRequest();
                     req.from = _currentSenderBrain.ID;
                     req.to = _currentEnterBrain.ID;
-                    NetworkManager.Instance.API_CreateSingleNetworkChannel(req, res =>
+
+                    var res = await NetworkManager.Instance.API_CreateChannel(req);
+
+                    _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(req, res, () =>
                     {
-                        _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(req, res, ()=>
-                        {
-                            NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
-                            _controller.ChangeState(EBehaviorState.NONE);
-                        });
+                        NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
+                        _controller.ChangeState(EBehaviorState.NONE);
                     });
                 }
                 else
