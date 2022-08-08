@@ -248,19 +248,6 @@ public class NetworkManager : MonoBehaviour
 
     #region GET
     /// <summary>
-    /// ?? ??? ???? API
-    /// </summary>
-    public void API_LoadUserData()
-    {
-        string path = "/v1/experiment/single/network";
-        StartCoroutine(API_Get<SingleNetworkResponse>(path, res =>
-        {
-            //wrapper = new SingleNetworkWrapper(res);
-        }));
-    }
-
-
-    /// <summary>
     /// ?? ??? ???? API 
     /// </summary>
     public void API_LoadUserData(Action<SingleNetworkWrapper> callback)
@@ -269,6 +256,21 @@ public class NetworkManager : MonoBehaviour
         StartCoroutine(API_Get<SingleNetworkResponse>(path, res =>
         {
             SingleNetworkWrapper wrapper = new SingleNetworkWrapper(res);
+            switch (res.statusCode)
+            {
+                case (int)StatusCode.JWT_REFRESH:
+                    UserData.SetString("Token", res.token);
+                    StartCoroutine(API_Get<SingleNetworkResponse>(path, res =>
+                    {
+                        SingleNetworkWrapper wrapper = new SingleNetworkWrapper(res);
+                        Debug.LogError(res.statusCode);
+                        callback(wrapper);
+                    }));
+                    break;
+                default:
+                    callback(wrapper);
+                    break;
+            }
             callback(wrapper);
         }));
     }

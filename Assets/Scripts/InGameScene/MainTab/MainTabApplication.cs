@@ -29,6 +29,7 @@ namespace MainTab
         public override void Init()
         {
             base.Init();
+
             NetworkManager.Instance.API_LoadUserData(wrapper =>
             {
                 _mainTabModel.SingleNetworkWrapper = wrapper;
