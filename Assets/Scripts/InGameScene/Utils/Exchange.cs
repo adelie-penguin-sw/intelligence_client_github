@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System;
 
 public class Exchange
@@ -16,18 +17,18 @@ public class Exchange
         }
 
         double topLayerValue;
-        PowerTowerNotation top3Layer = number.Top3Layer;
+        List<double> top3Layer = number.Top3Layer;
 
         switch (number.OperatorLayerCount)
         {
             case 0:
-                topLayerValue = top3Layer._top1Coeff;
+                topLayerValue = top3Layer[0];
                 break;
             case 1:
-                topLayerValue = top3Layer._top2Coeff + Math.Log10(top3Layer._top1Coeff);
+                topLayerValue = top3Layer[1] + Math.Log10(top3Layer[1]);
                 break;
             default:
-                topLayerValue = top3Layer._top3Coeff + Math.Log10(top3Layer._top2Coeff);
+                topLayerValue = top3Layer[2] + Math.Log10(top3Layer[2]);
                 break;
         }
 
@@ -45,7 +46,7 @@ public class Exchange
     /// <param name="physicalDistance"></param>
     /// <param name="costGrowthRate"></param>
     /// <returns></returns>
-    public static PowerTowerNotation GetNPCostForBrainGeneration(PowerTowerNotation baseCost, int pastBrainGenCount, double physicalDistance, double costGrowthRate)
+    public static UpArrowNotation GetNPCostForBrainGeneration(UpArrowNotation baseCost, int pastBrainGenCount, double physicalDistance, double costGrowthRate)
     {
         // {기본 브레인 생성 비용} * {코어 브레인으로부터의 물리적 거리} * {브레인 생성 비용 증가율} ^ {직전까지의 브레인 생성 횟수(ASN제외)}NP
 
@@ -59,7 +60,7 @@ public class Exchange
     /// <param name="receiverDistance"></param>
     /// <param name="senderIntellect"></param>
     /// <returns></returns>
-    public static PowerTowerNotation GetNPCostForBrainConnection(PowerTowerNotation baseCost, int receiverDistance, UpArrowNotation senderIntellect)
+    public static UpArrowNotation GetNPCostForBrainConnection(UpArrowNotation baseCost, int receiverDistance, UpArrowNotation senderIntellect)
     {
         // {기본 채널 생성 비용} * A ^ {B * (C * {리시버 브레인의 distance}) ^ {D * slog{센더 브레인의 지능}}}NP
 
@@ -78,7 +79,7 @@ public class Exchange
     /// <param name="upgradeCount"></param>
     /// <param name="growthRate"></param>
     /// <returns></returns>
-    public static PowerTowerNotation GetNPCostForBrainUpgrade(PowerTowerNotation baseCost, int upgradeCount, double growthRate)
+    public static UpArrowNotation GetNPCostForBrainUpgrade(UpArrowNotation baseCost, int upgradeCount, double growthRate)
     {
         // {기본 업그레이드 비용} * {비용 증가율} ^ {업그레이드 횟수}
 
@@ -90,10 +91,10 @@ public class Exchange
     /// </summary>
     /// <param name="intellect"></param>
     /// <returns></returns>
-    public static PowerTowerNotation GetNPRewardForBrainDecomposition(UpArrowNotation intellect)
+    public static UpArrowNotation GetNPRewardForBrainDecomposition(UpArrowNotation intellect)
     {
-        if (intellect.CalculateFull() < 10.0) {
-            return new PowerTowerNotation(0);
+        if (intellect.CalculateTop3Layer() < 10.0) {
+            return new UpArrowNotation(0);
         }
 
         // NP = a * log(지능) ^ {b * log(c * log(지능))}
@@ -102,8 +103,8 @@ public class Exchange
         double b = 3.0;
         double c = 2.0;
 
-        double logNumber = PowerTowerNotation.Log10(intellect.Top3Layer);
-        return new PowerTowerNotation(Math.Floor(a * Math.Pow(logNumber, b * Math.Log10(c * logNumber))));
+        double logNumber = UpArrowNotation.Log10Top3Layer(intellect);
+        return new UpArrowNotation(Math.Floor(a * Math.Pow(logNumber, b * Math.Log10(c * logNumber))));
     }
 
     /// <summary>
@@ -111,14 +112,14 @@ public class Exchange
     /// </summary>
     /// <param name="coreIntellect"></param>
     /// <returns></returns>
-    public static PowerTowerNotation GetTPRewardForReset(UpArrowNotation coreIntellect)
+    public static UpArrowNotation GetTPRewardForReset(UpArrowNotation coreIntellect)
     {
         // TP = (a * log(코어 브레인의 지능)) ^ {b}
 
         double a = 0.01;
         double b = 0.8;
 
-        double logNumber = PowerTowerNotation.Log10(coreIntellect.Top3Layer);
-        return new PowerTowerNotation(Math.Floor(Math.Pow(a * logNumber, b)));
+        double logNumber = UpArrowNotation.Log10Top3Layer(coreIntellect);
+        return new UpArrowNotation(Math.Floor(Math.Pow(a * logNumber, b)));
     }
 }

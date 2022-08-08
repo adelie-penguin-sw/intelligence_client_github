@@ -37,6 +37,9 @@ namespace MainTab
                 {
                     controller.Init(this);
                 }
+                CreateSingleNetworkBrainNumberRequest req = new CreateSingleNetworkBrainNumberRequest();
+                req.brain = 6;
+                NetworkManager.Instance.API_CreateSingleNetworkBrainNumber(req);
             });
         }
 
