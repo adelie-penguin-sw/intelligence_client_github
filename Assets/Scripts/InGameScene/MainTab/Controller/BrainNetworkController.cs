@@ -18,7 +18,11 @@ namespace MainTab
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.ONCLICK_RESET_NETWORK);
 
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.UPDATE_BRAIN_NETWORK);
+
+            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.UPDATE_TP);
+            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.UPDATE_NP);
         }
+
         public override void Set()
         {
             if (_app != null)
@@ -50,6 +54,9 @@ namespace MainTab
 
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.UPDATE_BRAIN_NETWORK);
 
+            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.UPDATE_TP);
+            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.UPDATE_NP);
+
             _brainNetwork.Dispose();
             _brainNetwork = null;
             _app = null;
@@ -69,21 +76,30 @@ namespace MainTab
                 case ENotiMessage.UPDATE_BRAIN_NETWORK:
                     _brainNetwork.UpdateBrainNetwork(_app.MainTabModel.SingleNetworkWrapper);
                     break;
+                case ENotiMessage.UPDATE_TP:
+                    _app.MainTabView.UI.UpdateTPText();
+                    break;
+                case ENotiMessage.UPDATE_NP:
+                    _app.MainTabView.UI.UpdateNPText();
+                    break;
             }
         }
 
-        private void RemoveBrain(Brain brain)
+        private async void RemoveBrain(Brain brain)
         {
             if (brain.Type == EBrainType.MAINBRAIN)
             {
-               // UserData.TP += _brainNetwork.RemoveBrain(brain);
-                _app.MainTabView.UI.UpdateTPText();
+                // UserData.TP += _brainNetwork.RemoveBrain(brain);
+                var res = await NetworkManager.Instance.API_NetworkReset();
+                _app.MainTabModel.SingleNetworkWrapper = new SingleNetworkWrapper(res);
                 ResetBrainNetWork();
             }
             else if(brain.Type == EBrainType.NORMALBRAIN)
             {
+                var res = await NetworkManager.Instance.API_DeleteBrain(brain.ID);
+                _app.MainTabModel.SingleNetworkWrapper.UpdateSingleNetworkData(res);
+                ResetBrainNetWork();
                 //UserData.NP += _brainNetwork.RemoveBrain(brain);
-                _app.MainTabView.UI.UpdateNPText();
             }
         }
 
@@ -91,11 +107,11 @@ namespace MainTab
         {
             _app.MainTabModel.BrainNetwork.Dispose();
             _app.MainTabModel.BrainNetwork = new BrainNetwork();
+
             Set();
+
             InGame.InGameManager.IsCompleteExp = false;
         }
-
     }
-
 }
 
