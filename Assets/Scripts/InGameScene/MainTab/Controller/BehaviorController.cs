@@ -79,6 +79,8 @@ namespace MainTab
 
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.CLOSE_BRAININFO_POPUP);
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.CLOSE_RESET_POPUP);
+
+            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.ONCLICK_UPGRADE_BRAIN);
         }
         private void RemoveObservers()
         {
@@ -92,6 +94,8 @@ namespace MainTab
 
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.CLOSE_BRAININFO_POPUP);
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.CLOSE_RESET_POPUP);
+
+            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_UPGRADE_BRAIN);
         }
 
         #region StateHandler Function
@@ -454,14 +458,35 @@ namespace MainTab
                     case ENotiMessage.CLOSE_RESET_POPUP:
                         _controller.ChangeState(EBehaviorState.NONE);
                         break;
+                    case ENotiMessage.ONCLICK_UPGRADE_BRAIN:
+                        long brainId = (long) noti.data[EDataParamKey.BRAIN_ID];
+                        UpgradeBrain(brainId);
+                        break;
                 }
             }
+
             public void OnExit()
             {
             }
 
             public void Dispose()
             {
+            }
+
+            private async void UpgradeBrain(long id)
+            {
+                var req = new CreateSingleNetworkBrainNumberRequest();
+                req.brain = id;
+                CreateSingleNetworkBrainNumberResponse res = await NetworkManager.Instance.API_UpgradeBrain(req);
+
+                //if (res.statusCode == (int)StatusCode.SUCCESS)
+                //{
+                    _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(res);
+               // }
+                //else
+                {
+                    //Debug.LogError(res.statusCode);
+                }
             }
         }
         #endregion

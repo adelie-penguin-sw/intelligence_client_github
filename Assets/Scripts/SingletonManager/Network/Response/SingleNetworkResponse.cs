@@ -95,11 +95,10 @@ public class SingleNetworkWrapper
         data.brainType = (id == 0) ? EBrainType.MAINBRAIN : EBrainType.NORMALBRAIN;
 
         if (ansEquationsDic.ContainsKey(id))
-            data.intellect = new UpArrowNotation(ansEquationsDic[id].ansEquation.top3Layer.top1Coeff,
-                                                 ansEquationsDic[id].ansEquation.top3Layer.top2Coeff,
-                                                 ansEquationsDic[id].ansEquation.top3Layer.top3Coeff,
-                                                 ansEquationsDic[id].ansEquation.operatorLayerCount);
-
+            data.intellect = new UpArrowNotation(ansEquationsDic[id].ansEquation[0].top3Layer.top1Coeff,
+                                                 ansEquationsDic[id].ansEquation[0].top3Layer.top2Coeff,
+                                                 ansEquationsDic[id].ansEquation[0].top3Layer.top3Coeff,
+                                                 ansEquationsDic[id].ansEquation[0].operatorLayerCount);
 
         if (distancesDic.ContainsKey(id))
             data.distance = distancesDic[id].distance;
@@ -164,11 +163,16 @@ public class SingleNetworkWrapper
     /// <param name="res"></param>
     public void UpdateSingleNetworkData(CreateSingleNetworkChannelRequest req, CreateSingleNetworkChannelResponse res, Action callback)
     {
+
         UserData.NP = new UpArrowNotation(
-            res.NP.top3Layer.top1Coeff,
-            res.NP.top3Layer.top2Coeff,
-            res.NP.top3Layer.top3Coeff,
-            res.NP.operatorLayerCount);
+            res.NP.top1Coeff,
+            res.NP.top2Coeff,
+            res.NP.top3Coeff);
+        //UserData.NP = new UpArrowNotation(
+        //    res.NP.top3Layer.top1Coeff,
+        //    res.NP.top3Layer.top2Coeff,
+        //    res.NP.top3Layer.top3Coeff,
+        //    res.NP.operatorLayerCount);
 
         ansEquationsDic.Clear();
         foreach (var data in res.ansEquations)
@@ -194,5 +198,82 @@ public class SingleNetworkWrapper
         structuresDic[req.from].structure.Add(req.to);
 
         callback();
+    }
+    
+    public void UpdateSingleNetworkData(CreateSingleNetworkBrainNumberResponse res)
+    {
+        ansEquationsDic.Clear();
+        foreach (var data in res.ansEquations)
+        {
+            ansEquationsDic.Add(data.id, data);
+        }
+
+        distancesDic.Clear();
+        foreach (var data in res.distances)
+        {
+            distancesDic.Add(data.id, data);
+        }
+
+        UserData.NP = new UpArrowNotation(
+            res.NP.top1Coeff,
+            res.NP.top2Coeff,
+            res.NP.top3Coeff);
+
+        calcTime = res.calcTime;
+    }
+
+    public void UpdateSingleNetworkData(DeleteSingleNetworkBrainResponse res)
+    {
+        ansEquationsDic.Clear();
+        foreach (var data in res.ansEquations)
+        {
+            ansEquationsDic.Add(data.id, data);
+        }
+
+        distancesDic.Clear();
+        foreach (var data in res.distances)
+        {
+            distancesDic.Add(data.id, data);
+        }
+
+        UserData.NP = new UpArrowNotation(
+            res.NP.top1Coeff,
+            res.NP.top2Coeff,
+            res.NP.top3Coeff);
+
+        calcTime = res.calcTime;
+
+        foreach(var brainId in res.deletedBrains)
+        {
+            RemoveDataForID(brainId);
+        }
+    }
+
+    private void RemoveDataForID(long id)
+    {
+        if(ansEquationsDic.ContainsKey(id))
+        {
+            ansEquationsDic.Remove(id);
+        }
+        if (distancesDic.ContainsKey(id))
+        {
+            distancesDic.Remove(id);
+        }
+        if (structuresDic.ContainsKey(id))
+        {
+            structuresDic.Remove(id);
+        }
+        if (coordinatesDic.ContainsKey(id))
+        {
+            coordinatesDic.Remove(id);
+        }
+        if (skinDic.ContainsKey(id))
+        {
+            skinDic.Remove(id);
+        }
+        if (upgradeConditionDic.ContainsKey(id))
+        {
+            upgradeConditionDic.Remove(id);
+        }
     }
 }
