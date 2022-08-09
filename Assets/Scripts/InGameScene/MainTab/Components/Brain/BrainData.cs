@@ -18,7 +18,7 @@ namespace MainTab
         /// <summary>
         /// 지능
         /// </summary>
-        public UpArrowNotation intellect = new UpArrowNotation(1f);
+        public List<UpArrowNotation> intellect;
         /// <summary>
         /// 거리
         /// </summary>
@@ -51,12 +51,12 @@ namespace MainTab
         public BrainData(int id, EBrainType brainType)
         {
             this.id = id;
-            this.intellect = new UpArrowNotation(1);
+            this.intellect = new List<UpArrowNotation> { new UpArrowNotation(1)};
             this.brainType = brainType;
             _receiverIdList = new HashSet<long>();
             _senderIdList = new HashSet<long>();
         }
-        public BrainData(int id, UpArrowNotation intellect, int distance, EBrainType brainType)
+        public BrainData(int id, List<UpArrowNotation> intellect, int distance, EBrainType brainType)
         {
             this.id = id;
             this.intellect = intellect;
