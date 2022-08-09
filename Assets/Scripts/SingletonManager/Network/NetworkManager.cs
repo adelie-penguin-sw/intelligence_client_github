@@ -135,14 +135,25 @@ public class NetworkManager : MonoBehaviour
     }
     #endregion
 
+    /// 
+    /// POST PATH
+    /// 
     public const string PATH_TEMPORARY = "/v1/auth/temporary";
     public const string PATH_CREATE_SINGLE_NETWORK_BRAIN = "/v1/experiment/single/network/brain";
     public const string PATH_CREATE_SINGLE_NETWORK_CHANNEL = "/v1/experiment/single/network/channel";
     public const string PATH_SINGLE_NETWORK_BRAIN_NUMBER = "/v1/experiment/single/network/brain/intelligence";
+    public const string PATH_SINGLE_NETWORK_RESET = "/v1/experiment/single/network/reset";
 
+    /// 
+    /// GET PATH
+    /// 
     public const string PATH_SINGLE_NETWORK = "/v1/experiment/single/network";
 
+    /// 
+    /// DELETE PATH
+    /// 
     public const string PATH_DELETE_SINGLE_NETWORK_BRAIN = "/v1/experiment/single/network/brain/";
+   
     #region POST
 
     public async UniTask API_Login(TemporaryRequest req)
@@ -190,6 +201,17 @@ public class NetworkManager : MonoBehaviour
                     json);
         return res;
     }
+
+    public async UniTask<SingleNetworkResponse> API_NetworkReset()
+    {
+        string json = "";
+        var res =
+            await SendToServer<SingleNetworkResponse>(
+                    PATH_SINGLE_NETWORK_RESET,
+                    NetworkSendType.POST,
+                    json);
+        return res;
+    }
     #endregion
 
     #region GET
@@ -206,7 +228,7 @@ public class NetworkManager : MonoBehaviour
 
     #region DELETE
 
-    public async UniTask<DeleteSingleNetworkBrainResponse> API_DeleteBrain(int brainID)
+    public async UniTask<DeleteSingleNetworkBrainResponse> API_DeleteBrain(long brainID)
     {
         var res =
             await SendToServer<DeleteSingleNetworkBrainResponse>(
@@ -219,6 +241,7 @@ public class NetworkManager : MonoBehaviour
 
 public enum StatusCode
 {
+    SUCCESS = 201,
     JWT_REFRESH = 202,
     BAD_REQUEST  = 400,
     Forbidden = 403,

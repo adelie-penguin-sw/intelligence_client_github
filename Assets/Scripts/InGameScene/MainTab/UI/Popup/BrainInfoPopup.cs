@@ -47,5 +47,12 @@ namespace InGame
             Dispose();
         }
 
+        public void OnClick_UpgradeBrain()
+        {
+            _sendData.Clear();
+            _sendData.Add(EDataParamKey.BRAIN_ID, _brain.ID);
+            NotificationManager.Instance.PostNotification(ENotiMessage.ONCLICK_UPGRADE_BRAIN, _sendData);
+        }
+
     }
 }

@@ -29,6 +29,7 @@ public class LoginManager : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(UserData.token))
         {
+            //TODO: 토큰 체크 해서 만료된 토큰이면 playerpref 지워주고 다시 저장
             SceneManager.LoadScene("InGameScene");
         }
     }

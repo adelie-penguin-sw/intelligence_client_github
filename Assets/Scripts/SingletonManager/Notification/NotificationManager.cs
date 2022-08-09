@@ -247,6 +247,7 @@ public enum ENotiMessage
 
     ONCLICK_SELL_BRAIN,
     ONCLICK_RESET_NETWORK,
+    ONCLICK_UPGRADE_BRAIN,
 
     CLOSE_BRAININFO_POPUP,
     CLOSE_RESET_POPUP,
@@ -255,6 +256,10 @@ public enum ENotiMessage
 
     //server 통신 관련
     UPDATE_BRAIN_NETWORK,
+
+    //UserData 관련
+    UPDATE_TP,
+    UPDATE_NP,
 }
 
 /// <summary>
@@ -268,5 +273,6 @@ public enum EDataParamKey
     CLASS_BRAIN,
     CLASS_CHANNEL,
     STRUCT_BRAINRELATION,
+    BRAIN_ID
 
 }

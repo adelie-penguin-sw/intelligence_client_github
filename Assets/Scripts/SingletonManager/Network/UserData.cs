@@ -8,8 +8,34 @@ using UnityEngine;
 public class UserData
 {
     public static string token;
-    public static UpArrowNotation TP = new UpArrowNotation();
-    public static UpArrowNotation NP = new UpArrowNotation();
+    private static UpArrowNotation _tp = new UpArrowNotation();
+    public static UpArrowNotation TP
+    {
+        get
+        {
+            return _tp;
+        }
+        set
+        {
+            _tp = value;
+            NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_TP);
+        }
+    }
+
+    private static UpArrowNotation _np = new UpArrowNotation();
+    public static UpArrowNotation NP
+    {
+        get
+        {
+            return _np;
+        }
+        set
+        {
+            _np = value;
+            NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_NP);
+        }
+    }
+
     public static void SetString(string key, string value)
     {
         PlayerPrefs.SetString(key, value);
