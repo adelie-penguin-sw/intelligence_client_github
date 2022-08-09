@@ -13,14 +13,14 @@ public class Equation
     /// <param name="order"></param>
     /// <param name="elapsedTime"></param>
     /// <returns></returns>
-    public static List<UpArrowNotation> GetTimeCoeffs(int order, int elapsedTime)
+    public static List<UpArrowNotation> GetTimeCoeffs(int order, double elapsedTime)
     {
         List<UpArrowNotation> resultList = new List<UpArrowNotation>();
         resultList.Add(new UpArrowNotation(1));
 
-        for (int i=0; i<order; i++)
+        for (int i = 0; i < order; i++)
         {
-            resultList.Add((resultList[resultList.Count-1] * elapsedTime) / resultList.Count);
+            resultList.Add((resultList[resultList.Count - 1] * elapsedTime) / resultList.Count);
         }
 
         return resultList;
@@ -35,7 +35,7 @@ public class Equation
     {
         UpArrowNotation result = new UpArrowNotation();
 
-        for (int i=0; i<brainEqCoeffs.Count; i++)
+        for (int i = 0; i < brainEqCoeffs.Count; i++)
         {
             result += brainEqCoeffs[i] * timeCoeffs[i];
         }
@@ -43,8 +43,8 @@ public class Equation
         return result;
     }
 
-    public static UpArrowNotation GetCurrentIntellect(List<UpArrowNotation> brainEqCoeffs, int elapsedTime)
+    public static UpArrowNotation GetCurrentIntellect(List<UpArrowNotation> brainEqCoeffs, double elapsedTime)
     {
-        return MultiplyCoeffs(brainEqCoeffs, GetTimeCoeffs(brainEqCoeffs.Count-1, elapsedTime));
+        return MultiplyCoeffs(brainEqCoeffs, GetTimeCoeffs(brainEqCoeffs.Count - 1, elapsedTime));
     }
 }
