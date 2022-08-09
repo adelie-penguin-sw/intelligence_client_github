@@ -95,11 +95,15 @@ public class SingleNetworkWrapper
         data.brainType = (id == 0) ? EBrainType.MAINBRAIN : EBrainType.NORMALBRAIN;
 
         if (ansEquationsDic.ContainsKey(id))
-            data.intellect = new UpArrowNotation(ansEquationsDic[id].ansEquation.top3Layer.top1Coeff,
-                                                 ansEquationsDic[id].ansEquation.top3Layer.top2Coeff,
-                                                 ansEquationsDic[id].ansEquation.top3Layer.top3Coeff,
-                                                 ansEquationsDic[id].ansEquation.operatorLayerCount);
-
+        {
+            foreach (AnsEquation ans in ansEquationsDic[id].ansEquation)
+            {
+                data.intellect.Add(new UpArrowNotation(ans.top3Layer.top1Coeff,
+                                                       ans.top3Layer.top1Coeff,
+                                                       ans.top3Layer.top1Coeff,
+                                                       ans.operatorLayerCount));
+            }
+        }
 
         if (distancesDic.ContainsKey(id))
             data.distance = distancesDic[id].distance;
