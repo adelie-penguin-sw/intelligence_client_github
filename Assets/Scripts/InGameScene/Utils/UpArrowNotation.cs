@@ -294,6 +294,17 @@ public class UpArrowNotation
 
     private void _checkLayer()
     {
+	    if (_top3Coeffs[0] == 0f) {
+            _top3Coeffs[1] = 0f;
+            _top3Coeffs[2] = 0f;
+            _operatorLayerCount = 0;
+            return;
+	    }
+
+	    if (_top3Coeffs[1] == 0f) {
+            _top3Coeffs[2] = 0f;
+            _operatorLayerCount = 0;
+	    }
 
         int expoLayerCount = _operatorLayerCount % 10;
 
@@ -717,39 +728,38 @@ public class UpArrowNotation
     /// <returns>첫째 파라미터의 값이 둘째 파라미터의 값보다 큰지에 대한 진리값</returns>
     public static bool operator >(UpArrowNotation a, UpArrowNotation b)
     {
-        if (a._operatorLayerCount > b._operatorLayerCount)
-        {
-            return true;
-        }
-        else if (a._operatorLayerCount < b._operatorLayerCount)
-        {
-            return false;
-        }
+        double aCoeff = a._top3Coeffs[0];
+        double bCoeff = b._top3Coeffs[0];
 
-        if (a._top3Coeffs[2] > b._top3Coeffs[2])
-        {
-            return true;
-        }
-        else if (a._top3Coeffs[2] < b._top3Coeffs[2])
-        {
-            return false;
-        }
+	    // 두 수의 부호가 다르거나 0일 때
+	    if (aCoeff*bCoeff <= 0f) {
+		    if (aCoeff <= 0f && bCoeff >= 0f) {
+                return false;
+		    } else {
+                return true;
+		    }
+	    }
 
-        if (a._top3Coeffs[1] > b._top3Coeffs[1])
-        {
-            return true;
-        }
-        else if (a._top3Coeffs[1] < b._top3Coeffs[1])
-        {
-            return false;
-        }
+        // power값 직접 계산
+        double aPower = a.CalculateTop2Layer();
+        double bPower = b.CalculateTop2Layer();
 
-        if (a._top3Coeffs[0] > b._top3Coeffs[0])
-        {
-            return true;
-        }
-
-        return false;
+	    // 두 수의 부호가 모두 양일 때
+	    if (aCoeff > 0f) {
+		    if (aPower > bPower) {
+                return true;
+		    } else if (aPower < bPower) {
+                return false;
+		    }
+            return aCoeff > bCoeff;
+	    } else { // 두 수의 부호가 모두 음일 때
+		    if (aPower > bPower) {
+                return false;
+		    } else if (aPower < bPower) {
+                return true;
+		    }
+            return aCoeff > bCoeff;
+	    }
     }
 
     public static bool operator >(UpArrowNotation a, double b) => a > (new UpArrowNotation(b));
