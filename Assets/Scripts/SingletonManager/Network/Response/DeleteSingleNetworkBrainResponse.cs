@@ -9,6 +9,6 @@ public class DeleteSingleNetworkBrainResponse
 	public List<AnsEquations> ansEquations;
 	public List<Distances> distances;
 	public List<int> deletedBrains;
-	public TopCoeffs NP;
+	public AnsEquation NP;
 	public long calcTime;
 }
