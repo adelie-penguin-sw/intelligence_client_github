@@ -68,15 +68,15 @@ public class SingleNetworkWrapper
             }
 
             UserData.NP = new UpArrowNotation(
-            res.NP.top3Layer.top1Coeff,
-            res.NP.top3Layer.top2Coeff,
-            res.NP.top3Layer.top3Coeff,
+            res.NP.top3Coeffs[0],
+            res.NP.top3Coeffs[1],
+            res.NP.top3Coeffs[2],
             res.NP.operatorLayerCount);
 
             UserData.TP = new UpArrowNotation(
-            res.TP.top3Layer.top1Coeff,
-            res.TP.top3Layer.top2Coeff,
-            res.TP.top3Layer.top3Coeff,
+            res.TP.top3Coeffs[0],
+            res.TP.top3Coeffs[1],
+            res.TP.top3Coeffs[2],
             res.TP.operatorLayerCount);
             calcTime = res.calcTime;
 
@@ -100,9 +100,9 @@ public class SingleNetworkWrapper
         {
             foreach (AnsEquation ans in ansEquationsDic[id].ansEquation)
             {
-                data.intellect.Add(new UpArrowNotation(ans.top3Layer.top1Coeff,
-                                                       ans.top3Layer.top2Coeff,
-                                                       ans.top3Layer.top3Coeff,
+                data.intellect.Add(new UpArrowNotation(ans.top3Coeffs[0],
+                                                       ans.top3Coeffs[1],
+                                                       ans.top3Coeffs[2],
                                                        ans.operatorLayerCount));
             }
         }
@@ -134,15 +134,15 @@ public class SingleNetworkWrapper
     public void UpdateSingleNetworkData(CreateSingleNetworkBrainRequest req, CreateSingleNetworkBrainResponse res)
     {
         UserData.NP = new UpArrowNotation(
-            res.NP.top3Layer.top1Coeff,
-            res.NP.top3Layer.top2Coeff,
-            res.NP.top3Layer.top3Coeff,
+            res.NP.top3Coeffs[0],
+            res.NP.top3Coeffs[1],
+            res.NP.top3Coeffs[2],
             res.NP.operatorLayerCount);
 
         UserData.TP = new UpArrowNotation(
-            res.TP.top3Layer.top1Coeff,
-            res.TP.top3Layer.top2Coeff,
-            res.TP.top3Layer.top3Coeff,
+            res.TP.top3Coeffs[0],
+            res.TP.top3Coeffs[1],
+            res.TP.top3Coeffs[2],
             res.TP.operatorLayerCount);
 
         ansEquationsDic.Clear();
@@ -173,9 +173,9 @@ public class SingleNetworkWrapper
     public void UpdateSingleNetworkData(CreateSingleNetworkChannelRequest req, CreateSingleNetworkChannelResponse res, Action callback)
     {
         UserData.NP = new UpArrowNotation(
-            res.NP.top3Layer.top1Coeff,
-            res.NP.top3Layer.top2Coeff,
-            res.NP.top3Layer.top3Coeff,
+            res.NP.top3Coeffs[0],
+            res.NP.top3Coeffs[1],
+            res.NP.top3Coeffs[2],
             res.NP.operatorLayerCount);
 
         ansEquationsDic.Clear();
