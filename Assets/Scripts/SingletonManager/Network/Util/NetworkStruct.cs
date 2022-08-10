@@ -19,16 +19,8 @@ public struct AnsEquations
 [Serializable]
 public struct AnsEquation
 {
-    public TopCoeffs top3Layer;
+    public List<double> top3Coeffs;
     public int operatorLayerCount;
-}
-
-[Serializable]
-public struct TopCoeffs
-{
-    public double top1Coeff;
-    public double top2Coeff;
-    public double top3Coeff;
 }
 
 [Serializable]
