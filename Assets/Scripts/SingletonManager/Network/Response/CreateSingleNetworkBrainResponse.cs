@@ -10,7 +10,6 @@ public class CreateSingleNetworkBrainResponse
 	public List<Distances> distances; 
 	public long newBrain;
 	public AnsEquation NP;
-	public AnsEquation TP;
 	public long calcTime;
 }
 
