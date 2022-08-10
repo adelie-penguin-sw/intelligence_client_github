@@ -139,12 +139,6 @@ public class SingleNetworkWrapper
             res.NP.top3Coeffs[2],
             res.NP.operatorLayerCount);
 
-        UserData.TP = new UpArrowNotation(
-            res.TP.top3Coeffs[0],
-            res.TP.top3Coeffs[1],
-            res.TP.top3Coeffs[2],
-            res.TP.operatorLayerCount);
-
         ansEquationsDic.Clear();
         foreach (var data in res.ansEquations)
         {

@@ -27,6 +27,8 @@ namespace MainTab
 
         public void AdvanceTime(float dt_sec)
         {
+            UpdateNPText();
+            UpdateTPText();
         }
 
         /// <summary>
