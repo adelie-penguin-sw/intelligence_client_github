@@ -46,6 +46,7 @@ namespace MainTab
         {
             _receiverIdList = new HashSet<long>();
             _senderIdList = new HashSet<long>();
+            this.intellect = new List<UpArrowNotation>();
         }
 
         public BrainData(int id, EBrainType brainType)
