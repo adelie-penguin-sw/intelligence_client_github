@@ -148,6 +148,7 @@ public class NetworkManager : MonoBehaviour
     /// GET PATH
     /// 
     public const string PATH_SINGLE_NETWORK = "/v1/experiment/single/network";
+    public const string PATH_TOKEN_VALIDATION = "/v1/auth/validation";
 
     /// 
     /// DELETE PATH
@@ -224,6 +225,15 @@ public class NetworkManager : MonoBehaviour
                     NetworkSendType.GET);
         return res;
     }
+
+    public async UniTask<AuthValidationResponse> API_TokenValidation()
+    {
+        var res =
+            await SendToServer<AuthValidationResponse>(
+                    PATH_TOKEN_VALIDATION,
+                    NetworkSendType.GET);
+        return res;
+    }
     #endregion
 
     #region DELETE
@@ -241,10 +251,10 @@ public class NetworkManager : MonoBehaviour
 
 public enum StatusCode
 {
-    SUCCESS = 201,
+    SUCCESS = 200,
     JWT_REFRESH = 202,
     BAD_REQUEST  = 400,
-    Forbidden = 403,
+    FORBIDDEN = 403,
 }
 
 public enum NetworkSendType

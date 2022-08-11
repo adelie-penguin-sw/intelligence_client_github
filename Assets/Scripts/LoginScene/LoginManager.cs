@@ -25,12 +25,28 @@ public class LoginManager : MonoBehaviour
         CheckChangeScene();
     }
 
-    private void CheckChangeScene()
+    private async void CheckChangeScene()
     {
         if (!string.IsNullOrEmpty(UserData.token))
         {
-            //TODO: 토큰 체크 해서 만료된 토큰이면 playerpref 지워주고 다시 저장
-            SceneManager.LoadScene("InGameScene");
+            AuthValidationResponse res = await NetworkManager.Instance.API_TokenValidation();
+            switch ((StatusCode)res.statusCode)
+            {
+                case StatusCode.SUCCESS:
+                    SceneManager.LoadScene("InGameScene");
+                    break;
+                case StatusCode.JWT_REFRESH:
+                    UserData.SetString("Token", res.token);
+                    SceneManager.LoadScene("InGameScene");
+                    break;
+                case StatusCode.BAD_REQUEST:
+                case StatusCode.FORBIDDEN:
+                    Debug.LogError((StatusCode)res.statusCode);
+                    break;
+                default:
+                    Debug.LogError(res.statusCode);
+                    break;
+            }
         }
     }
 }
