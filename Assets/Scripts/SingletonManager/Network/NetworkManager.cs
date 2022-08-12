@@ -81,6 +81,7 @@ public class NetworkManager : MonoBehaviour
             var res = await request.SendWebRequest().WithCancellation(cts.Token);
             Debug.Log(res.downloadHandler.text);
             T result = JsonUtility.FromJson<T>(res.downloadHandler.text);
+            request.Dispose();
             return result;
         }
         catch(OperationCanceledException ex)
@@ -97,8 +98,10 @@ public class NetworkManager : MonoBehaviour
         catch(Exception e)
         {
             Debug.Log(e.Message);
+            request.Dispose();
             return default;
         }
+        request.Dispose();
         return default;
     }
 
