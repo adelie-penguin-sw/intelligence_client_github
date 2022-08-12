@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Sirenix.OdinInspector;
 
 public class UpArrowNotation
 {
-    private List<double> _top3Coeffs;
-    private int _operatorLayerCount = 0;
+    [ShowInInspector] private List<double> _top3Coeffs;
+    [ShowInInspector] private int _operatorLayerCount = 0;
 
     /// <summary>
     /// UpArrowNotation의 최상위 세 계층에 관한 정보를 list 형태로 반환합니다.
@@ -329,7 +330,7 @@ public class UpArrowNotation
             _ascendLayer();
         }
 
-        if (_operatorLayerCount % 10 == 0)
+        if (_operatorLayerCount >= 10 && _operatorLayerCount % 10 == 0)
         {
             _operatorLayerCount++;
             _top3Coeffs = new List<double> { 1.1f, 1f, 0f };
