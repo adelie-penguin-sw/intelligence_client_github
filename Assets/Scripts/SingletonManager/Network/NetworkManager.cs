@@ -159,14 +159,14 @@ public class NetworkManager : MonoBehaviour
 
     public async UniTask API_Login(TemporaryRequest req)
     {
-        Debug.LogError("API_Login");
+        Debug.Log("API_Login");
         string json = JsonUtility.ToJson(req);
         var res =
             await SendToServer<TemporaryResponse>(
             PATH_TEMPORARY,
             NetworkSendType.POST,
             json);
-        Debug.LogError(res.token);
+        Debug.Log(res.token);
         UserData.SetString("Token", res.token);
     }
 

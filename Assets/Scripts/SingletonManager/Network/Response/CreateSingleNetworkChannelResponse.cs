@@ -8,6 +8,6 @@ public class CreateSingleNetworkChannelResponse
 	public int statusCode;
 	public List<AnsEquations> ansEquations;
 	public List<Distances> distances; 
-	public TopCoeffs NP;
+	public AnsEquation NP;
 	public long calcTime;
 }
