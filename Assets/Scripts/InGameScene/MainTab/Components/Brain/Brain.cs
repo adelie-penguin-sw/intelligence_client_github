@@ -12,14 +12,23 @@ namespace MainTab
         [SerializeField] private TextMeshPro _textNum;
         [SerializeField] private BrainData _brainData;
 
+        private long _lastCalcTime;
+
         #region property
         public HashSet<long> ReceiverIdList { get { return _brainData._receiverIdList; } }
         public HashSet<long> SenderIdList { get { return _brainData._senderIdList; } }
 
         /// <summary>
-        /// 지능 수치
+        /// 지능 수치 계산하여 반환
         /// </summary>
-        public UpArrowNotation Intellect { get { return _brainData.intellect; } }
+        public UpArrowNotation Intellect
+        {
+            get
+            {
+                double elapsedTime = (double)(DateTimeOffset.Now.ToUnixTimeMilliseconds() - _lastCalcTime) / 1000f;
+                return Equation.GetCurrentIntellect(_brainData.intellect, elapsedTime);
+            }
+        }
         /// <summary>
         /// 해당 브레인의 ID
         /// </summary>
@@ -39,7 +48,7 @@ namespace MainTab
         public void Init(BrainData data)
         {
             _brainData = data;
-            SetNumText(data.intellect);
+            SetNumText(Intellect);
             if (_brainData.brainType == EBrainType.GUIDEBRAIN)
                 gameObject.SetActive(false);
             Set();
@@ -64,6 +73,7 @@ namespace MainTab
                 }
 
                 transform.position = new Vector2(_brainData.coordinates.x, _brainData.coordinates.y);
+                _lastCalcTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             }
         }
 
@@ -71,7 +81,7 @@ namespace MainTab
         {
             if (_brainData.brainType != EBrainType.GUIDEBRAIN)
             {
-                SetNumText(_brainData.intellect);
+                SetNumText(Intellect);
             }
         }
 

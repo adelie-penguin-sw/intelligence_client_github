@@ -27,6 +27,8 @@ namespace MainTab
 
         public void AdvanceTime(float dt_sec)
         {
+            UpdateNPText();
+            UpdateTPText();
         }
 
         /// <summary>
@@ -35,7 +37,7 @@ namespace MainTab
         /// <param name="np">변경할 np</param>
         public void UpdateNPText()
         {
-            _txtNP.text = string.Format("NP: {0}", UserData.NP);
+            _txtNP.text = string.Format("NP: {0}", UserData.NP.ToString());
         }
 
         /// <summary>
@@ -44,7 +46,7 @@ namespace MainTab
         /// <param name="tp">변경할 tp</param>
         public void UpdateTPText()
         {
-            _txtTP.text = string.Format("TP: {0}", UserData.TP);
+            _txtTP.text = string.Format("TP: {0}", UserData.TP.ToString());
         }
 
         public void Dispose()
