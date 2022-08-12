@@ -418,11 +418,19 @@ namespace MainTab
 
                     var res = await NetworkManager.Instance.API_CreateChannel(req);
 
-                    _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(req, res, () =>
+                    switch((StatusCode)res.statusCode)
                     {
-                        NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
-                        _controller.ChangeState(EBehaviorState.NONE);
-                    });
+                        case StatusCode.SUCCESS:
+                            _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(req, res, () =>
+                            {
+                                NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
+                                _controller.ChangeState(EBehaviorState.NONE);
+                            });
+                            break;
+                        default:
+                            _controller.ChangeState(EBehaviorState.NONE);
+                            break;
+                    }
                 }
                 else
                 {
@@ -479,14 +487,7 @@ namespace MainTab
                 req.brain = id;
                 CreateSingleNetworkBrainNumberResponse res = await NetworkManager.Instance.API_UpgradeBrain(req);
 
-                //if (res.statusCode == (int)StatusCode.SUCCESS)
-                //{
-                    _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(res);
-               // }
-                //else
-                {
-                    //Debug.LogError(res.statusCode);
-                }
+                _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(res);
             }
         }
         #endregion
