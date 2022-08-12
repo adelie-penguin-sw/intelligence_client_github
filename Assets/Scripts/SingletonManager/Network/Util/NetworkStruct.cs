@@ -9,13 +9,13 @@ public class NetworkStruct
 
 }
 
-
 [Serializable]
 public struct AnsEquations
 {
     public long id;
     public List<AnsEquation> ansEquation;
 }
+
 [Serializable]
 public struct AnsEquation
 {
