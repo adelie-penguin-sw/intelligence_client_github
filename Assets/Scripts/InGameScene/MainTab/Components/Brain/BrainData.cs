@@ -17,8 +17,8 @@ namespace MainTab
         public long id;
         /// <summary>
         /// 지능
-        /// </summary>
-        public List<UpArrowNotation> intellect;
+        /// </summary>        
+        [ShowInInspector] public List<UpArrowNotation> intellect;
         /// <summary>
         /// 거리
         /// </summary>
