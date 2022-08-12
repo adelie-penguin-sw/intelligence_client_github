@@ -12,7 +12,8 @@ public class LoginManager : MonoBehaviour
 
     public void Start()
     {
-        UserData.LoadAllData();
+        PlayerPrefs.DeleteAll();
+        //UserData.LoadAllData();
         CheckChangeScene();
     }
 

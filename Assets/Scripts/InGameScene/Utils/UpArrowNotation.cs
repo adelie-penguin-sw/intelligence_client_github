@@ -5,31 +5,47 @@ using System;
 
 public class UpArrowNotation
 {
-    private PowerTowerNotation _top3Layer;
+    private List<double> _top3Coeffs;
     private int _operatorLayerCount = 0;
 
     /// <summary>
-    /// UpArrowNotation의 최상위 세 계층에 관한 정보를 PowerTowerNotation의 형태로 반환합니다.
+    /// UpArrowNotation의 최상위 세 계층에 관한 정보를 list 형태로 반환합니다.
     /// </summary>
-    public PowerTowerNotation Top3Layer { get { return _top3Layer; } }
+    public List<double> Top3Layer { get { return _top3Coeffs; } }
 
     /// <summary>
     /// UpArrowNotation의 나머지 레이어에 관한 정보를 하나의 9자리 정수값으로 반환합니다.
     /// </summary>
     public int OperatorLayerCount { get { return _operatorLayerCount; } }
 
-    private void Convert(double number)
+    private static (double, double) _getCoeffAndPower(double number)
     {
-        _top3Layer = new PowerTowerNotation(number);
+        if (number == 0f)
+        {
+            return (0f, 0f);
+        }
 
-        if (_top3Layer._top2Coeff != 0f)
+        double power = Math.Floor(Math.Log10(Math.Abs(number)));
+        double coeff = number / Math.Pow(10f, power);
+
+        return (coeff, power);
+    }
+
+    private void _convert(double number)
+    {
+        (double top1Coeff, double power) = _getCoeffAndPower(number);
+        (double top2Coeff, double top3Coeff) = _getCoeffAndPower(power);
+
+        if (top2Coeff != 0f)
         {
             _operatorLayerCount = 1;
         }
-        if (_top3Layer._top3Coeff != 0f)
+        if (top3Coeff != 0f)
         {
             _operatorLayerCount = 2;
         }
+
+        _top3Coeffs = new List<double> { top1Coeff, top2Coeff, top3Coeff };
     }
 
     /// <summary>
@@ -37,7 +53,7 @@ public class UpArrowNotation
     /// </summary>
     public UpArrowNotation()
     {
-        _top3Layer = new PowerTowerNotation();
+        _top3Coeffs = new List<double> { 0f, 0f, 0f };
     }
 
     /// <summary>
@@ -46,7 +62,7 @@ public class UpArrowNotation
     /// <param name="number"></param>
     public UpArrowNotation(double number)
     {
-        Convert(number);
+        _convert(number);
     }
 
     /// <summary>
@@ -55,7 +71,7 @@ public class UpArrowNotation
     /// <param name="number"></param>
     public UpArrowNotation(int number)
     {
-        Convert(number);
+        _convert(number);
     }
 
     /// <summary>
@@ -67,9 +83,48 @@ public class UpArrowNotation
     /// <param name="layer2Coeff"></param>
     /// <param name="layer3Coeff"></param>
     /// <param name="operatorLayerCounts"></param>
-    public UpArrowNotation(double layer1Coeff, double layer2Coeff, double layer3Coeff, int operatorLayerCounts = 0)
+    public UpArrowNotation(double layer1Coeff, double layer2Coeff, double layer3Coeff = 0f, int operatorLayerCounts = 0)
     {
-        _top3Layer = new PowerTowerNotation(layer1Coeff, layer2Coeff, layer3Coeff);
+        // 레이어 카운팅 넘버는 최대 아홉 자리 정수까지만 허용된다
+        if (operatorLayerCounts > 999999999)
+        {
+            throw new ArgumentOutOfRangeException("operatorlayercount can have maximum 9 digits");
+        }
+
+        // 레이어 카운팅 넘버는 0과 자연수만 허용된다
+        if (operatorLayerCounts < 0)
+        {
+            throw new ArgumentOutOfRangeException("operatorlayercount cannot be negative");
+        }
+
+        // 모든 coeff 파라미터의 절댓값은 10 이상일 수 없다
+        if (Math.Abs(layer1Coeff) >= 10f || Math.Abs(layer2Coeff) >= 10f || Math.Abs(layer3Coeff) >= 10f)
+        {
+            throw new ArgumentOutOfRangeException("abs value of each coefficients cannot exceed 10");
+        }
+
+        // 모든 coeff 파라미터의 절댓값은 1보다 작을 수 없다
+        if (Math.Abs(layer1Coeff) < 1f && layer1Coeff != 0f || Math.Abs(layer2Coeff) < 1f && layer2Coeff != 0f || Math.Abs(layer3Coeff) < 1f && layer3Coeff != 0f)
+        {
+            throw new ArgumentOutOfRangeException("abs value of each coefficients cannot be lower than 1");
+        }
+
+        // 세 번째 coeff 파라미터는 음수가 될 수 없다
+        if (layer3Coeff < 0f)
+        {
+            throw new ArgumentOutOfRangeException("the third coefficient must be nonnegative");
+        }
+
+        _top3Coeffs = new List<double> { layer1Coeff, layer2Coeff, layer3Coeff };
+        if (_top3Coeffs[0] == 0f)
+        {
+            _top3Coeffs[1] = 0f;
+            _top3Coeffs[2] = 0f;
+        }
+        else if (_top3Coeffs[1] == 0f)
+        {
+            _top3Coeffs[2] = 0f;
+        }
 
         int expoLayerCount = operatorLayerCounts % 10;
 
@@ -80,12 +135,24 @@ public class UpArrowNotation
 
             if (layer2Coeff >= 1f)
             {
-                operatorLayerCounts += 1;
+                operatorLayerCounts++;
             }
-            if (layer3Coeff >= 1f) {
-                operatorLayerCounts += 1;
+            if (layer3Coeff >= 1f)
+            {
+                operatorLayerCounts++;
             }
         }
+
+        _operatorLayerCount = operatorLayerCounts;
+    }
+
+    /// <summary>
+    /// 모든 필드를 반환합니다.
+    /// </summary>
+    /// <returns></returns>
+    public (double, double, double, int) GetFields()
+    {
+        return (_top3Coeffs[0], _top3Coeffs[1], _top3Coeffs[2], _operatorLayerCount);
     }
 
     /// <summary>
@@ -94,36 +161,81 @@ public class UpArrowNotation
     /// <returns>문자열화된 숫자표현식</returns>
     public override string ToString()
     {
-        string resultString = _top3Layer.ToString();
+        if (_top3Coeffs[2] == 0f)
+        {
+            if (_top3Coeffs[1] >= 0f)
+            {
+                return (_top3Coeffs[0] * Math.Pow(10, _top3Coeffs[1])).ToString("N0");
+            }
+            else
+            {
+                return (_top3Coeffs[0] * Math.Pow(10, _top3Coeffs[1])).ToString("N" + (-_top3Coeffs[1]).ToString("N0"));
+            }
+        }
+
+        string powerString = (_top3Coeffs[1] * Math.Pow(10, _top3Coeffs[2])).ToString("N0");
+        string coeffString = _top3Coeffs[0].ToString("N2");
+        string resultString = coeffString + "x10^" + powerString;
 
         int layerCountTest = 1;
         int layerCount = _operatorLayerCount / 10;
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 8; i++)
+        {
             layerCountTest *= layerCount % 10;
             layerCount /= 10;
         }
 
-        if (_top3Layer._top3Coeff > 0.0 && (_operatorLayerCount % 10 > 3 || layerCountTest > 1)) {
+        if (_top3Coeffs[2] > 0.0 && (_operatorLayerCount % 10 > 3 || layerCountTest > 1))
+        {
             resultString = "(" + resultString + ")";
         }
 
         string operatorString = "^";
-        for (int i = 0; i < _operatorLayerCount % 10 - 3; i++) {
+        for (int i = 0; i < _operatorLayerCount % 10 - 3; i++)
+        {
             resultString = "10" + operatorString + resultString;
         }
 
         int higherLevelCounts = _operatorLayerCount / 10;
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 8; i++)
+        {
             operatorString += "^";
 
-            for (int j = 0; j < higherLevelCounts % 10; j++) {
+            for (int j = 0; j < higherLevelCounts % 10; j++)
+            {
                 resultString = "10" + operatorString + resultString;
             }
             higherLevelCounts /= 10;
         }
 
         return resultString;
+    }
+
+    /// <summary>
+    /// 최상위 2계층까지의 실제 값을 계산합니다.
+    /// </summary>
+    /// <returns></returns>
+    public double CalculateTop2Layer()
+    {
+        return _top3Coeffs[1] * Math.Pow(10f, _top3Coeffs[2]);
+    }
+
+    /// <summary>
+    /// 최상위 3계층까지의 실제 값을 계산합니다. double타입 한계를 넘어서면 무한대를 반환합니다.
+    /// </summary>
+    /// <returns></returns>
+    public double CalculateTop3Layer()
+    {
+        try
+        {
+            double power = _top3Coeffs[1] * Math.Pow(10f, _top3Coeffs[2]);
+            return _top3Coeffs[0] * Math.Pow(10f, power);
+        }
+        catch (OverflowException e)
+        {
+            return double.PositiveInfinity;
+        }
     }
 
     /// <summary>
@@ -134,87 +246,125 @@ public class UpArrowNotation
     {
         UpArrowNotation copiedNumber = new UpArrowNotation();
 
-        copiedNumber._top3Layer = _top3Layer.Copy();
+        for (int i = 0; i < 3; i++)
+        {
+            copiedNumber._top3Coeffs[i] = _top3Coeffs[i];
+        }
         copiedNumber._operatorLayerCount = _operatorLayerCount;
 
         return copiedNumber;
     }
 
-    /// <summary>
-    /// 최상위 두 계층까지의 실제 값을 계산하여 반환합니다.
-    /// </summary>
-    /// <returns></returns>
-    public double CalculatePower()
+    private void _ascendLayer()
     {
-        return _top3Layer._top2Coeff * Math.Pow(10.0, _top3Layer._top3Coeff);
-    }
-
-    /// <summary>
-    /// 최상위 세 계층까지의 실제 값을 계산하여 반환합니다. 계산값이 double의 표현가능범위를 초과할 경우 PositiveInfinity를 대신 반환합니다.
-    /// </summary>
-    /// <returns></returns>
-    public double CalculateFull()
-    {
-        try
-        {
-            double power = _top3Layer._top2Coeff * Math.Pow(10.0, _top3Layer._top3Coeff);
-            return _top3Layer._top1Coeff * Math.Pow(10.0, power);
-        }
-        catch (OverflowException e)
-        {
-            return double.PositiveInfinity;
-        }
-    }
-
-    private void CheckLayer()
-    {
+        _operatorLayerCount++;
         int expoLayerCount = _operatorLayerCount % 10;
 
+        if (expoLayerCount == 0)
+        {
+            _operatorLayerCount++;
+            _top3Coeffs = new List<double> { 1.1f, 1f, 0f };
+            return;
+        }
 
-        if (expoLayerCount < 3) {
+        (double c, double p) = _getCoeffAndPower(_top3Coeffs[expoLayerCount - 1]);
+
+        _top3Coeffs[0] = _top3Coeffs[1];
+        _top3Coeffs[1] = c;
+        _top3Coeffs[2] = p;
+    }
+
+    private void _descendLayer()
+    {
+        int expoLayerCount = _operatorLayerCount % 10;
+        _operatorLayerCount--;
+
+
+        if (_operatorLayerCount >= 10 && expoLayerCount == 0)
+        {
+            _operatorLayerCount--;
+            _top3Coeffs = new List<double> { 9.9999999999f, 9.999999999f, 9f };
+            return;
+        }
+
+        double power = _top3Coeffs[1] * Math.Pow(10f, _top3Coeffs[2]);
+        _top3Coeffs[2] = power;
+        _top3Coeffs[expoLayerCount] = 9.9999999999f;
+    }
+
+    private void _checkLayer()
+    {
+	    if (_top3Coeffs[0] == 0f) {
+            _top3Coeffs[1] = 0f;
+            _top3Coeffs[2] = 0f;
+            _operatorLayerCount = 0;
+            return;
+	    }
+
+	    if (_top3Coeffs[1] == 0f) {
+            _top3Coeffs[2] = 0f;
+            _operatorLayerCount = 0;
+	    }
+
+        int expoLayerCount = _operatorLayerCount % 10;
+
+        if (expoLayerCount < 3)
+        {
             _operatorLayerCount /= 10;
             _operatorLayerCount *= 10;
 
-            if (_top3Layer._top2Coeff != 0.0) {
-                _operatorLayerCount += 1;
+            if (_top3Coeffs[1] != 0f)
+            {
+                _operatorLayerCount++;
+
             }
-            if (_top3Layer._top3Coeff != 0.0) {
-                _operatorLayerCount += 1;
+            if (_top3Coeffs[2] != 0f)
+            {
+                _operatorLayerCount++;
             }
         }
 
-        if (_top3Layer._top3Coeff >= 10.0) {
-            _top3Layer.AscendLayer();
-            _operatorLayerCount += 1;
+        if (_top3Coeffs[2] >= 10f)
+        {
+            _ascendLayer();
         }
 
-        if (_operatorLayerCount % 10 == 0) {
-            _operatorLayerCount += 1;
-            _top3Layer = new PowerTowerNotation(1.1f, 1.0f, 0f);
+        if (_operatorLayerCount % 10 == 0)
+        {
+            _operatorLayerCount++;
+            _top3Coeffs = new List<double> { 1.1f, 1f, 0f };
         }
 
         // if uan.operatorLayerCount >= 1000000000 {
         // 	// If number gets SOOOOOOOOOOOOO large..??
         // }
 
-        if (_top3Layer._top3Coeff < 1.0 && _operatorLayerCount % 10 > 2) {
-            _top3Layer.DescendLayer();
-            _operatorLayerCount -= 1;
+        if (_top3Coeffs[2] < 1f && _operatorLayerCount % 10 > 2)
+        {
+            _descendLayer();
+        }
+    }
+
+    private static UpArrowNotation _reciprocated(UpArrowNotation uan)
+    {
+        UpArrowNotation result = uan.Copy();
+
+        result._top3Coeffs[1] *= -1;
+
+        if (result._top3Coeffs[0] == 1)
+        {
+            return result;
         }
 
-        int totalLayerCounts = 0;
-        int higherLevelCounts = _operatorLayerCount / 10;
-
-        for (int i = 0; i < 8; i++) {
-            totalLayerCounts += higherLevelCounts % 10;
-            higherLevelCounts /= 10;
+        if (result._top3Coeffs[0] == 0)
+        {
+            throw new DivideByZeroException("division by zero");
         }
 
-        if (totalLayerCounts > 0 && _operatorLayerCount % 10 == 0) {
-            _operatorLayerCount -= 1;
-            _top3Layer = new PowerTowerNotation(9.999f, 9.999f, 9f);
-            _operatorLayerCount -= 1;
-        }
+        result._top3Coeffs[0] = 10f / result._top3Coeffs[0];
+        result._top3Coeffs[1] -= 1f;
+
+        return result;
     }
 
     /// <summary>
@@ -232,7 +382,7 @@ public class UpArrowNotation
     public static UpArrowNotation operator -(UpArrowNotation a)
     {
         UpArrowNotation result = a.Copy();
-        result._top3Layer = -result._top3Layer;
+        result._top3Coeffs[0] *= -1;
         return result;
     }
 
@@ -242,8 +392,54 @@ public class UpArrowNotation
     /// <param name="other"></param>
     public void Add(UpArrowNotation other)
     {
-        _top3Layer += other._top3Layer;
-        CheckLayer();
+        double coeff = _top3Coeffs[0];
+        double power = Math.Round(_top3Coeffs[1] * Math.Pow(10f, _top3Coeffs[2]));
+        double otherCoeff = other._top3Coeffs[0];
+        double otherPower = Math.Round(other._top3Coeffs[1] * Math.Pow(10f, other._top3Coeffs[2]));
+
+        double powerDiff = Math.Abs(power - otherPower);
+        double resultPower;
+
+        if (power >= otherPower)
+        {
+            _top3Coeffs[0] = coeff + otherCoeff / Math.Pow(10.0, powerDiff);
+            resultPower = power;
+        }
+        else
+        {
+            _top3Coeffs[0] = otherCoeff + coeff / Math.Pow(10.0, powerDiff);
+            resultPower = otherPower;
+        }
+
+        if (_top3Coeffs[0] == 0)
+        {
+            return;
+        }
+
+        if (Math.Abs(_top3Coeffs[0]) >= 10)
+        {
+            _top3Coeffs[0] /= 10f;
+            resultPower += 1f;
+        }
+
+        while (Math.Abs(_top3Coeffs[0]) < 1f)
+        {
+            _top3Coeffs[0] *= 10f;
+            resultPower -= 1f;
+        }
+
+        if (Math.Abs(resultPower) >= 10)
+        {
+            _top3Coeffs[2] = Math.Floor(Math.Log10(Math.Abs(resultPower)));
+            _top3Coeffs[1] = resultPower / Math.Pow(10f, _top3Coeffs[2]);
+        }
+        else
+        {
+            _top3Coeffs[2] = 0f;
+            _top3Coeffs[1] = resultPower;
+        }
+
+        _checkLayer();
     }
 
     /// <summary>
@@ -252,8 +448,7 @@ public class UpArrowNotation
     /// <param name="other"></param>
     public void Sub(UpArrowNotation other)
     {
-        _top3Layer -= other._top3Layer;
-        CheckLayer();
+        Add(-other);
     }
 
     /// <summary>
@@ -262,8 +457,44 @@ public class UpArrowNotation
     /// <param name="other"></param>
     public void Mul(UpArrowNotation other)
     {
-        _top3Layer *= other._top3Layer;
-        CheckLayer();
+        double coeff = _top3Coeffs[0];
+        double power = Math.Round(_top3Coeffs[1] * Math.Pow(10f, _top3Coeffs[2]));
+        double otherCoeff = other._top3Coeffs[0];
+        double otherPower = Math.Round(other._top3Coeffs[1] * Math.Pow(10f, other._top3Coeffs[2]));
+
+        double resultPower = power + otherPower;
+
+        _top3Coeffs[0] = coeff * otherCoeff;
+
+        if (_top3Coeffs[0] == 0)
+        {
+            return;
+        }
+
+        if (Math.Abs(_top3Coeffs[0]) >= 10f)
+        {
+            _top3Coeffs[0] /= 10f;
+            resultPower += 1f;
+        }
+
+        while (Math.Abs(_top3Coeffs[0]) < 1f)
+        {
+            _top3Coeffs[0] *= 10f;
+            resultPower -= 1f;
+        }
+
+        if (Math.Abs(resultPower) >= 10f)
+        {
+            _top3Coeffs[2] = Math.Floor(Math.Log10(Math.Abs(resultPower)));
+            _top3Coeffs[1] = resultPower / Math.Pow(10f, _top3Coeffs[2]);
+        }
+        else
+        {
+            _top3Coeffs[2] = 0f;
+            _top3Coeffs[1] = resultPower;
+        }
+
+        _checkLayer();
     }
 
     /// <summary>
@@ -272,8 +503,7 @@ public class UpArrowNotation
     /// <param name="other"></param>
     public void Div(UpArrowNotation other)
     {
-        _top3Layer /= other._top3Layer;
-        CheckLayer();
+        Mul(_reciprocated(other));
     }
 
     /// <summary>
@@ -282,8 +512,72 @@ public class UpArrowNotation
     /// <param name="other"></param>
     public void Pow(UpArrowNotation other)
     {
-        _top3Layer ^= other._top3Layer;
-        CheckLayer();
+        if (_top3Coeffs[0] == 0.0 && other._top3Coeffs[0] == 0.0)
+        {
+            throw new DivideByZeroException("base and exponent cannot be 0 at once");
+        }
+
+        if (_top3Coeffs[0] == 0.0)
+        {
+            return;
+        }
+
+        if (other._top3Coeffs[0] == 0.0)
+        {
+            _top3Coeffs[0] = 1.0;
+            _top3Coeffs[1] = 0.0;
+            _top3Coeffs[2] = 0.0;
+            _operatorLayerCount = 0;
+            return;
+        }
+
+        double coeff = _top3Coeffs[0];
+        double power = Math.Round(_top3Coeffs[1] * Math.Pow(10.0, _top3Coeffs[2]));
+
+        double otherCoeff = other._top3Coeffs[0];
+
+        double otherPower = Math.Round(other._top3Coeffs[1] * Math.Pow(10.0, other._top3Coeffs[2]));
+
+
+        if (coeff == 1.0 || otherPower >= 10.0)
+        {
+            _top3Coeffs[0] = 1.0;
+
+            (double c, double p) = _getCoeffAndPower(power * otherCoeff);
+            _top3Coeffs[1] = c;
+
+            otherPower += p;
+            _top3Coeffs[2] = otherPower;
+        }
+        else
+        {
+            double powerOfCoeff = Math.Log10(coeff) * otherCoeff * Math.Pow(10.0, otherPower);
+            double additionalPower = Math.Floor(powerOfCoeff);
+            double tempFrac = powerOfCoeff - additionalPower;
+
+            _top3Coeffs[0] = Math.Pow(10.0, tempFrac);
+
+            additionalPower /= Math.Pow(10.0, otherPower);
+
+            (double c, double p) = _getCoeffAndPower(additionalPower + power * otherCoeff);
+            _top3Coeffs[1] = c;
+
+            otherPower += p;
+            _top3Coeffs[2] = otherPower;
+        }
+
+        _checkLayer();
+    }
+
+    public static double Log10Top3Layer(UpArrowNotation uan)
+    {
+        if (uan._top3Coeffs[0] <= 0.0)
+        {
+            throw new ArithmeticException("logarithm for 0");
+        }
+        double power = uan.CalculateTop2Layer();
+        double logCoeff = Math.Log10(uan._top3Coeffs[0]);
+        return logCoeff + power;
     }
 
     /// <summary>
@@ -399,7 +693,7 @@ public class UpArrowNotation
     /// <returns>두 파라미터가 같은지에 대한 진리값</returns>
     public static bool operator ==(UpArrowNotation a, UpArrowNotation b)
     {
-        return a._top3Layer == b._top3Layer && a._operatorLayerCount == b._operatorLayerCount;
+        return a._top3Coeffs[0] == b._top3Coeffs[0] && a._top3Coeffs[1] == b._top3Coeffs[1] && a._top3Coeffs[2] == b._top3Coeffs[2] && a._operatorLayerCount == b._operatorLayerCount;
     }
 
     public static bool operator ==(UpArrowNotation a, double b) => a == (new UpArrowNotation(b));
@@ -434,16 +728,38 @@ public class UpArrowNotation
     /// <returns>첫째 파라미터의 값이 둘째 파라미터의 값보다 큰지에 대한 진리값</returns>
     public static bool operator >(UpArrowNotation a, UpArrowNotation b)
     {
-        if (a._operatorLayerCount > b._operatorLayerCount)
-        {
-            return true;
-        }
-        else if (a._operatorLayerCount < b._operatorLayerCount)
-        {
-            return false;
-        }
+        double aCoeff = a._top3Coeffs[0];
+        double bCoeff = b._top3Coeffs[0];
 
-        return a._top3Layer > b._top3Layer;
+	    // 두 수의 부호가 다르거나 0일 때
+	    if (aCoeff*bCoeff <= 0f) {
+		    if (aCoeff <= 0f && bCoeff >= 0f) {
+                return false;
+		    } else {
+                return true;
+		    }
+	    }
+
+        // power값 직접 계산
+        double aPower = a.CalculateTop2Layer();
+        double bPower = b.CalculateTop2Layer();
+
+	    // 두 수의 부호가 모두 양일 때
+	    if (aCoeff > 0f) {
+		    if (aPower > bPower) {
+                return true;
+		    } else if (aPower < bPower) {
+                return false;
+		    }
+            return aCoeff > bCoeff;
+	    } else { // 두 수의 부호가 모두 음일 때
+		    if (aPower > bPower) {
+                return false;
+		    } else if (aPower < bPower) {
+                return true;
+		    }
+            return aCoeff > bCoeff;
+	    }
     }
 
     public static bool operator >(UpArrowNotation a, double b) => a > (new UpArrowNotation(b));

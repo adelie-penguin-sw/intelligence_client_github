@@ -9,8 +9,7 @@ public class CreateSingleNetworkBrainResponse
 	public List<AnsEquations> ansEquations;
 	public List<Distances> distances; 
 	public long newBrain;
-	public TopCoeffs NP;
-	public TopCoeffs TP;
+	public AnsEquation NP;
 	public long calcTime;
 }
 
