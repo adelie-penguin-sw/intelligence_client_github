@@ -63,6 +63,9 @@ MonoBehaviour:
     _waitBrainClickTime: 0.4
     _brainNetwork:
       _channelList: []
+    _singleNetworkWrapper:
+      calcTime: 0
+      achievements: []
 --- !u!1 &1095789831457245672
 GameObject:
   m_ObjectHideFlags: 0
