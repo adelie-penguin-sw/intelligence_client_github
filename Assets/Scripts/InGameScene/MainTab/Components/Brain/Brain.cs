@@ -65,7 +65,7 @@ namespace MainTab
                         break;
                     case EBrainType.MAINBRAIN:
                         _brainData.distance = 0;
-                        transform.localScale = new Vector2(1.2f, 1.2f);
+                        transform.localScale = new Vector2(2f, 2f);
                         break;
                     case EBrainType.NORMALBRAIN:
                         transform.localScale = new Vector2(1, 1);
