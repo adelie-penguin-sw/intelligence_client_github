@@ -20,7 +20,6 @@ namespace InGame
         {
             base.Init();
             _brain = brain;
-
         }
 
         private Hashtable _sendData = new Hashtable();
