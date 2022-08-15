@@ -51,7 +51,7 @@ public class NetworkManager : MonoBehaviour
     private const string _baseUrl = "http://ec2-3-39-5-11.ap-northeast-2.compute.amazonaws.com:8080"; //테스트 서버 url
     //private const string _baseUrl = "http://ec2-3-38-74-157.ap-northeast-2.compute.amazonaws.com:8080"; //배포 서버 url
 
-    public static async UniTask<T> SendToServer<T>(string url, NetworkSendType sendType, string jsonBody = null)
+    private async UniTask<T> SendToServer<T>(string url, ENetworkSendType sendType, string jsonBody = null)
     {
         //1. 네트워크 체크.
         await CheckNetwork();
@@ -82,6 +82,7 @@ public class NetworkManager : MonoBehaviour
             Debug.Log(res.downloadHandler.text);
             T result = JsonUtility.FromJson<T>(res.downloadHandler.text);
             request.Dispose();
+
             return result;
         }
         catch(OperationCanceledException ex)
@@ -97,9 +98,16 @@ public class NetworkManager : MonoBehaviour
         }
         catch(Exception e)
         {
-            Debug.Log(e.Message);
+            ErrorResponse errorResult = JsonUtility.FromJson<ErrorResponse>(request.downloadHandler.text);
+
+            GameObject go = PopupManager.Instance.CreatePopup(EPrefabsType.POPUP, "ErrorPopup");
+            go.GetComponent<ErrorPopup>().Init(errorResult);
+
             request.Dispose();
             return default;
+
+            //Debug.LogError(e.Message);
+            //return default;
         }
         request.Dispose();
         return default;
@@ -123,19 +131,6 @@ public class NetworkManager : MonoBehaviour
         request.SetRequestHeader("Authorization", "Bearer " + UserData.token);
     }
 
-    private bool ErrorCheck(UnityWebRequest www)
-    {
-        switch(www.result)
-        {
-            case UnityWebRequest.Result.Success:
-                return true;
-            default:
-                Debug.LogError(www.error);
-                Debug.LogError(www.downloadHandler.text);
-                return false;
-
-        }
-    }
     #endregion
 
     /// 
@@ -167,7 +162,7 @@ public class NetworkManager : MonoBehaviour
         var res =
             await SendToServer<TemporaryResponse>(
             PATH_TEMPORARY,
-            NetworkSendType.POST,
+            ENetworkSendType.POST,
             json);
         Debug.Log(res.token);
         UserData.SetString("Token", res.token);
@@ -179,7 +174,7 @@ public class NetworkManager : MonoBehaviour
         var res =
             await SendToServer<CreateSingleNetworkBrainResponse>(
                     PATH_CREATE_SINGLE_NETWORK_BRAIN,
-                    NetworkSendType.POST,
+                    ENetworkSendType.POST,
                     json);
         return res;
     }
@@ -190,7 +185,7 @@ public class NetworkManager : MonoBehaviour
         var res =
             await SendToServer<CreateSingleNetworkChannelResponse>(
                     PATH_CREATE_SINGLE_NETWORK_CHANNEL,
-                    NetworkSendType.POST,
+                    ENetworkSendType.POST,
                     json);
         return res;
     }
@@ -201,7 +196,7 @@ public class NetworkManager : MonoBehaviour
         var res =
             await SendToServer<CreateSingleNetworkBrainNumberResponse>(
                     PATH_SINGLE_NETWORK_BRAIN_NUMBER,
-                    NetworkSendType.POST,
+                    ENetworkSendType.POST,
                     json);
         return res;
     }
@@ -212,7 +207,7 @@ public class NetworkManager : MonoBehaviour
         var res =
             await SendToServer<SingleNetworkResponse>(
                     PATH_SINGLE_NETWORK_RESET,
-                    NetworkSendType.POST,
+                    ENetworkSendType.POST,
                     json);
         return res;
     }
@@ -225,7 +220,7 @@ public class NetworkManager : MonoBehaviour
         var res =
             await SendToServer<SingleNetworkResponse>(
                     PATH_SINGLE_NETWORK,
-                    NetworkSendType.GET);
+                    ENetworkSendType.GET);
         return res;
     }
 
@@ -234,7 +229,7 @@ public class NetworkManager : MonoBehaviour
         var res =
             await SendToServer<AuthValidationResponse>(
                     PATH_TOKEN_VALIDATION,
-                    NetworkSendType.GET);
+                    ENetworkSendType.GET);
         return res;
     }
     #endregion
@@ -246,13 +241,13 @@ public class NetworkManager : MonoBehaviour
         var res =
             await SendToServer<DeleteSingleNetworkBrainResponse>(
                     PATH_DELETE_SINGLE_NETWORK_BRAIN + brainID.ToString(),
-                    NetworkSendType.DELETE);
+                    ENetworkSendType.DELETE);
         return res;
     }
     #endregion
 }
 
-public enum StatusCode
+public enum EStatusCode
 {
     SUCCESS = 200,
     JWT_REFRESH = 202,
@@ -260,7 +255,7 @@ public enum StatusCode
     FORBIDDEN = 403,
 }
 
-public enum NetworkSendType
+public enum ENetworkSendType
 {
     GET,
     POST,

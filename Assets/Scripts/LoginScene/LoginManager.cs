@@ -31,22 +31,21 @@ public class LoginManager : MonoBehaviour
         if (!string.IsNullOrEmpty(UserData.token))
         {
             AuthValidationResponse res = await NetworkManager.Instance.API_TokenValidation();
-            switch ((StatusCode)res.statusCode)
+            if (res != null)
             {
-                case StatusCode.SUCCESS:
-                    SceneManager.LoadScene("InGameScene");
-                    break;
-                case StatusCode.JWT_REFRESH:
-                    UserData.SetString("Token", res.token);
-                    SceneManager.LoadScene("InGameScene");
-                    break;
-                case StatusCode.BAD_REQUEST:
-                case StatusCode.FORBIDDEN:
-                    Debug.LogError((StatusCode)res.statusCode);
-                    break;
-                default:
-                    Debug.LogError(res.statusCode);
-                    break;
+                switch ((EStatusCode)res.statusCode)
+                {
+                    case EStatusCode.SUCCESS:
+                        SceneManager.LoadScene("InGameScene");
+                        break;
+                    case EStatusCode.JWT_REFRESH:
+                        UserData.SetString("Token", res.token);
+                        SceneManager.LoadScene("InGameScene");
+                        break;
+                    default:
+                        Debug.LogError(res.statusCode);
+                        break;
+                }
             }
         }
     }
