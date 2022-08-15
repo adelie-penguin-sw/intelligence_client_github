@@ -30,13 +30,16 @@ namespace MainTab
         {
             base.Init();
             var res = await NetworkManager.Instance.API_LoadUserData();
-            SingleNetworkWrapper wrapper = new SingleNetworkWrapper(res);
-
-            _mainTabModel.SingleNetworkWrapper = wrapper;
-
-            foreach (var controller in _controllers)
+            if (res != null)
             {
-                controller.Init(this);
+                SingleNetworkWrapper wrapper = new SingleNetworkWrapper(res);
+
+                _mainTabModel.SingleNetworkWrapper = wrapper;
+
+                foreach (var controller in _controllers)
+                {
+                    controller.Init(this);
+                }
             }
         }
 
@@ -45,13 +48,16 @@ namespace MainTab
             base.OnEnter();
 
             var res = await NetworkManager.Instance.API_LoadUserData();
-            SingleNetworkWrapper wrapper = new SingleNetworkWrapper(res);
-
-            _mainTabModel.SingleNetworkWrapper = wrapper;
-
-            foreach (var controller in _controllers)
+            if (res != null)
             {
-                controller.Set();
+                SingleNetworkWrapper wrapper = new SingleNetworkWrapper(res);
+
+                _mainTabModel.SingleNetworkWrapper = wrapper;
+
+                foreach (var controller in _controllers)
+                {
+                    controller.Set();
+                }
             }
         }
 
@@ -77,12 +83,6 @@ namespace MainTab
         {
             base.Dispose();
             PoolManager.Instance.DespawnObject(EPrefabsType.TAP_APPLICATION, this.gameObject);
-        }
-
-        private async void LoadUserData()
-        {
-
-            await NetworkManager.Instance.API_LoadUserData();
         }
     }
 }
