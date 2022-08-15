@@ -327,9 +327,11 @@ namespace MainTab
                 req.y = _tempBrain.transform.position.y;
 
                 var res = await NetworkManager.Instance.API_CreateBrain(req);
-
-                _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(req, res);
-                NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
+                if (res != null)
+                {
+                    _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(req, res);
+                    NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
+                }
             }
         }
 
@@ -417,25 +419,16 @@ namespace MainTab
                     req.to = _currentEnterBrain.ID;
 
                     var res = await NetworkManager.Instance.API_CreateChannel(req);
-
-                    switch((StatusCode)res.statusCode)
+                    if (res != null)
                     {
-                        case StatusCode.SUCCESS:
-                            _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(req, res, () =>
-                            {
-                                NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
-                                _controller.ChangeState(EBehaviorState.NONE);
-                            });
-                            break;
-                        default:
-                            _controller.ChangeState(EBehaviorState.NONE);
-                            break;
+                        _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(req, res, () =>
+                        {
+                            NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
+                        });
                     }
                 }
-                else
-                {
-                    _controller.ChangeState(EBehaviorState.NONE);
-                }
+
+                _controller.ChangeState(EBehaviorState.NONE);
             }
         }
 
@@ -486,8 +479,10 @@ namespace MainTab
                 var req = new CreateSingleNetworkBrainNumberRequest();
                 req.brain = id;
                 CreateSingleNetworkBrainNumberResponse res = await NetworkManager.Instance.API_UpgradeBrain(req);
-
-                _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(res);
+                if (res != null)
+                {
+                    _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(res);
+                }
             }
         }
         #endregion

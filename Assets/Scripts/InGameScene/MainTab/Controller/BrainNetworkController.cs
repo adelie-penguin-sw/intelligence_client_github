@@ -91,14 +91,20 @@ namespace MainTab
             {
                 // UserData.TP += _brainNetwork.RemoveBrain(brain);
                 var res = await NetworkManager.Instance.API_NetworkReset();
-                _app.MainTabModel.SingleNetworkWrapper = new SingleNetworkWrapper(res);
-                ResetBrainNetWork();
+                if (res != null)
+                {
+                    _app.MainTabModel.SingleNetworkWrapper = new SingleNetworkWrapper(res);
+                    ResetBrainNetWork();
+                }
             }
             else if(brain.Type == EBrainType.NORMALBRAIN)
             {
                 var res = await NetworkManager.Instance.API_DeleteBrain(brain.ID);
-                _app.MainTabModel.SingleNetworkWrapper.UpdateSingleNetworkData(res);
-                ResetBrainNetWork();
+                if (res != null)
+                {
+                    _app.MainTabModel.SingleNetworkWrapper.UpdateSingleNetworkData(res);
+                    ResetBrainNetWork();
+                }
                 //UserData.NP += _brainNetwork.RemoveBrain(brain);
             }
         }
