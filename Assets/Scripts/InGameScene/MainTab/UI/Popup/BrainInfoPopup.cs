@@ -16,6 +16,8 @@ namespace InGame
         [SerializeField] private Button _sellBtn;
         [SerializeField] private Brain _brain;
         [SerializeField] private TextMeshProUGUI _infoText;
+        [SerializeField] private TextMeshProUGUI _upgradeCost;
+        [SerializeField] private TextMeshProUGUI _decomposeReward;
         public void Init(Brain brain)
         {
             base.Init();
@@ -29,9 +31,13 @@ namespace InGame
         {
             base.AdvanceTime(dt_sec);
 
+            UpArrowNotation storedNP = Exchange.GetNPRewardForBrainDecomposition(_brain.Intellect);
             _infoText.text =
                 string.Format("Brain ID: {0}\n\nBrain Type: {1}\n\nIntelligence: {2}\n\nStore NP: {3}\n\nDistance: {4}",
-               _brain.ID,_brain.Type.ToString(), _brain.Intellect, _brain.Intellect, _brain.Distance); 
+               _brain.ID,_brain.Type.ToString(), _brain.Intellect, storedNP, _brain.Distance);
+
+            _upgradeCost.text = string.Format("Upgrade\nCost: {0} NP", 1);              // 업그레이드 비용 계산해서 표시
+            _decomposeReward.text = string.Format("Decompose\nfor {0} NP", storedNP);   // "총" 획득 NP량 계산해서 표시
         }
         public override void Dispose()
         {
