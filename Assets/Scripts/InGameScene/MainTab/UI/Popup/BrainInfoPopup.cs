@@ -15,7 +15,11 @@ namespace InGame
     {
         [SerializeField] private Button _sellBtn;
         [SerializeField] private Brain _brain;
-        [SerializeField] private TextMeshProUGUI _infoText;
+        [SerializeField] private TextMeshProUGUI _idText;
+        [SerializeField] private TextMeshProUGUI _typeText;
+        [SerializeField] private TextMeshProUGUI _intellectText;
+        [SerializeField] private TextMeshProUGUI _npText;
+        [SerializeField] private TextMeshProUGUI _distanceText;
         [SerializeField] private TextMeshProUGUI _upgradeCost;
         [SerializeField] private TextMeshProUGUI _decomposeReward;
         public void Init(Brain brain)
@@ -32,9 +36,22 @@ namespace InGame
             base.AdvanceTime(dt_sec);
 
             UpArrowNotation storedNP = Exchange.GetNPRewardForBrainDecomposition(_brain.Intellect);
-            _infoText.text =
-                string.Format("Brain ID: {0}\n\nBrain Type: {1}\n\nIntelligence: {2}\n\nStore NP: {3}\n\nDistance: {4}",
-               _brain.ID,_brain.Type.ToString(), _brain.Intellect, storedNP, _brain.Distance);
+            _idText.text = _brain.ID.ToString();
+            switch (_brain.Type)
+            {
+                case EBrainType.MAINBRAIN:
+                    _typeText.text = "Core Brain";
+                    break;
+                case EBrainType.NORMALBRAIN:
+                    _typeText.text = "Normal Brain";
+                    break;
+                default:
+                    _typeText.text = "Unknown";
+                    break;
+            }
+            _intellectText.text = _brain.Intellect.ToString();
+            _npText.text = storedNP.ToString();
+            _distanceText.text = _brain.Distance.ToString();
 
             _upgradeCost.text = string.Format("Upgrade\nCost: {0} NP", 1);              // 업그레이드 비용 계산해서 표시
             _decomposeReward.text = string.Format("Decompose\nfor {0} NP", storedNP);   // "총" 획득 NP량 계산해서 표시
