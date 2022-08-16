@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UltimateClean;
 using UnityEngine;
 namespace MainTab
 {
@@ -487,7 +488,15 @@ namespace MainTab
                 req.brain = id;
                 CreateSingleNetworkBrainNumberResponse res = await NetworkManager.Instance.API_UpgradeBrain(req);
 
-                _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(res);
+                // 브레인 업그레이드 상태가 바로 반영되도록 업데이트해주는 콜백 추가
+                _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(res, () =>
+                {
+                    NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
+
+                    /* 문제점 : 
+                     업글 가능한 브레인이 여러 개일 때 업글창 한 개 띄워놓고 업글버튼을 누를 때마다 실제 업글되는 브레인이 계속 바뀌는 문제 발생
+                     */
+                });
             }
         }
         #endregion
