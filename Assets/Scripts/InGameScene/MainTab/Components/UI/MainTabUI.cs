@@ -10,25 +10,38 @@ namespace MainTab
     /// </summary>
     public class MainTabUI : MonoBehaviour, IGameBasicModule
     {
+        [SerializeField] private TextMeshProUGUI _txtCoreIntellect;
         [SerializeField] private TextMeshProUGUI _txtNP;
         [SerializeField] private TextMeshProUGUI _txtTP;
 
         public void Init()
         {
+            UpdateCoreIntellectText();
             UpdateNPText();
             UpdateTPText();
         }
 
         public void Set()
         {
+            UpdateCoreIntellectText();
             UpdateNPText();
             UpdateTPText();
         }
 
         public void AdvanceTime(float dt_sec)
         {
+            UpdateCoreIntellectText();
             UpdateNPText();
             UpdateTPText();
+        }
+
+        /// <summary>
+        /// 상단 Intellect Text를 해당 인자로 변경한다.
+        /// </summary>
+        /// <param name="intellect">변경할 intellect</param>
+        public void UpdateCoreIntellectText()
+        {
+            _txtNP.text = string.Format("NP: {0}", 0);
         }
 
         /// <summary>
