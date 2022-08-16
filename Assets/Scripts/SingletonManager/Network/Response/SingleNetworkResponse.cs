@@ -199,7 +199,7 @@ public class SingleNetworkWrapper
         callback();
     }
     
-    public void UpdateSingleNetworkData(CreateSingleNetworkBrainNumberResponse res)
+    public void UpdateSingleNetworkData(CreateSingleNetworkBrainNumberResponse res, Action callback)
     {
         ansEquationsDic.Clear();
         foreach (var data in res.ansEquations)
@@ -220,6 +220,8 @@ public class SingleNetworkWrapper
             res.NP.operatorLayerCount);
 
         calcTime = res.calcTime;
+
+        callback();
     }
 
     public void UpdateSingleNetworkData(DeleteSingleNetworkBrainResponse res)
