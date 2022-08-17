@@ -14,6 +14,7 @@ namespace InGame
     public class BrainInfoPopup : PopupBase
     {
         [SerializeField] private Button _sellBtn;
+        [SerializeField] private Button _upgradeBtn;
         [SerializeField] private Brain _brain;
         [SerializeField] private TextMeshProUGUI _idText;
         [SerializeField] private TextMeshProUGUI _typeText;
@@ -27,6 +28,9 @@ namespace InGame
             base.Init();
             _brain = brain;
 
+            // 코어 브레인은 업그레이드 및 분해 등의 동작이 필요하지 않으므로 버튼 비활성화
+            _sellBtn.gameObject.SetActive(_brain.Type == EBrainType.NORMALBRAIN);
+            _upgradeBtn.gameObject.SetActive(_brain.Type == EBrainType.NORMALBRAIN);
         }
 
         private Hashtable _sendData = new Hashtable();
