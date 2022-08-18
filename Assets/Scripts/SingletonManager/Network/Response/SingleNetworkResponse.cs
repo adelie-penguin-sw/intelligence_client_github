@@ -10,6 +10,7 @@ public class SingleNetworkResponse
 {
     public int statusCode;
     public List<AnsEquations> ansEquations;
+    public List<Multiplier> multipliers;
     public List<Distances> distances;
     public AnsEquation NP; //나중에 뭔가 서버랑 이야기해서 바꿔야할듯? 
     public AnsEquation TP; //이것두
@@ -25,6 +26,7 @@ public class SingleNetworkResponse
 public class SingleNetworkWrapper
 {
     [ShowInInspector] public Dictionary<long, AnsEquations> ansEquationsDic = new Dictionary<long, AnsEquations>();
+    [ShowInInspector] public Dictionary<long, Multiplier> multipliersDic = new Dictionary<long, Multiplier>();
     [ShowInInspector] public Dictionary<long, Distances> distancesDic = new Dictionary<long, Distances>();
     [ShowInInspector] public Dictionary<long, Structure> structuresDic = new Dictionary<long, Structure>();
     [ShowInInspector] public Dictionary<long, Coordinates> coordinatesDic = new Dictionary<long, Coordinates>();
@@ -40,6 +42,11 @@ public class SingleNetworkWrapper
             foreach (var data in res.ansEquations)
             {
                 ansEquationsDic.Add(data.id, data);
+            }
+
+            foreach (var data in res.multipliers)
+            {
+                multipliersDic.Add(data.id, data);
             }
 
             foreach (var data in res.distances)
@@ -107,10 +114,19 @@ public class SingleNetworkWrapper
             }
         }
 
+        if (multipliersDic.ContainsKey(id))
+        {
+            AnsEquation m = multipliersDic[id].multiplier;
+            data.multiplier = new UpArrowNotation(m.top3Coeffs[0],
+                                                  m.top3Coeffs[1],
+                                                  m.top3Coeffs[2],
+                                                  m.operatorLayerCount);
+        }
+
         if (distancesDic.ContainsKey(id))
             data.distance = distancesDic[id].distance;
 
-        if(coordinatesDic.ContainsKey(id))
+        if (coordinatesDic.ContainsKey(id))
             data.coordinates = new Vector2((float)coordinatesDic[id].x, (float)coordinatesDic[id].y);
 
         if (structuresDic.ContainsKey(id))
@@ -143,6 +159,12 @@ public class SingleNetworkWrapper
         foreach (var data in res.ansEquations)
         {
             ansEquationsDic.Add(data.id, data);
+        }
+
+        multipliersDic.Clear();
+        foreach (var data in res.multipliers)
+        {
+            multipliersDic.Add(data.id, data);
         }
 
         calcTime = res.calcTime;
@@ -207,6 +229,12 @@ public class SingleNetworkWrapper
             ansEquationsDic.Add(data.id, data);
         }
 
+        multipliersDic.Clear();
+        foreach (var data in res.multipliers)
+        {
+            multipliersDic.Add(data.id, data);
+        }
+
         distancesDic.Clear();
         foreach (var data in res.distances)
         {
@@ -232,6 +260,12 @@ public class SingleNetworkWrapper
             ansEquationsDic.Add(data.id, data);
         }
 
+        multipliersDic.Clear();
+        foreach (var data in res.multipliers)
+        {
+            multipliersDic.Add(data.id, data);
+        }
+
         distancesDic.Clear();
         foreach (var data in res.distances)
         {
@@ -254,9 +288,13 @@ public class SingleNetworkWrapper
 
     private void RemoveDataForID(long id)
     {
-        if(ansEquationsDic.ContainsKey(id))
+        if (ansEquationsDic.ContainsKey(id))
         {
             ansEquationsDic.Remove(id);
+        }
+        if (multipliersDic.ContainsKey(id))
+        {
+            multipliersDic.Remove(id);
         }
         if (distancesDic.ContainsKey(id))
         {

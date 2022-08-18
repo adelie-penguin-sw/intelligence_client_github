@@ -10,6 +10,7 @@ namespace MainTab
     public class Brain : MonoBehaviour
     {
         [SerializeField] private TextMeshPro _textNum;
+        [SerializeField] private TextMeshPro _textMul;
         [SerializeField] private BrainData _brainData;
 
         #region property
@@ -34,6 +35,12 @@ namespace MainTab
                 return _brainData.Intellect;
             }
         }
+
+        /// <summary>
+        /// 지능 증폭계수 반환
+        /// </summary>
+        public UpArrowNotation Multiplier { get { return _brainData.multiplier; } }
+
         /// <summary>
         /// 해당 브레인의 ID
         /// </summary>
@@ -54,6 +61,7 @@ namespace MainTab
         {
             _brainData = data;
             SetNumText(Intellect);
+            SetMulText(Multiplier);
             if (_brainData.brainType == EBrainType.GUIDEBRAIN)
                 gameObject.SetActive(false);
             Set();
@@ -67,6 +75,7 @@ namespace MainTab
                 {
                     case EBrainType.GUIDEBRAIN:
                         _textNum.gameObject.SetActive(false);
+                        _textMul.gameObject.SetActive(false);
                         break;
                     case EBrainType.MAINBRAIN:
                         _brainData.distance = 0;
@@ -87,6 +96,7 @@ namespace MainTab
             if (_brainData.brainType != EBrainType.GUIDEBRAIN)
             {
                 SetNumText(Intellect);
+                SetMulText(Multiplier);
             }
         }
 
@@ -140,6 +150,11 @@ namespace MainTab
         private void SetNumText(UpArrowNotation num)
         {
             _textNum.text = num.ToString();
+        }
+
+        private void SetMulText(UpArrowNotation num)
+        {
+            _textMul.text = "x" + num.ToString();
         }
 
         #region EventData

@@ -20,6 +20,10 @@ namespace MainTab
         /// </summary>        
         [ShowInInspector] public List<UpArrowNotation> intellectEquation;
         /// <summary>
+        /// 지능 증폭계수
+        /// </summary>        
+        [ShowInInspector] public UpArrowNotation multiplier;
+        /// <summary>
         /// 거리
         /// </summary>
         public long distance = -1;
@@ -61,20 +65,23 @@ namespace MainTab
             _receiverIdList = new HashSet<long>();
             _senderIdList = new HashSet<long>();
             this.intellectEquation = new List<UpArrowNotation>();
+            this.multiplier = new UpArrowNotation(1);
         }
 
         public BrainData(int id, EBrainType brainType)
         {
             this.id = id;
             this.intellectEquation = new List<UpArrowNotation> { new UpArrowNotation(1)};
+            this.multiplier = new UpArrowNotation(1);
             this.brainType = brainType;
             _receiverIdList = new HashSet<long>();
             _senderIdList = new HashSet<long>();
         }
-        public BrainData(int id, List<UpArrowNotation> intellect, int distance, EBrainType brainType)
+        public BrainData(int id, List<UpArrowNotation> intellect, UpArrowNotation multiplier, int distance, EBrainType brainType)
         {
             this.id = id;
             this.intellectEquation = intellect;
+            this.multiplier = multiplier;
             this.brainType = brainType;
             this.distance = distance;
             _receiverIdList = new HashSet<long>();
