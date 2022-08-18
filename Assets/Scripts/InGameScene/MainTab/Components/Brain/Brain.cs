@@ -12,8 +12,9 @@ namespace MainTab
         [SerializeField] private TextMeshPro _textNum;
         [SerializeField] private BrainData _brainData;
 
-        private long _lastCalcTime;
+        [SerializeField] private long _lastCalcTime;
 
+        [SerializeField] private bool _isCollisionGuide = false;
         #region property
         public HashSet<long> ReceiverIdList { get { return _brainData._receiverIdList; } }
         public HashSet<long> SenderIdList { get { return _brainData._senderIdList; } }
@@ -43,6 +44,14 @@ namespace MainTab
         /// 브레인 거리
         /// </summary>
         public long Distance { get { return _brainData.distance; } set { _brainData.distance = value; } }
+
+        public bool IsCollisionGuide
+        {
+            get
+            {
+                return _isCollisionGuide;
+            }
+        }
         #endregion
 
         public void Init(BrainData data)
@@ -170,6 +179,24 @@ namespace MainTab
                 Hashtable _sendData = new Hashtable();
                 _sendData.Add(EDataParamKey.CLASS_BRAIN, this);
                 NotificationManager.Instance.PostNotification(ENotiMessage.MOUSE_ENTER_BRAIN, _sendData);
+            }
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+
+            if (_brainData.brainType == EBrainType.GUIDEBRAIN)
+            {
+                _isCollisionGuide = true;
+            }
+        }
+
+        private void OnTriggerExit2D(Collider2D collision)
+        {
+
+            if (_brainData.brainType == EBrainType.GUIDEBRAIN)
+            {
+                _isCollisionGuide = false;
             }
         }
         #endregion
