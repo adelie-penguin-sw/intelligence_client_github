@@ -211,7 +211,7 @@ namespace MainTab
                         {
                             _controller._view.InfoPopup = PopupManager.Instance.CreatePopup(EPrefabsType.POPUP, "BrainInfoPopup")
                                 .GetComponent<InGame.BrainInfoPopup>();
-                            _controller._view.InfoPopup.Init(_controller._recentSelectBrain.BrainData);
+                            _controller._view.InfoPopup.Init(_controller._recentSelectBrain.BrainData, _model.SingleNetworkWrapper);
                             _controller.ChangeState(EBehaviorState.SHOW_POPUP);
                         }
                         else
@@ -496,8 +496,8 @@ namespace MainTab
                     /* 문제점 : 
                      업글 가능한 브레인이 여러 개일 때 업글창 한 개 띄워놓고 업글버튼을 누를 때마다 실제 업글되는 브레인이 계속 바뀌는 문제 발생
                      */
-
-                    _controller._view.InfoPopup.Set(_controller._model.SingleNetworkWrapper.GetBrainDataForID(id));
+                    SingleNetworkWrapper wrapper = _controller._model.SingleNetworkWrapper;
+                    _controller._view.InfoPopup.Set(wrapper.GetBrainDataForID(id), wrapper);
                 });
             }
         }
