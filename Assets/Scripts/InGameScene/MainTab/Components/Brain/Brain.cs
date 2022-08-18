@@ -56,6 +56,7 @@ namespace MainTab
 
         public void Init(BrainData data)
         {
+            _lastCalcTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             _brainData = data;
             SetNumText(Intellect);
             if (_brainData.brainType == EBrainType.GUIDEBRAIN)
