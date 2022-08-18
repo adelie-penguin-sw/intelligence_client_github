@@ -24,12 +24,17 @@ namespace InGame
         [SerializeField] private TextMeshProUGUI _distanceText;
         [SerializeField] private TextMeshProUGUI _upgradeCost;
         [SerializeField] private TextMeshProUGUI _decomposeReward;
-        public void Init(BrainData brain)
+        public void Init(BrainData brain, SingleNetworkWrapper networkWrapper)
         {
             base.Init();
-            Set(brain);
+            Set(brain, networkWrapper);
+            foreach (var id in _brainData.senderIdList)
+            {
+                BrainData data = networkWrapper.GetBrainDataForID(id);
+                Debug.LogError(id);
+            }
         }
-        public void Set(BrainData brain)
+        public void Set(BrainData brain, SingleNetworkWrapper networkWrapper)
         {
             base.Set();
             _brainData = brain;
@@ -37,6 +42,22 @@ namespace InGame
             // 코어 브레인은 업그레이드 및 분해 등의 동작이 필요하지 않으므로 버튼 비활성화
             _sellBtn.gameObject.SetActive(_brainData.brainType == EBrainType.NORMALBRAIN);
             _upgradeBtn.gameObject.SetActive(_brainData.brainType == EBrainType.NORMALBRAIN);
+
+            //해당 브레인에게 보내고있는 senderIdList들
+            // brain._senderIdList
+            foreach (var id in _brainData.senderIdList)
+            {
+                BrainData data = networkWrapper.GetBrainDataForID(id);
+                Debug.LogError(id);
+            }
+            //foreach (var id in _brainData._senderIdList)
+            //{
+            //    networkWrapper.GetBrainDataForID(id);
+            //}
+            //bfs or dfs 사용해서 쭉쭉 파고들어가서 연결된 모든 브레인들의 braindata 가져온 후에 보여주면 되지 않을까..? 아마도,,?
+            //근데 큰 문제는 senderidList가 지금 뭘 넣어주고있는게 없어서 가져올 수 있는게 없어요.
+            //복잡하게 구현하면 가져올 수 있을 것 같긴한데 금욜날 대면으로 회의하면서 어떻게 받아올지 논의 하면 좋을듯??
+            //서버에서 reverse structure비슷하게 만들어서 보내주면 엄청 쉬워지긴한데 지금 서버 짜여져있는 코드 보고 결정해야할듯
         }
 
         public override void AdvanceTime(float dt_sec)
