@@ -54,7 +54,13 @@ namespace MainTab
             get
             {
                 double elapsedTime = (double)(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastCalcTime) / 1000f;
-                return Equation.GetCurrentIntellect(intellectEquation, elapsedTime);
+                UpArrowNotation intellect = Equation.GetCurrentIntellect(intellectEquation, elapsedTime);
+
+                if (id == 0)
+                {
+                    UserData.CoreIntellect = intellect;
+                }
+                return intellect;
             }
         }
 
