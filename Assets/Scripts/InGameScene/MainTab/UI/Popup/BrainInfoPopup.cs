@@ -15,7 +15,7 @@ namespace InGame
     {
         [SerializeField] private Button _sellBtn;
         [SerializeField] private Button _upgradeBtn;
-        [SerializeField] private Brain _brain;
+        [SerializeField] private BrainData _brainData;
         [SerializeField] private TextMeshProUGUI _idText;
         [SerializeField] private TextMeshProUGUI _typeText;
         [SerializeField] private TextMeshProUGUI _intellectText;
@@ -23,14 +23,19 @@ namespace InGame
         [SerializeField] private TextMeshProUGUI _distanceText;
         [SerializeField] private TextMeshProUGUI _upgradeCost;
         [SerializeField] private TextMeshProUGUI _decomposeReward;
-        public void Init(Brain brain)
+        public void Init(BrainData brain)
         {
             base.Init();
-            _brain = brain;
+            Set(brain);
+        }
+        public void Set(BrainData brain)
+        {
+            base.Set();
+            _brainData = brain;
 
             // 코어 브레인은 업그레이드 및 분해 등의 동작이 필요하지 않으므로 버튼 비활성화
-            _sellBtn.gameObject.SetActive(_brain.Type == EBrainType.NORMALBRAIN);
-            _upgradeBtn.gameObject.SetActive(_brain.Type == EBrainType.NORMALBRAIN);
+            _sellBtn.gameObject.SetActive(_brainData.brainType == EBrainType.NORMALBRAIN);
+            _upgradeBtn.gameObject.SetActive(_brainData.brainType == EBrainType.NORMALBRAIN);
         }
 
         private Hashtable _sendData = new Hashtable();
@@ -39,9 +44,9 @@ namespace InGame
         {
             base.AdvanceTime(dt_sec);
 
-            UpArrowNotation storedNP = Exchange.GetNPRewardForBrainDecomposition(_brain.Intellect);
-            _idText.text = _brain.ID.ToString();
-            switch (_brain.Type)
+            UpArrowNotation storedNP = Exchange.GetNPRewardForBrainDecomposition(_brainData.Intellect);
+            _idText.text = _brainData.id.ToString();
+            switch (_brainData.brainType)
             {
                 case EBrainType.MAINBRAIN:
                     _typeText.text = "Core Brain";
@@ -53,9 +58,9 @@ namespace InGame
                     _typeText.text = "Unknown";
                     break;
             }
-            _intellectText.text = _brain.Intellect.ToString();
+            _intellectText.text = _brainData.Intellect.ToString();
             _npText.text = storedNP.ToString();
-            _distanceText.text = _brain.Distance.ToString();
+            _distanceText.text = _brainData.distance.ToString();
 
             _upgradeCost.text = string.Format("Upgrade\nCost: {0} NP", 1);              // 업그레이드 비용 계산해서 표시
             _decomposeReward.text = string.Format("Decompose\nfor {0} NP", storedNP);   // "총" 획득 NP량 계산해서 표시
@@ -69,7 +74,7 @@ namespace InGame
         public void OnClick_SellBrain()
         {
             _sendData.Clear();
-            _sendData.Add(EDataParamKey.CLASS_BRAIN, _brain);
+            _sendData.Add(EDataParamKey.CLASS_BRAIN, _brainData);
             NotificationManager.Instance.PostNotification(ENotiMessage.ONCLICK_SELL_BRAIN, _sendData);
             Dispose();
         }
@@ -77,7 +82,7 @@ namespace InGame
         public void OnClick_UpgradeBrain()
         {
             _sendData.Clear();
-            _sendData.Add(EDataParamKey.BRAIN_ID, _brain.ID);
+            _sendData.Add(EDataParamKey.BRAIN_ID, _brainData.id);
             NotificationManager.Instance.PostNotification(ENotiMessage.ONCLICK_UPGRADE_BRAIN, _sendData);
         }
 
