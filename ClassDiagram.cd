@@ -1,0 +1,715 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="BaseTabApplication">
+    <Position X="15.5" Y="11" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAACAAAAAAAAAAAAAAAAAQAAAAAIACAAgAAAA=</HashCode>
+      <FileName>Assets\Scripts\Base\BaseTabApplication.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Left" Position="0.1" />
+  </Class>
+  <Class Name="BaseTabController&lt;T&gt;">
+    <Position X="20.75" Y="21" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAABAAAAAAAAAAAAEAAAAAAAAACAAgAAAA=</HashCode>
+      <FileName>Assets\Scripts\Base\BaseTabController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BrainEventUIItem">
+    <Position X="44.75" Y="6.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAABAEAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\InGameScene\MainTab\Components\UI\BrainEventUIItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Equation">
+    <Position X="32.5" Y="53.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAAAAAAAACAAEAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\InGameScene\Utils\Equation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EventObject">
+    <Position X="44.75" Y="2.25" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AACAAAACIAAIAAAAAABAEAAAAACgACAAAAAAAAgAAAA=</HashCode>
+      <FileName>Assets\Scripts\InGameScene\Utils\EventObject.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="UpArrowNotation">
+    <Position X="34.5" Y="53.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAMAAAAEgAAAAAAk4AXAAgAAghKAEAAEAEgAAAAAByY=</HashCode>
+      <FileName>Assets\Scripts\InGameScene\Utils\UpArrowNotation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NetworkManager">
+    <Position X="34.25" Y="37" Width="7.75" />
+    <TypeIdentifier>
+      <HashCode>AAIEIAAAAAAAAAAAACAUgAAECQBgQAAAQBCCAgCAgEQ=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Network\NetworkManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CreateSingleNetworkBrainNumberRequest">
+    <Position X="48.75" Y="40.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Network\Request\CreateSingleNetworkBrainNumberRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CreateSingleNetworkBrainRequest">
+    <Position X="52" Y="40.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Network\Request\CreateSingleNetworkBrainRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CreateSingleNetworkChannelRequest">
+    <Position X="45.75" Y="40.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Network\Request\CreateSingleNetworkChannelRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TemporaryRequest">
+    <Position X="43.5" Y="40.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAACAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Network\Request\TemporaryRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AuthValidationResponse">
+    <Position X="43.5" Y="37" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAACAAAAA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Network\Response\AuthValidationResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CreateSingleNetworkBrainNumberResponse">
+    <Position X="51" Y="37" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAEEAAAAAAAAAAACCAAAA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Network\Response\CreateSingleNetworkBrainNumberResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CreateSingleNetworkBrainResponse">
+    <Position X="59.75" Y="37" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAEEAAAAAAAAAAACCAAAA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Network\Response\CreateSingleNetworkBrainResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CreateSingleNetworkChannelResponse">
+    <Position X="56.5" Y="37" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAEEAAAAAAAAAAACCAAAA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Network\Response\CreateSingleNetworkChannelResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DeleteSingleNetworkBrainResponse">
+    <Position X="45.75" Y="37" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAACAAAAAAAAAAAAAAAEEAAAAAAAAAAACCAAAA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Network\Response\DeleteSingleNetworkBrainResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ErrorResponse">
+    <Position X="63" Y="37" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAACAAAAA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Network\Response\ErrorResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SingleNetworkResponse">
+    <Position X="48.75" Y="37" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAiAAAAAAAAAAAAAAAgAAABEEQgAAAABAAAACCAAAA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Network\Response\SingleNetworkResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SingleNetworkWrapper">
+    <Position X="19.5" Y="5.5" Width="8.5" />
+    <AssociationLine Name="upgradeConditionDic" Type="UpgradeCondition" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="23.625" Y="5.5" />
+        <Point X="23.625" Y="5.125" />
+        <Point X="16.75" Y="5.125" />
+        <Point X="16.75" Y="3.546" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="achievements" Type="Achievements" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="23.562" Y="5.5" />
+        <Point X="23.562" Y="5.125" />
+        <Point X="29.625" Y="5.125" />
+        <Point X="29.625" Y="3.546" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="ansEquationsDic" Type="AnsEquations" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="23.625" Y="5.5" />
+        <Point X="23.625" Y="5.125" />
+        <Point X="20.5" Y="5.125" />
+        <Point X="20.5" Y="3.353" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="coordinatesDic" Type="Coordinates" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="23.625" Y="5.5" />
+        <Point X="23.625" Y="5.042" />
+        <Point X="18.75" Y="5.042" />
+        <Point X="18.75" Y="3.738" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="distancesDic" Type="Distances" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="23.625" Y="5.5" />
+        <Point X="23.625" Y="5.125" />
+        <Point X="27.5" Y="5.125" />
+        <Point X="27.5" Y="3.546" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="skinDic" Type="Skin" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="23.625" Y="5.5" />
+        <Point X="23.625" Y="5.125" />
+        <Point X="25.75" Y="5.125" />
+        <Point X="25.75" Y="3.546" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="structuresDic" Type="Structure" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="23.625" Y="5.5" />
+        <Point X="23.625" Y="5.125" />
+        <Point X="22.958" Y="5.125" />
+        <Point X="22.958" Y="3.546" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAECAEAEAAYAAAAAAAAAAAADAAAAAAgAAAACAAAAAAQ=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Network\Response\SingleNetworkResponse.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="upgradeConditionDic" />
+      <Field Name="achievements" />
+      <Field Name="ansEquationsDic" />
+      <Field Name="coordinatesDic" />
+      <Field Name="distancesDic" />
+      <Field Name="skinDic" />
+      <Field Name="structuresDic" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="TemporaryResponse">
+    <Position X="54.5" Y="37" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Network\Response\TemporaryResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserData">
+    <Position X="6.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAIEAAAAAAEgQAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Network\UserData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NetworkStruct">
+    <Position X="42.25" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Network\Util\NetworkStruct.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NotificationManager">
+    <Position X="34.25" Y="45.25" Width="4.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Delegate Name="NotificationManager.DelFunction">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\SingletonManager\Notification\NotificationManager.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAEABACAAhAAAAAIAAAAAAAAAAQAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Notification\NotificationManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Notification">
+    <Position X="39" Y="45.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAQQAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Notification\NotificationManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PoolManager">
+    <Position X="34.25" Y="32.5" Width="5" />
+    <TypeIdentifier>
+      <HashCode>AAAEgAACAAAAAAACAAAAAAAAAAACAAAASAAAAAABAEA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Pool\PoolManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PoolObject">
+    <Position X="40" Y="32.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAMAABACAgAAAAAACCAAQAAABAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Pool\PoolObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ErrorPopup">
+    <Position X="37.5" Y="28" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Popup\ErrorPopup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LoadingPopup">
+    <Position X="41" Y="28" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Popup\LoadingPopup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopupBase">
+    <Position X="40.25" Y="24" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAgCAABAAAAAAAABBAAAAAAEAgAAACAAgAAAA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Popup\PopupBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopupManager">
+    <Position X="34.5" Y="22.25" Width="5.25" />
+    <TypeIdentifier>
+      <HashCode>BAQEAAACBCAQAIAgAAAQAAAAAAAAAAQAQAACAAABAGA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Popup\PopupManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MainTab.Brain">
+    <Position X="40.25" Y="1" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAoAAAGAACAAhQCAAABAAAAQEkAAAQpAIYACCAgCAAA=</HashCode>
+      <FileName>Assets\Scripts\InGameScene\MainTab\Components\Brain\Brain.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_brainData" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="MainTab.BrainData">
+    <Position X="33.5" Y="0.75" Width="5.75" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAABAAAgAAAAAkAAAAAAEAAAAAAAIhA=</HashCode>
+      <FileName>Assets\Scripts\InGameScene\MainTab\Components\Brain\BrainData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MainTab.BrainNetwork">
+    <Position X="33.75" Y="5" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAACIABAABAAAAAAVCACAAAAAgAEACQAgAAAA=</HashCode>
+      <FileName>Assets\Scripts\InGameScene\MainTab\Components\Brain\BrainNetwork.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="MainBrain" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="_brainNetWork" />
+      <Field Name="_channelList" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="MainTab.Channel">
+    <Position X="39.25" Y="8" Width="4.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAACAABAQAAAAAQAAACAAABAAACAACAAgAAAA=</HashCode>
+      <FileName>Assets\Scripts\InGameScene\MainTab\Components\Channel\Channel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MainTab.MainTabUI" BaseTypeListCollapsed="true">
+    <Position X="23.75" Y="15" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACCAABAACgAAAAAAAAAAAAgAAAAACAAgAAAA=</HashCode>
+      <FileName>Assets\Scripts\InGameScene\MainTab\Components\UI\MainTabUI.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MainTab.BehaviorController">
+    <Position X="22" Y="24.75" Width="4.25" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="MainTab.BehaviorController.StateHandlerNone">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\InGameScene\MainTab\Controller\BehaviorController.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+      <Class Name="MainTab.BehaviorController.StateHandlerCreateBrain">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\InGameScene\MainTab\Controller\BehaviorController.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+      <Class Name="MainTab.BehaviorController.StateHandlerCreateChannel">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\InGameScene\MainTab\Controller\BehaviorController.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+      <Class Name="MainTab.BehaviorController.StateHandlerShowPopup">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\InGameScene\MainTab\Controller\BehaviorController.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>EAAAAAACAChABAAAAgEAAAAAAIAAAAAAACQCAAgAABA=</HashCode>
+      <FileName>Assets\Scripts\InGameScene\MainTab\Controller\BehaviorController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MainTab.BrainNetworkController">
+    <Position X="18.75" Y="24.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACACAADAAIAAAAIAAAAAAAAAAAAAACAAgAAAA=</HashCode>
+      <FileName>Assets\Scripts\InGameScene\MainTab\Controller\BrainNetworkController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MainTab.MainTabApplication">
+    <Position X="15.75" Y="15.5" Width="3" />
+    <InheritanceLine Type="BaseTabApplication" FixedToPoint="true">
+      <Path>
+        <Point X="16.75" Y="13.646" />
+        <Point X="16.75" Y="15.125" />
+        <Point X="17.036" Y="15.125" />
+        <Point X="17.036" Y="15.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACABAQAAAAAAAAAAAAAQBAAAAIACAEgAAAA=</HashCode>
+      <FileName>Assets\Scripts\InGameScene\MainTab\MainTabApplication.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_controllers" />
+      <Field Name="_mainTabModel" />
+      <Property Name="MainTabView" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="MainTab.MainTabModel">
+    <Position X="20.75" Y="9" Width="4.25" />
+    <AssociationLine Name="BrainNetwork" Type="MainTab.BrainNetwork" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="25" Y="11.5" />
+        <Point X="33.375" Y="11.5" />
+        <Point X="33.375" Y="5.281" />
+        <Point X="33.75" Y="5.281" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="_singleNetworkWrapper" Type="SingleNetworkWrapper" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="23.75" Y="9" />
+        <Point X="23.75" Y="8.209" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>EAAAQAAAECABAAQAEAAAMQIAAEAAARQBABAAEIAAABA=</HashCode>
+      <FileName>Assets\Scripts\InGameScene\MainTab\MainTabModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_singleNetworkWrapper" />
+      <Property Name="BrainNetwork" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="MainTab.MainTabView">
+    <Position X="21" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAUAA=</HashCode>
+      <FileName>Assets\Scripts\InGameScene\MainTab\MainTabView.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="UI" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="MainTab.CompletePopup">
+    <Position X="34.25" Y="28" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAABAAAAAAAAAAAAAIAAAAAACAAgAAAA=</HashCode>
+      <FileName>Assets\Scripts\InGameScene\MainTab\UI\Popup\CompletePopup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InGame.BottomTab">
+    <Position X="34.25" Y="13" Width="2.5" />
+    <NestedTypes>
+      <Delegate Name="InGame.BottomTab.OnClickTabEvent" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\InGameScene\MainTab\UI\BottomTab.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAACIAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\InGameScene\MainTab\UI\BottomTab.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InGame.InGameUI">
+    <Position X="37" Y="13" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAAAAAAAACAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\InGameScene\MainTab\UI\InGameUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InGame.BrainInfoPopup">
+    <Position X="43.25" Y="28" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAACAAAAAAEAAAAAAIAAAAwACABgAAAA=</HashCode>
+      <FileName>Assets\Scripts\InGameScene\MainTab\UI\Popup\BrainInfoPopup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InGame.UIEnums">
+    <Position X="38" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\InGameScene\MainTab\UI\UIEnums.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InGame.InGameManager" BaseTypeListCollapsed="true">
+    <Position X="12.5" Y="5.75" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>EgQAAAAAACAEBIAAAAEAAAIAAEIAAAAAAAQAAAAAAFA=</HashCode>
+      <FileName>Assets\Scripts\InGameScene\Manager\InGameManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_handlers" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="UltimateClean.CleanButton" Collapsed="true">
+    <Position X="2.75" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAgAAAAAAAAAEAAAAAAAgAAAAAAAABQAAAEA=</HashCode>
+      <FileName>Assets\UltimateCleanGUIPack\Common\Scripts\Core\CleanButton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UltimateClean.FadeButton" Collapsed="true">
+    <Position X="2.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IACCAAAAAAAIAAAAAAAAAAAAAAAgAAAAAAAAAQAAAEA=</HashCode>
+      <FileName>Assets\UltimateCleanGUIPack\Common\Scripts\Core\FadeButton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UltimateClean.InfoPopup">
+    <Position X="34.25" Y="15.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAEAAABAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UltimateCleanGUIPack\Common\Scripts\Core\InfoPopup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UltimateClean.LoopableSelectionSlider" Collapsed="true">
+    <Position X="59" Y="4" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Assets\UltimateCleanGUIPack\Common\Scripts\Core\LoopableSelectionSlider.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UltimateClean.NonLoopableSelectionSlider" Collapsed="true">
+    <Position X="61.75" Y="4" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Assets\UltimateCleanGUIPack\Common\Scripts\Core\NonLoopableSelectionSlider.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UltimateClean.SelectionSlider" Collapsed="true">
+    <Position X="60.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAABACAAAAiAACCAAAgAAAAEAgAAAAEAAABAAAQ=</HashCode>
+      <FileName>Assets\UltimateCleanGUIPack\Common\Scripts\Core\SelectionSlider.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="AnsEquations">
+    <Position X="19.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAgA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Network\Util\NetworkStruct.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="ansEquation" />
+    </ShowAsCollectionAssociation>
+  </Struct>
+  <Struct Name="AnsEquation">
+    <Position X="19.25" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAggAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Network\Util\NetworkStruct.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Coordinates">
+    <Position X="18" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAAAgA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Network\Util\NetworkStruct.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Distances">
+    <Position X="26.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Network\Util\NetworkStruct.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Skin">
+    <Position X="25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Network\Util\NetworkStruct.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Structure">
+    <Position X="22" Y="2.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Network\Util\NetworkStruct.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="UpgradeCondition">
+    <Position X="16" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Network\Util\NetworkStruct.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Achievements">
+    <Position X="28.75" Y="2.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Network\Util\NetworkStruct.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="MainTab.BrainRelation">
+    <Position X="40.25" Y="13" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Assets\Scripts\InGameScene\MainTab\Components\Brain\BrainNetwork.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="MainTab.ChannelData">
+    <Position X="40.25" Y="15.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAAAAAAEAAAAAAAAAAABAAAAAAgQ=</HashCode>
+      <FileName>Assets\Scripts\InGameScene\MainTab\Components\Channel\ChannelData.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="IGameStateBasicModule">
+    <Position X="12.5" Y="11" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAQAAAAAIACAAgAAAA=</HashCode>
+      <FileName>Assets\Scripts\Base\BaseInterface.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="IGameBasicModule">
+    <Position X="38.25" Y="53.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAABAAAAAAAAAAAAAAAAAAAAAACAAgAAAA=</HashCode>
+      <FileName>Assets\Scripts\Base\BaseInterface.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MainTab.IBehaviorStateModule">
+    <Position X="36.25" Y="53.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACACAAAAAAAAAAAAAAAAAQAAAAAIACAAgAAAA=</HashCode>
+      <FileName>Assets\Scripts\InGameScene\MainTab\Controller\BehaviorController.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="EEventObjectType">
+    <Position X="45.25" Y="55.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\InGameScene\Utils\EventObject.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="EStatusCode">
+    <Position X="43.5" Y="57.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAACAAAAAAAAAAAAAAAgAAAAAAAACAA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Network\NetworkManager.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ENetworkSendType">
+    <Position X="38" Y="57.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAEAQAAAAAAAAAAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Network\NetworkManager.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ENotiMessage">
+    <Position X="40" Y="57.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAKgAAgAABAAGAIAIAAAAAgAAEIAAQQAAIAAAAAAAgA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Notification\NotificationManager.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="EDataParamKey">
+    <Position X="43.5" Y="55.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABECAAAAAAAAAAAAAAIAAAAAAAAAAAAAAQEAAAA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Notification\NotificationManager.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="EPrefabsType">
+    <Position X="41.75" Y="57.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAAAAAAAAAAiAAAAAAAAAAAAAAIEAA=</HashCode>
+      <FileName>Assets\Scripts\SingletonManager\Pool\PoolManager.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MainTab.EBrainType">
+    <Position X="38" Y="55.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAAABAAAAAAAAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\InGameScene\MainTab\Components\Brain\BrainData.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MainTab.EChannelType">
+    <Position X="41.75" Y="55.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAADAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\InGameScene\MainTab\Components\Channel\Channel.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MainTab.EChannelBrainType">
+    <Position X="39.75" Y="55.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>Assets\Scripts\InGameScene\MainTab\Components\Channel\ChannelData.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MainTab.EBehaviorState">
+    <Position X="36.25" Y="55.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAABAAAAAAAQAAgAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\InGameScene\MainTab\Controller\BehaviorController.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="InGame.EGameState">
+    <Position X="36.25" Y="57.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAgA=</HashCode>
+      <FileName>Assets\Scripts\InGameScene\Manager\InGameManager.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="UltimateClean.NotificationPositionType">
+    <Position X="45.25" Y="57.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>QgAAAAAIAAAAABAAAAAAAAAAAAAAAAAACAAAAAAAAEA=</HashCode>
+      <FileName>Assets\UltimateCleanGUIPack\Common\Scripts\Core\NotificationPositionType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="UltimateClean.NotificationType">
+    <Position X="36.25" Y="59.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAABAAABAAAAACAAIAAAAAAAEAAABg=</HashCode>
+      <FileName>Assets\UltimateCleanGUIPack\Common\Scripts\Core\NotificationType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="맑은 고딕" Size="9" />
+</ClassDiagram>
