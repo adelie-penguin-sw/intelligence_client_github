@@ -417,7 +417,6 @@ namespace MainTab
                     CreateSingleNetworkChannelRequest req = new CreateSingleNetworkChannelRequest();
                     req.from = _currentSenderBrain.ID;
                     req.to = _currentEnterBrain.ID;
-
                     var res = await NetworkManager.Instance.API_CreateChannel(req);
                     if (res != null)
                     {
