@@ -38,8 +38,6 @@ namespace InGame
             _upgradeBtn.gameObject.SetActive(_brainData.brainType == EBrainType.NORMALBRAIN);
         }
 
-        private Hashtable _sendData = new Hashtable();
-
         public override void AdvanceTime(float dt_sec)
         {
             base.AdvanceTime(dt_sec);
@@ -73,7 +71,7 @@ namespace InGame
 
         public void OnClick_SellBrain()
         {
-            _sendData.Clear();
+            Hashtable _sendData = new Hashtable();
             _sendData.Add(EDataParamKey.CLASS_BRAIN, _brainData);
             NotificationManager.Instance.PostNotification(ENotiMessage.ONCLICK_SELL_BRAIN, _sendData);
             Dispose();
@@ -81,9 +79,16 @@ namespace InGame
 
         public void OnClick_UpgradeBrain()
         {
-            _sendData.Clear();
-            _sendData.Add(EDataParamKey.BRAIN_ID, _brainData.id);
-            NotificationManager.Instance.PostNotification(ENotiMessage.ONCLICK_UPGRADE_BRAIN, _sendData);
+            if (_brainData != null)
+            {
+                Hashtable _sendData = new Hashtable();
+                _sendData.Add(EDataParamKey.BRAIN_ID, _brainData.id);
+                NotificationManager.Instance.PostNotification(ENotiMessage.ONCLICK_UPGRADE_BRAIN, _sendData);
+            }
+            else
+            {
+                Debug.LogError("브레인 데이터 Null");
+            }
         }
 
     }
