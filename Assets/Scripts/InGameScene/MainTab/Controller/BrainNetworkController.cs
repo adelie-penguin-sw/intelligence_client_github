@@ -67,11 +67,11 @@ namespace MainTab
             switch(noti.msg)
             {
                 case ENotiMessage.ONCLICK_SELL_BRAIN:
-                    Brain sellBrain = (Brain)noti.data[EDataParamKey.CLASS_BRAIN];
+                    BrainData sellBrain = (BrainData)noti.data[EDataParamKey.CLASS_BRAIN];
                     RemoveBrain(sellBrain);
                     break;
                 case ENotiMessage.ONCLICK_RESET_NETWORK:
-                    RemoveBrain(_brainNetwork.MainBrain);
+                    RemoveBrain(_brainNetwork.MainBrain.BrainData);
                     break;
                 case ENotiMessage.UPDATE_BRAIN_NETWORK:
                     _brainNetwork.UpdateBrainNetwork(_app.MainTabModel.SingleNetworkWrapper);
@@ -85,18 +85,18 @@ namespace MainTab
             }
         }
 
-        private async void RemoveBrain(Brain brain)
+        private async void RemoveBrain(BrainData data)
         {
-            if (brain.Type == EBrainType.MAINBRAIN)
+            if (data.brainType == EBrainType.MAINBRAIN)
             {
                 // UserData.TP += _brainNetwork.RemoveBrain(brain);
                 var res = await NetworkManager.Instance.API_NetworkReset();
                 _app.MainTabModel.SingleNetworkWrapper = new SingleNetworkWrapper(res);
                 ResetBrainNetWork();
             }
-            else if(brain.Type == EBrainType.NORMALBRAIN)
+            else if(data.brainType == EBrainType.NORMALBRAIN)
             {
-                var res = await NetworkManager.Instance.API_DeleteBrain(brain.ID);
+                var res = await NetworkManager.Instance.API_DeleteBrain(data.id);
                 _app.MainTabModel.SingleNetworkWrapper.UpdateSingleNetworkData(res);
                 ResetBrainNetWork();
                 //UserData.NP += _brainNetwork.RemoveBrain(brain);
