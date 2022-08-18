@@ -10,8 +10,6 @@ namespace MainTab
     /// </summary>
     public class MainTabUI : MonoBehaviour, IGameBasicModule
     {
-        private Brain _coreBrain;
-
         [SerializeField] private TextMeshProUGUI _txtCoreIntellect;
         [SerializeField] private TextMeshProUGUI _txtNP;
         [SerializeField] private TextMeshProUGUI _txtTP;
@@ -43,8 +41,7 @@ namespace MainTab
         /// <param name="intellect">변경할 intellect</param>
         public void UpdateCoreIntellectText()
         {
-            if (_coreBrain != null)
-                _txtCoreIntellect.text = _coreBrain.Intellect.ToString();
+            _txtCoreIntellect.text = UserData.CoreIntellect.ToString();
         }
 
         /// <summary>
