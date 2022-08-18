@@ -6,8 +6,9 @@ using UnityEngine;
 public class CreateSingleNetworkChannelResponse
 {
 	public int statusCode;
-	public List<AnsEquations> ansEquations;
-	public List<Distances> distances; 
+    public List<AnsEquations> ansEquations;
+    public List<Multiplier> multipliers;
+    public List<Distances> distances; 
 	public AnsEquation NP;
 	public long calcTime;
 }
