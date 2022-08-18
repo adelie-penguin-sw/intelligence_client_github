@@ -24,6 +24,13 @@ public struct AnsEquation
 }
 
 [Serializable]
+public struct Multiplier
+{
+    public long id;
+    public AnsEquation multiplier;
+}
+
+[Serializable]
 public struct Coordinates
 {
     public long id;

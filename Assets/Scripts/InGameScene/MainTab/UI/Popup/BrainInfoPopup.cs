@@ -19,6 +19,7 @@ namespace InGame
         [SerializeField] private TextMeshProUGUI _idText;
         [SerializeField] private TextMeshProUGUI _typeText;
         [SerializeField] private TextMeshProUGUI _intellectText;
+        [SerializeField] private TextMeshProUGUI _multiplierText;
         [SerializeField] private TextMeshProUGUI _npText;
         [SerializeField] private TextMeshProUGUI _distanceText;
         [SerializeField] private TextMeshProUGUI _upgradeCost;
@@ -57,9 +58,10 @@ namespace InGame
                     break;
             }
             _intellectText.text = _brainData.Intellect.ToString();
+            _multiplierText.text = "x" + _brainData.multiplier.ToString();
             _npText.text = storedNP.ToString();
             _distanceText.text = _brainData.distance.ToString();
-
+            
             _upgradeCost.text = string.Format("Upgrade\nCost: {0} NP", 1);              // 업그레이드 비용 계산해서 표시
             _decomposeReward.text = string.Format("Decompose\nfor {0} NP", storedNP);   // "총" 획득 NP량 계산해서 표시
         }
