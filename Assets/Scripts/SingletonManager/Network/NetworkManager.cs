@@ -48,11 +48,13 @@ public class NetworkManager : MonoBehaviour
 
     #region REST API FUNCTION
     protected static double timeout = 5;
-    private const string _baseUrl = "http://ec2-3-39-5-11.ap-northeast-2.compute.amazonaws.com:8080"; //테스트 서버 url
+    private const string _baseUrl = "http://ec2-52-79-187-33.ap-northeast-2.compute.amazonaws.com:8080"; //테스트 서버 url
     //private const string _baseUrl = "http://ec2-3-38-74-157.ap-northeast-2.compute.amazonaws.com:8080"; //배포 서버 url
 
     private async UniTask<T> SendToServer<T>(string url, ENetworkSendType sendType, string jsonBody = null)
     {
+        LoadingPopup loadingPopup = PopupManager.Instance.CreatePopup(EPrefabsType.POPUP, "LoadingPopup").GetComponent<LoadingPopup>();
+        await Task.Delay(1000);
         //1. 네트워크 체크.
         await CheckNetwork();
 
@@ -82,7 +84,7 @@ public class NetworkManager : MonoBehaviour
             Debug.Log(res.downloadHandler.text);
             T result = JsonUtility.FromJson<T>(res.downloadHandler.text);
             request.Dispose();
-
+            loadingPopup.Dispose();
             return result;
         }
         catch(OperationCanceledException ex)
@@ -103,12 +105,14 @@ public class NetworkManager : MonoBehaviour
             GameObject go = PopupManager.Instance.CreatePopup(EPrefabsType.POPUP, "ErrorPopup");
             go.GetComponent<ErrorPopup>().Init(errorResult);
 
+            loadingPopup.Dispose();
             request.Dispose();
             return default;
 
             //Debug.LogError(e.Message);
             //return default;
         }
+        loadingPopup.Dispose();
         request.Dispose();
         return default;
     }

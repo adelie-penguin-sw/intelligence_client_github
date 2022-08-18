@@ -30,6 +30,7 @@ namespace MainTab
         {
             base.Init();
             var res = await NetworkManager.Instance.API_LoadUserData();
+
             if (res != null)
             {
                 SingleNetworkWrapper wrapper = new SingleNetworkWrapper(res);
