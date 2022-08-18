@@ -322,15 +322,22 @@ namespace MainTab
 
             private async void CreateBrain()
             {
-                CreateSingleNetworkBrainRequest req = new CreateSingleNetworkBrainRequest();
-                req.x = _tempBrain.transform.position.x;
-                req.y = _tempBrain.transform.position.y;
-
-                var res = await NetworkManager.Instance.API_CreateBrain(req);
-                if (res != null)
+                if (!_tempBrain.IsCollisionGuide)
                 {
-                    _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(req, res);
-                    NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
+                    CreateSingleNetworkBrainRequest req = new CreateSingleNetworkBrainRequest();
+                    req.x = _tempBrain.transform.position.x;
+                    req.y = _tempBrain.transform.position.y;
+
+                    var res = await NetworkManager.Instance.API_CreateBrain(req);
+                    if (res != null)
+                    {
+                        _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(req, res);
+                        NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
+                    }
+                }
+                else
+                {
+                    Debug.LogError("다른 브레인과 충돌");
                 }
             }
         }
