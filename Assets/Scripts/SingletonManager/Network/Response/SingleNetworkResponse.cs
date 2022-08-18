@@ -100,7 +100,7 @@ public class SingleNetworkWrapper
         {
             foreach (AnsEquation ans in ansEquationsDic[id].ansEquation)
             {
-                data.intellect.Add(new UpArrowNotation(ans.top3Coeffs[0],
+                data.intellectEquation.Add(new UpArrowNotation(ans.top3Coeffs[0],
                                                        ans.top3Coeffs[1],
                                                        ans.top3Coeffs[2],
                                                        ans.operatorLayerCount));

@@ -12,11 +12,17 @@ namespace MainTab
         [SerializeField] private TextMeshPro _textNum;
         [SerializeField] private BrainData _brainData;
 
-        private long _lastCalcTime;
-
         #region property
         public HashSet<long> ReceiverIdList { get { return _brainData._receiverIdList; } }
         public HashSet<long> SenderIdList { get { return _brainData._senderIdList; } }
+
+        public BrainData BrainData
+        {
+            get
+            {
+                return _brainData;
+            }
+        }
 
         /// <summary>
         /// 지능 수치 계산하여 반환
@@ -25,8 +31,7 @@ namespace MainTab
         {
             get
             {
-                double elapsedTime = (double)(DateTimeOffset.Now.ToUnixTimeMilliseconds() - _lastCalcTime) / 1000f;
-                return Equation.GetCurrentIntellect(_brainData.intellect, elapsedTime);
+                return _brainData.Intellect;
             }
         }
         /// <summary>
@@ -73,7 +78,7 @@ namespace MainTab
                 }
 
                 transform.position = new Vector2(_brainData.coordinates.x, _brainData.coordinates.y);
-                _lastCalcTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                _brainData.lastCalcTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             }
         }
 
