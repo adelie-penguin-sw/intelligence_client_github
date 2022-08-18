@@ -468,7 +468,7 @@ namespace MainTab
                         _controller.ChangeState(EBehaviorState.NONE);
                         break;
                     case ENotiMessage.ONCLICK_UPGRADE_BRAIN:
-                        long brainId = (long) noti.data[EDataParamKey.BRAIN_ID];
+                        long brainId = (long)noti.data[EDataParamKey.BRAIN_ID];
                         UpgradeBrain(brainId);
                         break;
                 }
