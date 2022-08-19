@@ -34,20 +34,11 @@ namespace MainTab
             UpdateBrainNetwork(wrapper);
         }
 
-        private float _elapseTime = 0f;
-        private const float _countingTime = 1f;
         public void AdvanceTime(float dt_sec)
         {
-
-            _elapseTime += dt_sec;
-            if (_elapseTime >= _countingTime)
+            foreach (var brain in _brainNetWork.Values)
             {
-                _elapseTime = 0f;
-
-                foreach (var brain in _brainNetWork.Values)
-                {
-                    brain.AdvanceTime(dt_sec);
-                }
+                 brain.AdvanceTime(dt_sec);
             }
 
             CheckCompleteExperiment();
