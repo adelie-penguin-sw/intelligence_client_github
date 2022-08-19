@@ -8,7 +8,7 @@ public class NetworkUrlChanger : EditorWindow
     public static UrlType urlType = UrlType.TEST;
    
     // Add menu item named "My Window" to the Window menu
-    [MenuItem("Window/NetworkUrlChanger")]
+    [MenuItem("Network/NetworkUrlChanger")]
     public static void ShowWindow()
     {
         //Show existing window instance. If one doesn't exist, make one.
