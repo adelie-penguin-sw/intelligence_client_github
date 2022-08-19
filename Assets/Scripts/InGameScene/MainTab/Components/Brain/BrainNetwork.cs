@@ -80,9 +80,19 @@ namespace MainTab
                 BrainData data = wrapper.GetBrainDataForID(id);
                 if (data != null)
                 {
-                    Brain brain = PoolManager.Instance.GrabPrefabs(EPrefabsType.BRAIN, "Brain", _brainLayer).GetComponent<Brain>();
-                    brain.Init(data);
-                    _brainNetWork.Add(id, brain);
+                    if (id == 0)
+                    {
+                        Brain brain = PoolManager.Instance.GrabPrefabs(EPrefabsType.BRAIN, "CoreBrain", _brainLayer).GetComponent<Brain>();
+                        brain.Init(data);
+                        _brainNetWork.Add(id, brain);
+                    }
+                    else
+                    {
+                        Brain brain = PoolManager.Instance.GrabPrefabs(EPrefabsType.BRAIN, "Brain", _brainLayer).GetComponent<Brain>();
+                        brain.Init(data);
+                        _brainNetWork.Add(id, brain);
+                    }
+                    
                 }
             }
 

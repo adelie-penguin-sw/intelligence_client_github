@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Sirenix.OdinInspector;
+using Unity.Mathematics;
 
 public class UpArrowNotation
 {
@@ -363,7 +364,14 @@ public class UpArrowNotation
         }
 
         result._top3Coeffs[0] = 10f / result._top3Coeffs[0];
-        result._top3Coeffs[1] -= 1f;
+
+        double resultPower = result._top3Coeffs[1] * Math.Pow(10f, result._top3Coeffs[2]);
+        resultPower--;
+
+        (double c, double p) = _getCoeffAndPower(resultPower);
+
+        result._top3Coeffs[1] = c;
+        result._top3Coeffs[2] = p;
 
         return result;
     }
