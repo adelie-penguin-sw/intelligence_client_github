@@ -49,6 +49,7 @@ public class NetworkManager : MonoBehaviour
     #region REST API FUNCTION
     protected static double timeout = 5;
     private const string _baseUrl = "http://ec2-52-79-187-33.ap-northeast-2.compute.amazonaws.com:8080"; //테스트 서버 url
+    public string editorBaseUrl;
     //private const string _baseUrl = "http://ec2-3-38-74-157.ap-northeast-2.compute.amazonaws.com:8080"; //배포 서버 url
 
     private async UniTask<T> SendToServer<T>(string url, ENetworkSendType sendType, string jsonBody = null)
@@ -60,7 +61,9 @@ public class NetworkManager : MonoBehaviour
 
         //2. API URL 생성.
         string requestURL = _baseUrl + url;
-
+#if UNITY_EDITOR
+        requestURL = editorBaseUrl + url;
+#endif
         //3. Timeout 설정.
         var cts = new CancellationTokenSource();
         cts.CancelAfterSlim(TimeSpan.FromSeconds(timeout));
