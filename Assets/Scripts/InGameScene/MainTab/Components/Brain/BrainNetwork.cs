@@ -9,7 +9,7 @@ namespace MainTab
     public class BrainNetwork
     {
         private Transform _brainLayer;
-
+        private int _resetCount;
         [ShowInInspector] private Dictionary<long, Brain> _brainNetWork = new Dictionary<long, Brain>();
         [SerializeField] private List<Channel> _channelList = new List<Channel>();
 
@@ -21,6 +21,8 @@ namespace MainTab
                 return _brainNetWork[0];
             }
         }
+
+        private UpArrowNotation _experimentGoal = new UpArrowNotation();
 
         public void Init(Transform brainLayer)
         {
@@ -74,7 +76,8 @@ namespace MainTab
         public void UpdateBrainNetwork(SingleNetworkWrapper wrapper)
         {
             ClearNetwork();
-
+            _resetCount = wrapper.resetCount;
+            _experimentGoal = new UpArrowNotation(1, 1, 1 + _resetCount, 2);
             foreach (var id in wrapper.ansEquationsDic.Keys)
             {
                 BrainData data = wrapper.GetBrainDataForID(id);
@@ -117,7 +120,7 @@ namespace MainTab
         {
             if (_brainNetWork.ContainsKey(1) &&
                 _brainNetWork[0].Type == EBrainType.MAINBRAIN &&
-                _brainNetWork[0].Intellect >= InGame.InGameManager.experimentGoal)
+                _brainNetWork[0].Intellect >= _experimentGoal)
             {
                 InGame.InGameManager.IsCompleteExp = true;
                 NotificationManager.Instance.PostNotification(ENotiMessage.EXPERIMENT_COMPLETE);
