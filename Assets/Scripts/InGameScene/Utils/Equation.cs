@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 일단 임시로 별도 클래스에 구현했습니다. 나중에 통합하고 서버가 주는 방정식 데이터를 받을 때 사용합니다.
+/// 방정식 계수들을 기반으로 현재 지능을 계산해주는 클래스입니다.
 /// </summary>
 public class Equation
 {
