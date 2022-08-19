@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UltimateClean;
 using UnityEngine;
 namespace MainTab
 {
@@ -208,9 +209,9 @@ namespace MainTab
                     case ENotiMessage.MOUSE_UP_BRAIN:
                         if (_isBrainPointDown)
                         {
-                            InGame.BrainInfoPopup infoPopup = PopupManager.Instance.CreatePopup(EPrefabsType.POPUP, "BrainInfoPopup")
+                            _controller._view.InfoPopup = PopupManager.Instance.CreatePopup(EPrefabsType.POPUP, "BrainInfoPopup")
                                 .GetComponent<InGame.BrainInfoPopup>();
-                            infoPopup.Init(_controller._recentSelectBrain);
+                            _controller._view.InfoPopup.Init(_controller._recentSelectBrain.BrainData, _model.SingleNetworkWrapper);
                             _controller.ChangeState(EBehaviorState.SHOW_POPUP);
                         }
                         else
@@ -466,7 +467,7 @@ namespace MainTab
                         _controller.ChangeState(EBehaviorState.NONE);
                         break;
                     case ENotiMessage.ONCLICK_UPGRADE_BRAIN:
-                        long brainId = (long) noti.data[EDataParamKey.BRAIN_ID];
+                        long brainId = (long)noti.data[EDataParamKey.BRAIN_ID];
                         UpgradeBrain(brainId);
                         break;
                 }
@@ -485,10 +486,19 @@ namespace MainTab
                 var req = new CreateSingleNetworkBrainNumberRequest();
                 req.brain = id;
                 CreateSingleNetworkBrainNumberResponse res = await NetworkManager.Instance.API_UpgradeBrain(req);
+
                 if (res != null)
                 {
-                    _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(res);
+                    // 브레인 업그레이드 상태가 바로 반영되도록 업데이트해주는 콜백 추가
+                    _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(res, () =>
+                    {
+                        NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
+
+                        SingleNetworkWrapper wrapper = _controller._model.SingleNetworkWrapper;
+                        _controller._view.InfoPopup.Set(wrapper.GetBrainDataForID(id), wrapper);
+                    });
                 }
+                
             }
         }
         #endregion

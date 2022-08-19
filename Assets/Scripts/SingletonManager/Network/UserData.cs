@@ -8,6 +8,20 @@ using UnityEngine;
 public class UserData
 {
     public static string token;
+
+    private static UpArrowNotation _coreIntellect = new UpArrowNotation();
+    public static UpArrowNotation CoreIntellect
+    {
+        get
+        {
+            return _coreIntellect;
+        }
+        set
+        {
+            _coreIntellect = value;
+        }
+    }
+
     private static UpArrowNotation _tp = new UpArrowNotation();
     public static UpArrowNotation TP
     {

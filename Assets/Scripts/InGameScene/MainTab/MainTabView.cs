@@ -11,11 +11,25 @@ namespace MainTab
         [SerializeField] private Canvas _canvas;
         [SerializeField] private MainTabUI _ui;
 
+        private InGame.BrainInfoPopup _infoPopup;
+
         public MainTabUI UI
         {
             get
             {
                 return _ui;
+            }
+        }
+
+        public InGame.BrainInfoPopup InfoPopup
+        {
+            get
+            {
+                return _infoPopup;
+            }
+            set
+            {
+                _infoPopup = value;
             }
         }
     }
