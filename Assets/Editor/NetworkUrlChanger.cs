@@ -19,7 +19,6 @@ public class NetworkUrlChanger : EditorWindow
     {
         GUILayout.Label("url Settings", EditorStyles.boldLabel);
         urlType = (UrlType)EditorGUILayout.EnumPopup("urlType", urlType);
-        Debug.LogError(urlType);
         switch(urlType)
         {
             case UrlType.TEST:
