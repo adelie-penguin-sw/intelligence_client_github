@@ -18,7 +18,7 @@ namespace MainTab
         {
             get
             {
-                return _brainNetWork[1];
+                return _brainNetWork[0];
             }
         }
 
@@ -116,8 +116,8 @@ namespace MainTab
         public void CheckCompleteExperiment()
         {
             if (_brainNetWork.ContainsKey(1) &&
-                _brainNetWork[1].Type == EBrainType.MAINBRAIN &&
-                _brainNetWork[1].Intellect >= InGame.InGameManager.experimentGoal)
+                _brainNetWork[0].Type == EBrainType.MAINBRAIN &&
+                _brainNetWork[0].Intellect >= InGame.InGameManager.experimentGoal)
             {
                 InGame.InGameManager.IsCompleteExp = true;
                 NotificationManager.Instance.PostNotification(ENotiMessage.EXPERIMENT_COMPLETE);
