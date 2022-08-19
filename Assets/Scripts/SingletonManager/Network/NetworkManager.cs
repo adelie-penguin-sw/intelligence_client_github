@@ -54,7 +54,7 @@ public class NetworkManager : MonoBehaviour
     private async UniTask<T> SendToServer<T>(string url, ENetworkSendType sendType, string jsonBody = null)
     {
         LoadingPopup loadingPopup = PopupManager.Instance.CreatePopup(EPrefabsType.POPUP, "LoadingPopup").GetComponent<LoadingPopup>();
-        await Task.Delay(1000);
+        //await Task.Delay(1000);
         //1. 네트워크 체크.
         await CheckNetwork();
 
