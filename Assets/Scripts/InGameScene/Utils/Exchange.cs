@@ -25,10 +25,10 @@ public class Exchange
                 topLayerValue = top3Layer[0];
                 break;
             case 1:
-                topLayerValue = top3Layer[1] + Math.Log10(top3Layer[1]);
+                topLayerValue = top3Layer[1] + Math.Log10(top3Layer[0]);
                 break;
             default:
-                topLayerValue = top3Layer[2] + Math.Log10(top3Layer[2]);
+                topLayerValue = top3Layer[2] + Math.Log10(top3Layer[1]);
                 break;
         }
 
@@ -62,28 +62,29 @@ public class Exchange
     /// <returns></returns>
     public static UpArrowNotation GetNPCostForBrainConnection(UpArrowNotation baseCost, int receiverDistance, UpArrowNotation senderIntellect)
     {
-        // {기본 채널 생성 비용} * A ^ {B * (C * {리시버 브레인의 distance}) ^ {D * slog{센더 브레인의 지능}}}NP
+        // {기본 채널 생성 비용} * A ^ {B * (C * {리시버 브레인의 distance}) ^ {D * (slog{센더 브레인의 지능} + 1)}}NP
 
         double a = 2f;
         double b = 2f;
         double c = 2f;
         double d = 2f;
 
-        return baseCost * Math.Pow(a, b * Math.Pow(c * receiverDistance, d * Slog10(senderIntellect)));
+        return baseCost * Math.Pow(a, b * Math.Pow(c * receiverDistance, d * (Slog10(senderIntellect + 1) + 1)));
     }
 
     /// <summary>
-    /// 브레인을 업그레이드할 때 소비될 NP량을 계산하는 함수입니다. 베이스 비용과 직전까지의 업그레이드 횟수, 그리고 비용 증가율에 따라 결정됩니다.
+    /// 브레인을 업그레이드할 때 소비될 NP량을 계산하는 함수입니다. 베이스 비용과 직전까지의 업그레이드 횟수, 코어 브레인으로부터의 거리, 그리고 비용 증가율에 따라 결정됩니다.
     /// </summary>
     /// <param name="baseCost"></param>
+    /// <param name="distance"></param>
     /// <param name="upgradeCount"></param>
     /// <param name="growthRate"></param>
     /// <returns></returns>
-    public static UpArrowNotation GetNPCostForBrainUpgrade(UpArrowNotation baseCost, int upgradeCount, double growthRate)
+    public static UpArrowNotation GetNPCostForBrainUpgrade(UpArrowNotation baseCost, int distance, int upgradeCount, double growthRate)
     {
-        // {기본 업그레이드 비용} * {비용 증가율} ^ {업그레이드 횟수}
+        // {기본 업그레이드 비용} * {비용 증가율 * 거리} ^ {업그레이드 횟수}
 
-        return baseCost * Math.Pow(growthRate, upgradeCount);
+        return baseCost * Math.Pow(growthRate * distance, upgradeCount);
     }
 
     /// <summary>

@@ -18,7 +18,11 @@ namespace MainTab
         /// <summary>
         /// 지능
         /// </summary>        
-        [ShowInInspector] public List<UpArrowNotation> intellect;
+        [ShowInInspector] public List<UpArrowNotation> intellectEquation;
+        /// <summary>
+        /// 지능 증폭계수
+        /// </summary>        
+        [ShowInInspector] public UpArrowNotation multiplier;
         /// <summary>
         /// 거리
         /// </summary>
@@ -40,27 +44,50 @@ namespace MainTab
         /// </summary>
         public long UpgradeCondition;
 
+        public long lastCalcTime;
+
+        /// <summary>
+        /// 지능 수치 계산하여 반환
+        /// </summary>
+        public UpArrowNotation Intellect
+        {
+            get
+            {
+                double elapsedTime = (double)(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastCalcTime) / 1000f;
+                UpArrowNotation intellect = Equation.GetCurrentIntellect(intellectEquation, elapsedTime);
+
+                if (id == 0)
+                {
+                    UserData.CoreIntellect = intellect;
+                }
+                return intellect;
+            }
+        }
+
         [ShowInInspector] public HashSet<long> _receiverIdList;
         [ShowInInspector] public HashSet<long> _senderIdList;
         public BrainData()
         {
             _receiverIdList = new HashSet<long>();
             _senderIdList = new HashSet<long>();
-            this.intellect = new List<UpArrowNotation>();
+            this.intellectEquation = new List<UpArrowNotation>();
+            this.multiplier = new UpArrowNotation(1);
         }
 
         public BrainData(int id, EBrainType brainType)
         {
             this.id = id;
-            this.intellect = new List<UpArrowNotation> { new UpArrowNotation(1)};
+            this.intellectEquation = new List<UpArrowNotation> { new UpArrowNotation(1)};
+            this.multiplier = new UpArrowNotation(1);
             this.brainType = brainType;
             _receiverIdList = new HashSet<long>();
             _senderIdList = new HashSet<long>();
         }
-        public BrainData(int id, List<UpArrowNotation> intellect, int distance, EBrainType brainType)
+        public BrainData(int id, List<UpArrowNotation> intellect, UpArrowNotation multiplier, int distance, EBrainType brainType)
         {
             this.id = id;
-            this.intellect = intellect;
+            this.intellectEquation = intellect;
+            this.multiplier = multiplier;
             this.brainType = brainType;
             this.distance = distance;
             _receiverIdList = new HashSet<long>();
