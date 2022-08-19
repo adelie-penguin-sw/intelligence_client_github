@@ -28,7 +28,7 @@ public class NetworkUrlChanger : EditorWindow
                 NetworkManager.Instance.editorBaseUrl = "http://ec2-3-38-74-157.ap-northeast-2.compute.amazonaws.com:8080"; //배포 서버 url
                 break;
             case UrlType.LOCAL:
-                NetworkManager.Instance.editorBaseUrl = "127.0.0.1";
+                NetworkManager.Instance.editorBaseUrl = "http://localhost:8080";
                 break;
         }
     }
