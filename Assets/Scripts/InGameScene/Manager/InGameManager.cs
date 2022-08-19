@@ -18,12 +18,6 @@ namespace InGame
         /// 연구 달성 상태 여부
         /// </summary>
         public static bool IsCompleteExp = false;
-
-        /// <summary>
-        /// 연구 달성 목표치
-        /// </summary>
-        public static UpArrowNotation experimentGoal = new UpArrowNotation(1000);
-
         void Awake()
         {
 
