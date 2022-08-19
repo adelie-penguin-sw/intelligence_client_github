@@ -20,6 +20,7 @@ public class SingleNetworkResponse
     public List<UpgradeCondition> upgradeCondition;
     public long calcTime;
     public List<Achievements> achievements;
+    public int resetCount;
 }
 
 [Serializable]
@@ -34,6 +35,7 @@ public class SingleNetworkWrapper
     [ShowInInspector] public Dictionary<long, UpgradeCondition> upgradeConditionDic = new Dictionary<long, UpgradeCondition>();
     public long calcTime;
     public List<Achievements> achievements = new List<Achievements>();
+    public int resetCount;
 
     public SingleNetworkWrapper(SingleNetworkResponse res)
     {
@@ -88,6 +90,8 @@ public class SingleNetworkWrapper
             calcTime = res.calcTime;
 
             achievements = res.achievements;
+
+            resetCount = res.resetCount;
         }
     }
 
