@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
+
 namespace MainTab
 {
     /// <summary>
@@ -60,6 +62,12 @@ namespace MainTab
         public void UpdateTPText()
         {
             _txtTP.text = string.Format("TP: {0}", UserData.TP.ToString());
+        }
+
+        public void OnClick_Logout()
+        {
+            PlayerPrefs.DeleteAll();
+            SceneManager.LoadScene("LoginScene");
         }
 
         public void Dispose()
