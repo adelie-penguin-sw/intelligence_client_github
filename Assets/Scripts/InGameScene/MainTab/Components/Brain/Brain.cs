@@ -10,14 +10,22 @@ namespace MainTab
     public class Brain : MonoBehaviour
     {
         [SerializeField] private TextMeshPro _textNum;
+        [SerializeField] private TextMeshPro _textMul;
         [SerializeField] private BrainData _brainData;
 
-        [SerializeField] private long _lastCalcTime;
-
         [SerializeField] private bool _isCollisionGuide = false;
+
         #region property
         public HashSet<long> ReceiverIdList { get { return _brainData._receiverIdList; } }
         public HashSet<long> SenderIdList { get { return _brainData._senderIdList; } }
+
+        public BrainData BrainData
+        {
+            get
+            {
+                return _brainData;
+            }
+        }
 
         /// <summary>
         /// 지능 수치 계산하여 반환
@@ -26,10 +34,15 @@ namespace MainTab
         {
             get
             {
-                double elapsedTime = (double)(DateTimeOffset.Now.ToUnixTimeMilliseconds() - _lastCalcTime) / 1000f;
-                return Equation.GetCurrentIntellect(_brainData.intellect, elapsedTime);
+                return _brainData.Intellect;
             }
         }
+
+        /// <summary>
+        /// 지능 증폭계수 반환
+        /// </summary>
+        public UpArrowNotation Multiplier { get { return _brainData.multiplier; } }
+
         /// <summary>
         /// 해당 브레인의 ID
         /// </summary>
@@ -56,9 +69,10 @@ namespace MainTab
 
         public void Init(BrainData data)
         {
-            _lastCalcTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             _brainData = data;
+            _brainData.lastCalcTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             SetNumText(Intellect);
+            SetMulText(Multiplier);
             if (_brainData.brainType == EBrainType.GUIDEBRAIN)
                 gameObject.SetActive(false);
             Set();
@@ -72,10 +86,11 @@ namespace MainTab
                 {
                     case EBrainType.GUIDEBRAIN:
                         _textNum.gameObject.SetActive(false);
+                        _textMul.gameObject.SetActive(false);
                         break;
                     case EBrainType.MAINBRAIN:
                         _brainData.distance = 0;
-                        transform.localScale = new Vector2(1.2f, 1.2f);
+                        transform.localScale = new Vector2(2f, 2f);
                         break;
                     case EBrainType.NORMALBRAIN:
                         transform.localScale = new Vector2(1, 1);
@@ -83,7 +98,7 @@ namespace MainTab
                 }
 
                 transform.position = new Vector2(_brainData.coordinates.x, _brainData.coordinates.y);
-                _lastCalcTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                _brainData.lastCalcTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             }
         }
 
@@ -92,6 +107,7 @@ namespace MainTab
             if (_brainData.brainType != EBrainType.GUIDEBRAIN)
             {
                 SetNumText(Intellect);
+                SetMulText(Multiplier);
             }
         }
 
@@ -145,6 +161,11 @@ namespace MainTab
         private void SetNumText(UpArrowNotation num)
         {
             _textNum.text = num.ToString();
+        }
+
+        private void SetMulText(UpArrowNotation num)
+        {
+            _textMul.text = "x" + num.ToString();
         }
 
         #region EventData
