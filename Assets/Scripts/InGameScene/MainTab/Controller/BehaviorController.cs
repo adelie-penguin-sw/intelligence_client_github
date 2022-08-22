@@ -66,6 +66,16 @@ namespace MainTab
             {
                 GetStateHandler(_currentState).OnNotification(noti);
             }
+
+            switch (noti.msg)
+            {
+                case ENotiMessage.ONCLICK_LEADERBOARD:
+                    _view.LeaderboardPopup = PopupManager.Instance.CreatePopup(EPrefabsType.POPUP, "LeaderboardPopup")
+                                .GetComponent<InGame.LeaderboardPopup>();
+                    _view.LeaderboardPopup.Init();
+                    ChangeState(EBehaviorState.SHOW_POPUP);
+                    break;
+            }
         }
 
         private void AddObservers()
@@ -80,8 +90,10 @@ namespace MainTab
 
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.CLOSE_BRAININFO_POPUP);
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.CLOSE_RESET_POPUP);
+            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.CLOSE_LEADERBOARD_POPUP);
 
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.ONCLICK_UPGRADE_BRAIN);
+            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.ONCLICK_LEADERBOARD);
         }
         private void RemoveObservers()
         {
@@ -95,8 +107,10 @@ namespace MainTab
 
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.CLOSE_BRAININFO_POPUP);
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.CLOSE_RESET_POPUP);
+            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.CLOSE_LEADERBOARD_POPUP);
 
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_UPGRADE_BRAIN);
+            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_LEADERBOARD);
         }
 
         #region StateHandler Function
@@ -224,7 +238,6 @@ namespace MainTab
                         _dtBrainPointDown = 0;
                         _isBrainPointDown = false;
                         break;
-
                 }
             }
 
@@ -464,6 +477,7 @@ namespace MainTab
                 {
                     case ENotiMessage.CLOSE_BRAININFO_POPUP:
                     case ENotiMessage.CLOSE_RESET_POPUP:
+                    case ENotiMessage.CLOSE_LEADERBOARD_POPUP:
                         _controller.ChangeState(EBehaviorState.NONE);
                         break;
                     case ENotiMessage.ONCLICK_UPGRADE_BRAIN:
