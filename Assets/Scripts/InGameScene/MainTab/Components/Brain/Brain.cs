@@ -171,6 +171,8 @@ namespace MainTab
         #region EventData
         private void OnMouseDown()
         {
+            if (_brainData == null)
+                return;
             if (_brainData.brainType != EBrainType.GUIDEBRAIN)
             {
                 Hashtable _sendData = new Hashtable();
@@ -181,6 +183,8 @@ namespace MainTab
 
         private void OnMouseExit()
         {
+            if (_brainData == null)
+                return;
             if (_brainData.brainType != EBrainType.GUIDEBRAIN)
             {
                 NotificationManager.Instance.PostNotification(ENotiMessage.MOUSE_EXIT_BRAIN);
@@ -189,6 +193,8 @@ namespace MainTab
 
         private void OnMouseUp()
         {
+            if (_brainData == null)
+                return;
             if (_brainData.brainType != EBrainType.GUIDEBRAIN)
             {
                 NotificationManager.Instance.PostNotification(ENotiMessage.MOUSE_UP_BRAIN);
@@ -197,6 +203,8 @@ namespace MainTab
 
         private void OnMouseEnter()
         {
+            if (_brainData == null)
+                return;
             if (_brainData.brainType != EBrainType.GUIDEBRAIN)
             {
                 Hashtable _sendData = new Hashtable();
@@ -207,6 +215,8 @@ namespace MainTab
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
+            if (_brainData == null)
+                return;
 
             if (_brainData.brainType == EBrainType.GUIDEBRAIN)
             {
@@ -216,6 +226,8 @@ namespace MainTab
 
         private void OnTriggerExit2D(Collider2D collision)
         {
+            if (_brainData == null)
+                return;
 
             if (_brainData.brainType == EBrainType.GUIDEBRAIN)
             {

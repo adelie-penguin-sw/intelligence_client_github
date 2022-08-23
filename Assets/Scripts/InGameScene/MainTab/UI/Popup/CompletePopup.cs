@@ -29,7 +29,7 @@ namespace MainTab
             {
                 Hashtable sendData = new Hashtable();
                 sendData.Add(EDataParamKey.SINGLE_NETWORK_WRAPPER, new SingleNetworkWrapper(res));
-                NotificationManager.Instance.PostNotification(ENotiMessage.ONCLICK_RESET_NETWORK);
+                NotificationManager.Instance.PostNotification(ENotiMessage.ONCLICK_RESET_NETWORK, sendData);
                 Dispose();
             }
         }
