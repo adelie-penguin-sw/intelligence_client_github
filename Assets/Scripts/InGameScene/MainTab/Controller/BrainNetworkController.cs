@@ -71,11 +71,15 @@ namespace MainTab
                     RemoveBrain(sellBrain);
                     break;
                 case ENotiMessage.ONCLICK_RESET_NETWORK:
-                    SingleNetworkWrapper wrapper = (SingleNetworkWrapper)noti.data[EDataParamKey.SINGLE_NETWORK_WRAPPER];
+                    SingleNetworkWrapper wrapper = (SingleNetworkWrapper)(noti.data[EDataParamKey.SINGLE_NETWORK_WRAPPER]);
                     if (wrapper != null)
                     {
                         _app.MainTabModel.SingleNetworkWrapper = wrapper;
                         ResetBrainNetWork();
+                    }
+                    else
+                    {
+                        Debug.LogError("wrapper null");
                     }
                     break;
                 case ENotiMessage.UPDATE_BRAIN_NETWORK:
