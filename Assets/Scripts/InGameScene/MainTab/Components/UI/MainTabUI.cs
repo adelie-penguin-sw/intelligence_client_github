@@ -64,6 +64,11 @@ namespace MainTab
             _txtTP.text = string.Format("TP: {0}", UserData.TP.ToString());
         }
 
+        public void OnClick_LeaderBoard()
+        {
+            NotificationManager.Instance.PostNotification(ENotiMessage.ONCLICK_LEADERBOARD);
+        }
+
         public void OnClick_Logout()
         {
             PlayerPrefs.DeleteAll();
