@@ -178,6 +178,7 @@ namespace MainTab
                 NotificationManager.Instance.PostNotification(ENotiMessage.MOUSE_DOWN_BRAIN, _sendData);
             }
         }
+
         private void OnMouseExit()
         {
             if (_brainData.brainType != EBrainType.GUIDEBRAIN)

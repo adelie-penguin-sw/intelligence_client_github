@@ -82,6 +82,8 @@ namespace MainTab
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.CLOSE_RESET_POPUP);
 
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.ONCLICK_UPGRADE_BRAIN);
+
+            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.EXPERIMENT_COMPLETE);
         }
         private void RemoveObservers()
         {
@@ -97,6 +99,8 @@ namespace MainTab
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.CLOSE_RESET_POPUP);
 
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_UPGRADE_BRAIN);
+
+            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.EXPERIMENT_COMPLETE);
         }
 
         #region StateHandler Function
@@ -175,12 +179,7 @@ namespace MainTab
                 ZoomScreenPC();
 
                 if (InGame.InGameManager.IsCompleteExp)
-                {
-                    CompletePopup infoPopup = PopupManager.Instance.CreatePopup(EPrefabsType.POPUP, "CompletePopup")
-                        .GetComponent<CompletePopup>();
-                    infoPopup.Init();
-                    _controller.ChangeState(EBehaviorState.SHOW_POPUP);
-                }
+                    return;
 
                 if (_isBrainPointDown)
                 {
@@ -194,9 +193,6 @@ namespace MainTab
 
             public void OnNotification(Notification noti)
             {
-                if (InGame.InGameManager.IsCompleteExp)
-                    return;
-
                 switch (noti.msg)
                 {
                     case ENotiMessage.DRAG_START_CREATEBRAIN:
@@ -220,9 +216,17 @@ namespace MainTab
                             _isBrainPointDown = false;
                         }
                         break;
+
                     case ENotiMessage.MOUSE_EXIT_BRAIN:
                         _dtBrainPointDown = 0;
                         _isBrainPointDown = false;
+                        break;
+
+                    case ENotiMessage.EXPERIMENT_COMPLETE:
+                        CompletePopup infoPopup = PopupManager.Instance.CreatePopup(EPrefabsType.POPUP, "CompletePopup")
+                            .GetComponent<CompletePopup>();
+                        infoPopup.Init();
+                        _controller.ChangeState(EBehaviorState.SHOW_POPUP);
                         break;
 
                 }
