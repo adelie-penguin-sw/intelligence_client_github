@@ -273,6 +273,8 @@ public enum EDataParamKey
     CLASS_BRAIN,
     CLASS_CHANNEL,
     STRUCT_BRAINRELATION,
-    BRAIN_ID
+    BRAIN_ID,
+
+    SINGLE_NETWORK_WRAPPER,
 
 }

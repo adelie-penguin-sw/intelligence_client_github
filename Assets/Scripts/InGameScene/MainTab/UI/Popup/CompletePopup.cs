@@ -21,10 +21,17 @@ namespace MainTab
             NotificationManager.Instance.PostNotification(ENotiMessage.CLOSE_RESET_POPUP);
         }
 
-        public void OnClick_Reset()
+        public async void OnClick_Reset()
         {
-            NotificationManager.Instance.PostNotification(ENotiMessage.ONCLICK_RESET_NETWORK);
-            Dispose();
+            // UserData.TP += _brainNetwork.RemoveBrain(brain);
+            var res = await NetworkManager.Instance.API_NetworkReset();
+            if (res != null)
+            {
+                Hashtable sendData = new Hashtable();
+                sendData.Add(EDataParamKey.SINGLE_NETWORK_WRAPPER, new SingleNetworkWrapper(res));
+                NotificationManager.Instance.PostNotification(ENotiMessage.ONCLICK_RESET_NETWORK);
+                Dispose();
+            }
         }
 
     }
