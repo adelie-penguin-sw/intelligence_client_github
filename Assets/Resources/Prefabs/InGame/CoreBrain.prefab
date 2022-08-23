@@ -282,6 +282,7 @@ MonoBehaviour:
     skinCode: 0
     UpgradeCondition: 0
     lastCalcTime: 0
+  _isCollisionGuide: 0
 --- !u!58 &3635105281912528978
 CircleCollider2D:
   m_ObjectHideFlags: 0

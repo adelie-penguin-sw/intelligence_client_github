@@ -12,6 +12,7 @@ namespace MainTab
         [SerializeField] private MainTabUI _ui;
 
         private InGame.BrainInfoPopup _infoPopup;
+        private InGame.LeaderboardPopup _leaderboardPopup;
 
         public MainTabUI UI
         {
@@ -30,6 +31,18 @@ namespace MainTab
             set
             {
                 _infoPopup = value;
+            }
+        }
+
+        public InGame.LeaderboardPopup LeaderboardPopup
+        {
+            get
+            {
+                return _leaderboardPopup;
+            }
+            set
+            {
+                _leaderboardPopup = value;
             }
         }
     }
