@@ -7,6 +7,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Threading.Tasks;
+using UnityEditor;
 
 public class NetworkManager : MonoBehaviour
 {
@@ -62,6 +63,18 @@ public class NetworkManager : MonoBehaviour
         //2. API URL 생성.
         string requestURL = _baseUrl + url;
 #if UNITY_EDITOR
+        switch ((UrlType)EditorPrefs.GetInt("urlType"))
+        {
+            case UrlType.TEST:
+                editorBaseUrl = "http://ec2-52-79-187-33.ap-northeast-2.compute.amazonaws.com:8080"; //테스트 서버 url
+                break;
+            case UrlType.DEPLOY:
+                editorBaseUrl = "http://ec2-52-79-187-33.ap-northeast-2.compute.amazonaws.com:8080"; //배포 서버 url
+                break;
+            case UrlType.LOCAL:
+                editorBaseUrl = "http://localhost:8080";
+                break;
+        }
         requestURL = editorBaseUrl + url;
 #endif
         //3. Timeout 설정.
@@ -171,8 +184,11 @@ public class NetworkManager : MonoBehaviour
             PATH_TEMPORARY,
             ENetworkSendType.POST,
             json);
-        Debug.Log(res.token);
-        UserData.SetString("Token", res.token);
+        //if (res != null)
+        {
+            Debug.Log(res.token);
+            UserData.SetString("Token", res.token);
+        }
     }
 
     public async UniTask<CreateSingleNetworkBrainResponse> API_CreateBrain(CreateSingleNetworkBrainRequest req)
@@ -269,3 +285,5 @@ public enum ENetworkSendType
     PUT,
     DELETE,
 }
+
+public enum UrlType { TEST = 1, DEPLOY = 2, LOCAL = 3, }
