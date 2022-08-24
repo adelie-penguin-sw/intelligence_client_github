@@ -74,3 +74,12 @@ public struct Achievements
     public long id;
     public long achievement;
 }
+
+[Serializable]
+public struct ViewSingleLeaderboard
+{
+    public long rank;
+    public string email;
+    public long resetCount;
+    public AnsEquation maximumCoreIntellect;
+}

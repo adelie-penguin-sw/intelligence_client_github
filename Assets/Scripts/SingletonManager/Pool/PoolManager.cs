@@ -147,6 +147,7 @@ public class PoolManager : MonoBehaviour
             case EPrefabsType.BRAIN:
                 return "Prefabs/InGame/";
             case EPrefabsType.POPUP:
+            case EPrefabsType.RANK_ITEM:
                 return "Prefabs/Popup/";
             case EPrefabsType.UI:
                 return "Prefabs/InGame/UI/";
@@ -162,6 +163,9 @@ public enum EPrefabsType
 {
     //Popup
     POPUP,
+
+    //RankItem
+    RANK_ITEM,
 
     //Application
     TAP_APPLICATION,
