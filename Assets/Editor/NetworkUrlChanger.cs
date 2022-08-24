@@ -15,23 +15,20 @@ public class NetworkUrlChanger : EditorWindow
         EditorWindow.GetWindow(typeof(NetworkUrlChanger));
     }
 
+    protected void OnEnable()
+    {
+        urlType = (UrlType)EditorPrefs.GetInt("urlType");
+    }
+    protected void OnDisable()
+    {
+        EditorPrefs.SetInt("urlType", (int)urlType);
+    }
+
+
     void OnGUI()
     {
         GUILayout.Label("url Settings", EditorStyles.boldLabel);
         urlType = (UrlType)EditorGUILayout.EnumPopup("urlType", urlType);
-        switch(urlType)
-        {
-            case UrlType.TEST:
-                NetworkManager.Instance.editorBaseUrl = "http://ec2-52-79-187-33.ap-northeast-2.compute.amazonaws.com:8080"; //테스트 서버 url
-                break;
-            case UrlType.DEPLOY:
-                NetworkManager.Instance.editorBaseUrl = "http://ec2-52-79-187-33.ap-northeast-2.compute.amazonaws.com:8080"; //배포 서버 url
-                break;
-            case UrlType.LOCAL:
-                NetworkManager.Instance.editorBaseUrl = "http://localhost:8080";
-                break;
-        }
+        EditorPrefs.SetInt("urlType", (int)urlType);
     }
 }
-
-public enum UrlType { TEST = 1, DEPLOY = 2, LOCAL = 3, }
