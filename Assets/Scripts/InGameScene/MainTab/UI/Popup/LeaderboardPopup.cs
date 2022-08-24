@@ -12,9 +12,25 @@ namespace InGame
     /// </summary>
     public class LeaderboardPopup : PopupBase
     {
-        public override void Init()
+        [SerializeField] private Transform _leaderboardContent;
+
+        private List<RankItem> _rankItemList = new List<RankItem>();
+
+        public override async void Init()
         {
             base.Init();
+
+            var res = await NetworkManager.Instance.API_Leaderboard();
+            if (res != null)
+            {
+                res.allRank.Sort((r1, r2) => r1.rank.CompareTo(r2.rank));
+                foreach (var item in res.allRank)
+                {
+                    RankItem rankItem = PoolManager.Instance.GrabPrefabs(EPrefabsType.RANK_ITEM, "RankItem", _leaderboardContent).GetComponent<RankItem>();
+                    rankItem.Init(item, item.rank == res.selfRank);
+                    _rankItemList.Add(rankItem);
+                }
+            }
         }
 
         public override void Set()
@@ -30,7 +46,12 @@ namespace InGame
         public override void Dispose()
         {
             base.Dispose();
-            NotificationManager.Instance.PostNotification(ENotiMessage.CLOSE_BRAININFO_POPUP);
+
+            foreach (RankItem item in _rankItemList)
+            {
+                item.Dispose();
+            }
+            NotificationManager.Instance.PostNotification(ENotiMessage.CLOSE_LEADERBOARD_POPUP);
         }
     }
 }
