@@ -167,6 +167,7 @@ public class NetworkManager : MonoBehaviour
     /// 
     public const string PATH_SINGLE_NETWORK = "/v1/experiment/single/network";
     public const string PATH_TOKEN_VALIDATION = "/v1/auth/validation";
+    public const string PATH_LEADERBOARD = "/v1/leaderboard/single";
 
     /// 
     /// DELETE PATH
@@ -252,6 +253,15 @@ public class NetworkManager : MonoBehaviour
         var res =
             await SendToServer<AuthValidationResponse>(
                     PATH_TOKEN_VALIDATION,
+                    ENetworkSendType.GET);
+        return res;
+    }
+
+    public async UniTask<LeaderboardResponse> API_Leaderboard()
+    {
+        var res =
+            await SendToServer<LeaderboardResponse>(
+                    PATH_LEADERBOARD,
                     ENetworkSendType.GET);
         return res;
     }
