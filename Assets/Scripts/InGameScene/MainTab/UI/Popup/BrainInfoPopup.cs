@@ -82,8 +82,11 @@ namespace InGame
             _multiplierText.text = "x" + _brainData.multiplier.ToString();
             _npText.text = storedNP.ToString();
             _distanceText.text = _brainData.distance.ToString();
+
+            UpArrowNotation upgradeCost = new UpArrowNotation(10);
+            upgradeCost *= Mathf.Pow(2.5f, (float)UpArrowNotation.Log10Top3Layer(_brainData.multiplier));
             
-            _upgradeCost.text = string.Format("Upgrade\nCost: {0} NP", 1);              // 업그레이드 비용 계산해서 표시
+            _upgradeCost.text = string.Format("Upgrade\nCost: {0} NP", upgradeCost);
             _decomposeReward.text = string.Format("Decompose\nfor {0} NP", storedNP);   // "총" 획득 NP량 계산해서 표시
         }
         public override void Dispose()
