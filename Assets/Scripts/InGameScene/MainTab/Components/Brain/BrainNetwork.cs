@@ -14,7 +14,7 @@ namespace MainTab
         [SerializeField] private List<Channel> _channelList = new List<Channel>();
 
 
-        public Brain MainBrain
+        public Brain CoreBrain
         {
             get
             {
@@ -91,6 +91,11 @@ namespace MainTab
             }
 
             ClearAndDrawChannel();
+        }
+
+        public Brain GetBrainForID(long id)
+        {
+            return _brainNetWork[id];
         }
 
 

@@ -44,7 +44,7 @@ namespace MainTab
         /// </summary>
         public long UpgradeCondition;
 
-        public long lastCalcTime;
+        public long lastCalcTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
         /// <summary>
         /// 지능 수치 계산하여 반환
@@ -66,10 +66,12 @@ namespace MainTab
 
         [ShowInInspector] public HashSet<long> _receiverIdList;
         [ShowInInspector] public HashSet<long> _senderIdList;
+        [ShowInInspector] public HashSet<long> _deletableSenderIdList;
         public BrainData()
         {
             _receiverIdList = new HashSet<long>();
             _senderIdList = new HashSet<long>();
+            _deletableSenderIdList = new HashSet<long>();
             this.intellectEquation = new List<UpArrowNotation>();
             this.multiplier = new UpArrowNotation(1);
         }
@@ -82,6 +84,7 @@ namespace MainTab
             this.brainType = brainType;
             _receiverIdList = new HashSet<long>();
             _senderIdList = new HashSet<long>();
+            _deletableSenderIdList = new HashSet<long>();
         }
         public BrainData(int id, List<UpArrowNotation> intellect, UpArrowNotation multiplier, int distance, EBrainType brainType)
         {
@@ -92,6 +95,7 @@ namespace MainTab
             this.distance = distance;
             _receiverIdList = new HashSet<long>();
             _senderIdList = new HashSet<long>();
+            _deletableSenderIdList = new HashSet<long>();
         }
     }
 
