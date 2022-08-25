@@ -65,9 +65,9 @@ public class Exchange
         // {기본 채널 생성 비용} * A ^ {B * (C * {리시버 브레인의 distance}) ^ {D * (slog{센더 브레인의 지능} + 1)}}NP
 
         double a = 2f;
-        double b = 2f;
-        double c = 2f;
-        double d = 2f;
+        double b = 1f;
+        double c = 1f;
+        double d = 1f;
 
         return baseCost * Math.Pow(a, b * Math.Pow(c * receiverDistance, d * (Slog10(senderIntellect + 1) + 1)));
     }
