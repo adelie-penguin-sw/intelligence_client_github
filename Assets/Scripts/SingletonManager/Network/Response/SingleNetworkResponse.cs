@@ -141,9 +141,51 @@ public class SingleNetworkWrapper
             }
         }
 
+        // senderIdList와 deletableSenderIdList 채우기
+        if (structuresDic.ContainsKey(id))
+        {
+            foreach (KeyValuePair<long, Structure> structure in structuresDic)
+            {
+                if (structure.Value.structure.Contains(id))
+                {
+                    data._senderIdList.Add(structure.Key);
+                    if (structuresDic[structure.Key].structure.Count == 1)
+                    {
+                        data._deletableSenderIdList.Add(structure.Key);
+                    }
+                }
+            }
+        }
+
+        // deletableSenderIdList 채우기
+        if (structuresDic.ContainsKey(id))
+        {
+            foreach (KeyValuePair<long, Structure> structure in structuresDic)
+            {
+                if (structure.Value.structure.Contains(id))
+                {
+                    data._senderIdList.Add(structure.Key);
+                }
+            }
+        }
+
         //data.skinCode = skinDic[id].skincode;
         //data.UpgradeCondition = upgradeConditionDic[id].upgrade;
         return data;
+    }
+
+    public List<long> GetAllDeletableSenderIdListForID(long id)
+    {
+        List<long> resultList = new List<long>();
+
+        BrainData data = GetBrainDataForID(id);
+
+        foreach (long deletableSenderID in data._deletableSenderIdList)
+        {
+            resultList.Add(deletableSenderID);
+            resultList.AddRange(GetAllDeletableSenderIdListForID(deletableSenderID));
+        }
+        return resultList;
     }
 
     /// <summary>
