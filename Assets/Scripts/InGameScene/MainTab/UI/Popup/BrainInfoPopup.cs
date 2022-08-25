@@ -59,7 +59,6 @@ namespace InGame
 
                 foreach (var deletableSenderID in deletableSenderIdList)
                 {
-                    Debug.Log(deletableSenderID);
                     _deletableSenderList.Add(brainNetwork.GetBrainForID(deletableSenderID));
                 }
             }
