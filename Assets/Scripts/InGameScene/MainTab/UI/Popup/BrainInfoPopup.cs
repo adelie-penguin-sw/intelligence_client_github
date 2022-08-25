@@ -15,6 +15,9 @@ namespace InGame
     {
         [SerializeField] private Button _sellBtn;
         [SerializeField] private Button _upgradeBtn;
+        [SerializeField] private GameObject _multiplierArea;
+        [SerializeField] private GameObject _storedNPArea;
+        [SerializeField] private GameObject _distanceArea;
         [SerializeField] private BrainData _brainData;
         [SerializeField] private TextMeshProUGUI _idText;
         [SerializeField] private TextMeshProUGUI _typeText;
@@ -39,9 +42,16 @@ namespace InGame
             base.Set();
             _brainData = brain;
 
+            bool isCoreBrain = _brainData.brainType == EBrainType.NORMALBRAIN;
+
             // 코어 브레인은 업그레이드 및 분해 등의 동작이 필요하지 않으므로 버튼 비활성화
-            _sellBtn.gameObject.SetActive(_brainData.brainType == EBrainType.NORMALBRAIN);
-            _upgradeBtn.gameObject.SetActive(_brainData.brainType == EBrainType.NORMALBRAIN);
+            _sellBtn.gameObject.SetActive(isCoreBrain);
+            _upgradeBtn.gameObject.SetActive(isCoreBrain);
+
+            // 코어 브레인은 증폭계수, NP축적량, 거리 개념이 필요하지 않으므로 표시영역 모두 비활성화
+            _multiplierArea.SetActive(isCoreBrain);
+            _storedNPArea.SetActive(isCoreBrain);
+            _distanceArea.SetActive(isCoreBrain);
 
             //해당 브레인에게 보내고있는 senderIdList들
             // brain._senderIdList
@@ -79,15 +89,19 @@ namespace InGame
                     break;
             }
             _intellectText.text = _brainData.Intellect.ToString();
-            _multiplierText.text = "x" + _brainData.multiplier.ToString();
-            _npText.text = storedNP.ToString();
-            _distanceText.text = _brainData.distance.ToString();
 
-            UpArrowNotation upgradeCost = new UpArrowNotation(10);
-            upgradeCost *= Mathf.Pow(2.5f, (float)UpArrowNotation.Log10Top3Layer(_brainData.multiplier));
-            
-            _upgradeCost.text = string.Format("Upgrade\nCost: {0} NP", upgradeCost);
-            _decomposeReward.text = string.Format("Decompose\nfor {0} NP", storedNP);   // "총" 획득 NP량 계산해서 표시
+            if (_brainData.brainType == EBrainType.NORMALBRAIN)
+            {
+                _multiplierText.text = "x" + _brainData.multiplier.ToString();
+                _npText.text = storedNP.ToString();
+                _distanceText.text = _brainData.distance.ToString();
+
+                UpArrowNotation upgradeCost = new UpArrowNotation(10);
+                upgradeCost *= Mathf.Pow(2.5f, (float)UpArrowNotation.Log10Top3Layer(_brainData.multiplier));
+
+                _upgradeCost.text = string.Format("Upgrade\nCost: {0} NP", upgradeCost);
+                _decomposeReward.text = string.Format("Decompose\nfor {0} NP", storedNP);   // "총" 획득 NP량 계산해서 표시
+            }
         }
         public override void Dispose()
         {
