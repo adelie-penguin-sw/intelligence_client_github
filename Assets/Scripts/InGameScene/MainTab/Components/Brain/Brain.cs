@@ -14,18 +14,13 @@ namespace MainTab
         [SerializeField] private BrainData _brainData;
 
         [SerializeField] private bool _isCollisionGuide = false;
+        [SerializeField] private long _lastCalcTime;
 
         #region property
         public HashSet<long> ReceiverIdList { get { return _brainData._receiverIdList; } }
         public HashSet<long> SenderIdList { get { return _brainData._senderIdList; } }
 
-        public BrainData BrainData
-        {
-            get
-            {
-                return _brainData;
-            }
-        }
+        public BrainData BrainData { get { return _brainData; } }
 
         /// <summary>
         /// 지능 수치 계산하여 반환
@@ -34,9 +29,21 @@ namespace MainTab
         {
             get
             {
-                return _brainData.Intellect;
+                double elapsedTime = (double)(DateTimeOffset.Now.ToUnixTimeMilliseconds() - _lastCalcTime) / 1000f;
+                UpArrowNotation intellect = Equation.GetCurrentIntellect(_brainData.intellectEquation, elapsedTime);
+
+                if (_brainData.id == 0)
+                {
+                    UserData.CoreIntellect = intellect;
+                }
+                return intellect;
             }
         }
+
+        /// <summary>
+        /// 마지막으로 지능이 계산된 시각 반환
+        /// </summary>
+        public long LastCalcTime { get { return _lastCalcTime; } }
 
         /// <summary>
         /// 지능 증폭계수 반환
@@ -70,7 +77,6 @@ namespace MainTab
         public void Init(BrainData data)
         {
             _brainData = data;
-            _brainData.lastCalcTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             SetNumText(Intellect);
             SetMulText(Multiplier);
             if (_brainData.brainType == EBrainType.GUIDEBRAIN)
@@ -99,6 +105,7 @@ namespace MainTab
 
                 transform.position = new Vector2(_brainData.coordinates.x, _brainData.coordinates.y);
                 _brainData.lastCalcTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                _lastCalcTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             }
         }
 
