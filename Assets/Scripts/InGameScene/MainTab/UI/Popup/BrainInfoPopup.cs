@@ -97,14 +97,17 @@ namespace InGame
                 UpArrowNotation upgradeCost = new UpArrowNotation(10);
                 upgradeCost *= Mathf.Pow(2.5f, (float)UpArrowNotation.Log10Top3Layer(_brain.BrainData.multiplier));
 
-                _upgradeCost.text = string.Format("Upgrade\nCost: {0} NP", upgradeCost);
+                string upgradeText = _brain.SenderIdList.Count == 0 ? "+1 Intellect" : "x2 Multiplier";
+                _upgradeCost.text = string.Format(upgradeText + "\nCost: {0} NP", upgradeCost);
 
                 UpArrowNotation totalSenderNP = new UpArrowNotation(0);
                 foreach (Brain brain in _deletableSenderList)
                 {
                     totalSenderNP += Exchange.GetNPRewardForBrainDecomposition(brain.Intellect);
                 }
-                _decomposeReward.text = string.Format("Decompose\nfor {0} NP", storedNP + totalSenderNP);   // "총" 획득 NP량 계산해서 표시
+                _decomposeReward.text = _brain.SenderIdList.Count == 0 ?
+                    string.Format("Decompose\nfor {0} NP\n", storedNP) :
+                    string.Format("Decompose\nfor {0} NP\n+ {1} NP", storedNP, totalSenderNP);   // "총" 획득 NP량 계산해서 표시
             }
         }
         public override void Dispose()
