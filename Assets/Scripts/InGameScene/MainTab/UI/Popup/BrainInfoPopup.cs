@@ -94,8 +94,13 @@ namespace InGame
                 _npText.text = storedNP.ToString();
                 _distanceText.text = _brain.BrainData.distance.ToString();
 
-                UpArrowNotation upgradeCost = new UpArrowNotation(10);
-                upgradeCost *= Mathf.Pow(2.5f, (float)UpArrowNotation.Log10Top3Layer(_brain.BrainData.multiplier));
+                // 초기
+                //UpArrowNotation upgradeCost = new UpArrowNotation(10);
+                //upgradeCost *= Mathf.Pow(2.5f, (float)UpArrowNotation.Log10Top3Layer(_brain.BrainData.multiplier));
+
+                // 수정
+                UpArrowNotation upgradeCost = new UpArrowNotation(3);
+                upgradeCost *= Mathf.Pow(2f, (float)UpArrowNotation.Log10Top3Layer(_brain.BrainData.multiplier));
 
                 string upgradeText = _brain.SenderIdList.Count == 0 ? "+1 Intellect" : "x2 Multiplier";
                 _upgradeCost.text = string.Format(upgradeText + "\nCost: {0} NP", upgradeCost);
