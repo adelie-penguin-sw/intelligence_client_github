@@ -390,7 +390,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Decompose
 
-    for 0 NP'
+    for 0 NP
+
+    +'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1324a7b79a8db4423a43a918b38a37bd, type: 2}
   m_sharedMaterial: {fileID: 3788668012099067831, guid: 1324a7b79a8db4423a43a918b38a37bd, type: 2}
@@ -500,7 +502,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 100}
+  m_SizeDelta: {x: 0, y: 140}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &772110585050512896
 CanvasRenderer:
@@ -924,8 +926,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 993951388051856145}
   m_HandleRect: {fileID: 993951388051856144}
   m_Direction: 2
-  m_Value: 1.0000001
-  m_Size: 0.79776645
+  m_Value: 1.0000004
+  m_Size: 0.8755973
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4156,14 +4158,7 @@ MonoBehaviour:
   _multiplierArea: {fileID: 2400497207335258019}
   _storedNPArea: {fileID: 8413464604952663917}
   _distanceArea: {fileID: 7045980443320966295}
-  _brainData:
-    id: 0
-    distance: -1
-    brainType: 0
-    coordinates: {x: 0, y: 0}
-    skinCode: 0
-    UpgradeCondition: 0
-    lastCalcTime: 0
+  _brain: {fileID: 0}
   _idText: {fileID: 1116976339168513089}
   _typeText: {fileID: 2177966030429418810}
   _intellectText: {fileID: 6652986426895747494}
