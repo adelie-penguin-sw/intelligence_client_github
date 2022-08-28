@@ -68,7 +68,7 @@ namespace MainTab
         {
             ClearNetwork();
             _resetCount = wrapper.resetCount;
-            _experimentGoal = new UpArrowNotation(1, 1, 1 + _resetCount, 2);
+            _experimentGoal = new UpArrowNotation(1, 2, 1 + _resetCount, 2);
             foreach (var id in wrapper.ansEquationsDic.Keys)
             {
                 BrainData data = wrapper.GetBrainDataForID(id);
