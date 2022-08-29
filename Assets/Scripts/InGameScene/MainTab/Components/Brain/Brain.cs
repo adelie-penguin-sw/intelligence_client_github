@@ -17,8 +17,8 @@ namespace MainTab
         [SerializeField] private long _lastCalcTime;
 
         #region property
-        public HashSet<long> ReceiverIdList { get { return _brainData._receiverIdList; } }
-        public HashSet<long> SenderIdList { get { return _brainData._senderIdList; } }
+        public HashSet<long> ReceiverIdList { get { return _brainData.receiverIds; } }
+        public HashSet<long> SenderIdList { get { return _brainData.senderIds; } }
 
         public BrainData BrainData { get { return _brainData; } }
 
@@ -132,7 +132,7 @@ namespace MainTab
         /// <returns> 추가 성공시 true, 이미 존재하는 id일 경우 false 반환</returns>
         public bool AddSender(int id)
         {
-            return _brainData._senderIdList.Add(id);
+            return _brainData.senderIds.Add(id);
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace MainTab
         /// <returns> 추가 성공시 true, 이미 존재하는 id일 경우 false 반환</returns>
         public bool AddReceiver(int id)
         {
-            return _brainData._receiverIdList.Add(id);
+            return _brainData.receiverIds.Add(id);
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace MainTab
         /// <returns>존재하면 true 없으면 false</returns>
         public bool IsContainsSender(int id)
         {
-            return _brainData._senderIdList.Contains(id);
+            return _brainData.senderIds.Contains(id);
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace MainTab
         /// <returns>존재하면 true 없으면 false</returns>
         public bool IsContainsReceiver(int id)
         {
-            return _brainData._receiverIdList.Contains(id);
+            return _brainData.receiverIds.Contains(id);
         }
 
         private void SetNumText(UpArrowNotation num)
