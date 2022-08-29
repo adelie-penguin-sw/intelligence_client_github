@@ -64,10 +64,10 @@ public class Exchange
     {
         // {기본 채널 생성 비용} * A ^ {B * (C * {리시버 브레인의 distance}) ^ {D * (slog{센더 브레인의 지능} + 1)}}NP
 
-        double a = 2f;
-        double b = 2f;
-        double c = 2f;
-        double d = 2f;
+        double a = 3f;
+        double b = 1f;
+        double c = 1f;
+        double d = 1f;
 
         return baseCost * Math.Pow(a, b * Math.Pow(c * receiverDistance, d * (Slog10(senderIntellect + 1) + 1)));
     }
@@ -101,9 +101,15 @@ public class Exchange
 
         // NP = a * log(지능) ^ {b * log(c * log(지능))}
 
+        // 초기
+        //double a = 1.0;
+        //double b = 3.0;
+        //double c = 2.0;
+
+        // 수정
         double a = 1.0;
-        double b = 3.0;
-        double c = 2.0;
+        double b = 0.7;
+        double c = 500.0;
 
         double logNumber = UpArrowNotation.Log10Top3Layer(intellect);
         return new UpArrowNotation(Math.Floor(a * Math.Pow(logNumber, b * Math.Log10(c * logNumber))));
