@@ -33,9 +33,11 @@ public class SingleNetworkWrapper
     [ShowInInspector] public Dictionary<long, Coordinates> coordinatesDic = new Dictionary<long, Coordinates>();
     [ShowInInspector] public Dictionary<long, Skin> skinDic = new Dictionary<long, Skin>();
     [ShowInInspector] public Dictionary<long, UpgradeCondition> upgradeConditionDic = new Dictionary<long, UpgradeCondition>();
-    public long calcTime;
-    public List<Achievements> achievements = new List<Achievements>();
-    public int resetCount;
+    [ShowInInspector] public Dictionary<long, HashSet<long>> senderBrainsDic = new Dictionary<long, HashSet<long>>();
+    [ShowInInspector] public Dictionary<long, HashSet<long>> receiverBrainsDic = new Dictionary<long, HashSet<long>>();
+    [ShowInInspector] public long calcTime;
+    [ShowInInspector] public List<Achievements> achievements = new List<Achievements>();
+    [ShowInInspector] public int resetCount;
 
     public SingleNetworkWrapper(SingleNetworkResponse res)
     {
@@ -59,6 +61,10 @@ public class SingleNetworkWrapper
             foreach (var data in res.structures)
             {
                 structuresDic.Add(data.id, data);
+                foreach(var senderId in data.structure)
+                {
+                    AddStructureData(data.id, senderId);
+                }
             }
 
             foreach (var data in res.coordinates)
@@ -75,6 +81,7 @@ public class SingleNetworkWrapper
             {
                 upgradeConditionDic.Add(data.id, data);
             }
+
 
             UserData.NP = new UpArrowNotation(
             res.NP.top3Coeffs[0],
@@ -93,6 +100,17 @@ public class SingleNetworkWrapper
 
             resetCount = res.resetCount;
         }
+    }
+
+    private void AddStructureData(long curID , long senderID)
+    {
+        if (!senderBrainsDic.ContainsKey(curID))
+            senderBrainsDic.Add(curID, new HashSet<long>());
+        senderBrainsDic[curID].Add(senderID);
+
+        if (!receiverBrainsDic.ContainsKey(senderID))
+            receiverBrainsDic.Add(senderID, new HashSet<long>());
+        receiverBrainsDic[senderID].Add(curID);
     }
 
     /// <summary>
@@ -133,28 +151,14 @@ public class SingleNetworkWrapper
         if (coordinatesDic.ContainsKey(id))
             data.coordinates = new Vector2((float)coordinatesDic[id].x, (float)coordinatesDic[id].y);
 
-        if (structuresDic.ContainsKey(id))
+        if(receiverBrainsDic.ContainsKey(id))
         {
-            foreach (var receiverId in structuresDic[id].structure)
-            {
-                data._receiverIdList.Add(receiverId);
-            }
+            data.receiverIds = receiverBrainsDic[id];
         }
 
-        // senderIdList와 deletableSenderIdList 채우기
-        if (structuresDic.ContainsKey(id))
+        if(senderBrainsDic.ContainsKey(id))
         {
-            foreach (KeyValuePair<long, Structure> structure in structuresDic)
-            {
-                if (structure.Value.structure.Contains(id))
-                {
-                    data._senderIdList.Add(structure.Key);
-                    if (structuresDic[structure.Key].structure.Count == 1)
-                    {
-                        data._deletableSenderIdList.Add(structure.Key);
-                    }
-                }
-            }
+            data.senderIds = senderBrainsDic[id];
         }
 
         // deletableSenderIdList 채우기
@@ -164,7 +168,10 @@ public class SingleNetworkWrapper
             {
                 if (structure.Value.structure.Contains(id))
                 {
-                    data._senderIdList.Add(structure.Key);
+                    if (structuresDic[structure.Key].structure.Count == 1)
+                    {
+                        data.deletableSenderIds.Add(structure.Key);
+                    }
                 }
             }
         }
@@ -180,7 +187,7 @@ public class SingleNetworkWrapper
 
         BrainData data = GetBrainDataForID(id);
 
-        foreach (long deletableSenderID in data._deletableSenderIdList)
+        foreach (long deletableSenderID in data.deletableSenderIds)
         {
             resultList.Add(deletableSenderID);
             resultList.AddRange(GetAllDeletableSenderIdListForID(deletableSenderID));
@@ -263,6 +270,8 @@ public class SingleNetworkWrapper
             structuresDic.Add(req.from, data);
         }
         structuresDic[req.from].structure.Add(req.to);
+
+        AddStructureData(req.to, req.from);
 
         callback();
     }
@@ -361,6 +370,14 @@ public class SingleNetworkWrapper
         if (upgradeConditionDic.ContainsKey(id))
         {
             upgradeConditionDic.Remove(id);
+        }
+        if (senderBrainsDic.ContainsKey(id))
+        {
+            senderBrainsDic.Remove(id);
+        }
+        if (receiverBrainsDic.ContainsKey(id))
+        {
+            receiverBrainsDic.Remove(id);
         }
     }
 }

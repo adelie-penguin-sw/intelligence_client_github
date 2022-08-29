@@ -64,14 +64,14 @@ namespace MainTab
             }
         }
 
-        [ShowInInspector] public HashSet<long> _receiverIdList;
-        [ShowInInspector] public HashSet<long> _senderIdList;
-        [ShowInInspector] public HashSet<long> _deletableSenderIdList;
+        [ShowInInspector] public HashSet<long> receiverIds;
+        [ShowInInspector] public HashSet<long> senderIds;
+        [ShowInInspector] public HashSet<long> deletableSenderIds;
         public BrainData()
         {
-            _receiverIdList = new HashSet<long>();
-            _senderIdList = new HashSet<long>();
-            _deletableSenderIdList = new HashSet<long>();
+            receiverIds = new HashSet<long>();
+            senderIds = new HashSet<long>();
+            deletableSenderIds = new HashSet<long>();
             this.intellectEquation = new List<UpArrowNotation>();
             this.multiplier = new UpArrowNotation(1);
         }
@@ -82,9 +82,9 @@ namespace MainTab
             this.intellectEquation = new List<UpArrowNotation> { new UpArrowNotation(1)};
             this.multiplier = new UpArrowNotation(1);
             this.brainType = brainType;
-            _receiverIdList = new HashSet<long>();
-            _senderIdList = new HashSet<long>();
-            _deletableSenderIdList = new HashSet<long>();
+            receiverIds = new HashSet<long>();
+            senderIds = new HashSet<long>();
+            deletableSenderIds = new HashSet<long>();
         }
         public BrainData(int id, List<UpArrowNotation> intellect, UpArrowNotation multiplier, int distance, EBrainType brainType)
         {
@@ -93,9 +93,9 @@ namespace MainTab
             this.multiplier = multiplier;
             this.brainType = brainType;
             this.distance = distance;
-            _receiverIdList = new HashSet<long>();
-            _senderIdList = new HashSet<long>();
-            _deletableSenderIdList = new HashSet<long>();
+            receiverIds = new HashSet<long>();
+            senderIds = new HashSet<long>();
+            deletableSenderIds = new HashSet<long>();
         }
     }
 
