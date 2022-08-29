@@ -190,11 +190,10 @@ namespace MainTab
             public void AdvanceTime(float dt_sec)
             {
 #if UNITY_EDITOR
-                //BehaviorScreenPC();
+                BehaviorScreenPC();
 #else
-                //BehaviorScreenMobile();
-#endif
                 BehaviorScreenMobile();
+#endif
                 if (InGame.InGameManager.IsCompleteExp)
                     return;
 
@@ -263,7 +262,7 @@ namespace MainTab
             /// </summary>
             private void BehaviorScreenPC()
             {
-                Debug.LogError("PC");
+                //Debug.LogError("PC");
                 //줌인 줌아웃
                 _model.CurCameraSize = Input.GetAxis("Mouse ScrollWheel");
 
@@ -289,7 +288,7 @@ namespace MainTab
             /// </summary>
             private void BehaviorScreenMobile()
             {
-                Debug.LogError("Mobile");
+                //Debug.LogError("Mobile");
                 if (Input.touchCount == 2) //손가락 2개가 눌렸을 때
                 {
                     Touch touchZero = Input.GetTouch(0); //첫번째 손가락 터치를 저장
