@@ -224,7 +224,7 @@ namespace MainTab
                         {
                             _controller._view.InfoPopup = PopupManager.Instance.CreatePopup(EPrefabsType.POPUP, "BrainInfoPopup")
                                 .GetComponent<InGame.BrainInfoPopup>();
-                            _controller._view.InfoPopup.Init(_controller._recentSelectBrain.BrainData, _model.SingleNetworkWrapper);
+                            _controller._view.InfoPopup.Init(_controller._recentSelectBrain, _model.SingleNetworkWrapper, _model.BrainNetwork);
                             _controller.ChangeState(EBehaviorState.SHOW_POPUP);
                         }
                         else
@@ -555,7 +555,8 @@ namespace MainTab
                         NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
 
                         SingleNetworkWrapper wrapper = _controller._model.SingleNetworkWrapper;
-                        _controller._view.InfoPopup.Set(wrapper.GetBrainDataForID(id), wrapper);
+                        BrainNetwork network = _controller._model.BrainNetwork;
+                        _controller._view.InfoPopup.Set(network.GetBrainForID(id), wrapper, network);
                     });
                 }
                 
