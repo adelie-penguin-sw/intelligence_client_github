@@ -14,7 +14,7 @@ namespace MainTab
         [SerializeField] private List<Channel> _channelList = new List<Channel>();
 
 
-        public Brain MainBrain
+        public Brain CoreBrain
         {
             get
             {
@@ -68,7 +68,7 @@ namespace MainTab
         {
             ClearNetwork();
             _resetCount = wrapper.resetCount;
-            _experimentGoal = new UpArrowNotation(1, 1, 1 + _resetCount, 2);
+            _experimentGoal = new UpArrowNotation(1, 2, 1 + _resetCount, 2);
             foreach (var id in wrapper.ansEquationsDic.Keys)
             {
                 BrainData data = wrapper.GetBrainDataForID(id);
@@ -91,6 +91,11 @@ namespace MainTab
             }
 
             ClearAndDrawChannel();
+        }
+
+        public Brain GetBrainForID(long id)
+        {
+            return _brainNetWork[id];
         }
 
 
