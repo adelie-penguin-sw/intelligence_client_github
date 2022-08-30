@@ -64,6 +64,11 @@ namespace MainTab
             _txtTP.text = string.Format("TP: {0}", UserData.TP.ToString());
         }
 
+        public void OnClick_Reset()
+        {
+            NotificationManager.Instance.PostNotification(ENotiMessage.ONCLICK_RESET_BUTTON);
+        }
+
         public void OnClick_LeaderBoard()
         {
             NotificationManager.Instance.PostNotification(ENotiMessage.ONCLICK_LEADERBOARD);
