@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace MainTab
 {
-    public class CompletePopup : PopupBase
+    public class ResetPopup : PopupBase
     {
         public override void Init()
         {

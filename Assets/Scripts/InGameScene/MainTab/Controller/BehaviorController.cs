@@ -94,6 +94,7 @@ namespace MainTab
 
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.ONCLICK_UPGRADE_BRAIN);
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.ONCLICK_LEADERBOARD);
+            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.ONCLICK_RESET_BUTTON);
 
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.EXPERIMENT_COMPLETE);
         }
@@ -113,6 +114,7 @@ namespace MainTab
 
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_UPGRADE_BRAIN);
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_LEADERBOARD);
+            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_RESET_BUTTON);
 
             NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.EXPERIMENT_COMPLETE);
         }
@@ -237,8 +239,9 @@ namespace MainTab
                         break;
 
                     case ENotiMessage.EXPERIMENT_COMPLETE:
-                        CompletePopup infoPopup = PopupManager.Instance.CreatePopup(EPrefabsType.POPUP, "CompletePopup")
-                            .GetComponent<CompletePopup>();
+                    case ENotiMessage.ONCLICK_RESET_BUTTON:
+                        ResetPopup infoPopup = PopupManager.Instance.CreatePopup(EPrefabsType.POPUP, "ResetPopup")
+                            .GetComponent<ResetPopup>();
                         infoPopup.Init();
                         _controller.ChangeState(EBehaviorState.SHOW_POPUP);
                         break;
