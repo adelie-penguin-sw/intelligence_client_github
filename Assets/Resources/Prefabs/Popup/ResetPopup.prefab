@@ -625,7 +625,7 @@ GameObject:
   - component: {fileID: 5075467528434318257}
   - component: {fileID: 3034216854156370261}
   m_Layer: 6
-  m_Name: CompletePopup
+  m_Name: ResetPopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -670,7 +670,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6829092530385694356}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2eaf0ac163c1c1d4db6ea4cd9887c8ac, type: 3}
+  m_Script: {fileID: 11500000, guid: 016505771b085419f9fe3a3190cd4554, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _closeBtn: []
