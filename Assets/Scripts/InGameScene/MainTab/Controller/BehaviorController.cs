@@ -72,7 +72,10 @@ namespace MainTab
                 case ENotiMessage.ONCLICK_LEADERBOARD:
                     _view.LeaderboardPopup = PopupManager.Instance.CreatePopup(EPrefabsType.POPUP, "LeaderboardPopup")
                                 .GetComponent<InGame.LeaderboardPopup>();
-                    _view.LeaderboardPopup.Init();
+                    if (_view.LeaderboardPopup != null)
+                    {
+                        _view.LeaderboardPopup.Init();
+                    }
                     ChangeState(EBehaviorState.SHOW_POPUP);
                     break;
             }

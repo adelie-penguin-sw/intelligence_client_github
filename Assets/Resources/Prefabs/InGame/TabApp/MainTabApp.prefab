@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8935309896432258202}
   - component: {fileID: 18204030532078353}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MainTabApp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78,7 +78,7 @@ GameObject:
   - component: {fileID: 7132835972273243078}
   - component: {fileID: 903094240885097843}
   - component: {fileID: 7472893985797621247}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -154,7 +154,7 @@ GameObject:
   - component: {fileID: 5502357684455246971}
   - component: {fileID: 1062667473864684772}
   - component: {fileID: 2307624671125579835}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Border
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -231,7 +231,7 @@ GameObject:
   - component: {fileID: 5624833394674201551}
   - component: {fileID: 5522460591874923115}
   - component: {fileID: 2132178917992684571}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: LeaderboardButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -353,7 +353,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4018027145626243680}
   - component: {fileID: 927357518409113951}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BehaviorController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -400,7 +400,7 @@ GameObject:
   - component: {fileID: 3610202409686101627}
   - component: {fileID: 2006637836614000077}
   - component: {fileID: 5428181443743659803}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: LogoutButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -523,7 +523,7 @@ GameObject:
   - component: {fileID: 2405456673663389037}
   - component: {fileID: 2606876650625231477}
   - component: {fileID: 6033023577247601157}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: TP_text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -660,7 +660,7 @@ GameObject:
   - component: {fileID: 5066772353450249811}
   - component: {fileID: 6762278990806105111}
   - component: {fileID: 6405339457816439620}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: MainTabView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -735,10 +735,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 640, y: 960}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -772,7 +772,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1671643744270959631}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Anchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -811,7 +811,7 @@ GameObject:
   - component: {fileID: 4583335760449106169}
   - component: {fileID: 4583335760449106175}
   - component: {fileID: 4583335760449106168}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -892,7 +892,7 @@ GameObject:
   - component: {fileID: 4583335761669836052}
   - component: {fileID: 4583335761669836053}
   - component: {fileID: 326356129674580090}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: IconButton - Filled - White
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1159,7 +1159,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 329167767152112771}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1198,7 +1198,7 @@ GameObject:
   - component: {fileID: 4315068635260594140}
   - component: {fileID: 4059465022087347705}
   - component: {fileID: 5893994538276318444}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: NP_text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1335,7 +1335,7 @@ GameObject:
   - component: {fileID: 7055834128765509778}
   - component: {fileID: 7337242932820645046}
   - component: {fileID: 759810999576863783}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Brain_Btn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1486,7 +1486,7 @@ GameObject:
   - component: {fileID: 2991674103789355652}
   - component: {fileID: 3709720237144500423}
   - component: {fileID: 6168216825734568680}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Background - Dark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1589,7 +1589,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1931922520104749089}
   - component: {fileID: 509597183282407136}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: MainTabUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1644,7 +1644,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3952155769195235684}
   - component: {fileID: 4719609812256100197}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1710,7 +1710,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7540635599146276353}
   - component: {fileID: 1048921139784648279}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BrainNetworkController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1755,7 +1755,7 @@ GameObject:
   - component: {fileID: 2569301429195076038}
   - component: {fileID: 5407649831121646498}
   - component: {fileID: 5331990017893584147}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1890,7 +1890,7 @@ GameObject:
   - component: {fileID: 7220888647186749030}
   - component: {fileID: 8359950458662131725}
   - component: {fileID: 9036564393812979229}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: CoreBrainIntellect_text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2025,7 +2025,7 @@ GameObject:
   - component: {fileID: 200961719863210916}
   - component: {fileID: 1424707880012144731}
   - component: {fileID: 8501274210502976018}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2100,7 +2100,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6060729275461178835}
   - component: {fileID: 5885049459684776878}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: ButtonGroup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
