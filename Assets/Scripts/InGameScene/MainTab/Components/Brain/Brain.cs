@@ -13,7 +13,7 @@ namespace MainTab
         [SerializeField] private TextMeshPro _textMul;
         [SerializeField] private BrainData _brainData;
 
-        [SerializeField] private bool _isCollisionGuide = false;
+        [SerializeField] private bool _isCollision = false;
         [SerializeField] private long _lastCalcTime;
 
         #region property
@@ -65,11 +65,11 @@ namespace MainTab
         /// </summary>
         public long Distance { get { return _brainData.distance; } set { _brainData.distance = value; } }
 
-        public bool IsCollisionGuide
+        public bool IsCollision
         {
             get
             {
-                return _isCollisionGuide;
+                return _isCollision;
             }
         }
         #endregion
@@ -77,20 +77,22 @@ namespace MainTab
         public void Init(BrainData data)
         {
             _brainData = data;
-            SetNumText(Intellect);
-            SetMulText(Multiplier);
             if (_brainData.brainType == EBrainType.GUIDEBRAIN)
                 gameObject.SetActive(false);
             Set();
+            SetNumText(Intellect);
+            SetMulText(Multiplier);
         }
 
         public void Set()
         {
             if (_brainData != null)
             {
+                _collisionCount = 0;
                 switch (_brainData.brainType)
                 {
                     case EBrainType.GUIDEBRAIN:
+                        transform.localScale = new Vector2(1, 1);
                         _textNum.gameObject.SetActive(false);
                         _textMul.gameObject.SetActive(false);
                         break;
@@ -121,7 +123,7 @@ namespace MainTab
         public void Dispose()
         {
             _brainData = null;
-
+            _collisionCount = 0;
             PoolManager.Instance.DespawnObject(EPrefabsType.BRAIN, gameObject);
         }
 
@@ -220,15 +222,13 @@ namespace MainTab
             }
         }
 
+        private int _collisionCount = 0;
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (_brainData == null)
                 return;
-
-            if (_brainData.brainType == EBrainType.GUIDEBRAIN)
-            {
-                _isCollisionGuide = true;
-            }
+            _collisionCount++;
+            _isCollision = true;
         }
 
         private void OnTriggerExit2D(Collider2D collision)
@@ -236,9 +236,10 @@ namespace MainTab
             if (_brainData == null)
                 return;
 
-            if (_brainData.brainType == EBrainType.GUIDEBRAIN)
+            _collisionCount--;
+            if(_collisionCount == 0)
             {
-                _isCollisionGuide = false;
+                _isCollision = false;
             }
         }
         #endregion
