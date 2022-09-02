@@ -384,7 +384,7 @@ namespace MainTab
 
             private async void CreateBrain()
             {
-                if (!_tempBrain.IsCollisionGuide)
+                if (!_tempBrain.IsCollision)
                 {
                     CreateSingleNetworkBrainRequest req = new CreateSingleNetworkBrainRequest();
                     req.x = _tempBrain.transform.position.x;
