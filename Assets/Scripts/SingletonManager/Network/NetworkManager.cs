@@ -49,7 +49,7 @@ public class NetworkManager : MonoBehaviour
 
     #region REST API FUNCTION
     protected static double timeout = 5;
-    private const string _baseUrl = "http://ec2-52-79-187-33.ap-northeast-2.compute.amazonaws.com:8080"; //테스트 서버 url
+    private const string _baseUrl = "http://ec2-43-200-22-171.ap-northeast-2.compute.amazonaws.com:8080"; //테스트 서버 url
     public string editorBaseUrl;
     //private const string _baseUrl = "http://ec2-3-38-74-157.ap-northeast-2.compute.amazonaws.com:8080"; //배포 서버 url
 
@@ -69,7 +69,7 @@ public class NetworkManager : MonoBehaviour
                 editorBaseUrl = "http://ec2-52-79-187-33.ap-northeast-2.compute.amazonaws.com:8080"; //테스트 서버 url
                 break;
             case UrlType.DEPLOY:
-                editorBaseUrl = "http://ec2-52-79-187-33.ap-northeast-2.compute.amazonaws.com:8080"; //배포 서버 url
+                editorBaseUrl = "http://ec2-43-200-22-171.ap-northeast-2.compute.amazonaws.com:8080"; //배포 서버 url
                 break;
             case UrlType.LOCAL:
                 editorBaseUrl = "http://localhost:8080";

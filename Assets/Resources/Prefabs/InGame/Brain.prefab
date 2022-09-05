@@ -283,7 +283,9 @@ MonoBehaviour:
     skinCode: 0
     UpgradeCondition: 0
     lastCalcTime: 0
-  _isCollisionGuide: 0
+  _collider: {fileID: 3377635881117314608}
+  _isCollision: 0
+  _lastCalcTime: 0
 --- !u!58 &3377635881117314608
 CircleCollider2D:
   m_ObjectHideFlags: 0

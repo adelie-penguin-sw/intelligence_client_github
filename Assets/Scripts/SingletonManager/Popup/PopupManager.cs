@@ -105,11 +105,15 @@ public class PopupManager : MonoBehaviour
             go = PoolManager.Instance.GrabPrefabs(EPrefabsType.POPUP, "PopupCanvas", transform);
 
         if (go.TryGetComponent(out Canvas canvas))
+        {
             _canvas = canvas;
+        }
         else
+        {
             _canvas = go.AddComponent<Canvas>();
+            Debug.LogError("not canvas");
+        }
 
-        _canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         //_canvas = GameObject.Find("PopupCanvas").GetComponent<Canvas>();
         //if(_canvas == null)
         //{
