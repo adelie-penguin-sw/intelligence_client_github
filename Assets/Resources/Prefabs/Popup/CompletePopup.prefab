@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6770870208877542732}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50,7 +50,7 @@ GameObject:
   - component: {fileID: 4749591579743766531}
   - component: {fileID: 5001078504215450612}
   - component: {fileID: 8120420479644697982}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Line
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 7047828052954577759}
   - component: {fileID: 7717893292837610020}
   - component: {fileID: 8647659158499661583}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -218,7 +218,7 @@ GameObject:
   - component: {fileID: 4244225153901237612}
   - component: {fileID: 8595488451829806424}
   - component: {fileID: 3119922240348465171}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -295,7 +295,7 @@ GameObject:
   - component: {fileID: 2642259713308092914}
   - component: {fileID: 8666539825179412680}
   - component: {fileID: 2704527743933713089}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -386,7 +386,7 @@ GameObject:
   - component: {fileID: 186898241538322026}
   - component: {fileID: 7521185078931740837}
   - component: {fileID: 5825760930589887793}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -489,7 +489,7 @@ GameObject:
   - component: {fileID: 1585946925018950272}
   - component: {fileID: 1460656521485729208}
   - component: {fileID: 852903100359217545}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -624,7 +624,7 @@ GameObject:
   - component: {fileID: 3034216854156370260}
   - component: {fileID: 5075467528434318257}
   - component: {fileID: 3034216854156370261}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: CompletePopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -686,7 +686,7 @@ GameObject:
   - component: {fileID: 5908627985439342860}
   - component: {fileID: 5971691991479662958}
   - component: {fileID: 3985252908525250278}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -822,7 +822,7 @@ GameObject:
   - component: {fileID: 5538955321344345122}
   - component: {fileID: 7046624571948052211}
   - component: {fileID: 1329832467487623597}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -946,7 +946,7 @@ GameObject:
   - component: {fileID: 1400971742176597886}
   - component: {fileID: 6518139366407172651}
   - component: {fileID: 205832346166690927}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: BrainUpgradeBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
