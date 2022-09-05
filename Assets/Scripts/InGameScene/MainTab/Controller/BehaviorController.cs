@@ -72,7 +72,10 @@ namespace MainTab
                 case ENotiMessage.ONCLICK_LEADERBOARD:
                     _view.LeaderboardPopup = PopupManager.Instance.CreatePopup(EPrefabsType.POPUP, "LeaderboardPopup")
                                 .GetComponent<InGame.LeaderboardPopup>();
-                    _view.LeaderboardPopup.Init();
+                    if (_view.LeaderboardPopup != null)
+                    {
+                        _view.LeaderboardPopup.Init();
+                    }
                     ChangeState(EBehaviorState.SHOW_POPUP);
                     break;
             }
@@ -189,9 +192,11 @@ namespace MainTab
 
             public void AdvanceTime(float dt_sec)
             {
-                MoveScreen();
-                ZoomScreenPC();
-
+#if UNITY_EDITOR
+                BehaviorScreenPC();
+#else
+                BehaviorScreenMobile();
+#endif
                 if (InGame.InGameManager.IsCompleteExp)
                     return;
 
@@ -256,10 +261,15 @@ namespace MainTab
             }
 
             /// <summary>
-            /// 스크린 좌우상하 이동 메서드
+            /// PC 스크린 조작
             /// </summary>
-            private void MoveScreen()
+            private void BehaviorScreenPC()
             {
+                //Debug.LogError("PC");
+                //줌인 줌아웃
+                _model.CurCameraSize = Input.GetAxis("Mouse ScrollWheel");
+
+                //무빙
                 if (Input.GetMouseButtonDown(0))
                 {
                     _model.PrevMousePos = Input.mousePosition;
@@ -275,16 +285,50 @@ namespace MainTab
                 }
             }
 
+            public float orthoZoomSpeed = 0.01f;      //줌인,줌아웃할때 속도(OrthoGraphic모드 용)  
             /// <summary>
-            /// 스크린 줌 메서드 
+            /// 모바일 스크린 조작
             /// </summary>
-            private void ZoomScreenPC()
+            private void BehaviorScreenMobile()
             {
-                _model.CurCameraSize = Input.GetAxis("Mouse ScrollWheel");
-            }
+                //Debug.LogError("Mobile");
+                if (Input.touchCount == 2) //손가락 2개가 눌렸을 때
+                {
+                    Touch touchZero = Input.GetTouch(0); //첫번째 손가락 터치를 저장
+                    Touch touchOne = Input.GetTouch(1); //두번째 손가락 터치를 저장
 
-            private void ZoomScreenMobile()
-            {
+                    //터치에 대한 이전 위치값을 각각 저장함
+                    //처음 터치한 위치(touchZero.position)에서 이전 프레임에서의 터치 위치와 이번 프로임에서 터치 위치의 차이를 뺌
+                    Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition; //deltaPosition는 이동방향 추적할 때 사용
+                    Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
+
+                    // 각 프레임에서 터치 사이의 벡터 거리 구함
+                    float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude; //magnitude는 두 점간의 거리 비교(벡터)
+                    float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
+
+                    // 거리 차이 구함(거리가 이전보다 크면(마이너스가 나오면)손가락을 벌린 상태_줌인 상태)
+                    float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
+
+                    // 만약 카메라가 OrthoGraphic모드 라면
+                    _model.MainCamera.orthographicSize += deltaMagnitudeDiff * orthoZoomSpeed;
+                    _model.MainCamera.orthographicSize = Mathf.Min( 20f ,Mathf.Max(_model.MainCamera.orthographicSize, 5f));
+                }
+                else if(Input.touchCount == 1)
+                {
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        _model.PrevMousePos = Input.mousePosition;
+                    }
+
+                    if (Input.GetMouseButton(0))
+                    {
+                        _model.CurMousePos = Input.mousePosition;
+
+                        _model.MainCamera.transform.Translate(_model.CameraMoveDelta * _model.DragSpeed * _model.MainCamera.orthographicSize);
+
+                        _model.PrevMousePos = _model.CurMousePos;
+                    }
+                }
             }
         }
 
@@ -340,7 +384,7 @@ namespace MainTab
 
             private async void CreateBrain()
             {
-                if (!_tempBrain.IsCollisionGuide)
+                if (!_tempBrain.IsCollision)
                 {
                     CreateSingleNetworkBrainRequest req = new CreateSingleNetworkBrainRequest();
                     req.x = _tempBrain.transform.position.x;
@@ -520,7 +564,7 @@ namespace MainTab
                 
             }
         }
-        #endregion
+#endregion
     }
 
     /// <summary>
