@@ -214,12 +214,6 @@ public class SingleNetworkWrapper
             ansEquationsDic.Add(data.id, data);
         }
 
-        multipliersDic.Clear();
-        foreach (var data in res.multipliers)
-        {
-            multipliersDic.Add(data.id, data);
-        }
-
         calcTime = res.calcTime;
 
         distancesDic.Clear();
@@ -313,12 +307,6 @@ public class SingleNetworkWrapper
         foreach (var data in res.ansEquations)
         {
             ansEquationsDic.Add(data.id, data);
-        }
-
-        multipliersDic.Clear();
-        foreach (var data in res.multipliers)
-        {
-            multipliersDic.Add(data.id, data);
         }
 
         distancesDic.Clear();
