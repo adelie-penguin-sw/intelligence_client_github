@@ -5,10 +5,8 @@ using UnityEngine;
 [System.Serializable]
 public class CreateSingleNetworkBrainNumberResponse
 {
-    public int statusCode;
-    public List<AnsEquations> ansEquations;
-    public List<Multiplier> multipliers;
-    public List<Distances> distances;
     public AnsEquation NP;
+    public List<BrainAttributes> brainAttributes;
     public long calcTime;
+    public int statusCode;
 }
