@@ -9,11 +9,17 @@ public class NetworkStruct
 
 }
 
+
 [Serializable]
-public struct AnsEquations
+public class BrainAttributes
 {
+    public List<AnsEquation> ansEquation = new List<AnsEquation>();
+    public long distance;
     public long id;
-    public List<AnsEquation> ansEquation;
+    public AnsEquation multiplier = new AnsEquation();
+    public long skinCode;
+    public double x;
+    public double y;
 }
 
 [Serializable]
@@ -23,42 +29,12 @@ public struct AnsEquation
     public int operatorLayerCount;
 }
 
-[Serializable]
-public struct Multiplier
-{
-    public long id;
-    public AnsEquation multiplier;
-}
-
-[Serializable]
-public struct Coordinates
-{
-    public long id;
-    public double x;
-    public double y;
-}
-
-
-[Serializable]
-public struct Distances
-{
-    public long id;
-    public long distance;
-}
-
-
-[Serializable]
-public struct Skin
-{
-    public long id;
-    public long skincode;
-}
 
 [Serializable]
 public struct Structure
 {
-    public long id;
-    public List<long> structure;
+    public long from;
+    public long to;
 }
 
 [Serializable]
