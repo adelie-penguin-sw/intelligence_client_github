@@ -58,7 +58,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -5457076052982106898, guid: 836a3a392dc3c4c578bfba339a999616, type: 2}
+  - {fileID: -2457906843445382093, guid: 1c579ae45bd9bc849807e76ca0b95b11, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -102,8 +102,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 836a3a392dc3c4c578bfba339a999616, type: 2}
-  m_sharedMaterial: {fileID: -5457076052982106898, guid: 836a3a392dc3c4c578bfba339a999616, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1c579ae45bd9bc849807e76ca0b95b11, type: 2}
+  m_sharedMaterial: {fileID: -2457906843445382093, guid: 1c579ae45bd9bc849807e76ca0b95b11, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -127,7 +127,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 8.3
+  m_fontSize: 9.05
   m_fontSizeBase: 10
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -283,7 +283,6 @@ MonoBehaviour:
     skinCode: 0
     UpgradeCondition: 0
     lastCalcTime: 0
-  _collider: {fileID: 3377635881117314608}
   _isCollision: 0
   _lastCalcTime: 0
 --- !u!58 &3377635881117314608
@@ -381,7 +380,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -5457076052982106898, guid: 836a3a392dc3c4c578bfba339a999616, type: 2}
+  - {fileID: -2457906843445382093, guid: 1c579ae45bd9bc849807e76ca0b95b11, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -425,8 +424,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: x1
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 836a3a392dc3c4c578bfba339a999616, type: 2}
-  m_sharedMaterial: {fileID: -5457076052982106898, guid: 836a3a392dc3c4c578bfba339a999616, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1c579ae45bd9bc849807e76ca0b95b11, type: 2}
+  m_sharedMaterial: {fileID: -2457906843445382093, guid: 1c579ae45bd9bc849807e76ca0b95b11, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -450,7 +449,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4.15
+  m_fontSize: 4.5
   m_fontSizeBase: 10
   m_fontWeight: 400
   m_enableAutoSizing: 1
