@@ -192,11 +192,6 @@ namespace MainTab
 
             public void AdvanceTime(float dt_sec)
             {
-#if UNITY_EDITOR
-                BehaviorScreenPC();
-#else
-                BehaviorScreenMobile();
-#endif
                 if (InGame.InGameManager.IsCompleteExp)
                     return;
 
@@ -207,6 +202,14 @@ namespace MainTab
                     {
                         _controller.ChangeState(EBehaviorState.CREATE_CHANNEL);
                     }
+                }
+                else
+                {
+#if UNITY_EDITOR
+                    BehaviorScreenPC();
+#else
+                    BehaviorScreenMobile();
+#endif
                 }
             }
 
