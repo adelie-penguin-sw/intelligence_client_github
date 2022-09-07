@@ -8,30 +8,23 @@ using Sirenix.OdinInspector;
 [System.Serializable]
 public class SingleNetworkResponse
 {
-    public int statusCode;
-    public List<AnsEquations> ansEquations;
-    public List<Multiplier> multipliers;
-    public List<Distances> distances;
-    public AnsEquation NP; //나중에 뭔가 서버랑 이야기해서 바꿔야할듯? 
-    public AnsEquation TP; //이것두
-    public List<Structure> structures;
-    public List<Coordinates> coordinates;
-    public List<Skin> skin;
-    public List<UpgradeCondition> upgradeCondition;
-    public long calcTime;
+    public AnsEquation NP;
+    public AnsEquation TP;
     public List<Achievements> achievements;
+    public List<BrainAttributes> brainAttributes;
+    public long calcTime;
     public int resetCount;
+    public int statusCode;
+    public List<Structure> structures;
+    public List<UpgradeCondition> upgradeCondition;
 }
 
 [Serializable]
 public class SingleNetworkWrapper
 {
-    [ShowInInspector] public Dictionary<long, AnsEquations> ansEquationsDic = new Dictionary<long, AnsEquations>();
-    [ShowInInspector] public Dictionary<long, Multiplier> multipliersDic = new Dictionary<long, Multiplier>();
-    [ShowInInspector] public Dictionary<long, Distances> distancesDic = new Dictionary<long, Distances>();
-    [ShowInInspector] public Dictionary<long, Structure> structuresDic = new Dictionary<long, Structure>();
-    [ShowInInspector] public Dictionary<long, Coordinates> coordinatesDic = new Dictionary<long, Coordinates>();
-    [ShowInInspector] public Dictionary<long, Skin> skinDic = new Dictionary<long, Skin>();
+    [ShowInInspector] public Dictionary<long, BrainAttributes> brainAttributesDic = new Dictionary<long, BrainAttributes>();
+    //[ShowInInspector] public List<Structure> structures = new List<Structure>();
+    //[ShowInInspector] public Dictionary<long, Structure> structuresDic = new Dictionary<long, Structure>();
     [ShowInInspector] public Dictionary<long, UpgradeCondition> upgradeConditionDic = new Dictionary<long, UpgradeCondition>();
     [ShowInInspector] public Dictionary<long, HashSet<long>> senderBrainsDic = new Dictionary<long, HashSet<long>>();
     [ShowInInspector] public Dictionary<long, HashSet<long>> receiverBrainsDic = new Dictionary<long, HashSet<long>>();
@@ -43,38 +36,20 @@ public class SingleNetworkWrapper
     {
         if (res != null)
         {
-            foreach (var data in res.ansEquations)
+            foreach(var data in res.brainAttributes)
             {
-                ansEquationsDic.Add(data.id, data);
-            }
-
-            foreach (var data in res.multipliers)
-            {
-                multipliersDic.Add(data.id, data);
-            }
-
-            foreach (var data in res.distances)
-            {
-                distancesDic.Add(data.id, data);
+                brainAttributesDic.Add(data.id, data);
             }
 
             foreach (var data in res.structures)
             {
-                structuresDic.Add(data.id, data);
-                foreach(var senderId in data.structure)
-                {
-                    AddStructureData(data.id, senderId);
-                }
-            }
+                if (!senderBrainsDic.ContainsKey(data.to))
+                    senderBrainsDic.Add(data.to, new HashSet<long>());
+                senderBrainsDic[data.to].Add(data.from);
 
-            foreach (var data in res.coordinates)
-            {
-                coordinatesDic.Add(data.id, data);
-            }
-
-            foreach (var data in res.skin)
-            {
-                skinDic.Add(data.id, data);
+                if (!receiverBrainsDic.ContainsKey(data.from))
+                    receiverBrainsDic.Add(data.from, new HashSet<long>());
+                receiverBrainsDic[data.from].Add(data.to);
             }
 
             foreach (var data in res.upgradeCondition)
@@ -102,17 +77,6 @@ public class SingleNetworkWrapper
         }
     }
 
-    private void AddStructureData(long curID , long senderID)
-    {
-        if (!senderBrainsDic.ContainsKey(curID))
-            senderBrainsDic.Add(curID, new HashSet<long>());
-        senderBrainsDic[curID].Add(senderID);
-
-        if (!receiverBrainsDic.ContainsKey(senderID))
-            receiverBrainsDic.Add(senderID, new HashSet<long>());
-        receiverBrainsDic[senderID].Add(curID);
-    }
-
     /// <summary>
     /// 인자값에 해당하는 id를 가진 brain 데이터 가져오는 함수
     /// </summary>
@@ -125,31 +89,34 @@ public class SingleNetworkWrapper
         data.id = id;
         data.brainType = (id == 0) ? EBrainType.MAINBRAIN : EBrainType.NORMALBRAIN;
 
-        if (ansEquationsDic.ContainsKey(id))
+        if(brainAttributesDic.ContainsKey(id))
         {
-            foreach (AnsEquation ans in ansEquationsDic[id].ansEquation)
+            foreach (AnsEquation ans in brainAttributesDic[id].ansEquation)
             {
                 data.intellectEquation.Add(new UpArrowNotation(ans.top3Coeffs[0],
                                                        ans.top3Coeffs[1],
                                                        ans.top3Coeffs[2],
                                                        ans.operatorLayerCount));
             }
+
+
+            AnsEquation m = brainAttributesDic[id].multiplier;
+            if (m.top3Coeffs != null)
+            {
+                data.multiplier = new UpArrowNotation(m.top3Coeffs[0],
+                                                      m.top3Coeffs[1],
+                                                      m.top3Coeffs[2],
+                                                      m.operatorLayerCount);
+            }
+            else
+            {
+                data.multiplier = new UpArrowNotation(1);
+            }
+
+            data.distance = brainAttributesDic[id].distance;
+
+            data.coordinates = new Vector2((float)brainAttributesDic[id].x, (float)brainAttributesDic[id].y);
         }
-
-        if (multipliersDic.ContainsKey(id))
-        {
-            AnsEquation m = multipliersDic[id].multiplier;
-            data.multiplier = new UpArrowNotation(m.top3Coeffs[0],
-                                                  m.top3Coeffs[1],
-                                                  m.top3Coeffs[2],
-                                                  m.operatorLayerCount);
-        }
-
-        if (distancesDic.ContainsKey(id))
-            data.distance = distancesDic[id].distance;
-
-        if (coordinatesDic.ContainsKey(id))
-            data.coordinates = new Vector2((float)coordinatesDic[id].x, (float)coordinatesDic[id].y);
 
         if(receiverBrainsDic.ContainsKey(id))
         {
@@ -161,23 +128,41 @@ public class SingleNetworkWrapper
             data.senderIds = senderBrainsDic[id];
         }
 
-        // deletableSenderIdList 채우기
-        if (structuresDic.ContainsKey(id))
+        Queue<long> q = new Queue<long>();
+        HashSet<long> visitSet = new HashSet<long>();
+        q.Enqueue(id);
+        visitSet.Add(id);
+        while(q.Count > 0)
         {
-            foreach (KeyValuePair<long, Structure> structure in structuresDic)
+            long curID = q.Dequeue();
+            if(senderBrainsDic.ContainsKey(curID))
             {
-                if (structure.Value.structure.Contains(id))
+                foreach(var sender in senderBrainsDic[curID])
                 {
-                    if (structuresDic[structure.Key].structure.Count == 1)
+                    if(!visitSet.Contains(sender) && receiverBrainsDic.ContainsKey(sender) && receiverBrainsDic[sender].Count == 1)
                     {
-                        data.deletableSenderIds.Add(structure.Key);
+                        data.deletableSenderIds.Add(sender);
+                        q.Enqueue(sender);
+                        visitSet.Add(sender);
                     }
                 }
             }
         }
 
-        //data.skinCode = skinDic[id].skincode;
-        //data.UpgradeCondition = upgradeConditionDic[id].upgrade;
+        //// deletableSenderIdList 채우기
+        //if (structuresDic.ContainsKey(id))
+        //{
+        //    foreach (KeyValuePair<long, Structure> structure in structuresDic)
+        //    {
+        //        if (structure.Value.structure.Contains(id))
+        //        {
+        //            if (structuresDic[structure.Key].structure.Count == 1)
+        //            {
+        //                data.deletableSenderIds.Add(structure.Key);
+        //            }
+        //        }
+        //    }
+        //}
         return data;
     }
 
@@ -208,24 +193,26 @@ public class SingleNetworkWrapper
             res.NP.top3Coeffs[2],
             res.NP.operatorLayerCount);
 
-        ansEquationsDic.Clear();
-        foreach (var data in res.ansEquations)
+        long brainId;
+        foreach(var attribute in res.brainAttributes)
         {
-            ansEquationsDic.Add(data.id, data);
+            brainId = attribute.id;
+            if (!brainAttributesDic.ContainsKey(brainId))
+            {
+                brainAttributesDic.Add(brainId, attribute);
+                if (brainId == res.newBrain)
+                {
+                    brainAttributesDic[brainId].x = req.x;
+                    brainAttributesDic[brainId].y = req.y;
+                }
+            }
+            else
+            {
+                brainAttributesDic[brainId].ansEquation = attribute.ansEquation;
+                brainAttributesDic[brainId].distance = attribute.distance;
+            }
         }
-
         calcTime = res.calcTime;
-
-        distancesDic.Clear();
-        foreach (var data in res.distances)
-        {
-            distancesDic.Add(data.id, data);
-        }
-
-        Coordinates coordinates = new Coordinates();
-        coordinates.x = req.x;
-        coordinates.y = req.y;
-        coordinatesDic.Add(res.newBrain, coordinates);
     }
 
     /// <summary>
@@ -242,52 +229,51 @@ public class SingleNetworkWrapper
             res.NP.top3Coeffs[2],
             res.NP.operatorLayerCount);
 
-        ansEquationsDic.Clear();
-        foreach (var data in res.ansEquations)
+        long brainId;
+        foreach (var attribute in res.brainAttributes)
         {
-            ansEquationsDic.Add(data.id, data);
+            brainId = attribute.id;
+            if (!brainAttributesDic.ContainsKey(brainId))
+            {
+                brainAttributesDic.Add(brainId, attribute);
+            }
+            else
+            {
+                brainAttributesDic[brainId].ansEquation = attribute.ansEquation;
+                brainAttributesDic[brainId].distance = attribute.distance;
+                brainAttributesDic[brainId].multiplier = attribute.multiplier;
+            }
         }
 
         calcTime = res.calcTime;
 
-        distancesDic.Clear();
-        foreach (var data in res.distances)
-        {
-            distancesDic.Add(data.id, data);
-        }
+        if (!senderBrainsDic.ContainsKey(req.to))
+            senderBrainsDic.Add(req.to, new HashSet<long>());
+        senderBrainsDic[req.to].Add(req.from);
 
-        if (!structuresDic.ContainsKey(req.from))
-        {
-            Structure data = new Structure();
-            data.id = req.from;
-            data.structure = new List<long>();
-            structuresDic.Add(req.from, data);
-        }
-        structuresDic[req.from].structure.Add(req.to);
-
-        AddStructureData(req.to, req.from);
+        if (!receiverBrainsDic.ContainsKey(req.from))
+            receiverBrainsDic.Add(req.from, new HashSet<long>());
+        receiverBrainsDic[req.from].Add(req.to);
 
         callback();
     }
     
     public void UpdateSingleNetworkData(CreateSingleNetworkBrainNumberResponse res, Action callback)
     {
-        ansEquationsDic.Clear();
-        foreach (var data in res.ansEquations)
+        long brainId;
+        foreach (var attribute in res.brainAttributes)
         {
-            ansEquationsDic.Add(data.id, data);
-        }
-
-        multipliersDic.Clear();
-        foreach (var data in res.multipliers)
-        {
-            multipliersDic.Add(data.id, data);
-        }
-
-        distancesDic.Clear();
-        foreach (var data in res.distances)
-        {
-            distancesDic.Add(data.id, data);
+            brainId = attribute.id;
+            if (!brainAttributesDic.ContainsKey(brainId))
+            {
+                brainAttributesDic.Add(brainId, attribute);
+            }
+            else
+            {
+                brainAttributesDic[brainId].ansEquation = attribute.ansEquation;
+                brainAttributesDic[brainId].distance = attribute.distance;
+                brainAttributesDic[brainId].multiplier = attribute.multiplier;
+            }
         }
 
         UserData.NP = new UpArrowNotation(
@@ -303,16 +289,19 @@ public class SingleNetworkWrapper
 
     public void UpdateSingleNetworkData(DeleteSingleNetworkBrainResponse res)
     {
-        ansEquationsDic.Clear();
-        foreach (var data in res.ansEquations)
+        long brainId;
+        foreach (var attribute in res.brainAttributes)
         {
-            ansEquationsDic.Add(data.id, data);
-        }
-
-        distancesDic.Clear();
-        foreach (var data in res.distances)
-        {
-            distancesDic.Add(data.id, data);
+            brainId = attribute.id;
+            if (!brainAttributesDic.ContainsKey(brainId))
+            {
+                brainAttributesDic.Add(brainId, attribute);
+            }
+            else
+            {
+                brainAttributesDic[brainId].ansEquation = attribute.ansEquation;
+                brainAttributesDic[brainId].distance = attribute.distance;
+            }
         }
 
         UserData.NP = new UpArrowNotation(
@@ -323,37 +312,17 @@ public class SingleNetworkWrapper
 
         calcTime = res.calcTime;
 
-        foreach(var brainId in res.deletedBrains)
+        foreach(var removeId in res.deletedBrains)
         {
-            RemoveDataForID(brainId);
+            RemoveDataForID(removeId);
         }
     }
 
     private void RemoveDataForID(long id)
     {
-        if (ansEquationsDic.ContainsKey(id))
+        if(brainAttributesDic.ContainsKey(id))
         {
-            ansEquationsDic.Remove(id);
-        }
-        if (multipliersDic.ContainsKey(id))
-        {
-            multipliersDic.Remove(id);
-        }
-        if (distancesDic.ContainsKey(id))
-        {
-            distancesDic.Remove(id);
-        }
-        if (structuresDic.ContainsKey(id))
-        {
-            structuresDic.Remove(id);
-        }
-        if (coordinatesDic.ContainsKey(id))
-        {
-            coordinatesDic.Remove(id);
-        }
-        if (skinDic.ContainsKey(id))
-        {
-            skinDic.Remove(id);
+            brainAttributesDic.Remove(id);
         }
         if (upgradeConditionDic.ContainsKey(id))
         {
