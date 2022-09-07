@@ -82,6 +82,7 @@ public class PopupManager : MonoBehaviour
     {
         go = PoolManager.Instance.GrabPrefabs(type, name, _canvas.transform);
         go.transform.position = _canvas.transform.position;
+        go.transform.localScale = new Vector3(1, 1, 1);
         return go;
     }
 
