@@ -58,6 +58,32 @@ public class PopupBase : MonoBehaviour
 
     }
 
+    // 팝업 여러개 떠있을때 특정 팝업을 최상단으로 옮겨오는 함수
+    public void SetHead()
+    {
+        if (this == PopupManager.Instance.Head)
+        {
+            return;
+        }
+        if (this == PopupManager.Instance.Tail)
+        {
+            PopupManager.Instance.Tail = this.Prev;
+            this.Prev.Next = null;
+        }
+        else
+        {
+            if (this.Next != null)
+                this.Prev.Next = this.Next;
+            if (this.Prev != null)
+                this.Next.Prev = this.Prev;
+        }
+
+        this.Prev = null;
+        this.Next = PopupManager.Instance.Head;
+        this.Next.Prev = this;
+        PopupManager.Instance.Head = this;
+    }
+
     public virtual void Dispose()
     {
         if (this == PopupManager.Instance.Head && this == PopupManager.Instance.Tail)
