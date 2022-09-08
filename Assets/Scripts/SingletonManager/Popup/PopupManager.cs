@@ -160,12 +160,12 @@ public class PopupManager : MonoBehaviour
 
     public void DeleteHead()
     {
-        if (_tail == null)
+        if (_head == null)
         {
             Debug.LogError("[Self] list count zero");
             return;
         }
-        _tail.Dispose();
+        _head.Dispose();
     }
 
     public void DeleteAll()
