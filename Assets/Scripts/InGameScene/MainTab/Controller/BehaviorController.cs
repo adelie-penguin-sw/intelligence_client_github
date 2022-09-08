@@ -176,6 +176,7 @@ namespace MainTab
             private MainTabModel _model;
             private BehaviorController _controller;
             private bool _isBrainPointDown = false;
+            private bool _isTouchStartBrain = false;
             private float _dtBrainPointDown = 0f;
 
             public void Init(BehaviorController controller)
@@ -187,6 +188,7 @@ namespace MainTab
             public void OnEnter()
             {
                 _isBrainPointDown = false;
+                _isTouchStartBrain = false;
                 _dtBrainPointDown = 0f;
             }
 
@@ -203,7 +205,7 @@ namespace MainTab
                         _controller.ChangeState(EBehaviorState.CREATE_CHANNEL);
                     }
                 }
-                else
+                if(!_isTouchStartBrain)
                 {
 #if UNITY_EDITOR
                     BehaviorScreenPC();
@@ -223,6 +225,7 @@ namespace MainTab
                     case ENotiMessage.MOUSE_DOWN_BRAIN:
                         _controller._recentSelectBrain = (Brain)noti.data[EDataParamKey.CLASS_BRAIN];
                         _isBrainPointDown = true;
+                        _isTouchStartBrain = true;
                         break;
                     case ENotiMessage.MOUSE_UP_BRAIN:
                         if (_isBrainPointDown)
@@ -237,6 +240,7 @@ namespace MainTab
                             _dtBrainPointDown = 0;
                             _isBrainPointDown = false;
                         }
+                        _isTouchStartBrain = false;
                         break;
 
                     case ENotiMessage.MOUSE_EXIT_BRAIN:
@@ -256,6 +260,7 @@ namespace MainTab
             public void OnExit()
             {
                 _isBrainPointDown = false;
+                _isTouchStartBrain = false;
                 _dtBrainPointDown = 0f;
             }
 
