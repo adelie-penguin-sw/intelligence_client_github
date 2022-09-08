@@ -540,6 +540,12 @@ namespace MainTab
                         long brainId = (long)noti.data[EDataParamKey.BRAIN_ID];
                         UpgradeBrain(brainId);
                         break;
+                    case ENotiMessage.EXPERIMENT_COMPLETE:
+                        PopupManager.Instance.DeleteAll();  // 현재 떠있는 모든 팝업 닫음
+                        CompletePopup infoPopup = PopupManager.Instance.CreatePopup(EPrefabsType.POPUP, "CompletePopup")
+                            .GetComponent<CompletePopup>();
+                        infoPopup.Init();
+                        break;
                 }
             }
 
