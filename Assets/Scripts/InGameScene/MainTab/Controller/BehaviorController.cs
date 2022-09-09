@@ -546,8 +546,8 @@ namespace MainTab
                         break;
                     case ENotiMessage.EXPERIMENT_COMPLETE:
                         PopupManager.Instance.DeleteAll();  // 현재 떠있는 모든 팝업 닫음
-                        CompletePopup infoPopup = PopupManager.Instance.CreatePopup(EPrefabsType.POPUP, "CompletePopup")
-                            .GetComponent<CompletePopup>();
+                        ResetPopup infoPopup = PopupManager.Instance.CreatePopup(EPrefabsType.POPUP, "CompletePopup")
+                            .GetComponent<ResetPopup>();
                         infoPopup.Init();
                         break;
                 }
