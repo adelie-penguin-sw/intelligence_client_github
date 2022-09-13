@@ -13,7 +13,7 @@ namespace InGame
     {
         [SerializeField] private Canvas _canvas;
         [SerializeField] private GameObject _anchor;
-
+        [SerializeField] private BaseTopUI _ui;
         /// <summary>
         /// 연구 달성 상태 여부
         /// </summary>
@@ -25,20 +25,37 @@ namespace InGame
 
         void Start()
         {
+            if (_ui != null)
+            {
+                _ui.Init();
+            }
             InitHandlers();
             ChangeState(EGameState.MAIN_TAB);
         }
 
         void Update()
         {
+            if (_ui != null)
+            {
+                _ui.AdvanceTime(Time.deltaTime);
+            }
             if (_currentState != EGameState.UNKNOWN)
             {
                 GetStateHandler(_currentState).AdvanceTime(Time.deltaTime);
             }
         }
 
+        void LateUpdate()
+        {
+            if (_currentState != EGameState.UNKNOWN)
+            {
+                GetStateHandler(_currentState).LateAdvanceTime(Time.deltaTime);
+            }
+        }
+
         public void Dispose()
         {
+            _ui.Dispose();
             this.Dispose(true);
             GC.SuppressFinalize(this);
         }
