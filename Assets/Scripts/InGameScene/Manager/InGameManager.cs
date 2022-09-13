@@ -13,7 +13,7 @@ namespace InGame
     {
         [SerializeField] private Canvas _canvas;
         [SerializeField] private GameObject _anchor;
-        [SerializeField] private BaseTopUI _ui;
+        [SerializeField] private InGameUI _ui;
         /// <summary>
         /// 연구 달성 상태 여부
         /// </summary>
