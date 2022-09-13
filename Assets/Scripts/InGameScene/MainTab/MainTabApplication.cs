@@ -48,6 +48,7 @@ namespace MainTab
         {
             base.OnEnter();
 
+            Camera.main.transform.position = new Vector3(0, 0, -10);
             var res = await NetworkManager.Instance.API_LoadUserData();
             if (res != null)
             {
@@ -83,15 +84,15 @@ namespace MainTab
         public override void OnExit()
         {
             base.OnExit();
-            foreach (var controller in _controllers)
-            {
-                controller.Dispose();
-            }
         }
 
         public override void Dispose()
         {
             base.Dispose();
+            foreach (var controller in _controllers)
+            {
+                controller.Dispose();
+            }
             PoolManager.Instance.DespawnObject(EPrefabsType.TAP_APPLICATION, this.gameObject);
         }
     }
