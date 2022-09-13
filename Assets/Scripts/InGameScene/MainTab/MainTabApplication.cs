@@ -71,6 +71,15 @@ namespace MainTab
             }
         }
 
+        public override void LateAdvanceTime(float dt_sec)
+        {
+            base.LateAdvanceTime(dt_sec);
+            foreach (var controller in _controllers)
+            {
+                controller.LateAdvanceTime(dt_sec);
+            }
+        }
+
         public override void OnExit()
         {
             base.OnExit();
