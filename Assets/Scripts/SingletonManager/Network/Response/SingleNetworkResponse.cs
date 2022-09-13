@@ -148,21 +148,6 @@ public class SingleNetworkWrapper
                 }
             }
         }
-
-        //// deletableSenderIdList 채우기
-        //if (structuresDic.ContainsKey(id))
-        //{
-        //    foreach (KeyValuePair<long, Structure> structure in structuresDic)
-        //    {
-        //        if (structure.Value.structure.Contains(id))
-        //        {
-        //            if (structuresDic[structure.Key].structure.Count == 1)
-        //            {
-        //                data.deletableSenderIds.Add(structure.Key);
-        //            }
-        //        }
-        //    }
-        //}
         return data;
     }
 
@@ -194,22 +179,16 @@ public class SingleNetworkWrapper
             res.NP.operatorLayerCount);
 
         long brainId;
-        foreach(var attribute in res.brainAttributes)
+        foreach (var attribute in res.brainAttributes)
         {
             brainId = attribute.id;
             if (!brainAttributesDic.ContainsKey(brainId))
             {
                 brainAttributesDic.Add(brainId, attribute);
-                if (brainId == res.newBrain)
-                {
-                    brainAttributesDic[brainId].x = req.x;
-                    brainAttributesDic[brainId].y = req.y;
-                }
             }
             else
             {
-                brainAttributesDic[brainId].ansEquation = attribute.ansEquation;
-                brainAttributesDic[brainId].distance = attribute.distance;
+                brainAttributesDic[brainId] = attribute;
             }
         }
         calcTime = res.calcTime;
@@ -239,9 +218,7 @@ public class SingleNetworkWrapper
             }
             else
             {
-                brainAttributesDic[brainId].ansEquation = attribute.ansEquation;
-                brainAttributesDic[brainId].distance = attribute.distance;
-                brainAttributesDic[brainId].multiplier = attribute.multiplier;
+                brainAttributesDic[brainId] = attribute;
             }
         }
 
@@ -270,9 +247,7 @@ public class SingleNetworkWrapper
             }
             else
             {
-                brainAttributesDic[brainId].ansEquation = attribute.ansEquation;
-                brainAttributesDic[brainId].distance = attribute.distance;
-                brainAttributesDic[brainId].multiplier = attribute.multiplier;
+                brainAttributesDic[brainId] = attribute;
             }
         }
 
@@ -299,8 +274,7 @@ public class SingleNetworkWrapper
             }
             else
             {
-                brainAttributesDic[brainId].ansEquation = attribute.ansEquation;
-                brainAttributesDic[brainId].distance = attribute.distance;
+                brainAttributesDic[brainId] = attribute;
             }
         }
 
