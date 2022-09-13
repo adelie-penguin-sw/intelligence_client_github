@@ -38,6 +38,15 @@ public class BaseTabApplication : MonoBehaviour, IGameStateBasicModule, IDisposa
     }
 
     /// <summary>
+    /// 유니티 생명주기에서 LateUpdate와 같은 역할
+    /// </summary>
+    /// <param name="dt_sec"></param>
+    public virtual void LateAdvanceTime(float dt_sec)
+    {
+
+    }
+
+    /// <summary>
     /// InGameManager에서 해당 핸들러가 다른 핸들러로 변경되는 경우 실행 
     /// </summary>
     public virtual void OnExit()
