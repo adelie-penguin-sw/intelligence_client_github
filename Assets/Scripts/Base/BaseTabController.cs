@@ -35,6 +35,14 @@ public class BaseTabController<T> : MonoBehaviour
     }
 
     /// <summary>
+    /// 유니티 생명주기의 LateUpdate역할 수행
+    /// </summary>
+    /// <param name="dt_sec"></param>
+    public virtual void LateAdvanceTime(float dt_sec)
+    {
+        
+    }
+    /// <summary>
     /// 해당 controller 제거시 실행. 메모리 해제용.
     /// </summary>
     public virtual void Dispose()

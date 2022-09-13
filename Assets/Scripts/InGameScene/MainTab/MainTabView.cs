@@ -9,18 +9,9 @@ namespace MainTab
     public class MainTabView : MonoBehaviour
     {
         [SerializeField] private Canvas _canvas;
-        [SerializeField] private MainTabUI _ui;
 
         private InGame.BrainInfoPopup _infoPopup;
         private InGame.LeaderboardPopup _leaderboardPopup;
-
-        public MainTabUI UI
-        {
-            get
-            {
-                return _ui;
-            }
-        }
 
         public InGame.BrainInfoPopup InfoPopup
         {
