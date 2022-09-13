@@ -1038,7 +1038,7 @@ GameObject:
   - component: {fileID: 679269027}
   - component: {fileID: 679269031}
   m_Layer: 8
-  m_Name: Canvas
+  m_Name: InGameUICanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1144,7 +1144,9 @@ MonoBehaviour:
   - {fileID: 1526058463}
   - {fileID: 72789485}
   - {fileID: 1219828429}
-  _baseTopUI: {fileID: 1063657564}
+  _txtCoreIntellect: {fileID: 1568019511}
+  _txtNP: {fileID: 157077125}
+  _txtTP: {fileID: 1448215174}
 --- !u!1 &751049503 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2776551167517677603, guid: ba7ddb0c667bb4c999d96bc22241fb59, type: 3}
@@ -1298,8 +1300,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1063657564}
-        m_TargetAssemblyTypeName: MainTab.MainTabUI, Assembly-CSharp
+      - m_Target: {fileID: 679269031}
+        m_TargetAssemblyTypeName: InGame.InGameUI, Assembly-CSharp
         m_MethodName: OnClick_Logout
         m_Mode: 1
         m_Arguments:
@@ -1556,8 +1558,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1063657564}
-        m_TargetAssemblyTypeName: MainTab.MainTabUI, Assembly-CSharp
+      - m_Target: {fileID: 679269031}
+        m_TargetAssemblyTypeName: InGame.InGameUI, Assembly-CSharp
         m_MethodName: OnClick_LeaderBoard
         m_Mode: 1
         m_Arguments:
@@ -1585,9 +1587,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1063657563}
-  - component: {fileID: 1063657564}
   m_Layer: 7
-  m_Name: BaseTopUI
+  m_Name: TopUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1616,21 +1617,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 50}
   m_SizeDelta: {x: 0, y: -100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1063657564
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1063657562}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55413adbad5250b40b1b64bb23c6b06a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _txtCoreIntellect: {fileID: 1568019511}
-  _txtNP: {fileID: 157077125}
-  _txtTP: {fileID: 1448215174}
 --- !u!1 &1093620448
 GameObject:
   m_ObjectHideFlags: 0
@@ -1662,7 +1648,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _canvas: {fileID: 679269029}
   _anchor: {fileID: 0}
-  _ui: {fileID: 0}
+  _ui: {fileID: 679269031}
 --- !u!4 &1093620450
 Transform:
   m_ObjectHideFlags: 0
@@ -1915,7 +1901,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1063657564}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MainTab.MainTabUI, Assembly-CSharp
         m_MethodName: OnClick_CreateBrainBtn
         m_Mode: 1
