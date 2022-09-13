@@ -65,15 +65,9 @@ namespace InGame
 
         private void OnClick_Tab(EGameState tab)
         {
-            switch (tab)
-            {
-                case EGameState.MAIN_TAB:
-                    Debug.Log("Main_Tab Click");
-                    break;
-                case EGameState.TP_UPGRADE_TAB:
-                    Debug.Log("TP_UPGRADE_TAB Click");
-                    break;
-            }
+            Hashtable sendData = new Hashtable();
+            sendData.Add(EDataParamKey.EGAMESTATE, tab);
+            NotificationManager.Instance.PostNotification(ENotiMessage.ONCLICK_CHANGE_TAB, sendData);
         }
 
         /// <summary>

@@ -44,7 +44,6 @@ public class NetworkManager : MonoBehaviour
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
-
     }
 
     #region REST API FUNCTION
