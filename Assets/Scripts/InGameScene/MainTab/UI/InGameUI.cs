@@ -11,6 +11,7 @@ namespace InGame
     public class InGameUI : MonoBehaviour
     {
         [SerializeField]private BottomTab[] _bottomTabs;
+        [SerializeField] private BaseTopUI _baseTopUI;
         public void Init()
         {
             foreach(var tab in _bottomTabs)
@@ -18,6 +19,23 @@ namespace InGame
                 tab.Init();
                 tab.OnClickTab = OnClick_Tab;
             }
+
+            _baseTopUI.Init();
+        }
+
+        public void Set()
+        {
+            _baseTopUI.Set();
+        }
+
+        public void AdvanceTime(float dt_sec)
+        {
+            _baseTopUI.AdvanceTime(dt_sec);
+        }
+
+        public void Dispose()
+        {
+            _baseTopUI.Dispose();
         }
 
         private void OnClick_Tab(EGameState tab)
