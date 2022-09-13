@@ -25,6 +25,7 @@ namespace InGame
 
         void Start()
         {
+            NotificationManager.Instance.AddObserver(OnNotiChangeTab, ENotiMessage.ONCLICK_CHANGE_TAB);
             if (_ui != null)
             {
                 _ui.Init();
@@ -53,8 +54,18 @@ namespace InGame
             }
         }
 
+        public void OnNotiChangeTab(Notification noti)
+        {
+            if (noti.msg == ENotiMessage.ONCLICK_CHANGE_TAB)
+            {
+                EGameState state = (EGameState)noti.data[EDataParamKey.EGAMESTATE]; 
+                ChangeState(state);
+            }
+        }
+
         public void Dispose()
         {
+            NotificationManager.Instance.RemoveObserver(OnNotiChangeTab, ENotiMessage.ONCLICK_CHANGE_TAB);
             _ui.Dispose();
             this.Dispose(true);
             GC.SuppressFinalize(this);
@@ -84,6 +95,9 @@ namespace InGame
 
             _goTemp = PoolManager.Instance.GrabPrefabs(EPrefabsType.TAP_APPLICATION, "MainTabApp", transform);
             _handlers.Add(EGameState.MAIN_TAB, _goTemp.GetComponent<MainTab.MainTabApplication>());
+
+            _goTemp = PoolManager.Instance.GrabPrefabs(EPrefabsType.TAP_APPLICATION, "TpTabApp", transform);
+            _handlers.Add(EGameState.TP_UPGRADE_TAB, _goTemp.GetComponent<TpTabApplication>());
 
             foreach (EGameState state in _handlers.Keys)
             {
