@@ -590,6 +590,7 @@ namespace MainTab
             {
                 var req = new CreateSingleNetworkBrainNumberRequest();
                 req.brain = id;
+                req.level = 1;
                 CreateSingleNetworkBrainNumberResponse res = await NetworkManager.Instance.API_UpgradeBrain(req);
 
                 if (res != null)
