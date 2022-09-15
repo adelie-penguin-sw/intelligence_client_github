@@ -24,6 +24,7 @@ public class LoginManager : MonoBehaviour
         req.domain = _textDomain.text;
         await NetworkManager.Instance.API_Login(req);
         CheckChangeScene();
+        Debug.Log(DefinitionManager.Instance.CSVData);  // 나중에 이동해야할수도
     }
 
     private async void CheckChangeScene()
