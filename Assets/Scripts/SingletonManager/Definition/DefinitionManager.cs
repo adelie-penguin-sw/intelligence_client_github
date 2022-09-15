@@ -48,7 +48,6 @@ public class DefinitionManager : MonoBehaviour
         string res = await NetworkManager.Instance.API_S3Data("base.csv");
         if (res != null)
         {
-            Debug.Log(res);
             _csvData = CSVReader.Read(res);
         }
     }
