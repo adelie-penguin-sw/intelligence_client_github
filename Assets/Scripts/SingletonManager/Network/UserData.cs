@@ -66,6 +66,5 @@ public class UserData
     {
         token = PlayerPrefs.GetString("Token");
         Debug.Log(token);
-        Debug.Log(DefinitionManager.Instance.CSVData);
     }
 }
