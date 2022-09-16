@@ -20,8 +20,6 @@ namespace MainTab
             _model = app.MainTabModel;
             _view = app.MainTabView;
 
-            _view.UI.Init();
-
             InitHandlers();
             ChangeState(EBehaviorState.NONE);
             AddObservers();
@@ -29,13 +27,6 @@ namespace MainTab
 
         public override void Set()
         {
-            if (_view != null)
-            {
-                if (_view.UI != null)
-                {
-                    _view.UI.Set();
-                }
-            }
         }
 
         public override void AdvanceTime(float dt_sec)
@@ -45,19 +36,19 @@ namespace MainTab
                 GetStateHandler(_currentState).AdvanceTime(dt_sec);
             }
 
-            if (_view != null)
+        }
+
+        public override void LateAdvanceTime(float dt_sec)
+        {
+            if (_currentState != EBehaviorState.UNKNOWN)
             {
-                if (_view.UI != null)
-                {
-                    _view.UI.AdvanceTime(dt_sec);
-                }
+                GetStateHandler(_currentState).LateAdvanceTime(dt_sec);
             }
         }
 
         public override void Dispose()
         {
             RemoveObservers();
-            _view.UI.Dispose();
         }
 
         private void OnNotification(Notification noti)
@@ -180,7 +171,7 @@ namespace MainTab
             private bool _isBrainPointDown = false;
             private bool _isTouchStartBrain = false;
             private float _dtBrainPointDown = 0f;
-
+            private const float _limitTowTouch = 0.3f;
             public void Init(BehaviorController controller)
             {
                 _controller = controller;
@@ -192,6 +183,8 @@ namespace MainTab
                 _isBrainPointDown = false;
                 _isTouchStartBrain = false;
                 _dtBrainPointDown = 0f;
+                _isTwoTouch = false;
+                _dtCountTowTouch = 0;
             }
 
             public void AdvanceTime(float dt_sec)
@@ -199,15 +192,25 @@ namespace MainTab
                 if (InGame.InGameManager.IsCompleteExp)
                     return;
 
-                if (_isBrainPointDown)
+                if (_isTwoTouch)
                 {
-                    _dtBrainPointDown += dt_sec;
-                    if (_dtBrainPointDown >= _model.WaitBrainClickTime)
+                    _dtCountTowTouch += dt_sec;
+                    if(_dtCountTowTouch >= _limitTowTouch)
                     {
-                        _controller.ChangeState(EBehaviorState.CREATE_CHANNEL);
+                        _isTwoTouch = false;
+                        _dtCountTowTouch = 0;
                     }
                 }
-                if(!_isTouchStartBrain)
+            }
+
+            public void LateAdvanceTime(float dt_sec)
+            {
+
+                if (InGame.InGameManager.IsCompleteExp)
+                    return;
+
+
+                if (!_isTouchStartBrain)
                 {
 #if UNITY_EDITOR
                     BehaviorScreenPC();
@@ -215,6 +218,15 @@ namespace MainTab
                     BehaviorScreenMobile();
 #endif
                 }
+                else if (_isBrainPointDown)
+                {
+                    _dtBrainPointDown += dt_sec;
+                    if (_dtBrainPointDown >= _model.WaitBrainClickTime)
+                    {
+                        _controller.ChangeState(EBehaviorState.CREATE_CHANNEL);
+                    }
+                }
+
             }
 
             public void OnNotification(Notification noti)
@@ -264,14 +276,26 @@ namespace MainTab
             public void OnExit()
             {
                 _isBrainPointDown = false;
-                _isTouchStartBrain = false;
+                _isTouchStartBrain = false; 
+                _isTwoTouch = false;
                 _dtBrainPointDown = 0f;
+                _isTwoTouch = false;
+                _dtCountTowTouch = 0;
             }
 
             public void Dispose()
             {
             }
 
+            Vector2 clickPoint;
+            float dragSpeed = 30.0f;
+
+
+            private float Speed = 1f;
+            private Vector2 nowPos, prePos;
+            private Vector3 movePos;
+            private bool _isTwoTouch = false;
+            private float _dtCountTowTouch = 0;
             /// <summary>
             /// PC 스크린 조작
             /// </summary>
@@ -280,8 +304,7 @@ namespace MainTab
                 //Debug.LogError("PC");
                 //줌인 줌아웃
                 _model.CurCameraSize = Input.GetAxis("Mouse ScrollWheel");
-
-                //무빙
+                
                 if (Input.GetMouseButtonDown(0))
                 {
                     _model.PrevMousePos = Input.mousePosition;
@@ -304,8 +327,26 @@ namespace MainTab
             private void BehaviorScreenMobile()
             {
                 //Debug.LogError("Mobile");
-                if (Input.touchCount == 2) //손가락 2개가 눌렸을 때
+
+                if (Input.touchCount == 1 && !_isTwoTouch)
                 {
+                    Touch touch = Input.GetTouch(0);
+                    if (touch.phase == TouchPhase.Began)
+                    {
+                        prePos = touch.position - touch.deltaPosition;
+                    }
+                    else if (touch.phase == TouchPhase.Moved)
+                    {
+                        nowPos = touch.position - touch.deltaPosition;
+                        movePos = (Vector3)(prePos - nowPos) * Time.deltaTime * Speed;
+                        Camera.main.transform.Translate(movePos);
+                        prePos = touch.position - touch.deltaPosition;
+                    }
+                }
+                else if (Input.touchCount == 2) //손가락 2개가 눌렸을 때
+                {
+                    _isTwoTouch = true;
+                    _dtCountTowTouch = 0;
                     Touch touchZero = Input.GetTouch(0); //첫번째 손가락 터치를 저장
                     Touch touchOne = Input.GetTouch(1); //두번째 손가락 터치를 저장
 
@@ -323,24 +364,9 @@ namespace MainTab
 
                     // 만약 카메라가 OrthoGraphic모드 라면
                     _model.MainCamera.orthographicSize += deltaMagnitudeDiff * orthoZoomSpeed;
-                    _model.MainCamera.orthographicSize = Mathf.Min( 20f ,Mathf.Max(_model.MainCamera.orthographicSize, 5f));
+                    _model.MainCamera.orthographicSize = Mathf.Min(20f, Mathf.Max(_model.MainCamera.orthographicSize, 5f));
                 }
-                else if(Input.touchCount == 1)
-                {
-                    if (Input.GetMouseButtonDown(0))
-                    {
-                        _model.PrevMousePos = Input.mousePosition;
-                    }
 
-                    if (Input.GetMouseButton(0))
-                    {
-                        _model.CurMousePos = Input.mousePosition;
-
-                        _model.MainCamera.transform.Translate(_model.CameraMoveDelta * _model.DragSpeed * _model.MainCamera.orthographicSize);
-
-                        _model.PrevMousePos = _model.CurMousePos;
-                    }
-                }
             }
         }
 
@@ -374,6 +400,9 @@ namespace MainTab
                 }
             }
 
+            public void LateAdvanceTime(float dt_sec)
+            {
+            }
             public void OnNotification(Notification noti)
             {
                 switch (noti.msg)
@@ -444,6 +473,9 @@ namespace MainTab
                 _channel.SetLineRenderToPos(_curPos);
             }
 
+            public void LateAdvanceTime(float dt_sec)
+            {
+            }
             public void OnNotification(Notification noti)
             {
                 switch (noti.msg)
@@ -531,6 +563,9 @@ namespace MainTab
             {
             }
 
+            public void LateAdvanceTime(float dt_sec)
+            {
+            }
             public void OnNotification(Notification noti)
             {
                 switch (noti.msg)
@@ -565,6 +600,7 @@ namespace MainTab
             {
                 var req = new CreateSingleNetworkBrainNumberRequest();
                 req.brain = id;
+                req.level = 1;
                 CreateSingleNetworkBrainNumberResponse res = await NetworkManager.Instance.API_UpgradeBrain(req);
 
                 if (res != null)
@@ -617,6 +653,11 @@ namespace MainTab
         /// </summary>
         /// <param name="dt_sec">DeltaTime</param>
         void AdvanceTime(float dt_sec);
+        /// <summary>
+        /// 매 프레임이 지나고 나서 실행
+        /// </summary>
+        /// <param name="dt_sec"></param>
+        void LateAdvanceTime(float dt_sec);
         /// <summary>
         /// 옵저버 패턴에 delegate로 등록되어 있는 메서드
         /// </summary>
