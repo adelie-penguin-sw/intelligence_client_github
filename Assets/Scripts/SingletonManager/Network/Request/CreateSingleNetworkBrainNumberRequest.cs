@@ -5,4 +5,5 @@ using UnityEngine;
 public class CreateSingleNetworkBrainNumberRequest
 {
     public long brain;
+    public long level;
 }
