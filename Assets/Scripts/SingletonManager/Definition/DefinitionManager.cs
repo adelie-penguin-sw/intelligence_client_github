@@ -98,8 +98,8 @@ public class DefinitionManager : MonoBehaviour
         List<string> postfix = new List<string>();
 
         Regex checkNum = new Regex(@"^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$");
-        Regex checkUnaryOp = new Regex(@"^(log10 | slog10)$");
-        Regex checkBinaryOp = new Regex(@"^(\^| log |\*|\/|\+|\-)$");
+        Regex checkUnaryOp = new Regex(@"^(log10|slog10)$");
+        Regex checkBinaryOp = new Regex(@"^(\^|log|\*|\/|\+|\-)$");
 
         List<string> infix = s.Split(' ').ToList();
         Stack<string> stack = new Stack<string>();
@@ -131,7 +131,7 @@ public class DefinitionManager : MonoBehaviour
                     stack.Push(name);
                     break;
                 default:
-                    postfix.Add(stack.Pop());
+                    postfix.Add(v);
                     break;
             }
         }
@@ -174,6 +174,9 @@ public class DefinitionManager : MonoBehaviour
                     stack.Push(a ^ b);
                     break;
                 case "log":
+                    b = stack.Pop();
+                    a = stack.Pop();
+                    stack.Push(UpArrowNotation.Log(a, b));
                     break;
                 case "*":
                     b = stack.Pop();
