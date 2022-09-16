@@ -13,7 +13,7 @@ namespace InGame
     {
         [SerializeField] private Canvas _canvas;
         [SerializeField] private GameObject _anchor;
-
+        [SerializeField] private InGameUI _ui;
         /// <summary>
         /// 연구 달성 상태 여부
         /// </summary>
@@ -25,20 +25,48 @@ namespace InGame
 
         void Start()
         {
+            NotificationManager.Instance.AddObserver(OnNotiChangeTab, ENotiMessage.ONCLICK_CHANGE_TAB);
+            if (_ui != null)
+            {
+                _ui.Init();
+            }
             InitHandlers();
             ChangeState(EGameState.MAIN_TAB);
         }
 
         void Update()
         {
+            if (_ui != null)
+            {
+                _ui.AdvanceTime(Time.deltaTime);
+            }
             if (_currentState != EGameState.UNKNOWN)
             {
                 GetStateHandler(_currentState).AdvanceTime(Time.deltaTime);
             }
         }
 
+        void LateUpdate()
+        {
+            if (_currentState != EGameState.UNKNOWN)
+            {
+                GetStateHandler(_currentState).LateAdvanceTime(Time.deltaTime);
+            }
+        }
+
+        public void OnNotiChangeTab(Notification noti)
+        {
+            if (noti.msg == ENotiMessage.ONCLICK_CHANGE_TAB)
+            {
+                EGameState state = (EGameState)noti.data[EDataParamKey.EGAMESTATE]; 
+                ChangeState(state);
+            }
+        }
+
         public void Dispose()
         {
+            NotificationManager.Instance.RemoveObserver(OnNotiChangeTab, ENotiMessage.ONCLICK_CHANGE_TAB);
+            _ui.Dispose();
             this.Dispose(true);
             GC.SuppressFinalize(this);
         }
@@ -67,6 +95,9 @@ namespace InGame
 
             _goTemp = PoolManager.Instance.GrabPrefabs(EPrefabsType.TAP_APPLICATION, "MainTabApp", transform);
             _handlers.Add(EGameState.MAIN_TAB, _goTemp.GetComponent<MainTab.MainTabApplication>());
+
+            _goTemp = PoolManager.Instance.GrabPrefabs(EPrefabsType.TAP_APPLICATION, "TpTabApp", transform);
+            _handlers.Add(EGameState.TP_UPGRADE_TAB, _goTemp.GetComponent<TpTabApplication>());
 
             foreach (EGameState state in _handlers.Keys)
             {
