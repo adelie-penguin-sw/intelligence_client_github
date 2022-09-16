@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class TpTabView : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public async void OnClick_TpUpgrade(int upgrade)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        TpUpgradeSingleNetworkRequest req = new TpUpgradeSingleNetworkRequest();
+        req.upgrade = upgrade;
+        req.upgradeCount = 1;
+        await NetworkManager.Instance.API_TpUpgrade(req);
     }
 }
