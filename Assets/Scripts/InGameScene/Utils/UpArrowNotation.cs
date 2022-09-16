@@ -579,6 +579,33 @@ public class UpArrowNotation
         _checkLayer();
     }
 
+    public static UpArrowNotation Log(UpArrowNotation a, UpArrowNotation b)
+    {
+        return new UpArrowNotation(Log10Top3Layer(a) / Log10Top3Layer(b));
+    }
+
+    public static UpArrowNotation Log(float a, UpArrowNotation b)
+    {
+        return new UpArrowNotation(Math.Log10(a) / Log10Top3Layer(b));
+    }
+
+    public static UpArrowNotation Log(int a, UpArrowNotation b)
+    {
+        return new UpArrowNotation(Math.Log10(a) / Log10Top3Layer(b));
+    }
+
+    public static UpArrowNotation Log(UpArrowNotation a, float b)
+    {
+        return new UpArrowNotation(Log10Top3Layer(a) / Math.Log10(b));
+    }
+
+    public static UpArrowNotation Log(UpArrowNotation a, int b)
+    {
+        return new UpArrowNotation(Log10Top3Layer(a) / Math.Log10(b));
+    }
+
+
+
     public static double Log10Top3Layer(UpArrowNotation uan)
     {
         if (uan._top3Coeffs[0] <= 0.0)
