@@ -44,14 +44,13 @@ public class NetworkManager : MonoBehaviour
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
-
     }
 
     #region REST API FUNCTION
     protected static double timeout = 5;
-    private const string _baseUrl = "http://ec2-43-200-22-171.ap-northeast-2.compute.amazonaws.com:8080"; //테스트 서버 url
+    //private const string _baseUrl = "http://ec2-43-200-22-171.ap-northeast-2.compute.amazonaws.com:8080"; //테스트 서버 url
     public string editorBaseUrl;
-    //private const string _baseUrl = "http://ec2-3-38-74-157.ap-northeast-2.compute.amazonaws.com:8080"; //배포 서버 url
+    private const string _baseUrl = "http://ec2-52-79-187-33.ap-northeast-2.compute.amazonaws.com:8080";
 
     private async UniTask<T> SendToServer<T>(string url, ENetworkSendType sendType, string jsonBody = null, ENetworkRecvType resType = ENetworkRecvType.JSON)
     {
@@ -175,6 +174,7 @@ public class NetworkManager : MonoBehaviour
     public const string PATH_CREATE_SINGLE_NETWORK_CHANNEL = "/v1/experiment/single/network/channel";
     public const string PATH_SINGLE_NETWORK_BRAIN_NUMBER = "/v1/experiment/single/network/brain/intelligence";
     public const string PATH_SINGLE_NETWORK_RESET = "/v1/experiment/single/network/reset";
+    public const string PATH_TP_UPGRADE = "/v1/experiment/single/network/reinforcement";
 
     /// 
     /// GET PATH
@@ -248,6 +248,22 @@ public class NetworkManager : MonoBehaviour
                     PATH_SINGLE_NETWORK_RESET,
                     ENetworkSendType.POST,
                     json);
+        return res;
+    }
+
+    public async UniTask<TpUpgradeSingleNetworkResponse> API_TpUpgrade(TpUpgradeSingleNetworkRequest req)
+    {
+        string json = JsonUtility.ToJson(req);
+        var res =
+            await SendToServer<TpUpgradeSingleNetworkResponse>(
+                    PATH_TP_UPGRADE,
+                    ENetworkSendType.POST,
+                    json);
+        UserData.TP = new UpArrowNotation(
+        res.TP.top3Coeffs[0],
+        res.TP.top3Coeffs[1],
+        res.TP.top3Coeffs[2],
+        res.TP.operatorLayerCount);
         return res;
     }
     #endregion
