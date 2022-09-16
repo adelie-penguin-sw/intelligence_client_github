@@ -18,9 +18,6 @@ namespace MainTab
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.ONCLICK_RESET_NETWORK);
 
             NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.UPDATE_BRAIN_NETWORK);
-
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.UPDATE_TP);
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.UPDATE_NP);
         }
 
         public override void Set()
@@ -84,12 +81,6 @@ namespace MainTab
                     break;
                 case ENotiMessage.UPDATE_BRAIN_NETWORK:
                     _brainNetwork.UpdateBrainNetwork(_app.MainTabModel.SingleNetworkWrapper);
-                    break;
-                case ENotiMessage.UPDATE_TP:
-                    _app.MainTabView.UI.UpdateTPText();
-                    break;
-                case ENotiMessage.UPDATE_NP:
-                    _app.MainTabView.UI.UpdateNPText();
                     break;
             }
         }
