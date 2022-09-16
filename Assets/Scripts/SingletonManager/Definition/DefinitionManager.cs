@@ -163,8 +163,7 @@ public class DefinitionManager : MonoBehaviour
                     break;
             }
         }
-        return new UpArrowNotation(0);
+        return stack.Pop();
     }
-
 }
 
