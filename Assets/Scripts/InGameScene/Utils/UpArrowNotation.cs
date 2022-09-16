@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using Sirenix.OdinInspector;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 
 public class UpArrowNotation
 {
@@ -587,6 +588,35 @@ public class UpArrowNotation
         double power = uan.CalculateTop2Layer();
         double logCoeff = Math.Log10(uan._top3Coeffs[0]);
         return logCoeff + power;
+    }
+
+    public static UpArrowNotation Slog10(UpArrowNotation uan)
+    {
+        if (uan.OperatorLayerCount > 9)
+        {
+            throw new Exception("Expressions with tetration or higher are not allowed");
+        }
+
+        double topLayerValue;
+        List<double> top3Layer = uan.Top3Layer;
+
+        switch (uan.OperatorLayerCount)
+        {
+            case 0:
+                topLayerValue = top3Layer[0];
+                break;
+            case 1:
+                topLayerValue = top3Layer[1] + Math.Log10(top3Layer[0]);
+                break;
+            default:
+                topLayerValue = top3Layer[2] + Math.Log10(top3Layer[1]);
+                break;
+        }
+
+        double ln10 = Math.Log(10);
+        double fracPart = Math.Log(Math.Log10(topLayerValue) * (ln10 - 1) + 1, ln10);
+
+        return new UpArrowNotation(uan.OperatorLayerCount + fracPart);
     }
 
     /// <summary>
