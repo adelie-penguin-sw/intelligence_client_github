@@ -107,6 +107,11 @@ namespace InGame
             PlayerPrefs.DeleteAll();
             SceneManager.LoadScene("LoginScene");
         }
+
+        public async void OnClick_Reset()
+        {
+            await NetworkManager.Instance.API_NetworkReset();
+        }
     }
 
 }
