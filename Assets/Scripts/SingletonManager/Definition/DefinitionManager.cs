@@ -143,5 +143,58 @@ public class DefinitionManager : MonoBehaviour
 
         return postfix;
     }
+
+    public UpArrowNotation CalcPostfix(Dictionary<string, UpArrowNotation> inputMap, List<string> postfix)
+    {
+        Regex checkNum = new Regex(@"^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$");
+
+        Stack<UpArrowNotation> stack = new Stack<UpArrowNotation>();
+
+        foreach (var v in postfix)
+        {
+            UpArrowNotation b = new UpArrowNotation(0);
+            UpArrowNotation a = new UpArrowNotation(0);
+            switch (v)
+            {
+                case string name when checkNum.IsMatch(name):
+                    UpArrowNotation f = new UpArrowNotation(float.Parse(name));
+                    stack.Push(f);
+                    break;
+                case "slog10":
+                    break;
+                case "log10":
+                    break;
+                case "^":
+                    break;
+                case "log":
+                    break;
+                case "*":
+                    b = stack.Pop();
+                    a = stack.Pop();
+                    stack.Push(a * b);
+                    break;
+                case "/":
+                    b = stack.Pop();
+                    a = stack.Pop();
+                    stack.Push(a / b);
+                    break;
+                case "+":
+                    b = stack.Pop();
+                    a = stack.Pop();
+                    stack.Push(a + b);
+                    break;
+                case "-":
+                    b = stack.Pop();
+                    a = stack.Pop();
+                    stack.Push(a - b);
+                    break;
+                default:
+                    stack.Push(inputMap[v]);
+                    break;
+            }
+        }
+        return new UpArrowNotation(0);
+    }
+
 }
 
