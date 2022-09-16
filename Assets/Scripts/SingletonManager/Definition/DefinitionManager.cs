@@ -161,10 +161,17 @@ public class DefinitionManager : MonoBehaviour
                     stack.Push(f);
                     break;
                 case "slog10":
+                    a = stack.Pop();
+                    stack.Push(UpArrowNotation.Slog10(a));
                     break;
                 case "log10":
+                    a = stack.Pop();
+                    stack.Push(new UpArrowNotation(UpArrowNotation.Log10Top3Layer(a)));
                     break;
                 case "^":
+                    b = stack.Pop();
+                    a = stack.Pop();
+                    stack.Push(a ^ b);
                     break;
                 case "log":
                     break;
@@ -194,6 +201,11 @@ public class DefinitionManager : MonoBehaviour
             }
         }
         return new UpArrowNotation(0);
+    }
+
+    public UpArrowNotation CalcEquation(Dictionary<string, UpArrowNotation> inputMap, string equation)
+    {
+        return CalcPostfix(inputMap, ConvEquationToPostfix(equation));
     }
 
 }
