@@ -19,5 +19,10 @@ namespace InGame
         {
 
         }
+
+        public void OnClick_Btn()
+        {
+            OnClickTab(_tab);
+        }
     }
 }
