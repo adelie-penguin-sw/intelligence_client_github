@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
+using Cysharp.Threading.Tasks.Triggers;
+using UnityEngine.Rendering.Universal.Internal;
+using System.Text.RegularExpressions;
 
 public class PopupManager : MonoBehaviour
 {
@@ -38,67 +42,41 @@ public class PopupManager : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
         SetCanvas();
+        foreach (var importantPopup in _importantStack)
+        {
+            importantPopup.Init();
+        }
+        foreach (var normalPopup in _normalStack)
+        {
+            normalPopup.Init();
+        }
         //NotificationCenter.Instance.AddObserver(OnNotification, ENotiMessage.ChangeSceneState);
 
-        _tmpPopup = _head;
-        while (_tmpPopup != null)
-        {
-            _tmpPopup.Init();
-            _tmpPopup = _tmpPopup.Next;
-        }
     }
 
     private void Update()
     {
-        _tmpPopup = _head;
-        while (_tmpPopup != null)
+        foreach (var importantPopup in _importantStack)
         {
-            _tmpPopup.AdvanceTime(Time.deltaTime);
-            _tmpPopup = _tmpPopup.Next;
+            importantPopup.AdvanceTime(Time.deltaTime);
+        }
+        foreach(var normalPopup in _normalStack)
+        {
+            normalPopup.AdvanceTime(Time.deltaTime);
         }
     }
     #endregion
 
-    #region private
-    private void InitInstance(GameObject go)
-    {
-        PopupBase _popupInstance = go.GetComponent<PopupBase>();
-        _popupInstance.Init();
-        _popupInstance.Set();
-        if (_head == null)
-        {
-            _head = _popupInstance;
-            _tail = _popupInstance;
-        }
-        else
-        {
-            _tail.Next = _popupInstance;
-            _popupInstance.Prev = _tail;
-            _tail = _popupInstance;
-        }
-    }
+    #region private field
+    private Canvas _canvas = null;
+    private GameObject go = null;
+    private GameObject _importantPopupGroup = null;
+    private GameObject _normalPopupGroup = null;
+    private Stack<PopupBase> _importantStack = new Stack<PopupBase>();
+    private Stack<PopupBase> _normalStack = new Stack<PopupBase>();
+    #endregion
 
-    private GameObject CreatePopup(EPrefabsType type, string name, Transform layer)
-    {
-        go = PoolManager.Instance.GrabPrefabs(type, name, _canvas.transform);
-        go.transform.position = _canvas.transform.position;
-        go.transform.localScale = new Vector3(1, 1, 1);
-        return go;
-    }
-
-    private void OnNotification(Notification noti)
-    {
-        //switch (noti.msg)
-        //{
-        //    case ENotiMessage.ChangeSceneState:
-        //        _canvas = null;
-        //        DeleteAll();
-        //        SetCanvas();
-        //        if (_canvas == null) Debug.LogError("[Self] expected PopupCanvas");
-        //        break;
-        //}
-    }
-
+    #region private method
     private void SetCanvas()
     {
         GameObject go = GameObject.Find("PopupCanvas");
@@ -115,64 +93,166 @@ public class PopupManager : MonoBehaviour
             Debug.LogError("not canvas");
         }
 
-        //_canvas = GameObject.Find("PopupCanvas").GetComponent<Canvas>();
-        //if(_canvas == null)
-        //{
-        //    GameObject go = new GameObject("PopupCanvas");
-        //    _canvas = go.AddComponent<Canvas>();
-        //}
-        //if (_canvas != null) return;
-        //_canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+        _normalPopupGroup = new GameObject("NormalPopupGroup");
+        _importantPopupGroup = new GameObject("ImportantPopupGroup");
+        _normalPopupGroup.AddComponent<RectTransform>();
+        _importantPopupGroup.AddComponent<RectTransform>();
+        _normalPopupGroup.transform.SetParent(_canvas.transform, false);
+        _importantPopupGroup.transform.SetParent(_canvas.transform, false);
+        CopySize(_normalPopupGroup);
+        CopySize(_importantPopupGroup);
     }
 
-    private Canvas _canvas = null;
-    private GameObject go = null;
-    private PopupBase _head = null;
-    private PopupBase _tail = null;
-    private PopupBase _tmpPopup = null;
+    private void OnNotification(Notification noti)
+    {
+        //switch (noti.msg)
+        //{
+        //    case ENotiMessage.ChangeSceneState:
+        //        _canvas = null;
+        //        DeleteAll();
+        //        SetCanvas();
+        //        if (_canvas == null) Debug.LogError("[Self] expected PopupCanvas");
+        //        break;
+        //}
+    }
+
+    private void CopySize(GameObject group)
+    {
+        RectTransform rectTransform = _canvas.GetComponent<RectTransform>();
+        RectTransform objRectTransform = group.GetComponent<RectTransform>();
+        objRectTransform.sizeDelta = rectTransform.sizeDelta;
+    }
+
+    private GameObject CreatePopup(EPrefabsType type, string name, Transform layer)
+    {
+        go = PoolManager.Instance.GrabPrefabs(type, name, layer);
+        go.transform.position = layer.position;
+        go.transform.localScale = new Vector3(1, 1, 1);
+        return go;
+    }
     #endregion
 
     #region property
-    public PopupBase Head
+    public int Size
     {
-        get { return _head; }
-        set { _head = value; }
+        get
+        {
+            return _importantStack.Count + _normalStack.Count;
+        }
     }
-    public PopupBase Tail
+
+    public int NormalSize
     {
-        get { return _tail; }
-        set { _tail = value; }
+        get
+        {
+            return _normalStack.Count;
+        }
+    }
+
+    public int ImportantSize
+    {
+        get
+        {
+            return _importantStack.Count; 
+        }
     }
     #endregion
 
+    #region public method
+    public GameObject CreateNormalPopup(EPrefabsType type, string name)
+    { 
+        if (_canvas == null)
+        {
+            Debug.LogError("[Self] expected canvas");
+            return null;
+        }
+        if (_normalPopupGroup == null)
+        {
+            Debug.LogError("[Self] expected group");
+            return null;
+        }
+        go = CreatePopup(type, name, _normalPopupGroup.transform);
+        PopupBase popup = go.GetComponent<PopupBase>();
+        _normalStack.Push(popup);
+        popup.Init();
+        popup.PopupType = PopupType.NORMAL;
+        return go;
+    }
 
-    public GameObject CreatePopup(EPrefabsType type, string name)
+    public GameObject CreateImportantPopup(EPrefabsType type, string name)
     {
         if (_canvas == null)
         {
             Debug.LogError("[Self] expected canvas");
             return null;
         }
-        go = CreatePopup(type, name,  _canvas.transform);
-        InitInstance(go);
+        if (_importantPopupGroup == null)
+        {
+            Debug.LogError("[Self] expected group");
+            return null;
+        }
+        go = CreatePopup(type, name, _importantPopupGroup.transform);
+        PopupBase popup = go.GetComponent<PopupBase>();
+        _importantStack.Push(popup);
+        popup.Init();
+        popup.PopupType = PopupType.IMPORTANT;
         return go;
     }
 
-    public void DeleteHead()
+    public void Delete(PopupType type, PopupBase popup)
     {
-        if (_head == null)
+        if (type == PopupType.NORMAL)
         {
-            Debug.LogError("[Self] list count zero");
-            return;
+            DeleteNormal(); 
         }
-        _head.Dispose();
+        else if (type == PopupType.IMPORTANT)
+        {
+            DeleteImportant(); 
+        }
     }
 
-    public void DeleteAll()
+    public void DeleteNormal()
     {
-        while (_head != null)
+        if (_normalStack.Count > 0)
         {
-            DeleteHead();
+            _normalStack.Pop().Dispose();
         }
     }
+
+    public void DeleteImportant()
+    {
+        if (_importantStack.Count > 0)
+        {
+            _importantStack.Pop().Dispose();
+        }
+    }
+
+    public void DeleteNormalAll()
+    {
+        while (_normalStack.Count > 0)
+        {
+            _normalStack.Pop().Dispose();
+        }
+    }
+
+    public void DeleteImportantAll()
+    {
+        while (_importantStack.Count > 0)
+        {
+            _importantStack.Pop().Dispose();
+        }
+    }
+        
+    public void DeleteAll()
+    {
+        DeleteImportantAll();
+        DeleteNormalAll();
+    }
+    #endregion
+}
+public enum PopupType
+{
+    UNKNOWN = 0,
+    NORMAL,
+    IMPORTANT,
 }
