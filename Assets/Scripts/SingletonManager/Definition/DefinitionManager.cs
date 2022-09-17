@@ -84,6 +84,8 @@ public class DefinitionManager : MonoBehaviour
 
     private Dictionary<string, int> PRIORITY = new Dictionary<string, int>()
     {
+        {"log10", 4},
+        {"slog10", 4},
         {"^", 3},
         {"log", 3},
         {"*", 2},
@@ -121,6 +123,11 @@ public class DefinitionManager : MonoBehaviour
                     postfix.Add(name);
                     break;
                 case string name when checkUnaryOp.IsMatch(name):
+                    postfix.Add("0");
+                    while (stack.Count > 0 && PRIORITY[name] <= PRIORITY[stack.Peek()])
+                    {
+                        postfix.Add(stack.Pop());
+                    }
                     stack.Push(name);
                     break;
                 case string name when checkBinaryOp.IsMatch(name):
@@ -162,10 +169,12 @@ public class DefinitionManager : MonoBehaviour
                     break;
                 case "slog10":
                     a = stack.Pop();
+                    stack.Pop();
                     stack.Push(UpArrowNotation.Slog10(a));
                     break;
                 case "log10":
                     a = stack.Pop();
+                    stack.Pop();
                     stack.Push(new UpArrowNotation(UpArrowNotation.Log10Top3Layer(a)));
                     break;
                 case "^":
