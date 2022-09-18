@@ -20,7 +20,7 @@ namespace InGame
         public static bool IsCompleteExp = false;
         void Awake()
         {
-
+            var s3Data = DefinitionManager.Instance.CSVData;  // 나중에 이동해야할듯
         }
 
         void Start()
