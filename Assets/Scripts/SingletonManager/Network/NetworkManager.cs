@@ -52,9 +52,9 @@ public class NetworkManager : MonoBehaviour
     public string editorBaseUrl;
     private const string _baseUrl = "http://ec2-52-79-187-33.ap-northeast-2.compute.amazonaws.com:8080";
 
-    private async UniTask<T> SendToServer<T>(string url, ENetworkSendType sendType, string jsonBody = null)
+    private async UniTask<T> SendToServer<T>(string url, ENetworkSendType sendType, string jsonBody = null, ENetworkRecvType resType = ENetworkRecvType.JSON)
     {
-        LoadingPopup loadingPopup = PopupManager.Instance.CreatePopup(EPrefabsType.POPUP, "LoadingPopup").GetComponent<LoadingPopup>();
+        LoadingPopup loadingPopup = PopupManager.Instance.CreateNormalPopup(EPrefabsType.POPUP, "LoadingPopup").GetComponent<LoadingPopup>();
         //await Task.Delay(1000);
         //1. 네트워크 체크.
         await CheckNetwork();
@@ -97,7 +97,21 @@ public class NetworkManager : MonoBehaviour
         {
             var res = await request.SendWebRequest().WithCancellation(cts.Token);
             Debug.Log(res.downloadHandler.text);
-            T result = JsonUtility.FromJson<T>(res.downloadHandler.text);
+            T result;
+            switch (resType)
+            {
+                case ENetworkRecvType.JSON:
+                    result = JsonUtility.FromJson<T>(res.downloadHandler.text);
+                    break;
+                case ENetworkRecvType.FILE:
+                    //result = JsonUtility.FromJson<T>("{\"csvDataString\":\"" +  res.downloadHandler.text + "\"}");
+                    result = (T)(object)res.downloadHandler.text;
+                    break;
+                default:
+                    result = default(T);
+                    break;
+            }
+            
             request.Dispose();
             loadingPopup.Dispose();
             return result;
@@ -110,14 +124,14 @@ public class NetworkManager : MonoBehaviour
                 //TODO: 네트워크 재시도 팝업 호출
 
                 //재시도
-                return await SendToServer<T>(url, sendType, jsonBody);
+                return await SendToServer<T>(url, sendType, jsonBody, resType);
             }
         }
         catch(Exception e)
         {
             ErrorResponse errorResult = JsonUtility.FromJson<ErrorResponse>(request.downloadHandler.text);
 
-            GameObject go = PopupManager.Instance.CreatePopup(EPrefabsType.POPUP, "ErrorPopup");
+            GameObject go = PopupManager.Instance.CreateNormalPopup(EPrefabsType.POPUP, "ErrorPopup");
             go.GetComponent<ErrorPopup>().Init(errorResult);
 
             loadingPopup.Dispose();
@@ -168,6 +182,7 @@ public class NetworkManager : MonoBehaviour
     public const string PATH_SINGLE_NETWORK = "/v1/experiment/single/network";
     public const string PATH_TOKEN_VALIDATION = "/v1/auth/validation";
     public const string PATH_LEADERBOARD = "/v1/leaderboard/single";
+    public const string PATH_S3DATA = "/v1/assets/";
 
     /// 
     /// DELETE PATH
@@ -281,6 +296,17 @@ public class NetworkManager : MonoBehaviour
                     ENetworkSendType.GET);
         return res;
     }
+
+    // S3 파일의 경우 일단 string으로 받게 해놓음
+    public async UniTask<string> API_S3Data(string fileName)
+    {
+        var res =
+            await SendToServer<string>(
+                    PATH_S3DATA + fileName,
+                    ENetworkSendType.GET,
+                    resType:ENetworkRecvType.FILE);
+        return res;
+    }
     #endregion
 
     #region DELETE
@@ -310,6 +336,12 @@ public enum ENetworkSendType
     POST,
     PUT,
     DELETE,
+}
+
+public enum ENetworkRecvType
+{
+    JSON,
+    FILE, 
 }
 
 public enum UrlType { TEST = 1, DEPLOY = 2, LOCAL = 3, }
