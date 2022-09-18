@@ -9,12 +9,13 @@ public class PoolManager
     private Dictionary<EPrefabsType, Dictionary<string, List<PoolObject>>> _dicPool = new Dictionary<EPrefabsType, Dictionary<string, List<PoolObject>>>();
     private Transform _layer;
 
-    public void Awake()
+    public void Init()
     {
-        _layer = new GameObject("PoolLayer").transform;
+        _layer = Managers.ManagerObj.transform;
         foreach (EPrefabsType type in Enum.GetValues(typeof(EPrefabsType)))
         {
-            _dicPool.Add(type, new Dictionary<string, List<PoolObject>>());
+            if(!_dicPool.ContainsKey(type))
+                _dicPool.Add(type, new Dictionary<string, List<PoolObject>>());
         }
 
     }
