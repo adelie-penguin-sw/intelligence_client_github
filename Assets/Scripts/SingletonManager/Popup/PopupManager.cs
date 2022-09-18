@@ -80,7 +80,7 @@ public class PopupManager : MonoBehaviour
 
     private GameObject CreatePopup(EPrefabsType type, string name, Transform layer)
     {
-        go = PoolManager.Instance.GrabPrefabs(type, name, _canvas.transform);
+        go = Managers.Pool.GrabPrefabs(type, name, _canvas.transform);
         go.transform.position = _canvas.transform.position;
         go.transform.localScale = new Vector3(1, 1, 1);
         return go;
@@ -103,7 +103,7 @@ public class PopupManager : MonoBehaviour
     {
         GameObject go = GameObject.Find("PopupCanvas");
         if (go == null)
-            go = PoolManager.Instance.GrabPrefabs(EPrefabsType.POPUP, "PopupCanvas", transform);
+            go = Managers.Pool.GrabPrefabs(EPrefabsType.POPUP, "PopupCanvas", transform);
 
         if (go.TryGetComponent(out Canvas canvas))
         {
