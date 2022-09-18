@@ -94,13 +94,15 @@ namespace InGame
                 _npText.text = storedNP.ToString();
                 _distanceText.text = _brain.BrainData.distance.ToString();
 
-                // 초기
-                //UpArrowNotation upgradeCost = new UpArrowNotation(10);
-                //upgradeCost *= Mathf.Pow(2.5f, (float)UpArrowNotation.Log10Top3Layer(_brain.BrainData.multiplier));
+                //UpArrowNotation upgradeCost = new UpArrowNotation(3);
+                //upgradeCost *= Mathf.Pow(2f, (float)UpArrowNotation.Log10Top3Layer(_brain.BrainData.multiplier));
 
-                // 수정
-                UpArrowNotation upgradeCost = new UpArrowNotation(3);
-                upgradeCost *= Mathf.Pow(2f, (float)UpArrowNotation.Log10Top3Layer(_brain.BrainData.multiplier));
+                Dictionary<string, UpArrowNotation> inputMap = new Dictionary<string, UpArrowNotation>();
+
+                inputMap.Add("multiplier", _brain.BrainData.multiplier);
+                inputMap.Add("tpu03", new UpArrowNotation());   // 아직 반영안됨!!!
+                UpArrowNotation upgradeCost = DefinitionManager.Instance.CalcEquation(inputMap, DefinitionManager.Instance.BRAIN_UPG_COST_EQ);
+                inputMap.Clear();
 
                 string upgradeText = _brain.SenderIdList.Count == 0 ? "+1 Intellect" : "x2 Multiplier";
                 _upgradeCost.text = string.Format(upgradeText + "\nCost: {0} NP", upgradeCost);
@@ -108,7 +110,11 @@ namespace InGame
                 UpArrowNotation totalSenderNP = new UpArrowNotation(0);
                 foreach (Brain brain in _deletableSenderList)
                 {
-                    totalSenderNP += Exchange.GetNPRewardForBrainDecomposition(brain.Intellect);
+                    //totalSenderNP += Exchange.GetNPRewardForBrainDecomposition(brain.Intellect);
+
+                    inputMap.Add("intellect", brain.Intellect);
+                    inputMap.Add("tpu04", new UpArrowNotation());   // 아직 반영안됨!!!
+                    totalSenderNP += DefinitionManager.Instance.CalcEquation(inputMap, DefinitionManager.Instance.BRAIN_DCP_GAIN_EQ);
                 }
                 _decomposeReward.text = _brain.SenderIdList.Count == 0 ?
                     string.Format("Decompose\nfor {0} NP\n", storedNP) :
