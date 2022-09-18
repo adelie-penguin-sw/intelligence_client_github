@@ -35,27 +35,69 @@ namespace TpTab
         {
             base.OnEnter();
 
-            _tpTabModel.TPU01NameText.text = (string)DefinitionManager.Instance.DefinitionDic["TPU01NameText"];
-            _tpTabModel.TPU01EffectText.text = (string)DefinitionManager.Instance.DefinitionDic["TPU01EffectText"];
-            _tpTabModel.TPU02NameText.text = (string)DefinitionManager.Instance.DefinitionDic["TPU02NameText"];
-            _tpTabModel.TPU02EffectText.text = (string)DefinitionManager.Instance.DefinitionDic["TPU02EffectText"];
-            _tpTabModel.TPU03NameText.text = (string)DefinitionManager.Instance.DefinitionDic["TPU03NameText"];
-            _tpTabModel.TPU03EffectText.text = (string)DefinitionManager.Instance.DefinitionDic["TPU03EffectText"];
-            _tpTabModel.TPU04NameText.text = (string)DefinitionManager.Instance.DefinitionDic["TPU04NameText"];
-            _tpTabModel.TPU04EffectText.text = (string)DefinitionManager.Instance.DefinitionDic["TPU04EffectText"];
-            _tpTabModel.TPU05NameText.text = (string)DefinitionManager.Instance.DefinitionDic["TPU05NameText"];
-            _tpTabModel.TPU05EffectText.text = (string)DefinitionManager.Instance.DefinitionDic["TPU05EffectText"];
-            _tpTabModel.TPU06NameText.text = (string)DefinitionManager.Instance.DefinitionDic["TPU06NameText"];
-            _tpTabModel.TPU06EffectText.text = (string)DefinitionManager.Instance.DefinitionDic["TPU06EffectText"];
-            _tpTabModel.TPU07NameText.text = (string)DefinitionManager.Instance.DefinitionDic["TPU07NameText"];
-            _tpTabModel.TPU07EffectText.text = (string)DefinitionManager.Instance.DefinitionDic["TPU07EffectText"];
-            _tpTabModel.TPU08NameText.text = (string)DefinitionManager.Instance.DefinitionDic["TPU08NameText"];
-            _tpTabModel.TPU08EffectText.text = (string)DefinitionManager.Instance.DefinitionDic["TPU08EffectText"];
+            _tpTabModel.TPU01NameText.text = (string)DefinitionManager.Instance["TPU01NameText"];
+            _tpTabModel.TPU01EffectText.text = (string)DefinitionManager.Instance["TPU01EffectText"];
+            _tpTabModel.TPU02NameText.text = (string)DefinitionManager.Instance["TPU02NameText"];
+            _tpTabModel.TPU02EffectText.text = (string)DefinitionManager.Instance["TPU02EffectText"];
+            _tpTabModel.TPU03NameText.text = (string)DefinitionManager.Instance["TPU03NameText"];
+            _tpTabModel.TPU03EffectText.text = (string)DefinitionManager.Instance["TPU03EffectText"];
+            _tpTabModel.TPU04NameText.text = (string)DefinitionManager.Instance["TPU04NameText"];
+            _tpTabModel.TPU04EffectText.text = (string)DefinitionManager.Instance["TPU04EffectText"];
+            _tpTabModel.TPU05NameText.text = (string)DefinitionManager.Instance["TPU05NameText"];
+            _tpTabModel.TPU05EffectText.text = (string)DefinitionManager.Instance["TPU05EffectText"];
+            _tpTabModel.TPU06NameText.text = (string)DefinitionManager.Instance["TPU06NameText"];
+            _tpTabModel.TPU06EffectText.text = (string)DefinitionManager.Instance["TPU06EffectText"];
+            _tpTabModel.TPU07NameText.text = (string)DefinitionManager.Instance["TPU07NameText"];
+            _tpTabModel.TPU07EffectText.text = (string)DefinitionManager.Instance["TPU07EffectText"];
+            _tpTabModel.TPU08NameText.text = (string)DefinitionManager.Instance["TPU08NameText"];
+            _tpTabModel.TPU08EffectText.text = (string)DefinitionManager.Instance["TPU08EffectText"];
         }
 
         public override void AdvanceTime(float dt_sec)
         {
             base.AdvanceTime(dt_sec);
+
+            Dictionary<string, UpArrowNotation> inputMap = new Dictionary<string, UpArrowNotation>();
+
+            if (!UserData.TPUpgradeCounts.ContainsKey(1)) { UserData.TPUpgradeCounts.Add(1, 0); }
+            inputMap.Add("upgradeCount", new UpArrowNotation(UserData.TPUpgradeCounts[1]));
+            _tpTabModel.TPU01CostText.text = DefinitionManager.Instance.CalcEquation(inputMap, (string)DefinitionManager.Instance["TPU01CostEquation"]).ToString() + " TP";
+            inputMap.Clear();
+
+            if (!UserData.TPUpgradeCounts.ContainsKey(2)) { UserData.TPUpgradeCounts.Add(2, 0); }
+            inputMap.Add("upgradeCount", new UpArrowNotation(UserData.TPUpgradeCounts[2]));
+            _tpTabModel.TPU02CostText.text = DefinitionManager.Instance.CalcEquation(inputMap, (string)DefinitionManager.Instance["TPU02CostEquation"]).ToString() + " TP";
+            inputMap.Clear();
+
+            if (!UserData.TPUpgradeCounts.ContainsKey(3)) { UserData.TPUpgradeCounts.Add(3, 0); }
+            inputMap.Add("upgradeCount", new UpArrowNotation(UserData.TPUpgradeCounts[3]));
+            _tpTabModel.TPU03CostText.text = DefinitionManager.Instance.CalcEquation(inputMap, (string)DefinitionManager.Instance["TPU03CostEquation"]).ToString() + " TP";
+            inputMap.Clear();
+
+            if (!UserData.TPUpgradeCounts.ContainsKey(4)) { UserData.TPUpgradeCounts.Add(4, 0); }
+            inputMap.Add("upgradeCount", new UpArrowNotation(UserData.TPUpgradeCounts[4]));
+            _tpTabModel.TPU04CostText.text = DefinitionManager.Instance.CalcEquation(inputMap, (string)DefinitionManager.Instance["TPU04CostEquation"]).ToString() + " TP";
+            inputMap.Clear();
+
+            if (!UserData.TPUpgradeCounts.ContainsKey(5)) { UserData.TPUpgradeCounts.Add(5, 0); }
+            inputMap.Add("upgradeCount", new UpArrowNotation(UserData.TPUpgradeCounts[5]));
+            _tpTabModel.TPU05CostText.text = DefinitionManager.Instance.CalcEquation(inputMap, (string)DefinitionManager.Instance["TPU05CostEquation"]).ToString() + " TP";
+            inputMap.Clear();
+
+            if (!UserData.TPUpgradeCounts.ContainsKey(6)) { UserData.TPUpgradeCounts.Add(6, 0); }
+            inputMap.Add("upgradeCount", new UpArrowNotation(UserData.TPUpgradeCounts[6]));
+            _tpTabModel.TPU06CostText.text = DefinitionManager.Instance.CalcEquation(inputMap, (string)DefinitionManager.Instance["TPU06CostEquation"]).ToString() + " TP";
+            inputMap.Clear();
+
+            if (!UserData.TPUpgradeCounts.ContainsKey(7)) { UserData.TPUpgradeCounts.Add(7, 0); }
+            inputMap.Add("upgradeCount", new UpArrowNotation(UserData.TPUpgradeCounts[7]));
+            _tpTabModel.TPU07CostText.text = DefinitionManager.Instance.CalcEquation(inputMap, (string)DefinitionManager.Instance["TPU07CostEquation"]).ToString() + " TP";
+            inputMap.Clear();
+
+            if (!UserData.TPUpgradeCounts.ContainsKey(8)) { UserData.TPUpgradeCounts.Add(8, 0); }
+            inputMap.Add("upgradeCount", new UpArrowNotation(UserData.TPUpgradeCounts[8]));
+            _tpTabModel.TPU08CostText.text = DefinitionManager.Instance.CalcEquation(inputMap, (string)DefinitionManager.Instance["TPU08CostEquation"]).ToString() + " TP";
+            inputMap.Clear();
         }
 
         public override void LateAdvanceTime(float dt_sec)
