@@ -29,6 +29,6 @@ public class RankItem : MonoBehaviour
 
     public void Dispose()
     {
-        PoolManager.Instance.DespawnObject(EPrefabsType.RANK_ITEM, gameObject);
+        Managers.Pool.DespawnObject(EPrefabsType.RANK_ITEM, gameObject);
     }
 }

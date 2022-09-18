@@ -93,7 +93,7 @@ namespace MainTab
             {
                 controller.Dispose();
             }
-            PoolManager.Instance.DespawnObject(EPrefabsType.TAP_APPLICATION, this.gameObject);
+            Managers.Pool.DespawnObject(EPrefabsType.TAP_APPLICATION, this.gameObject);
         }
     }
 }
