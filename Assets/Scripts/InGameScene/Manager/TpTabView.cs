@@ -2,13 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TpTabView : MonoBehaviour
+namespace TpTab
 {
-    public async void OnClick_TpUpgrade(int upgrade)
+    public class TpTabView : MonoBehaviour
     {
-        TpUpgradeSingleNetworkRequest req = new TpUpgradeSingleNetworkRequest();
-        req.upgrade = upgrade;
-        req.upgradeCount = 1;
-        await NetworkManager.Instance.API_TpUpgrade(req);
+        public async void OnClick_TpUpgrade(int upgrade)
+        {
+            TpUpgradeSingleNetworkRequest req = new TpUpgradeSingleNetworkRequest();
+            req.upgrade = upgrade;
+            req.upgradeCount = 1;
+            await NetworkManager.Instance.API_TpUpgrade(req);
+        }
     }
 }
