@@ -6,41 +6,11 @@ using Cysharp.Threading.Tasks.Triggers;
 using UnityEngine.Rendering.Universal.Internal;
 using System.Text.RegularExpressions;
 
-public class PopupManager : MonoBehaviour
+public class PopupManager
 {
-    #region Singelton
-    private static PopupManager _instance;
-    public static PopupManager Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<PopupManager>();
-                if (FindObjectsOfType<PopupManager>().Length > 1)
-                {
-                    Debug.LogError("[Singleton] Something went really wrong " +
-                        " - there should never be more than 1 singleton!" +
-                        " Reopening the scene might fix it.");
-                    return _instance;
-                }
-
-                if (_instance == null)
-                {
-                    GameObject go = new GameObject("PopupManager");
-                    go.layer = LayerMask.NameToLayer("Popup");
-                    _instance = go.AddComponent<PopupManager>();
-                }
-            }
-            return _instance;
-        }
-    }
-    #endregion
-
     #region lifeCycle
-    private void Awake()
+    public void Init()
     {
-        DontDestroyOnLoad(gameObject);
         SetCanvas();
         foreach (var importantPopup in _importantStack)
         {
@@ -54,15 +24,15 @@ public class PopupManager : MonoBehaviour
 
     }
 
-    private void Update()
+    public void AdvanceTime(float dt_sec )
     {
         foreach (var importantPopup in _importantStack)
         {
-            importantPopup.AdvanceTime(Time.deltaTime);
+            importantPopup.AdvanceTime(dt_sec);
         }
         foreach(var normalPopup in _normalStack)
         {
-            normalPopup.AdvanceTime(Time.deltaTime);
+            normalPopup.AdvanceTime(dt_sec);
         }
     }
     #endregion
@@ -79,9 +49,23 @@ public class PopupManager : MonoBehaviour
     #region private method
     private void SetCanvas()
     {
+        CreateCanvas();
+
+        _normalPopupGroup = new GameObject("NormalPopupGroup");
+        _importantPopupGroup = new GameObject("ImportantPopupGroup");
+        _normalPopupGroup.AddComponent<RectTransform>();
+        _importantPopupGroup.AddComponent<RectTransform>();
+        _normalPopupGroup.transform.SetParent(_canvas.transform, false);
+        _importantPopupGroup.transform.SetParent(_canvas.transform, false);
+        CopySize(_normalPopupGroup);
+        CopySize(_importantPopupGroup);
+    }
+
+    private void CreateCanvas()
+    {
         GameObject go = GameObject.Find("PopupCanvas");
         if (go == null)
-            go = PoolManager.Instance.GrabPrefabs(EPrefabsType.POPUP, "PopupCanvas", transform);
+            go = Managers.Pool.GrabPrefabs(EPrefabsType.POPUP, "PopupCanvas", Managers.ManagerObj.transform);
 
         if (go.TryGetComponent(out Canvas canvas))
         {
@@ -92,15 +76,6 @@ public class PopupManager : MonoBehaviour
             _canvas = go.AddComponent<Canvas>();
             Debug.LogError("not canvas");
         }
-
-        _normalPopupGroup = new GameObject("NormalPopupGroup");
-        _importantPopupGroup = new GameObject("ImportantPopupGroup");
-        _normalPopupGroup.AddComponent<RectTransform>();
-        _importantPopupGroup.AddComponent<RectTransform>();
-        _normalPopupGroup.transform.SetParent(_canvas.transform, false);
-        _importantPopupGroup.transform.SetParent(_canvas.transform, false);
-        CopySize(_normalPopupGroup);
-        CopySize(_importantPopupGroup);
     }
 
     private void OnNotification(Notification noti)
@@ -125,7 +100,7 @@ public class PopupManager : MonoBehaviour
 
     private GameObject CreatePopup(EPrefabsType type, string name, Transform layer)
     {
-        go = PoolManager.Instance.GrabPrefabs(type, name, layer);
+        go = Managers.Pool.GrabPrefabs(type, name, layer);
         go.transform.position = layer.position;
         go.transform.localScale = new Vector3(1, 1, 1);
         return go;
@@ -164,7 +139,9 @@ public class PopupManager : MonoBehaviour
         if (_canvas == null)
         {
             Debug.LogError("[Self] expected canvas");
-            return null;
+            CreateCanvas();
+            //
+            //return null;
         }
         if (_normalPopupGroup == null)
         {
