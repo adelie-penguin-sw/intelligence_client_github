@@ -19,8 +19,8 @@ namespace InGame
 
         public void Init()
         {
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.UPDATE_NP);
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.UPDATE_TP);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.UPDATE_NP);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.UPDATE_TP);
             foreach (var tab in _bottomTabs)
             {
                 tab.Init();
@@ -59,15 +59,15 @@ namespace InGame
 
         public void Dispose()
         {
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.UPDATE_NP);
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.UPDATE_TP);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.UPDATE_NP);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.UPDATE_TP);
         }
 
         private void OnClick_Tab(EGameState tab)
         {
             Hashtable sendData = new Hashtable();
             sendData.Add(EDataParamKey.EGAMESTATE, tab);
-            NotificationManager.Instance.PostNotification(ENotiMessage.ONCLICK_CHANGE_TAB, sendData);
+            Managers.Notification.PostNotification(ENotiMessage.ONCLICK_CHANGE_TAB, sendData);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace InGame
 
         public void OnClick_LeaderBoard()
         {
-            NotificationManager.Instance.PostNotification(ENotiMessage.ONCLICK_LEADERBOARD);
+            Managers.Notification.PostNotification(ENotiMessage.ONCLICK_LEADERBOARD);
         }
 
         public void OnClick_Logout()
@@ -110,12 +110,12 @@ namespace InGame
 
         public void OnClick_Reset()
         {
-            NotificationManager.Instance.PostNotification(ENotiMessage.EXPERIMENT_COMPLETE);
+            Managers.Notification.PostNotification(ENotiMessage.EXPERIMENT_COMPLETE);
             //SingleNetworkResponse res = await NetworkManager.Instance.API_NetworkReset();
 
             //Hashtable sendData = new Hashtable();
             //sendData.Add(EDataParamKey.SINGLE_NETWORK_WRAPPER, new SingleNetworkWrapper(res));
-            //NotificationManager.Instance.PostNotification(ENotiMessage.ONCLICK_RESET_NETWORK, sendData);
+            //Managers.Notification.PostNotification(ENotiMessage.ONCLICK_RESET_NETWORK, sendData);
         }
     }
 
