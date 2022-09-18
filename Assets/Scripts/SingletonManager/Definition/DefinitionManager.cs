@@ -38,7 +38,7 @@ public class DefinitionManager : MonoBehaviour
     private List<Dictionary<string, object>> _csvData;
     public List<Dictionary<string, object>> CSVData { get { return _csvData; } }
 
-    private Dictionary<string, object> _definitionDic;
+    private Dictionary<string, object> _definitionDic = new Dictionary<string, object>();
     public Dictionary<string, object> DefinitionDic { get { return _definitionDic; } }
 
     private async void LoadS3Data()
@@ -50,7 +50,7 @@ public class DefinitionManager : MonoBehaviour
 
             foreach (var li in _csvData)
             {
-                string value = (string)li["value"];
+                string value = li["value"].ToString();
                 switch (li["type"])
                 {
                     case "string":
