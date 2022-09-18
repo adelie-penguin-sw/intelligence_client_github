@@ -61,7 +61,7 @@ namespace MainTab
             switch (noti.msg)
             {
                 case ENotiMessage.ONCLICK_LEADERBOARD:
-                    _view.LeaderboardPopup = PopupManager.Instance.CreateNormalPopup(EPrefabsType.POPUP, "LeaderboardPopup")
+                    _view.LeaderboardPopup = Managers.Popup.CreateNormalPopup(EPrefabsType.POPUP, "LeaderboardPopup")
                                 .GetComponent<InGame.LeaderboardPopup>();
                     if (_view.LeaderboardPopup != null)
                     {
@@ -74,43 +74,43 @@ namespace MainTab
 
         private void AddObservers()
         {
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.DRAG_START_CREATEBRAIN);
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.DRAG_END_CREATEBRAIN);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.DRAG_START_CREATEBRAIN);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.DRAG_END_CREATEBRAIN);
 
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.MOUSE_DOWN_BRAIN);
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.MOUSE_EXIT_BRAIN);
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.MOUSE_UP_BRAIN);
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.MOUSE_ENTER_BRAIN);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.MOUSE_DOWN_BRAIN);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.MOUSE_EXIT_BRAIN);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.MOUSE_UP_BRAIN);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.MOUSE_ENTER_BRAIN);
 
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.CLOSE_BRAININFO_POPUP);
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.CLOSE_RESET_POPUP);
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.CLOSE_LEADERBOARD_POPUP);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.CLOSE_BRAININFO_POPUP);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.CLOSE_RESET_POPUP);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.CLOSE_LEADERBOARD_POPUP);
 
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.ONCLICK_UPGRADE_BRAIN);
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.ONCLICK_LEADERBOARD);
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.ONCLICK_RESET_BUTTON);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.ONCLICK_UPGRADE_BRAIN);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.ONCLICK_LEADERBOARD);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.ONCLICK_RESET_BUTTON);
 
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.EXPERIMENT_COMPLETE);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.EXPERIMENT_COMPLETE);
         }
         private void RemoveObservers()
         {
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.DRAG_START_CREATEBRAIN);
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.DRAG_END_CREATEBRAIN);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.DRAG_START_CREATEBRAIN);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.DRAG_END_CREATEBRAIN);
 
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.MOUSE_DOWN_BRAIN);
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.MOUSE_EXIT_BRAIN);
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.MOUSE_UP_BRAIN);
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.MOUSE_ENTER_BRAIN);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.MOUSE_DOWN_BRAIN);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.MOUSE_EXIT_BRAIN);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.MOUSE_UP_BRAIN);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.MOUSE_ENTER_BRAIN);
 
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.CLOSE_BRAININFO_POPUP);
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.CLOSE_RESET_POPUP);
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.CLOSE_LEADERBOARD_POPUP);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.CLOSE_BRAININFO_POPUP);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.CLOSE_RESET_POPUP);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.CLOSE_LEADERBOARD_POPUP);
 
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_UPGRADE_BRAIN);
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_LEADERBOARD);
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_RESET_BUTTON);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_UPGRADE_BRAIN);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_LEADERBOARD);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_RESET_BUTTON);
 
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.EXPERIMENT_COMPLETE);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.EXPERIMENT_COMPLETE);
         }
 
         #region StateHandler Function
@@ -245,7 +245,7 @@ namespace MainTab
                     case ENotiMessage.MOUSE_UP_BRAIN:
                         if (_isBrainPointDown)
                         {
-                            _controller._view.InfoPopup = PopupManager.Instance.CreateNormalPopup(EPrefabsType.POPUP, "BrainInfoPopup")
+                            _controller._view.InfoPopup = Managers.Popup.CreateNormalPopup(EPrefabsType.POPUP, "BrainInfoPopup")
                                 .GetComponent<InGame.BrainInfoPopup>();
                             _controller._view.InfoPopup.Init(_controller._recentSelectBrain, _model.SingleNetworkWrapper, _model.BrainNetwork);
                             _controller.ChangeState(EBehaviorState.SHOW_POPUP);
@@ -265,8 +265,8 @@ namespace MainTab
 
                     case ENotiMessage.EXPERIMENT_COMPLETE:
                     case ENotiMessage.ONCLICK_RESET_BUTTON:
-						PopupManager.Instance.DeleteNormalAll();  // 현재 떠있는 모든 팝업 닫음
-                        ResetPopup infoPopup = PopupManager.Instance.CreateNormalPopup(EPrefabsType.POPUP, "ResetPopup")
+                        Managers.Popup.DeleteNormalAll();  // 현재 떠있는 모든 팝업 닫음
+                        ResetPopup infoPopup = Managers.Popup.CreateNormalPopup(EPrefabsType.POPUP, "ResetPopup")
                             .GetComponent<ResetPopup>();
                         infoPopup.Init();
                         _controller.ChangeState(EBehaviorState.SHOW_POPUP);
@@ -457,11 +457,11 @@ namespace MainTab
                     req.x = _tempBrain.transform.position.x;
                     req.y = _tempBrain.transform.position.y;
 
-                    var res = await NetworkManager.Instance.API_CreateBrain(req);
+                    var res = await Managers.Network.API_CreateBrain(req);
                     if (res != null)
                     {
                         _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(req, res);
-                        NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
+                        Managers.Notification.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
                     }
                 }
                 else
@@ -556,12 +556,12 @@ namespace MainTab
                     CreateSingleNetworkChannelRequest req = new CreateSingleNetworkChannelRequest();
                     req.from = _currentSenderBrain.ID;
                     req.to = _currentEnterBrain.ID;
-                    var res = await NetworkManager.Instance.API_CreateChannel(req);
+                    var res = await Managers.Network.API_CreateChannel(req);
                     if (res != null)
                     {
                         _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(req, res, () =>
                         {
-                            NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
+                            Managers.Notification.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
                         });
                     }
                 }
@@ -606,8 +606,8 @@ namespace MainTab
                         UpgradeBrain(brainId);
                         break;
                     case ENotiMessage.EXPERIMENT_COMPLETE:
-                        PopupManager.Instance.DeleteNormalAll();  // 현재 떠있는 모든 팝업 닫음
-                        ResetPopup infoPopup = PopupManager.Instance.CreateNormalPopup(EPrefabsType.POPUP, "CompletePopup")
+                        Managers.Popup.DeleteNormalAll();  // 현재 떠있는 모든 팝업 닫음
+                        ResetPopup infoPopup = Managers.Popup.CreateNormalPopup(EPrefabsType.POPUP, "CompletePopup")
                             .GetComponent<ResetPopup>();
                         infoPopup.Init();
                         break;
@@ -627,14 +627,14 @@ namespace MainTab
                 var req = new CreateSingleNetworkBrainNumberRequest();
                 req.brain = id;
                 req.level = 1;
-                CreateSingleNetworkBrainNumberResponse res = await NetworkManager.Instance.API_UpgradeBrain(req);
+                CreateSingleNetworkBrainNumberResponse res = await Managers.Network.API_UpgradeBrain(req);
 
                 if (res != null)
                 {
                     // 브레인 업그레이드 상태가 바로 반영되도록 업데이트해주는 콜백 추가
                     _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(res, () =>
                     {
-                        NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
+                        Managers.Notification.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
 
                         SingleNetworkWrapper wrapper = _controller._model.SingleNetworkWrapper;
                         BrainNetwork network = _controller._model.BrainNetwork;
