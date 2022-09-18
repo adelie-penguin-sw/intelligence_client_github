@@ -108,9 +108,14 @@ namespace InGame
             SceneManager.LoadScene("LoginScene");
         }
 
-        public async void OnClick_Reset()
+        public void OnClick_Reset()
         {
-            await NetworkManager.Instance.API_NetworkReset();
+            NotificationManager.Instance.PostNotification(ENotiMessage.EXPERIMENT_COMPLETE);
+            //SingleNetworkResponse res = await NetworkManager.Instance.API_NetworkReset();
+
+            //Hashtable sendData = new Hashtable();
+            //sendData.Add(EDataParamKey.SINGLE_NETWORK_WRAPPER, new SingleNetworkWrapper(res));
+            //NotificationManager.Instance.PostNotification(ENotiMessage.ONCLICK_RESET_NETWORK, sendData);
         }
     }
 
