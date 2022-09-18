@@ -9,6 +9,6 @@ public class TpTabView : MonoBehaviour
         TpUpgradeSingleNetworkRequest req = new TpUpgradeSingleNetworkRequest();
         req.upgrade = upgrade;
         req.upgradeCount = 1;
-        await NetworkManager.Instance.API_TpUpgrade(req);
+        await Managers.Network.API_TpUpgrade(req);
     }
 }

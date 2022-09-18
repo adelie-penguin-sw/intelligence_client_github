@@ -4,36 +4,8 @@ using System.Text.RegularExpressions;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class DefinitionManager : MonoBehaviour
+public class DefinitionManager
 {
-    #region Singelton
-    private static DefinitionManager _instance;
-    public static DefinitionManager Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<DefinitionManager>();
-                if (FindObjectsOfType<DefinitionManager>().Length > 1)
-                {
-                    Debug.LogError("[Singleton] Something went really wrong " +
-                        " - there should never be more than 1 singleton!" +
-                        " Reopening the scene might fix it.");
-                    return _instance;
-                }
-
-                if (_instance == null)
-                {
-                    GameObject go = new GameObject("DefinitionManager");
-                    _instance = go.AddComponent<DefinitionManager>();
-                }
-            }
-
-            return _instance;
-        }
-    }
-    #endregion
     private List<Dictionary<string, object>> _csvData;
     public List<Dictionary<string, object>> CSVData { get { return _csvData; } }
 
@@ -59,7 +31,7 @@ public class DefinitionManager : MonoBehaviour
 
     private async void LoadS3Data()
     {
-        string res = await NetworkManager.Instance.API_S3Data("base.csv");
+        string res = await Managers.Network.API_S3Data("base.csv");
         if (res != null)
         {
             _csvData = CSVReader.Read(res);
@@ -78,7 +50,6 @@ public class DefinitionManager : MonoBehaviour
 
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
         LoadS3Data();
     }
 

@@ -20,12 +20,12 @@ namespace InGame
         public static bool IsCompleteExp = false;
         void Awake()
         {
-            var s3Data = DefinitionManager.Instance.CSVData;  // 나중에 이동해야할듯
+            var s3Data = Managers.Definition.CSVData;  // 나중에 이동해야할듯
         }
 
         void Start()
         {
-            NotificationManager.Instance.AddObserver(OnNotiChangeTab, ENotiMessage.ONCLICK_CHANGE_TAB);
+            Managers.Notification.AddObserver(OnNotiChangeTab, ENotiMessage.ONCLICK_CHANGE_TAB);
             if (_ui != null)
             {
                 _ui.Init();
@@ -65,7 +65,7 @@ namespace InGame
 
         public void Dispose()
         {
-            NotificationManager.Instance.RemoveObserver(OnNotiChangeTab, ENotiMessage.ONCLICK_CHANGE_TAB);
+            Managers.Notification.RemoveObserver(OnNotiChangeTab, ENotiMessage.ONCLICK_CHANGE_TAB);
             _ui.Dispose();
             this.Dispose(true);
             GC.SuppressFinalize(this);
