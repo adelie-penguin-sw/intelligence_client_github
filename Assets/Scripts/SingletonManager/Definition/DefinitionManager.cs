@@ -34,28 +34,12 @@ public class DefinitionManager : MonoBehaviour
         }
     }
     #endregion
+
     private List<Dictionary<string, object>> _csvData;
     public List<Dictionary<string, object>> CSVData { get { return _csvData; } }
 
-    // Exchanging Equation
-    private string _brainGeneratingCostEquation;
-    private string _channelGeneratingCostEquation;
-    private string _brainUpgradeCostEquation;
-    private string _brainDecomposingGainEquation;
-    private string _tpRewardForResetEquation;
-
-    // Init Condition
-    private int _initNP;
-    private int _initTP;
-
-    // 모든 필드의 getter
-    public string BRAIN_GEN_COST_EQ { get { return _brainGeneratingCostEquation; } }
-    public string CHNNL_GEN_COST_EQ { get { return _channelGeneratingCostEquation; } }
-    public string BRAIN_UPG_COST_EQ { get { return _brainUpgradeCostEquation; } }
-    public string BRAIN_DCP_GAIN_EQ { get { return _brainDecomposingGainEquation; } }
-    public string TPRWD_FOR_RSET_EQ { get { return _tpRewardForResetEquation; } }
-    public int INIT_NP { get { return _initNP; } }
-    public int INIT_TP { get { return _initTP; } }
+    private Dictionary<string, object> _definitionDic;
+    public Dictionary<string, object> DefinitionDic { get { return _definitionDic; } }
 
     private async void LoadS3Data()
     {
@@ -64,15 +48,24 @@ public class DefinitionManager : MonoBehaviour
         {
             _csvData = CSVReader.Read(res);
 
-            // 모든 데이터 일일이 할당, 일단은
-            _brainGeneratingCostEquation = (string)_csvData[0]["value"];
-            _channelGeneratingCostEquation = (string)_csvData[1]["value"];
-            _brainUpgradeCostEquation = (string)_csvData[2]["value"];
-            _brainDecomposingGainEquation = (string)_csvData[3]["value"];
-            _tpRewardForResetEquation = (string)_csvData[4]["value"];
-
-            _initNP = (int)_csvData[9]["value"];
-            _initTP = (int)_csvData[10]["value"];
+            foreach (var li in _csvData)
+            {
+                string value = (string)li["value"];
+                switch (li["type"])
+                {
+                    case "string":
+                        _definitionDic.Add((string)li["name"], value);
+                        break;
+                    case "int":
+                        _definitionDic.Add((string)li["name"], int.Parse(value));
+                        break;
+                    case "[]string":
+                        _definitionDic.Add((string)li["name"], value);  // 일단 그대로 추가, 나중에 형식에 따라 변환할 예정
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
     }
 

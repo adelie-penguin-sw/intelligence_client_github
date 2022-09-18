@@ -101,7 +101,7 @@ namespace InGame
 
                 inputMap.Add("multiplier", _brain.BrainData.multiplier);
                 inputMap.Add("tpu03", new UpArrowNotation());   // 아직 반영안됨!!!
-                UpArrowNotation upgradeCost = DefinitionManager.Instance.CalcEquation(inputMap, DefinitionManager.Instance.BRAIN_UPG_COST_EQ);
+                UpArrowNotation upgradeCost = DefinitionManager.Instance.CalcEquation(inputMap, (string)DefinitionManager.Instance.DefinitionDic["BrainUpgradeCostEquation"]);
                 inputMap.Clear();
 
                 string upgradeText = _brain.SenderIdList.Count == 0 ? "+1 Intellect" : "x2 Multiplier";
@@ -114,7 +114,7 @@ namespace InGame
 
                     inputMap.Add("intellect", brain.Intellect);
                     inputMap.Add("tpu04", new UpArrowNotation());   // 아직 반영안됨!!!
-                    totalSenderNP += DefinitionManager.Instance.CalcEquation(inputMap, DefinitionManager.Instance.BRAIN_DCP_GAIN_EQ);
+                    totalSenderNP += DefinitionManager.Instance.CalcEquation(inputMap, (string)DefinitionManager.Instance.DefinitionDic["brainDecomposingGainEquation"]);
                 }
                 _decomposeReward.text = _brain.SenderIdList.Count == 0 ?
                     string.Format("Decompose\nfor {0} NP\n", storedNP) :
