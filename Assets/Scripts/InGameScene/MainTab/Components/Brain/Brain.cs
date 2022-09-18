@@ -124,7 +124,7 @@ namespace MainTab
         {
             _brainData = null;
             _collisionCount = 0;
-            PoolManager.Instance.DespawnObject(EPrefabsType.BRAIN, gameObject);
+            Managers.Pool.DespawnObject(EPrefabsType.BRAIN, gameObject);
         }
 
         /// <summary>
