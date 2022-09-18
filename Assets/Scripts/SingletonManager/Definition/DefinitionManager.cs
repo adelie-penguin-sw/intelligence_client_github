@@ -39,7 +39,7 @@ public class DefinitionManager : MonoBehaviour
     public List<Dictionary<string, object>> CSVData { get { return _csvData; } }
 
     private Dictionary<string, object> _definitionDic = new Dictionary<string, object>();
-    public Dictionary<string, object> DefinitionDic { get { return _definitionDic; } }
+    public object this[string name] { get { return _definitionDic[name]; } }
 
     private async void LoadS3Data()
     {
