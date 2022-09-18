@@ -4,41 +4,6 @@ using System;
 public class Exchange
 {
     /// <summary>
-    /// Tetration함수 10^^x 의 역함수입니다. 즉, 지수 타워가 몇 층인지를 실수값으로 반환하는 연속함수입니다.
-    /// </summary>
-    /// <param name="number"></param>
-    /// <returns></returns>
-    /// <exception cref="Exception"></exception>
-    public static double Slog10(UpArrowNotation number)
-    {
-        if (number.OperatorLayerCount > 9)
-        {
-            throw new Exception("Expressions with tetration or higher are not allowed");
-        }
-
-        double topLayerValue;
-        List<double> top3Layer = number.Top3Layer;
-
-        switch (number.OperatorLayerCount)
-        {
-            case 0:
-                topLayerValue = top3Layer[0];
-                break;
-            case 1:
-                topLayerValue = top3Layer[1] + Math.Log10(top3Layer[0]);
-                break;
-            default:
-                topLayerValue = top3Layer[2] + Math.Log10(top3Layer[1]);
-                break;
-        }
-
-        double ln10 = Math.Log(10);
-        double fracPart = Math.Log(Math.Log10(topLayerValue) * (ln10 - 1) + 1, ln10);
-
-        return number.OperatorLayerCount + fracPart;
-    }
-
-    /// <summary>
     /// 브레인 생성 시 소비될 NP량을 계산하는 함수입니다. 베이스 비용과 직전까지의 브레인 생성 횟수, 코어로부터의 물리적 거리, 그리고 비용 증가율에 따라 결정됩니다.
     /// </summary>
     /// <param name="baseCost"></param>
@@ -69,7 +34,7 @@ public class Exchange
         double c = 1f;
         double d = 1f;
 
-        return baseCost * Math.Pow(a, b * Math.Pow(c * receiverDistance, d * (Slog10(senderIntellect + 1) + 1)));
+        return baseCost * Math.Pow(a, b * Math.Pow(c * receiverDistance, d * (UpArrowNotation.Slog10(senderIntellect + 1).CalculateTop3Layer() + 1)));
     }
 
     /// <summary>
