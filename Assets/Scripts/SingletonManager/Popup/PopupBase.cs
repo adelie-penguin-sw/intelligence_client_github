@@ -15,6 +15,7 @@ public class PopupBase : MonoBehaviour
     #region private field
     [SerializeField] private PopupType _popupType = PopupType.UNKNOWN;
     [SerializeField] private EPrefabsType _prefabType = EPrefabsType.POPUP;
+    [SerializeField] private Button[] _closeBtn;
     #endregion
 
     #region property
@@ -29,12 +30,17 @@ public class PopupBase : MonoBehaviour
 
     public virtual void Init()
     {
+        Set(); 
     }
 
     public virtual void Set()
     {
         gameObject.GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);
         gameObject.GetComponent<RectTransform>().offsetMax = new Vector2(0, 0);
+        foreach (var closeBtn in _closeBtn)
+        {
+            closeBtn.onClick.AddListener(Dispose);
+        }
     }
 
     public virtual void AdvanceTime(float dt_sec)
@@ -44,7 +50,11 @@ public class PopupBase : MonoBehaviour
 
     public virtual void Dispose()
     {
-        PopupManager.Instance.Delete(_popupType, this);
+        PopupManager.Instance.DeleteCall(_popupType);
         PoolManager.Instance.DespawnObject(_prefabType, gameObject);
+        foreach (var closeBtn in _closeBtn)
+        {
+            closeBtn.onClick.RemoveAllListeners();
+        }
     }
 }
