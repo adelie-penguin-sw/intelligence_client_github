@@ -259,6 +259,7 @@ public class NetworkManager : MonoBehaviour
                     PATH_TP_UPGRADE,
                     ENetworkSendType.POST,
                     json);
+        UserData.UpdateTPUpgradeCounts(res.upgradeCondition);
         UserData.TP = new UpArrowNotation(
         res.TP.top3Coeffs[0],
         res.TP.top3Coeffs[1],
@@ -276,6 +277,7 @@ public class NetworkManager : MonoBehaviour
             await SendToServer<SingleNetworkResponse>(
                     PATH_SINGLE_NETWORK,
                     ENetworkSendType.GET);
+        UserData.UpdateTPUpgradeCounts(res.upgradeCondition);
         return res;
     }
 
@@ -297,7 +299,6 @@ public class NetworkManager : MonoBehaviour
         return res;
     }
 
-    // S3 파일의 경우 일단 string으로 받게 해놓음
     public async UniTask<string> API_S3Data(string fileName)
     {
         var res =
