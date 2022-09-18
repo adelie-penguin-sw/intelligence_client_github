@@ -50,6 +50,28 @@ public class UserData
         }
     }
 
+    private static Dictionary<long, long> _tpUpgradeCounts = new Dictionary<long, long>();
+    public static Dictionary<long, long> TPUpgradeCounts
+    {
+        get
+        {
+            return _tpUpgradeCounts;
+        }
+    }
+
+    public static void UpdateTPUpgradeCounts(List<UpgradeCondition> upgradeConditions)
+    {
+        _tpUpgradeCounts.Clear();
+        foreach (UpgradeCondition cond in upgradeConditions)
+        {
+            _tpUpgradeCounts.Add(cond.id, cond.upgrade);
+        }
+        if (_tpUpgradeCounts.ContainsKey(0))
+        {
+            _tpUpgradeCounts.Remove(0);
+        }
+    }
+
     public static void SetString(string key, string value)
     {
         PlayerPrefs.SetString(key, value);
