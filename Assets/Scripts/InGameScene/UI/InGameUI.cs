@@ -37,27 +37,27 @@ public class InGameUI : MonoBehaviour, IGameBasicModule
     }
 
     /// <summary>
-    /// 상단 Intellect Text를 해당 인자로 변경한다.
+    /// ???? Intellect Text?? ???? ?????? ????????.
     /// </summary>
-    /// <param name="intellect">변경할 intellect</param>
+    /// <param name="intellect">?????? intellect</param>
     public void UpdateCoreIntellectText()
     {
         _txtCoreIntellect.text = UserData.CoreIntellect.ToString();
     }
 
     /// <summary>
-    /// 상단 NP Text를 해당 인자로 변경한다.
+    /// ???? NP Text?? ???? ?????? ????????.
     /// </summary>
-    /// <param name="np">변경할 np</param>
+    /// <param name="np">?????? np</param>
     public void UpdateNPText()
     {
         _txtNP.text = string.Format("NP: {0}", UserData.NP.ToString());
     }
 
     /// <summary>
-    /// 상단 TP Text를 해당 인자로 변경한다.
+    /// ???? TP Text?? ???? ?????? ????????.
     /// </summary>
-    /// <param name="tp">변경할 tp</param>
+    /// <param name="tp">?????? tp</param>
     public void UpdateTPText()
     {
         _txtTP.text = string.Format("TP: {0}", UserData.TP.ToString());
@@ -65,7 +65,7 @@ public class InGameUI : MonoBehaviour, IGameBasicModule
 
     public void OnClick_LeaderBoard()
     {
-        NotificationManager.Instance.PostNotification(ENotiMessage.ONCLICK_LEADERBOARD);
+        Managers.Notification.PostNotification(ENotiMessage.ONCLICK_LEADERBOARD);
     }
 
     public void OnClick_Logout()

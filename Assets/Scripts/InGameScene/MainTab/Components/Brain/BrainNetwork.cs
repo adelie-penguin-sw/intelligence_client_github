@@ -119,7 +119,7 @@ namespace MainTab
                 _brainNetWork[0].Intellect >= _experimentGoal)
             {
                 InGame.InGameManager.IsCompleteExp = true;
-                NotificationManager.Instance.PostNotification(ENotiMessage.EXPERIMENT_COMPLETE);
+                Managers.Notification.PostNotification(ENotiMessage.EXPERIMENT_COMPLETE);
             }
             else
             {
