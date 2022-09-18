@@ -12,39 +12,29 @@ public class PopupBase : MonoBehaviour
     #region constant
     #endregion
 
-    #region attributes
-    [SerializeField] private Button[] _closeBtn; // 닫는 버튼
-    /*[SerializeField] private EPopupType _popupType = EPopupType.Normal;*/ //필요없어 보임
+    #region private field
+    [SerializeField] private PopupType _popupType = PopupType.UNKNOWN;
     [SerializeField] private EPrefabsType _prefabType = EPrefabsType.POPUP;
-
-    private PopupBase _next;
-    private PopupBase _prev;
-
+    [SerializeField] private Button[] _closeBtn;
     #endregion
 
-    #region [get, set]
-    public PopupBase Next
-    {
-        get { return _next; }
-        set { _next = value; }
-    }
-    public PopupBase Prev
-    {
-        get { return _prev; }
-        set { _prev = value; }
+    #region property
+    public PopupType PopupType
+    { 
+        set
+        {
+            _popupType = value;
+        }
     }
     #endregion
 
     public virtual void Init()
     {
+        Set(); 
     }
 
     public virtual void Set()
     {
-        if (_closeBtn == null)
-        {
-            Debug.LogError("[self] expected close button");
-        }
         gameObject.GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);
         gameObject.GetComponent<RectTransform>().offsetMax = new Vector2(0, 0);
         foreach (var closeBtn in _closeBtn)
@@ -58,62 +48,13 @@ public class PopupBase : MonoBehaviour
 
     }
 
-    // 팝업 여러개 떠있을때 특정 팝업을 최상단으로 옮겨오는 함수
-    public void SetHead()
-    {
-        if (this == PopupManager.Instance.Head)
-        {
-            return;
-        }
-        if (this == PopupManager.Instance.Tail)
-        {
-            PopupManager.Instance.Tail = this.Prev;
-            this.Prev.Next = null;
-        }
-        else
-        {
-            if (this.Next != null)
-                this.Prev.Next = this.Next;
-            if (this.Prev != null)
-                this.Next.Prev = this.Prev;
-        }
-
-        this.Prev = null;
-        this.Next = PopupManager.Instance.Head;
-        this.Next.Prev = this;
-        PopupManager.Instance.Head = this;
-    }
-
     public virtual void Dispose()
     {
-        if (this == PopupManager.Instance.Head && this == PopupManager.Instance.Tail)
-        {
-            PopupManager.Instance.Head = null;
-            PopupManager.Instance.Tail = null;
-        }
-        else if (this == PopupManager.Instance.Head)
-        {
-            PopupManager.Instance.Head = this.Next;
-            this.Next.Prev = null;
-        }
-        else if (this == PopupManager.Instance.Tail)
-        {
-            PopupManager.Instance.Tail = this.Prev;
-            this.Prev.Next = null;
-        }
-        else
-        {
-            if (this.Next != null)
-                this.Prev.Next = this.Next;
-            if (this.Prev != null)
-                this.Next.Prev = this.Prev;
-        }
-        _next = null;
-        _prev = null;
+        PopupManager.Instance.DeleteCall(_popupType);
+        PoolManager.Instance.DespawnObject(_prefabType, gameObject);
         foreach (var closeBtn in _closeBtn)
         {
             closeBtn.onClick.RemoveAllListeners();
         }
-        Managers.Pool.DespawnObject(_prefabType, gameObject);
     }
 }
