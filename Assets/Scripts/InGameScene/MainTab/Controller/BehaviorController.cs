@@ -171,7 +171,7 @@ namespace MainTab
             private bool _isBrainPointDown = false;
             private bool _isTouchStartBrain = false;
             private float _dtBrainPointDown = 0f;
-            private const float _limitTowTouch = 0.3f;
+            private const float _limitTowTouch = 0.6f;
             public void Init(BehaviorController controller)
             {
                 _controller = controller;
@@ -185,6 +185,7 @@ namespace MainTab
                 _dtBrainPointDown = 0f;
                 _isTwoTouch = false;
                 _dtCountTowTouch = 0;
+                _isMoveStart = false;
             }
 
             public void AdvanceTime(float dt_sec)
@@ -281,6 +282,7 @@ namespace MainTab
                 _dtBrainPointDown = 0f;
                 _isTwoTouch = false;
                 _dtCountTowTouch = 0;
+                _isMoveStart = false;
             }
 
             public void Dispose()
@@ -320,7 +322,8 @@ namespace MainTab
                 }
             }
 
-            public float orthoZoomSpeed = 0.01f;      //줌인,줌아웃할때 속도(OrthoGraphic모드 용)  
+            private float orthoZoomSpeed = 0.01f;      //줌인,줌아웃할때 속도(OrthoGraphic모드 용)
+            private bool _isMoveStart = false;
             /// <summary>
             /// 모바일 스크린 조작
             /// </summary>
@@ -328,19 +331,42 @@ namespace MainTab
             {
                 //Debug.LogError("Mobile");
 
-                if (Input.touchCount == 1 && !_isTwoTouch)
+                if (Input.touchCount == 1)
                 {
-                    Touch touch = Input.GetTouch(0);
-                    if (touch.phase == TouchPhase.Began)
+                    if (!_isTwoTouch)
                     {
-                        prePos = touch.position - touch.deltaPosition;
+                        Touch touch = Input.GetTouch(0);
+                        Debug.Log(touch.phase);
+                        if (touch.phase == TouchPhase.Began || touch.phase == TouchPhase.Stationary)
+                        {
+                            prePos = touch.position - touch.deltaPosition;
+                            _isMoveStart = true;
+                        }
+                        else if (touch.phase == TouchPhase.Moved)
+                        {
+                            if (!_isMoveStart)
+                            {
+                                prePos = touch.position - touch.deltaPosition;
+                                _isMoveStart = true;
+                            }
+                            else
+                            {
+                                nowPos = touch.position - touch.deltaPosition;
+                                movePos = (Vector3)(prePos - nowPos) * Time.deltaTime * Speed;
+                                Camera.main.transform.Translate(movePos);
+                                prePos = touch.position - touch.deltaPosition;
+                            }
+                        }
+                        else if(touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+                        {
+                            _isMoveStart = false;
+                        }
                     }
-                    else if (touch.phase == TouchPhase.Moved)
+                    else
                     {
-                        nowPos = touch.position - touch.deltaPosition;
-                        movePos = (Vector3)(prePos - nowPos) * Time.deltaTime * Speed;
-                        Camera.main.transform.Translate(movePos);
-                        prePos = touch.position - touch.deltaPosition;
+                        prePos = new Vector2(0, 0);
+                        nowPos = new Vector2(0, 0);
+                        movePos = new Vector2(0, 0);
                     }
                 }
                 else if (Input.touchCount == 2) //손가락 2개가 눌렸을 때
@@ -380,7 +406,7 @@ namespace MainTab
             public void Init(BehaviorController controller)
             {
                 _controller = controller;
-                _tempBrain = PoolManager.Instance.GrabPrefabs(EPrefabsType.BRAIN, "Brain", controller._view.transform)
+                _tempBrain = Managers.Pool.GrabPrefabs(EPrefabsType.BRAIN, "Brain", controller._view.transform)
                             .GetComponent<Brain>();
                 _tempBrain.Init(new BrainData(-1,EBrainType.GUIDEBRAIN));
             }
@@ -508,7 +534,7 @@ namespace MainTab
             /// </summary>
             private void CreateTempChannel()
             {
-                _channel = PoolManager.Instance.GrabPrefabs(EPrefabsType.CHANNEL, "Channel", _controller._view.transform).GetComponent<Channel>();
+                _channel = Managers.Pool.GrabPrefabs(EPrefabsType.CHANNEL, "Channel", _controller._view.transform).GetComponent<Channel>();
                 _channel.Init(EChannelType.TEMP, _currentSenderBrain.transform, _currentSenderBrain.transform);
             }
 
