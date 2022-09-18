@@ -9,43 +9,8 @@ using UnityEngine.Networking;
 using System.Threading.Tasks;
 using UnityEditor;
 
-public class NetworkManager : MonoBehaviour
+public class NetworkManager
 {
-    #region Singelton
-    private static NetworkManager _instance;
-    public static NetworkManager Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<NetworkManager>();
-                if (FindObjectsOfType<NetworkManager>().Length > 1)
-                {
-                    Debug.LogError("[Singleton] Something went really wrong " +
-                        " - there should never be more than 1 singleton!" +
-                        " Reopening the scene might fix it.");
-                    return _instance;
-                }
-
-                if (_instance == null)
-                {
-                    GameObject go = new GameObject("NetworkManager");
-                    _instance = go.AddComponent<NetworkManager>();
-                }
-            }
-
-            return _instance;
-        }
-    }
-    #endregion
-
-
-    void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
-
     #region REST API FUNCTION
     protected static double timeout = 5;
     //private const string _baseUrl = "http://ec2-43-200-22-171.ap-northeast-2.compute.amazonaws.com:8080"; //테스트 서버 url
@@ -54,7 +19,7 @@ public class NetworkManager : MonoBehaviour
 
     private async UniTask<T> SendToServer<T>(string url, ENetworkSendType sendType, string jsonBody = null, ENetworkRecvType resType = ENetworkRecvType.JSON)
     {
-        LoadingPopup loadingPopup = PopupManager.Instance.CreateNormalPopup(EPrefabsType.POPUP, "LoadingPopup").GetComponent<LoadingPopup>();
+        LoadingPopup loadingPopup = Managers.Popup.CreateNormalPopup(EPrefabsType.POPUP, "LoadingPopup").GetComponent<LoadingPopup>();
         //await Task.Delay(1000);
         //1. 네트워크 체크.
         await CheckNetwork();
@@ -131,7 +96,7 @@ public class NetworkManager : MonoBehaviour
         {
             ErrorResponse errorResult = JsonUtility.FromJson<ErrorResponse>(request.downloadHandler.text);
 
-            GameObject go = PopupManager.Instance.CreateNormalPopup(EPrefabsType.POPUP, "ErrorPopup");
+            GameObject go = Managers.Popup.CreateNormalPopup(EPrefabsType.POPUP, "ErrorPopup");
             go.GetComponent<ErrorPopup>().Init(errorResult);
 
             loadingPopup.Dispose();
