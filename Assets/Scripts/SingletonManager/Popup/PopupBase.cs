@@ -50,8 +50,8 @@ public class PopupBase : MonoBehaviour
 
     public virtual void Dispose()
     {
-        PopupManager.Instance.DeleteCall(_popupType);
-        PoolManager.Instance.DespawnObject(_prefabType, gameObject);
+        Managers.Popup.DeleteCall(_popupType);
+        Managers.Pool.DespawnObject(_prefabType, gameObject);
         foreach (var closeBtn in _closeBtn)
         {
             closeBtn.onClick.RemoveAllListeners();
