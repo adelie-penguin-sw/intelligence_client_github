@@ -114,6 +114,6 @@ public class PopupBase : MonoBehaviour
         {
             closeBtn.onClick.RemoveAllListeners();
         }
-        PoolManager.Instance.DespawnObject(_prefabType, gameObject);
+        Managers.Pool.DespawnObject(_prefabType, gameObject);
     }
 }

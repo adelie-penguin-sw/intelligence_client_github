@@ -26,7 +26,7 @@ namespace InGame
                 res.allRank.Sort((r1, r2) => r1.rank.CompareTo(r2.rank));
                 foreach (var item in res.allRank)
                 {
-                    RankItem rankItem = PoolManager.Instance.GrabPrefabs(EPrefabsType.RANK_ITEM, "RankItem", _leaderboardContent).GetComponent<RankItem>();
+                    RankItem rankItem = Managers.Pool.GrabPrefabs(EPrefabsType.RANK_ITEM, "RankItem", _leaderboardContent).GetComponent<RankItem>();
                     rankItem.Init(item, item.rank == res.selfRank);
                     _rankItemList.Add(rankItem);
                 }
