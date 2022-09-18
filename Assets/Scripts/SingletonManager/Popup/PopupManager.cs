@@ -199,15 +199,15 @@ public class PopupManager : MonoBehaviour
         return go;
     }
 
-    public void Delete(PopupType type, PopupBase popup)
+    public void DeleteCall(PopupType type)
     {
-        if (type == PopupType.NORMAL)
+        if (type == PopupType.NORMAL && _normalStack.Count > 0)
         {
-            DeleteNormal(); 
+            _normalStack.Pop();
         }
-        else if (type == PopupType.IMPORTANT)
+        else if (type == PopupType.IMPORTANT && _importantStack.Count > 0)
         {
-            DeleteImportant(); 
+            _importantStack.Pop();
         }
     }
 
