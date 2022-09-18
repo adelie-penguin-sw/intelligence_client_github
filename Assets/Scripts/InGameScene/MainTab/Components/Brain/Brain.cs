@@ -186,7 +186,7 @@ namespace MainTab
             {
                 Hashtable _sendData = new Hashtable();
                 _sendData.Add(EDataParamKey.CLASS_BRAIN, this);
-                NotificationManager.Instance.PostNotification(ENotiMessage.MOUSE_DOWN_BRAIN, _sendData);
+                Managers.Notification.PostNotification(ENotiMessage.MOUSE_DOWN_BRAIN, _sendData);
             }
         }
 
@@ -196,7 +196,7 @@ namespace MainTab
                 return;
             if (_brainData.brainType != EBrainType.GUIDEBRAIN)
             {
-                NotificationManager.Instance.PostNotification(ENotiMessage.MOUSE_EXIT_BRAIN);
+                Managers.Notification.PostNotification(ENotiMessage.MOUSE_EXIT_BRAIN);
             }
         }
 
@@ -206,7 +206,7 @@ namespace MainTab
                 return;
             if (_brainData.brainType != EBrainType.GUIDEBRAIN)
             {
-                NotificationManager.Instance.PostNotification(ENotiMessage.MOUSE_UP_BRAIN);
+                Managers.Notification.PostNotification(ENotiMessage.MOUSE_UP_BRAIN);
             }
         }
 
@@ -218,7 +218,7 @@ namespace MainTab
             {
                 Hashtable _sendData = new Hashtable();
                 _sendData.Add(EDataParamKey.CLASS_BRAIN, this);
-                NotificationManager.Instance.PostNotification(ENotiMessage.MOUSE_ENTER_BRAIN, _sendData);
+                Managers.Notification.PostNotification(ENotiMessage.MOUSE_ENTER_BRAIN, _sendData);
             }
         }
 

@@ -101,7 +101,7 @@ namespace InGame
 
                 inputMap.Add("multiplier", _brain.BrainData.multiplier);
                 inputMap.Add("tpu03", new UpArrowNotation());   // 아직 반영안됨!!!
-                UpArrowNotation upgradeCost = DefinitionManager.Instance.CalcEquation(inputMap, DefinitionManager.Instance.BRAIN_UPG_COST_EQ);
+                UpArrowNotation upgradeCost = Managers.Definition.CalcEquation(inputMap, Managers.Definition.BRAIN_UPG_COST_EQ);
                 inputMap.Clear();
 
                 string upgradeText = _brain.SenderIdList.Count == 0 ? "+1 Intellect" : "x2 Multiplier";
@@ -114,7 +114,7 @@ namespace InGame
 
                     inputMap.Add("intellect", brain.Intellect);
                     inputMap.Add("tpu04", new UpArrowNotation());   // 아직 반영안됨!!!
-                    totalSenderNP += DefinitionManager.Instance.CalcEquation(inputMap, DefinitionManager.Instance.BRAIN_DCP_GAIN_EQ);
+                    totalSenderNP += Managers.Definition.CalcEquation(inputMap, Managers.Definition.BRAIN_DCP_GAIN_EQ);
                 }
                 _decomposeReward.text = _brain.SenderIdList.Count == 0 ?
                     string.Format("Decompose\nfor {0} NP\n", storedNP) :
@@ -124,14 +124,14 @@ namespace InGame
         public override void Dispose()
         {
             base.Dispose();
-            NotificationManager.Instance.PostNotification(ENotiMessage.CLOSE_BRAININFO_POPUP);
+            Managers.Notification.PostNotification(ENotiMessage.CLOSE_BRAININFO_POPUP);
         }
 
         public void OnClick_SellBrain()
         {
             Hashtable _sendData = new Hashtable();
             _sendData.Add(EDataParamKey.CLASS_BRAIN, _brain.BrainData);
-            NotificationManager.Instance.PostNotification(ENotiMessage.ONCLICK_SELL_BRAIN, _sendData);
+            Managers.Notification.PostNotification(ENotiMessage.ONCLICK_SELL_BRAIN, _sendData);
             Dispose();
         }
 
@@ -141,7 +141,7 @@ namespace InGame
             {
                 Hashtable _sendData = new Hashtable();
                 _sendData.Add(EDataParamKey.BRAIN_ID, _brain.BrainData.id);
-                NotificationManager.Instance.PostNotification(ENotiMessage.ONCLICK_UPGRADE_BRAIN, _sendData);
+                Managers.Notification.PostNotification(ENotiMessage.ONCLICK_UPGRADE_BRAIN, _sendData);
             }
             else
             {
