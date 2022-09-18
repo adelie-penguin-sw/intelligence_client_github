@@ -32,7 +32,7 @@ public class UserData
         set
         {
             _tp = value;
-            NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_TP);
+            Managers.Notification.PostNotification(ENotiMessage.UPDATE_TP);
         }
     }
 
@@ -46,7 +46,7 @@ public class UserData
         set
         {
             _np = value;
-            NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_NP);
+            Managers.Notification.PostNotification(ENotiMessage.UPDATE_NP);
         }
     }
 
