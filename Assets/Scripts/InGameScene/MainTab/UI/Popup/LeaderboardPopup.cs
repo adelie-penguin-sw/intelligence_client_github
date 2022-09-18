@@ -20,7 +20,7 @@ namespace InGame
         {
             base.Init();
 
-            var res = await NetworkManager.Instance.API_Leaderboard();
+            var res = await Managers.Network.API_Leaderboard();
             if (res != null)
             {
                 res.allRank.Sort((r1, r2) => r1.rank.CompareTo(r2.rank));
@@ -51,7 +51,7 @@ namespace InGame
             {
                 item.Dispose();
             }
-            NotificationManager.Instance.PostNotification(ENotiMessage.CLOSE_LEADERBOARD_POPUP);
+            Managers.Notification.PostNotification(ENotiMessage.CLOSE_LEADERBOARD_POPUP);
         }
     }
 }
