@@ -97,7 +97,7 @@ namespace InGame
             _handlers.Add(EGameState.MAIN_TAB, _goTemp.GetComponent<MainTab.MainTabApplication>());
 
             _goTemp = Managers.Pool.GrabPrefabs(EPrefabsType.TAP_APPLICATION, "TpTabApp", transform);
-            _handlers.Add(EGameState.TP_UPGRADE_TAB, _goTemp.GetComponent<TpTabApplication>());
+            _handlers.Add(EGameState.TP_UPGRADE_TAB, _goTemp.GetComponent<TpTab.TpTabApplication>());
 
             foreach (EGameState state in _handlers.Keys)
             {

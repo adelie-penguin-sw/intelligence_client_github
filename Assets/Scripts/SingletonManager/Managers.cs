@@ -51,6 +51,7 @@ public class Managers : MonoBehaviour
             _instance = obj.GetComponent<Managers>();
             _instance._poolManager.Init();
             _instance._popupManager.Init();
+            _instance._definitionManager.Init();
         }
     }
 }
