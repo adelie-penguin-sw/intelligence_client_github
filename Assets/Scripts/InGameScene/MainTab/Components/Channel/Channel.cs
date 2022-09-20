@@ -98,7 +98,7 @@ namespace MainTab
             _trSender = null;
             _trReceiver = null;
             _type = EChannelType.UNKNOWN;
-            PoolManager.Instance.DespawnObject(EPrefabsType.CHANNEL, this.gameObject);
+            Managers.Pool.DespawnObject(EPrefabsType.CHANNEL, this.gameObject);
         }
 
         /// <summary>
