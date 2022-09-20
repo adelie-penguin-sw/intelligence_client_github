@@ -19,7 +19,8 @@ public class NetworkManager
 
     private async UniTask<T> SendToServer<T>(string url, ENetworkSendType sendType, string jsonBody = null, ENetworkRecvType resType = ENetworkRecvType.JSON)
     {
-        LoadingPopup loadingPopup = Managers.Popup.CreateNormalPopup(EPrefabsType.POPUP, "LoadingPopup").GetComponent<LoadingPopup>();
+        LoadingPopup loadingPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "LoadingPopup", PopupType.NORMAL)
+            .GetComponent<LoadingPopup>();
         //await Task.Delay(1000);
         //1. 네트워크 체크.
         await CheckNetwork();
@@ -96,7 +97,7 @@ public class NetworkManager
         {
             ErrorResponse errorResult = JsonUtility.FromJson<ErrorResponse>(request.downloadHandler.text);
 
-            GameObject go = Managers.Popup.CreateNormalPopup(EPrefabsType.POPUP, "ErrorPopup");
+            GameObject go = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "ErrorPopup", PopupType.NORMAL);
             go.GetComponent<ErrorPopup>().Init(errorResult);
 
             loadingPopup.Dispose();
