@@ -3,49 +3,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoolManager : MonoBehaviour
+public class PoolManager
 {
-    #region Singelton
-    private static PoolManager _instance;
-    public static PoolManager Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<PoolManager>();
-                if (FindObjectsOfType<PoolManager>().Length > 1)
-                {
-                    Debug.LogError("[Singleton] Something went really wrong " +
-                        " - there should never be more than 1 singleton!" +
-                        " Reopening the scene might fix it.");
-                    return _instance;
-                }
-
-                if (_instance == null)
-                {
-                    GameObject go = new GameObject("PoolManager");
-                    _instance = go.AddComponent<PoolManager>();
-                }
-            }
-
-            return _instance;
-        }
-    }
-    #endregion
 
     private Dictionary<EPrefabsType, Dictionary<string, List<PoolObject>>> _dicPool = new Dictionary<EPrefabsType, Dictionary<string, List<PoolObject>>>();
+    private Transform _layer;
 
-    public void Awake()
+    public void Init()
     {
-        DontDestroyOnLoad(gameObject);
+        _layer = Managers.ManagerObj.transform;
         foreach (EPrefabsType type in Enum.GetValues(typeof(EPrefabsType)))
         {
-            _dicPool.Add(type, new Dictionary<string, List<PoolObject>>());
+            if(!_dicPool.ContainsKey(type))
+                _dicPool.Add(type, new Dictionary<string, List<PoolObject>>());
         }
 
-       // NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.ChangeSceneState);
     }
+    //public void Awake()
+    //{
+    //    foreach (EPrefabsType type in Enum.GetValues(typeof(EPrefabsType)))
+    //    {
+    //        _dicPool.Add(type, new Dictionary<string, List<PoolObject>>());
+    //    }
+
+    //   // NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.ChangeSceneState);
+    //}
 
     public void OnNotification(Notification noti)
     {
@@ -64,7 +46,7 @@ public class PoolManager : MonoBehaviour
                 foreach (var remove in removeList)
                 {
                     pool.Value.Remove(remove);
-                    Destroy(remove.gameObject);
+                    GameObject.Destroy(remove.gameObject);
                 }
             }
         }
@@ -108,7 +90,7 @@ public class PoolManager : MonoBehaviour
         {
             if (_dicPool[type].ContainsKey(poolObj.Name))
             {
-                poolObj.DisableObject(this.transform);
+                poolObj.DisableObject(_layer);
                 _dicPool[type][poolObj.Name].Add(poolObj);
             }
         }
@@ -121,7 +103,7 @@ public class PoolManager : MonoBehaviour
         if (go == null)
             return null;
 
-        go = Instantiate(go, this.transform);
+        go = GameObject.Instantiate(go, _layer);
 
         if (go.TryGetComponent<PoolObject>(out PoolObject poolObj))
         {
