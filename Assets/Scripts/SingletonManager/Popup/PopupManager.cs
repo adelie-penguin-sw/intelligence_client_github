@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEditor;
 using Cysharp.Threading.Tasks.Triggers;
 using UnityEngine.Rendering.Universal.Internal;
@@ -12,13 +13,19 @@ public class PopupManager
     public void Init()
     {
         SetCanvas();
-        foreach (var importantPopup in _importantStack)
+
+        foreach (PopupType type in Enum.GetValues(typeof(PopupType)))
         {
-            importantPopup.Init();
+            if (_stackDic.ContainsKey(type))
+                _stackDic.Add(type, new Stack<PopupBase>());
         }
-        foreach (var normalPopup in _normalStack)
+
+        foreach (var item in _stackDic)
         {
-            normalPopup.Init();
+            foreach (var popup in item.Value)
+            {
+                popup.Init();
+            }
         }
         //NotificationCenter.Instance.AddObserver(OnNotification, ENotiMessage.ChangeSceneState);
 
@@ -26,13 +33,12 @@ public class PopupManager
 
     public void AdvanceTime(float dt_sec )
     {
-        foreach (var importantPopup in _importantStack)
+        foreach (var item in _stackDic)
         {
-            importantPopup.AdvanceTime(dt_sec);
-        }
-        foreach(var normalPopup in _normalStack)
-        {
-            normalPopup.AdvanceTime(dt_sec);
+            foreach (var popup in item.Value)
+            {
+                popup.AdvanceTime(dt_sec);
+            }
         }
     }
     #endregion
@@ -42,23 +48,13 @@ public class PopupManager
     private GameObject go = null;
     private GameObject _importantPopupGroup = null;
     private GameObject _normalPopupGroup = null;
-    private Stack<PopupBase> _importantStack = new Stack<PopupBase>();
-    private Stack<PopupBase> _normalStack = new Stack<PopupBase>();
+    private Dictionary<PopupType, Stack<PopupBase>> _stackDic = new Dictionary<PopupType, Stack<PopupBase>>();
     #endregion
 
-    #region private method
+    #region private methods
     private void SetCanvas()
     {
         CreateCanvas();
-
-        _normalPopupGroup = new GameObject("NormalPopupGroup");
-        _importantPopupGroup = new GameObject("ImportantPopupGroup");
-        _normalPopupGroup.AddComponent<RectTransform>();
-        _importantPopupGroup.AddComponent<RectTransform>();
-        _normalPopupGroup.transform.SetParent(_canvas.transform, false);
-        _importantPopupGroup.transform.SetParent(_canvas.transform, false);
-        CopySize(_normalPopupGroup);
-        CopySize(_importantPopupGroup);
     }
 
     private void CreateCanvas()
@@ -76,6 +72,8 @@ public class PopupManager
             _canvas = go.AddComponent<Canvas>();
             Debug.LogError("not canvas");
         }
+        _normalPopupGroup = _canvas.transform.GetChild(0).gameObject;
+        _importantPopupGroup = _canvas.transform.GetChild(1).gameObject;
     }
 
     private void OnNotification(Notification noti)
@@ -91,13 +89,6 @@ public class PopupManager
         //}
     }
 
-    private void CopySize(GameObject group)
-    {
-        RectTransform rectTransform = _canvas.GetComponent<RectTransform>();
-        RectTransform objRectTransform = group.GetComponent<RectTransform>();
-        objRectTransform.sizeDelta = rectTransform.sizeDelta;
-    }
-
     private GameObject CreatePopup(EPrefabsType type, string name, Transform layer)
     {
         go = Managers.Pool.GrabPrefabs(type, name, layer);
@@ -108,32 +99,48 @@ public class PopupManager
     #endregion
 
     #region property
-    public int Size
+    public int Count
     {
         get
         {
-            return _importantStack.Count + _normalStack.Count;
+            int ans = 0;
+            foreach (var item in _stackDic)
+            {
+                ans += item.Value.Count;
+            }
+            return ans;
         }
     }
 
-    public int NormalSize
+    public int NormalCount
     {
         get
         {
-            return _normalStack.Count;
+            return _stackDic[PopupType.NORMAL].Count;
         }
     }
 
-    public int ImportantSize
+    public int ImportantCount
     {
         get
         {
-            return _importantStack.Count; 
+            return _stackDic[PopupType.IMPORTANT].Count;
         }
     }
     #endregion
 
     #region public method
+    public GameObject CreatePopup(EPrefabsType type, string name, PopupType popuoType)
+    {
+        if (_canvas == null)
+        {
+            Debug.LogError("[Self] expected canvas");
+            CreateCanvas();
+        }
+
+        go = Create
+    }
+
     public GameObject CreateNormalPopup(EPrefabsType type, string name)
     { 
         if (_canvas == null)
@@ -150,7 +157,7 @@ public class PopupManager
         }
         go = CreatePopup(type, name, _normalPopupGroup.transform);
         PopupBase popup = go.GetComponent<PopupBase>();
-        _normalStack.Push(popup);
+        _stackDic[PopupType.NORMAL].Push(popup);
         popup.Init();
         popup.PopupType = PopupType.NORMAL;
         return go;
@@ -170,7 +177,7 @@ public class PopupManager
         }
         go = CreatePopup(type, name, _importantPopupGroup.transform);
         PopupBase popup = go.GetComponent<PopupBase>();
-        _importantStack.Push(popup);
+        _stackDic[PopupType.IMPORTANT].Push(popup);
         popup.Init();
         popup.PopupType = PopupType.IMPORTANT;
         return go;
@@ -178,52 +185,29 @@ public class PopupManager
 
     public void DeleteCall(PopupType type)
     {
-        if (type == PopupType.NORMAL && _normalStack.Count > 0)
-        {
-            _normalStack.Pop();
-        }
-        else if (type == PopupType.IMPORTANT && _importantStack.Count > 0)
-        {
-            _importantStack.Pop();
-        }
+        if (_stackDic[type].Count > 0)
+            _stackDic[type].Pop();
     }
 
-    public void DeleteNormal()
+    public void Delete(PopupType type)
     {
-        if (_normalStack.Count > 0)
-        {
-            _normalStack.Pop().Dispose();
-        }
+        if (_stackDic[type].Count > 0)
+            _stackDic[type].Pop().Dispose();
     }
 
-    public void DeleteImportant()
+    public void DeleteAll(PopupType type)
     {
-        if (_importantStack.Count > 0)
-        {
-            _importantStack.Pop().Dispose();
-        }
+        while (_stackDic[type].Count > 0)
+            _stackDic[type].Pop().Dispose(); 
     }
 
-    public void DeleteNormalAll()
-    {
-        while (_normalStack.Count > 0)
-        {
-            _normalStack.Pop().Dispose();
-        }
-    }
-
-    public void DeleteImportantAll()
-    {
-        while (_importantStack.Count > 0)
-        {
-            _importantStack.Pop().Dispose();
-        }
-    }
-        
     public void DeleteAll()
     {
-        DeleteImportantAll();
-        DeleteNormalAll();
+        foreach (var item in _stackDic)
+        {
+            DeleteAll(item.Key);
+        }
+        
     }
     #endregion
 }
