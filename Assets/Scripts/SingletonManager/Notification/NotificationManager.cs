@@ -1,47 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using static NotificationManager;
 
-/// <summary>
-/// ??? ??? ??? ??? <br />
-/// ????? ???? ?? <br />
-/// </summary>
-public class NotificationManager : MonoBehaviour
+public class NotificationManager
 {
     #region Singelton
     private static bool _appIsClosing = false;
-    private static NotificationManager _instance;
-    public static NotificationManager Instance
-    {
-        get
-        {
-            if (_appIsClosing)
-            {
-                return null;
-            }
-
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<NotificationManager>();
-                if (FindObjectsOfType<NotificationManager>().Length > 1)
-                {
-                    Debug.LogError("[Singleton] Something went really wrong " +
-                        " - there should never be more than 1 singleton!" +
-                        " Reopening the scene might fix it.");
-                    return _instance;
-                }
-
-                if (_instance == null)
-                {
-                    GameObject go = new GameObject("Default Notification Center");
-                    _instance = go.AddComponent<NotificationManager>();
-                }
-            }
-
-            return _instance;
-        }
-    }
 
     void OnApplicationQuit()
     {

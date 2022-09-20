@@ -18,12 +18,18 @@ public class BrainEventUIItem : EventObject
     public override void OnEndDrag(PointerEventData eventData)
     {
         base.OnEndDrag(eventData);
-        NotificationManager.Instance.PostNotification(ENotiMessage.DRAG_END_CREATEBRAIN);
+        Managers.Notification.PostNotification(ENotiMessage.DRAG_END_CREATEBRAIN);
+    }
+
+    public override void OnPointerUp(PointerEventData eventData)
+    {
+        base.OnPointerUp(eventData);
+        Managers.Notification.PostNotification(ENotiMessage.DRAG_END_CREATEBRAIN);
     }
 
     public override void OnPointerDown(PointerEventData eventData)
     {
         base.OnPointerDown(eventData);
-        NotificationManager.Instance.PostNotification(ENotiMessage.DRAG_START_CREATEBRAIN);
+        Managers.Notification.PostNotification(ENotiMessage.DRAG_START_CREATEBRAIN);
     }
 }
