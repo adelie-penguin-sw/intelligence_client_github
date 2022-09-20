@@ -20,13 +20,13 @@ namespace InGame
         {
             base.Init();
 
-            var res = await NetworkManager.Instance.API_Leaderboard();
+            var res = await Managers.Network.API_Leaderboard();
             if (res != null)
             {
                 res.allRank.Sort((r1, r2) => r1.rank.CompareTo(r2.rank));
                 foreach (var item in res.allRank)
                 {
-                    RankItem rankItem = PoolManager.Instance.GrabPrefabs(EPrefabsType.RANK_ITEM, "RankItem", _leaderboardContent).GetComponent<RankItem>();
+                    RankItem rankItem = Managers.Pool.GrabPrefabs(EPrefabsType.RANK_ITEM, "RankItem", _leaderboardContent).GetComponent<RankItem>();
                     rankItem.Init(item, item.rank == res.selfRank);
                     _rankItemList.Add(rankItem);
                 }
@@ -51,7 +51,7 @@ namespace InGame
             {
                 item.Dispose();
             }
-            NotificationManager.Instance.PostNotification(ENotiMessage.CLOSE_LEADERBOARD_POPUP);
+            Managers.Notification.PostNotification(ENotiMessage.CLOSE_LEADERBOARD_POPUP);
         }
     }
 }
