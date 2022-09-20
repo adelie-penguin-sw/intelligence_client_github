@@ -94,13 +94,15 @@ namespace InGame
                 _npText.text = storedNP.ToString();
                 _distanceText.text = _brain.BrainData.distance.ToString();
 
-                // 초기
-                //UpArrowNotation upgradeCost = new UpArrowNotation(10);
-                //upgradeCost *= Mathf.Pow(2.5f, (float)UpArrowNotation.Log10Top3Layer(_brain.BrainData.multiplier));
+                //UpArrowNotation upgradeCost = new UpArrowNotation(3);
+                //upgradeCost *= Mathf.Pow(2f, (float)UpArrowNotation.Log10Top3Layer(_brain.BrainData.multiplier));
 
-                // 수정
-                UpArrowNotation upgradeCost = new UpArrowNotation(3);
-                upgradeCost *= Mathf.Pow(2f, (float)UpArrowNotation.Log10Top3Layer(_brain.BrainData.multiplier));
+                Dictionary<string, UpArrowNotation> inputMap = new Dictionary<string, UpArrowNotation>();
+
+                inputMap.Add("multiplier", _brain.BrainData.multiplier);
+                inputMap.Add("tpu03", new UpArrowNotation());   // 아직 반영안됨!!!
+                UpArrowNotation upgradeCost = Managers.Definition.CalcEquation(inputMap, (string)Managers.Definition["BrainUpgradeCostEquation"]);
+                inputMap.Clear();
 
                 string upgradeText = _brain.SenderIdList.Count == 0 ? "+1 Intellect" : "x2 Multiplier";
                 _upgradeCost.text = string.Format(upgradeText + "\nCost: {0} NP", upgradeCost);
@@ -108,7 +110,11 @@ namespace InGame
                 UpArrowNotation totalSenderNP = new UpArrowNotation(0);
                 foreach (Brain brain in _deletableSenderList)
                 {
-                    totalSenderNP += Exchange.GetNPRewardForBrainDecomposition(brain.Intellect);
+                    //totalSenderNP += Exchange.GetNPRewardForBrainDecomposition(brain.Intellect);
+
+                    inputMap.Add("intellect", brain.Intellect);
+                    inputMap.Add("tpu04", new UpArrowNotation());   // 아직 반영안됨!!!
+                    totalSenderNP += Managers.Definition.CalcEquation(inputMap, (string)Managers.Definition["brainDecomposingGainEquation"]);
                 }
                 _decomposeReward.text = _brain.SenderIdList.Count == 0 ?
                     string.Format("Decompose\nfor {0} NP\n", storedNP) :
@@ -118,14 +124,14 @@ namespace InGame
         public override void Dispose()
         {
             base.Dispose();
-            NotificationManager.Instance.PostNotification(ENotiMessage.CLOSE_BRAININFO_POPUP);
+            Managers.Notification.PostNotification(ENotiMessage.CLOSE_BRAININFO_POPUP);
         }
 
         public void OnClick_SellBrain()
         {
             Hashtable _sendData = new Hashtable();
             _sendData.Add(EDataParamKey.CLASS_BRAIN, _brain.BrainData);
-            NotificationManager.Instance.PostNotification(ENotiMessage.ONCLICK_SELL_BRAIN, _sendData);
+            Managers.Notification.PostNotification(ENotiMessage.ONCLICK_SELL_BRAIN, _sendData);
             Dispose();
         }
 
@@ -135,7 +141,7 @@ namespace InGame
             {
                 Hashtable _sendData = new Hashtable();
                 _sendData.Add(EDataParamKey.BRAIN_ID, _brain.BrainData.id);
-                NotificationManager.Instance.PostNotification(ENotiMessage.ONCLICK_UPGRADE_BRAIN, _sendData);
+                Managers.Notification.PostNotification(ENotiMessage.ONCLICK_UPGRADE_BRAIN, _sendData);
             }
             else
             {
