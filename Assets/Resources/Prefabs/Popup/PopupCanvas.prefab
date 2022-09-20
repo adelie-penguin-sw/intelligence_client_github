@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9120165570520233190}
   m_Layer: 11
-  m_Name: NormalPopupGroup
+  m_Name: NORMAL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,7 +46,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3834384052482364394}
   m_Layer: 11
-  m_Name: ImportantPopupGroup
+  m_Name: IMPORTANT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
