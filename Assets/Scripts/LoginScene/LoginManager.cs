@@ -22,7 +22,7 @@ public class LoginManager : MonoBehaviour
         TemporaryRequest req = new TemporaryRequest();
         req.email = _textEmail.text;
         req.domain = _textDomain.text;
-        await NetworkManager.Instance.API_Login(req);
+        await Managers.Network.API_Login(req);
         CheckChangeScene();
     }
 
@@ -30,7 +30,7 @@ public class LoginManager : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(UserData.token))
         {
-            AuthValidationResponse res = await NetworkManager.Instance.API_TokenValidation();
+            AuthValidationResponse res = await Managers.Network.API_TokenValidation();
             if (res != null)
             {
                 switch ((EStatusCode)res.statusCode)

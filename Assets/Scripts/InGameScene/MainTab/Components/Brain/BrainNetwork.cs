@@ -76,13 +76,13 @@ namespace MainTab
                 {
                     if (id == 0)
                     {
-                        Brain brain = PoolManager.Instance.GrabPrefabs(EPrefabsType.BRAIN, "CoreBrain", _brainLayer).GetComponent<Brain>();
+                        Brain brain = Managers.Pool.GrabPrefabs(EPrefabsType.BRAIN, "CoreBrain", _brainLayer).GetComponent<Brain>();
                         brain.Init(data);
                         _brainNetWork.Add(id, brain);
                     }
                     else
                     {
-                        Brain brain = PoolManager.Instance.GrabPrefabs(EPrefabsType.BRAIN, "Brain", _brainLayer).GetComponent<Brain>();
+                        Brain brain = Managers.Pool.GrabPrefabs(EPrefabsType.BRAIN, "Brain", _brainLayer).GetComponent<Brain>();
                         brain.Init(data);
                         _brainNetWork.Add(id, brain);
                     }
@@ -119,7 +119,7 @@ namespace MainTab
                 _brainNetWork[0].Intellect >= _experimentGoal)
             {
                 InGame.InGameManager.IsCompleteExp = true;
-                NotificationManager.Instance.PostNotification(ENotiMessage.EXPERIMENT_COMPLETE);
+                Managers.Notification.PostNotification(ENotiMessage.EXPERIMENT_COMPLETE);
             }
             else
             {
@@ -143,7 +143,7 @@ namespace MainTab
                 foreach (var receiver in brain.ReceiverIdList)
                 {
                     var channel =
-                        PoolManager.Instance.GrabPrefabs(EPrefabsType.CHANNEL, "Channel", _brainLayer).GetComponent<Channel>();
+                        Managers.Pool.GrabPrefabs(EPrefabsType.CHANNEL, "Channel", _brainLayer).GetComponent<Channel>();
                     channel.Init(EChannelType.NORMAL, brain.transform, _brainNetWork[receiver].transform);
                     _channelList.Add(channel);
                 }
