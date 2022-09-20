@@ -29,7 +29,7 @@ namespace MainTab
         public override async void Init()
         {
             base.Init();
-            var res = await NetworkManager.Instance.API_LoadUserData();
+            var res = await Managers.Network.API_LoadUserData();
 
             if (res != null)
             {
@@ -49,7 +49,7 @@ namespace MainTab
             base.OnEnter();
 
             Camera.main.transform.position = new Vector3(0, 0, -10);
-            var res = await NetworkManager.Instance.API_LoadUserData();
+            var res = await Managers.Network.API_LoadUserData();
             if (res != null)
             {
                 SingleNetworkWrapper wrapper = new SingleNetworkWrapper(res);
@@ -93,7 +93,7 @@ namespace MainTab
             {
                 controller.Dispose();
             }
-            PoolManager.Instance.DespawnObject(EPrefabsType.TAP_APPLICATION, this.gameObject);
+            Managers.Pool.DespawnObject(EPrefabsType.TAP_APPLICATION, this.gameObject);
         }
     }
 }
