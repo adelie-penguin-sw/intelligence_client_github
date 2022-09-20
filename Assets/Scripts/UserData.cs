@@ -32,7 +32,7 @@ public class UserData
         set
         {
             _tp = value;
-            NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_TP);
+            Managers.Notification.PostNotification(ENotiMessage.UPDATE_TP);
         }
     }
 
@@ -46,7 +46,29 @@ public class UserData
         set
         {
             _np = value;
-            NotificationManager.Instance.PostNotification(ENotiMessage.UPDATE_NP);
+            Managers.Notification.PostNotification(ENotiMessage.UPDATE_NP);
+        }
+    }
+
+    private static Dictionary<long, long> _tpUpgradeCounts = new Dictionary<long, long>();
+    public static Dictionary<long, long> TPUpgradeCounts
+    {
+        get
+        {
+            return _tpUpgradeCounts;
+        }
+    }
+
+    public static void UpdateTPUpgradeCounts(List<UpgradeCondition> upgradeConditions)
+    {
+        _tpUpgradeCounts.Clear();
+        foreach (UpgradeCondition cond in upgradeConditions)
+        {
+            _tpUpgradeCounts.Add(cond.id, cond.upgrade);
+        }
+        if (_tpUpgradeCounts.ContainsKey(0))
+        {
+            _tpUpgradeCounts.Remove(0);
         }
     }
 
