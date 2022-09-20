@@ -14,10 +14,10 @@ namespace MainTab
         public override void Init(MainTabApplication app)
         {
             base.Init(app);
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.ONCLICK_SELL_BRAIN);
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.ONCLICK_RESET_NETWORK);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.ONCLICK_SELL_BRAIN);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.ONCLICK_RESET_NETWORK);
 
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.UPDATE_BRAIN_NETWORK);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.UPDATE_BRAIN_NETWORK);
         }
 
         public override void Set()
@@ -46,13 +46,13 @@ namespace MainTab
 
         public override void Dispose()
         {
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_SELL_BRAIN);
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_RESET_NETWORK);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_SELL_BRAIN);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_RESET_NETWORK);
 
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.UPDATE_BRAIN_NETWORK);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.UPDATE_BRAIN_NETWORK);
 
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.UPDATE_TP);
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.UPDATE_NP);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.UPDATE_TP);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.UPDATE_NP);
 
             _brainNetwork.Dispose();
             _brainNetwork = null;
@@ -89,7 +89,7 @@ namespace MainTab
         {
             if(data.brainType == EBrainType.NORMALBRAIN)
             {
-                var res = await NetworkManager.Instance.API_DeleteBrain(data.id);
+                var res = await Managers.Network.API_DeleteBrain(data.id);
                 if (res != null)
                 {
                     _app.MainTabModel.SingleNetworkWrapper.UpdateSingleNetworkData(res);
