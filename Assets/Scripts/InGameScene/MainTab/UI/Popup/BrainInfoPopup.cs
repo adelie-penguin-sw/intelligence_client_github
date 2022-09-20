@@ -124,14 +124,14 @@ namespace InGame
         public override void Dispose()
         {
             base.Dispose();
-            NotificationManager.Instance.PostNotification(ENotiMessage.CLOSE_BRAININFO_POPUP);
+            Managers.Notification.PostNotification(ENotiMessage.CLOSE_BRAININFO_POPUP);
         }
 
         public void OnClick_SellBrain()
         {
             Hashtable _sendData = new Hashtable();
             _sendData.Add(EDataParamKey.CLASS_BRAIN, _brain.BrainData);
-            NotificationManager.Instance.PostNotification(ENotiMessage.ONCLICK_SELL_BRAIN, _sendData);
+            Managers.Notification.PostNotification(ENotiMessage.ONCLICK_SELL_BRAIN, _sendData);
             Dispose();
         }
 
@@ -141,7 +141,7 @@ namespace InGame
             {
                 Hashtable _sendData = new Hashtable();
                 _sendData.Add(EDataParamKey.BRAIN_ID, _brain.BrainData.id);
-                NotificationManager.Instance.PostNotification(ENotiMessage.ONCLICK_UPGRADE_BRAIN, _sendData);
+                Managers.Notification.PostNotification(ENotiMessage.ONCLICK_UPGRADE_BRAIN, _sendData);
             }
             else
             {
