@@ -135,6 +135,13 @@ public class PopupManager
     #endregion
 
     #region public method
+    /// <summary>
+    /// 팝업 생성 메서드<br />
+    /// </summary>
+    /// <param name="type">pool manager prefab type</param>
+    /// <param name="name">popup prefab name</param>
+    /// <param name="popupType">normal, improtant type</param>
+    /// <returns></returns>
     public GameObject CreatePopup(EPrefabsType type, string name, PopupType popupType)
     {
         if (_canvas == null)
@@ -151,24 +158,42 @@ public class PopupManager
         return go;
     }
 
+    /// <summary>
+    /// Pool manager에서 despawn을 호출하지 않고 stack에서만 지움<br />
+    /// popupBase만 사용. 안쓰면 됩니다<br />
+    /// </summary>
+    /// <param name="type"></param>
     public void DeleteCall(PopupType type)
     {
         if (_stackDic[type].Count > 0)
             _stackDic[type].Pop();
     }
 
+    /// <summary>
+    /// popup type에 해당하는 팝업 오브젝트 하나 삭제 <br />
+    /// popupBase의 dispose안에서 호출 X.의도하지 않은 다른 팝업을 삭제 할 수 있음. <br />
+    /// 외부에서 사용하는 메서드 ex) 다른 manager라던지... <br />
+    /// </summary>
+    /// <param name="type"></param>
     public void Delete(PopupType type)
     {
         if (_stackDic[type].Count > 0)
             _stackDic[type].Pop().Dispose();
     }
 
+    /// <summary>
+    /// type에 해당하는 stack, group에서 전체 삭제
+    /// </summary>
+    /// <param name="type"></param>
     public void DeleteAll(PopupType type)
     {
         while (_stackDic[type].Count > 0)
             _stackDic[type].Pop().Dispose(); 
     }
 
+    /// <summary>
+    /// 모든 popup 삭제
+    /// </summary>
     public void DeleteAll()
     {
         foreach (var item in _stackDic)
