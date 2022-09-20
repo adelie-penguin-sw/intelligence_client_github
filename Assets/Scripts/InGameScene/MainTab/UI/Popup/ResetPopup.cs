@@ -63,17 +63,17 @@ namespace MainTab
         public override void Dispose()
         {
             base.Dispose();
-            NotificationManager.Instance.PostNotification(ENotiMessage.CLOSE_RESET_POPUP);
+            Managers.Notification.PostNotification(ENotiMessage.CLOSE_RESET_POPUP);
         }
 
         public async void OnClick_Reset()
         {
-            var res = await NetworkManager.Instance.API_NetworkReset();
+            var res = await Managers.Network.API_NetworkReset();
             if (res != null)
             {
                 Hashtable sendData = new Hashtable();
                 sendData.Add(EDataParamKey.SINGLE_NETWORK_WRAPPER, new SingleNetworkWrapper(res));
-                NotificationManager.Instance.PostNotification(ENotiMessage.ONCLICK_RESET_NETWORK, sendData);
+                Managers.Notification.PostNotification(ENotiMessage.ONCLICK_RESET_NETWORK, sendData);
                 Dispose();
             }
         }
