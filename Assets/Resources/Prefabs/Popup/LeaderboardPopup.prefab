@@ -3667,8 +3667,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f45842c72487412180324393f486127, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _closeBtn: []
+  _popupType: 0
   _prefabType: 0
+  _closeBtn: []
   _leaderboardContent: {fileID: 3505359784944847772}
 --- !u!222 &7126518355107588942
 CanvasRenderer:
