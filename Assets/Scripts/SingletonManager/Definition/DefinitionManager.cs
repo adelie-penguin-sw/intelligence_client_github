@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class DefinitionManager : MonoBehaviour
+public class DefinitionManager
 {
     #region Singelton
     private static DefinitionManager _instance;
@@ -30,11 +30,20 @@ public class DefinitionManager : MonoBehaviour
                 }
             }
 
+    // Exchanging Equation
+    private string _brainGeneratingCostEquation;
+    private string _channelGeneratingCostEquation;
+    private string _brainUpgradeCostEquation;
+    private string _brainDecomposingGainEquation;
+    private string _tpRewardForResetEquation;
             return _instance;
         }
     }
     #endregion
 
+    // Init Condition
+    private int _initNP;
+    private int _initTP;
     private List<Dictionary<string, object>> _csvData;
     public List<Dictionary<string, object>> CSVData { get { return _csvData; } }
 
@@ -43,7 +52,7 @@ public class DefinitionManager : MonoBehaviour
 
     private async void LoadS3Data()
     {
-        string res = await NetworkManager.Instance.API_S3Data("base.csv");
+        string res = await Managers.Network.API_S3Data("base.csv");
         if (res != null)
         {
             _csvData = CSVReader.Read(res);
@@ -71,7 +80,6 @@ public class DefinitionManager : MonoBehaviour
 
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
         LoadS3Data();
     }
 
