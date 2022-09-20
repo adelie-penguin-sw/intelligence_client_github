@@ -16,8 +16,12 @@ public class PopupManager
 
         foreach (PopupType type in Enum.GetValues(typeof(PopupType)))
         {
-            if (_stackDic.ContainsKey(type))
+            if (!_stackDic.ContainsKey(type))
                 _stackDic.Add(type, new Stack<PopupBase>());
+            //if (!_groupDic.ContainsKey(type) && _canvas.transform.childCount >= (int)type)
+            //{
+            //    _groupDic.Add(type, _canvas.transform.GetChild((int)type).gameObject);
+            //}
         }
 
         foreach (var item in _stackDic)
@@ -46,9 +50,8 @@ public class PopupManager
     #region private field
     private Canvas _canvas = null;
     private GameObject go = null;
-    private GameObject _importantPopupGroup = null;
-    private GameObject _normalPopupGroup = null;
     private Dictionary<PopupType, Stack<PopupBase>> _stackDic = new Dictionary<PopupType, Stack<PopupBase>>();
+    private Dictionary<PopupType, GameObject> _groupDic = new Dictionary<PopupType, GameObject>();
     #endregion
 
     #region private methods
@@ -72,8 +75,10 @@ public class PopupManager
             _canvas = go.AddComponent<Canvas>();
             Debug.LogError("not canvas");
         }
-        _normalPopupGroup = _canvas.transform.GetChild(0).gameObject;
-        _importantPopupGroup = _canvas.transform.GetChild(1).gameObject;
+
+        // Popup Manager의 _canvas의 prefab이 변경될 때 popup을 세팅해줘야 함. 아니면 혹시 Init주석처럼??
+        _groupDic.Add(PopupType.NORMAL, _canvas.transform.GetChild(0).gameObject);
+        _groupDic.Add(PopupType.IMPORTANT, _canvas.transform.GetChild(1).gameObject);
     }
 
     private void OnNotification(Notification noti)
@@ -89,7 +94,7 @@ public class PopupManager
         //}
     }
 
-    private GameObject CreatePopup(EPrefabsType type, string name, Transform layer)
+    private GameObject CreatePopupObj(EPrefabsType type, string name, Transform layer)
     {
         go = Managers.Pool.GrabPrefabs(type, name, layer);
         go.transform.position = layer.position;
@@ -130,7 +135,7 @@ public class PopupManager
     #endregion
 
     #region public method
-    public GameObject CreatePopup(EPrefabsType type, string name, PopupType popuoType)
+    public GameObject CreatePopup(EPrefabsType type, string name, PopupType popupType)
     {
         if (_canvas == null)
         {
@@ -138,48 +143,11 @@ public class PopupManager
             CreateCanvas();
         }
 
-        go = Create
-    }
-
-    public GameObject CreateNormalPopup(EPrefabsType type, string name)
-    { 
-        if (_canvas == null)
-        {
-            Debug.LogError("[Self] expected canvas");
-            CreateCanvas();
-            //
-            //return null;
-        }
-        if (_normalPopupGroup == null)
-        {
-            Debug.LogError("[Self] expected group");
-            return null;
-        }
-        go = CreatePopup(type, name, _normalPopupGroup.transform);
+        go = CreatePopupObj(type, name, _groupDic[popupType].transform);
         PopupBase popup = go.GetComponent<PopupBase>();
-        _stackDic[PopupType.NORMAL].Push(popup);
+        _stackDic[popupType].Push(popup);
         popup.Init();
-        popup.PopupType = PopupType.NORMAL;
-        return go;
-    }
-
-    public GameObject CreateImportantPopup(EPrefabsType type, string name)
-    {
-        if (_canvas == null)
-        {
-            Debug.LogError("[Self] expected canvas");
-            return null;
-        }
-        if (_importantPopupGroup == null)
-        {
-            Debug.LogError("[Self] expected group");
-            return null;
-        }
-        go = CreatePopup(type, name, _importantPopupGroup.transform);
-        PopupBase popup = go.GetComponent<PopupBase>();
-        _stackDic[PopupType.IMPORTANT].Push(popup);
-        popup.Init();
-        popup.PopupType = PopupType.IMPORTANT;
+        popup.PopupType = popupType;
         return go;
     }
 
@@ -213,7 +181,8 @@ public class PopupManager
 }
 public enum PopupType
 {
-    UNKNOWN = 0,
-    NORMAL,
+    NORMAL = 0,
     IMPORTANT,
+
+    UNKNOWN = 101,
 }

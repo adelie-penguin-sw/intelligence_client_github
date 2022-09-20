@@ -61,7 +61,7 @@ namespace MainTab
             switch (noti.msg)
             {
                 case ENotiMessage.ONCLICK_LEADERBOARD:
-                    _view.LeaderboardPopup = Managers.Popup.CreateNormalPopup(EPrefabsType.POPUP, "LeaderboardPopup")
+                    _view.LeaderboardPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "LeaderboardPopup", PopupType.NORMAL)
                                 .GetComponent<InGame.LeaderboardPopup>();
                     if (_view.LeaderboardPopup != null)
                     {
@@ -245,7 +245,7 @@ namespace MainTab
                     case ENotiMessage.MOUSE_UP_BRAIN:
                         if (_isBrainPointDown)
                         {
-                            _controller._view.InfoPopup = Managers.Popup.CreateNormalPopup(EPrefabsType.POPUP, "BrainInfoPopup")
+                            _controller._view.InfoPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "BrainInfoPopup", PopupType.NORMAL)
                                 .GetComponent<InGame.BrainInfoPopup>();
                             _controller._view.InfoPopup.Init(_controller._recentSelectBrain, _model.SingleNetworkWrapper, _model.BrainNetwork);
                             _controller.ChangeState(EBehaviorState.SHOW_POPUP);
@@ -265,8 +265,8 @@ namespace MainTab
 
                     case ENotiMessage.EXPERIMENT_COMPLETE:
                     case ENotiMessage.ONCLICK_RESET_BUTTON:
-                        Managers.Popup.DeleteNormalAll();  // 현재 떠있는 모든 팝업 닫음
-                        ResetPopup infoPopup = Managers.Popup.CreateNormalPopup(EPrefabsType.POPUP, "ResetPopup")
+                        Managers.Popup.DeleteAll(PopupType.NORMAL);  // 현재 떠있는 모든 팝업 닫음
+                        ResetPopup infoPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "ResetPopup", PopupType.NORMAL)
                             .GetComponent<ResetPopup>();
                         infoPopup.Init();
                         _controller.ChangeState(EBehaviorState.SHOW_POPUP);
@@ -606,8 +606,8 @@ namespace MainTab
                         UpgradeBrain(brainId);
                         break;
                     case ENotiMessage.EXPERIMENT_COMPLETE:
-                        Managers.Popup.DeleteNormalAll();  // 현재 떠있는 모든 팝업 닫음
-                        ResetPopup infoPopup = Managers.Popup.CreateNormalPopup(EPrefabsType.POPUP, "CompletePopup")
+                        Managers.Popup.DeleteAll(PopupType.NORMAL);  // 현재 떠있는 모든 팝업 닫음
+                        ResetPopup infoPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "CompletePopup", PopupType.NORMAL)
                             .GetComponent<ResetPopup>();
                         infoPopup.Init();
                         break;
