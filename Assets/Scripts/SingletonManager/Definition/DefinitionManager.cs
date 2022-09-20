@@ -6,44 +6,6 @@ using UnityEngine;
 
 public class DefinitionManager
 {
-    #region Singelton
-    private static DefinitionManager _instance;
-    public static DefinitionManager Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<DefinitionManager>();
-                if (FindObjectsOfType<DefinitionManager>().Length > 1)
-                {
-                    Debug.LogError("[Singleton] Something went really wrong " +
-                        " - there should never be more than 1 singleton!" +
-                        " Reopening the scene might fix it.");
-                    return _instance;
-                }
-
-                if (_instance == null)
-                {
-                    GameObject go = new GameObject("DefinitionManager");
-                    _instance = go.AddComponent<DefinitionManager>();
-                }
-            }
-
-    // Exchanging Equation
-    private string _brainGeneratingCostEquation;
-    private string _channelGeneratingCostEquation;
-    private string _brainUpgradeCostEquation;
-    private string _brainDecomposingGainEquation;
-    private string _tpRewardForResetEquation;
-            return _instance;
-        }
-    }
-    #endregion
-
-    // Init Condition
-    private int _initNP;
-    private int _initTP;
     private List<Dictionary<string, object>> _csvData;
     public List<Dictionary<string, object>> CSVData { get { return _csvData; } }
 
@@ -78,7 +40,7 @@ public class DefinitionManager
         }
     }
 
-    void Awake()
+    public void Init()
     {
         LoadS3Data();
     }
