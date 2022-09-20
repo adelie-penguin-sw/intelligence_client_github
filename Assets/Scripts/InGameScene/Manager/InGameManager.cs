@@ -20,12 +20,12 @@ namespace InGame
         public static bool IsCompleteExp = false;
         void Awake()
         {
-
+            var s3Data = Managers.Definition.CSVData;  // 나중에 이동해야할듯
         }
 
         void Start()
         {
-            NotificationManager.Instance.AddObserver(OnNotiChangeTab, ENotiMessage.ONCLICK_CHANGE_TAB);
+            Managers.Notification.AddObserver(OnNotiChangeTab, ENotiMessage.ONCLICK_CHANGE_TAB);
             if (_ui != null)
             {
                 _ui.Init();
@@ -65,7 +65,7 @@ namespace InGame
 
         public void Dispose()
         {
-            NotificationManager.Instance.RemoveObserver(OnNotiChangeTab, ENotiMessage.ONCLICK_CHANGE_TAB);
+            Managers.Notification.RemoveObserver(OnNotiChangeTab, ENotiMessage.ONCLICK_CHANGE_TAB);
             _ui.Dispose();
             this.Dispose(true);
             GC.SuppressFinalize(this);
@@ -93,11 +93,11 @@ namespace InGame
         {
             _handlers.Clear();
 
-            _goTemp = PoolManager.Instance.GrabPrefabs(EPrefabsType.TAP_APPLICATION, "MainTabApp", transform);
+            _goTemp = Managers.Pool.GrabPrefabs(EPrefabsType.TAP_APPLICATION, "MainTabApp", transform);
             _handlers.Add(EGameState.MAIN_TAB, _goTemp.GetComponent<MainTab.MainTabApplication>());
 
-            _goTemp = PoolManager.Instance.GrabPrefabs(EPrefabsType.TAP_APPLICATION, "TpTabApp", transform);
-            _handlers.Add(EGameState.TP_UPGRADE_TAB, _goTemp.GetComponent<TpTabApplication>());
+            _goTemp = Managers.Pool.GrabPrefabs(EPrefabsType.TAP_APPLICATION, "TpTabApp", transform);
+            _handlers.Add(EGameState.TP_UPGRADE_TAB, _goTemp.GetComponent<TpTab.TpTabApplication>());
 
             foreach (EGameState state in _handlers.Keys)
             {
