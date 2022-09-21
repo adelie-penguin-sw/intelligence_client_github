@@ -13,6 +13,7 @@ public class SingleNetworkResponse
     public List<Achievements> achievements;
     public List<BrainAttributes> brainAttributes;
     public long calcTime;
+    public long allBrainCount;
     public int resetCount;
     public int statusCode;
     public List<Structure> structures;
