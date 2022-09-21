@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 5746812246441608061}
   - component: {fileID: 7940551675743538948}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: CostText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -428,3 +428,4 @@ MonoBehaviour:
   _popupType: 101
   _prefabType: 0
   _closeBtn: []
+  _costText: {fileID: 7940551675743538948}
