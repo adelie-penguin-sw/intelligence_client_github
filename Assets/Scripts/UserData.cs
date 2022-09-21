@@ -62,13 +62,34 @@ public class UserData
     public static void UpdateTPUpgradeCounts(List<UpgradeCondition> upgradeConditions)
     {
         _tpUpgradeCounts.Clear();
+
         foreach (UpgradeCondition cond in upgradeConditions)
         {
             _tpUpgradeCounts.Add(cond.id, cond.upgrade);
         }
+        for (int i = 1; i <= 8; i++)
+        {
+            if (!_tpUpgradeCounts.ContainsKey(i))
+            {
+                _tpUpgradeCounts.Add(i, 0);
+            }
+        }
         if (_tpUpgradeCounts.ContainsKey(0))
         {
             _tpUpgradeCounts.Remove(0);
+        }
+    }
+
+    private static long _pastBrainGenCount = 0;
+    public static long PastBrainGenCount
+    {
+        get
+        {
+            return _pastBrainGenCount;
+        }
+        set
+        {
+            _pastBrainGenCount = value;
         }
     }
 
