@@ -111,7 +111,7 @@ namespace InGame
                 foreach (Brain brain in _deletableSenderList)
                 {
                     //totalSenderNP += Exchange.GetNPRewardForBrainDecomposition(brain.Intellect);
-
+                    inputMap.Clear();
                     inputMap.Add("intellect", brain.Intellect);
                     inputMap.Add("tpu04", new UpArrowNotation());   // 아직 반영안됨!!!
                     totalSenderNP += Managers.Definition.CalcEquation(inputMap, (string)Managers.Definition["brainDecomposingGainEquation"]);
