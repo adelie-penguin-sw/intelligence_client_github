@@ -82,7 +82,6 @@ namespace MainTab
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.MOUSE_UP_BRAIN);
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.MOUSE_ENTER_BRAIN);
 
-            Managers.Notification.AddObserver(OnNotification, ENotiMessage.CLOSE_NPCOST_POPUP);
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.CLOSE_BRAININFO_POPUP);
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.CLOSE_RESET_POPUP);
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.CLOSE_LEADERBOARD_POPUP);
@@ -103,7 +102,6 @@ namespace MainTab
             Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.MOUSE_UP_BRAIN);
             Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.MOUSE_ENTER_BRAIN);
 
-            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.CLOSE_NPCOST_POPUP);
             Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.CLOSE_BRAININFO_POPUP);
             Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.CLOSE_RESET_POPUP);
             Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.CLOSE_LEADERBOARD_POPUP);
@@ -226,9 +224,6 @@ namespace MainTab
                     _dtBrainPointDown += dt_sec;
                     if (_dtBrainPointDown >= _model.WaitBrainClickTime)
                     {
-                        _controller._view.NPCostPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "NPCostPopup", PopupType.NORMAL)
-                                .GetComponent<InGame.NPCostPopup>();
-                        _controller._view.NPCostPopup.Init();
                         _controller.ChangeState(EBehaviorState.CREATE_CHANNEL);
                     }
                 }
@@ -240,9 +235,6 @@ namespace MainTab
                 switch (noti.msg)
                 {
                     case ENotiMessage.DRAG_START_CREATEBRAIN:
-                        _controller._view.NPCostPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "NPCostPopup", PopupType.NORMAL)
-                                .GetComponent<InGame.NPCostPopup>();
-                        _controller._view.NPCostPopup.Init();
                         _controller.ChangeState(EBehaviorState.CREATE_BRAIN);
                         break;
                     case ENotiMessage.MOUSE_DOWN_BRAIN:
@@ -422,6 +414,9 @@ namespace MainTab
             public void OnEnter()
             {
                 _tempBrain.gameObject.SetActive(true);
+                _controller._view.NPCostPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "NPCostPopup", PopupType.NORMAL)
+                        .GetComponent<InGame.NPCostPopup>();
+                _controller._view.NPCostPopup.Init(ENPCostType.BRAIN_GEN);
             }
 
             private Vector2 _curPos;
@@ -431,6 +426,7 @@ namespace MainTab
                 {
                     _curPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     _tempBrain.transform.position = _curPos;
+                    _controller._view.NPCostPopup.SetCollisoinState(_tempBrain.IsCollision);
                 }
             }
 
@@ -442,7 +438,6 @@ namespace MainTab
                 switch (noti.msg)
                 {
                     case ENotiMessage.DRAG_END_CREATEBRAIN:
-                        _controller._view.NPCostPopup.Dispose();
                         CreateBrain();
                         _controller.ChangeState(EBehaviorState.NONE);
                         break;
@@ -451,6 +446,7 @@ namespace MainTab
             public void OnExit()
             {
                 _tempBrain.gameObject.SetActive(false);
+                _controller._view.NPCostPopup.Dispose();
             }
 
             public void Dispose()
@@ -498,6 +494,12 @@ namespace MainTab
             {
                 Debug.Log("CreateChannel!");
                 _currentSenderBrain = _controller._recentSelectBrain;
+
+                _controller._view.NPCostPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "NPCostPopup", PopupType.NORMAL)
+                        .GetComponent<InGame.NPCostPopup>();
+                _controller._view.NPCostPopup.Init(ENPCostType.CHNNL_GEN);
+                _controller._view.NPCostPopup.SetBrain(_currentSenderBrain, null);
+
                 CreateTempChannel();
             }
 
@@ -516,20 +518,22 @@ namespace MainTab
                 switch (noti.msg)
                 {
                     case ENotiMessage.MOUSE_UP_BRAIN:
-                        _controller._view.NPCostPopup.Dispose();
                         CreateChannel();
                         break;
                     case ENotiMessage.MOUSE_ENTER_BRAIN:
                         _currentEnterBrain = (Brain)noti.data[EDataParamKey.CLASS_BRAIN];
+                        _controller._view.NPCostPopup.SetBrain(_currentSenderBrain, _currentEnterBrain);
                         break;
                     case ENotiMessage.MOUSE_EXIT_BRAIN:
                         _currentEnterBrain = null;
+                        _controller._view.NPCostPopup.SetBrain(_currentSenderBrain, _currentEnterBrain);
                         break;
 
                 }
             }
             public void OnExit()
             {
+                _controller._view.NPCostPopup.Dispose();
             }
 
             public void Dispose()
