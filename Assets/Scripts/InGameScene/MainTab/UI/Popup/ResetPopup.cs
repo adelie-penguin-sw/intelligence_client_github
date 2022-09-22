@@ -21,12 +21,14 @@ namespace MainTab
         [SerializeField] private TextMeshProUGUI _expGoalTextIncomplete;
         [SerializeField] private TextMeshProUGUI _tpRewardTextIncomplete;
 
+        private Dictionary<string, UpArrowNotation> inputMap = new Dictionary<string, UpArrowNotation>();
+
         public override void Init()
         {
             base.Init();
 
-            _expGoalTextComplete.text = "10^20";        // 실제 값 써야함!!
-            _expGoalTextIncomplete.text = "10^20";      // 실제 값 써야함!!
+            _expGoalTextComplete.text = ((List<UpArrowNotation>)Managers.Definition["ExperimentGoalList"])[UserData.ResetCount].ToString();
+            _expGoalTextIncomplete.text = ((List<UpArrowNotation>)Managers.Definition["ExperimentGoalList"])[UserData.ResetCount].ToString();
         }
 
         private Hashtable _sendData = new Hashtable();
@@ -42,22 +44,27 @@ namespace MainTab
 
             if (complete)
             {
+                _titleText.text = "Experiment Complete";
+
                 // 이거는 실험 레벨이랑 해당 레벨 실험 완료할때까지 시도 횟수 들어가야함!!
                 _expLvTextComplete.text = string.Format("You've just completed\n<b>Lv.{0} experiment</b>\nafter <b>{1} attempt(s).</b>", 1, 1);
 
                 // 해당 레벨의 실험을 최초 시작하고부터 성공하기까지 소요된 총 시간, 분, 초가 들어가야함!!
                 _elapesdTimeTextComplete.text = string.Format("0000h 00m 00s");
 
-                // TP리워드 계산해서 넣어줘야함!!
-                _tpRewardTextComplete.text = string.Format("{0} TP", 1);
+                inputMap.Clear();
+                inputMap.Add("coreBrainIntellect", UserData.CoreIntellect);
+                _tpRewardTextIncomplete.text = Managers.Definition.CalcEquation(inputMap, (string)Managers.Definition["TPrewardForReset"]) + " TP";
             }
             else
             {
-                // 현재 코어 브레인 지능 들어가야함!!
-                _currentCoreIntellectTextIncomplete.text = "0";
+                _titleText.text = "Reser Network";
 
-                // TP리워드 계산해서 넣어줘야함!!
-                _tpRewardTextIncomplete.text = string.Format("{0} TP", 0);
+                _currentCoreIntellectTextIncomplete.text = UserData.CoreIntellect.ToString();
+
+                inputMap.Clear();
+                inputMap.Add("coreBrainIntellect", UserData.CoreIntellect);
+                _tpRewardTextIncomplete.text = Managers.Definition.CalcEquation(inputMap, (string)Managers.Definition["TPrewardForReset"]) + " TP";
             }
         }
         public override void Dispose()
