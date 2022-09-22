@@ -181,6 +181,7 @@ public class NetworkManager
                     PATH_CREATE_SINGLE_NETWORK_BRAIN,
                     ENetworkSendType.POST,
                     json);
+        UserData.PastBrainGenCount = res.allBrainCount;
         return res;
     }
 
@@ -214,6 +215,7 @@ public class NetworkManager
                     PATH_SINGLE_NETWORK_RESET,
                     ENetworkSendType.POST,
                     json);
+        UserData.PastBrainGenCount = res.allBrainCount;
         return res;
     }
 
@@ -244,6 +246,7 @@ public class NetworkManager
                     PATH_SINGLE_NETWORK,
                     ENetworkSendType.GET);
         UserData.UpdateTPUpgradeCounts(res.upgradeCondition);
+        UserData.PastBrainGenCount = res.allBrainCount;
         return res;
     }
 
