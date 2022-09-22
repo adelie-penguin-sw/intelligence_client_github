@@ -709,8 +709,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1016169018764238718}
   - {fileID: 1575944745282002899}
+  - {fileID: 1016169018764238718}
   - {fileID: 4749591579743766531}
   m_Father: {fileID: 3034216854156370260}
   m_RootOrder: 1
@@ -1370,7 +1370,7 @@ RectTransform:
   - {fileID: 4244225153901237612}
   - {fileID: 5908627985439342860}
   m_Father: {fileID: 6770870208877542732}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -2549,7 +2549,7 @@ RectTransform:
   m_Children:
   - {fileID: 4941992001196011527}
   m_Father: {fileID: 6770870208877542732}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -3589,8 +3589,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 016505771b085419f9fe3a3190cd4554, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _closeBtn: []
+  _popupType: 101
   _prefabType: 0
+  _closeBtn: []
   _titleText: {fileID: 3985252908525250278}
   _textGroupComplete: {fileID: 1158979018073303239}
   _textGroupIncomplete: {fileID: 823294423212684387}
