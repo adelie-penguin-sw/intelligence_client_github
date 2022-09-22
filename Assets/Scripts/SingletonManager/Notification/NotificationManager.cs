@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class NotificationManager
 {
-    #region Singelton
     private static bool _appIsClosing = false;
 
     void OnApplicationQuit()
@@ -12,7 +11,6 @@ public class NotificationManager
         // release reference on exit
         _appIsClosing = true;
     }
-    #endregion
 
     Hashtable _notifications = new Hashtable();
 
