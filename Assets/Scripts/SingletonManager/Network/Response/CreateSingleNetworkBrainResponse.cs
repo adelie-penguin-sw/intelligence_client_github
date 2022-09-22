@@ -10,6 +10,7 @@ public class CreateSingleNetworkBrainResponse
 	public long calcTime;
 	public long newBrain;
 	public int statusCode;
+	public long allBrainCount;
 }
 
 
