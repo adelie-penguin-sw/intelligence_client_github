@@ -81,4 +81,5 @@ public enum EEventObjectType
     /// 브레인 생성 UI
     /// </summary>
     CREATE_BRAIN_UI,
+    CREATE_BRAIN_TUTORIAL,
 }
