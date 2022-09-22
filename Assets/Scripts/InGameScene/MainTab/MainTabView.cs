@@ -12,6 +12,7 @@ namespace MainTab
 
         private InGame.BrainInfoPopup _infoPopup;
         private InGame.LeaderboardPopup _leaderboardPopup;
+        private InGame.NPCostPopup _npCostPopup;
 
         public InGame.BrainInfoPopup InfoPopup
         {
@@ -34,6 +35,18 @@ namespace MainTab
             set
             {
                 _leaderboardPopup = value;
+            }
+        }
+
+        public InGame.NPCostPopup NPCostPopup
+        {
+            get
+            {
+                return _npCostPopup;
+            }
+            set
+            {
+                _npCostPopup = value;
             }
         }
     }
