@@ -50,6 +50,19 @@ public class UserData
         }
     }
 
+    private static int _resetCount = 0;
+    public static int ResetCount
+    {
+        get
+        {
+            return _resetCount;
+        }
+        set
+        {
+            _resetCount = value;
+        }
+    }
+
     private static Dictionary<long, long> _tpUpgradeCounts = new Dictionary<long, long>();
     public static Dictionary<long, long> TPUpgradeCounts
     {
