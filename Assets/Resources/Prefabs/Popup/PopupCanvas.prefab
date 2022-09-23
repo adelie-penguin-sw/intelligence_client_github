@@ -84,6 +84,7 @@ GameObject:
   - component: {fileID: 5538197836585232656}
   - component: {fileID: 759318387763436664}
   - component: {fileID: 7478513324351047358}
+  - component: {fileID: 2921687015636253983}
   m_Layer: 11
   m_Name: PopupCanvas
   m_TagString: Untagged
@@ -174,3 +175,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 55
+--- !u!114 &2921687015636253983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4696418316721793245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6e62d7e62b7c48d1b105e4908ce753b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _normalGroup: {fileID: 776940402710217745}
+  _importantGroup: {fileID: 3617533763291607408}
+  _canvas: {fileID: 5538197836585232656}
