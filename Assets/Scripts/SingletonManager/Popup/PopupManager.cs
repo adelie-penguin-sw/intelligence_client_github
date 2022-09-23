@@ -6,6 +6,7 @@ using UnityEditor;
 using Cysharp.Threading.Tasks.Triggers;
 using UnityEngine.Rendering.Universal.Internal;
 using System.Text.RegularExpressions;
+using Sirenix.OdinInspector;
 
 public class PopupManager
 {
@@ -51,7 +52,7 @@ public class PopupManager
     private Canvas _canvas = null;
     private GameObject go = null;
     private Dictionary<PopupType, Stack<PopupBase>> _stackDic = new Dictionary<PopupType, Stack<PopupBase>>();
-    private Dictionary<PopupType, GameObject> _groupDic = new Dictionary<PopupType, GameObject>();
+    [ShowInInspector] private Dictionary<PopupType, GameObject> _groupDic = new Dictionary<PopupType, GameObject>();
     #endregion
 
     #region private methods
@@ -66,19 +67,19 @@ public class PopupManager
         if (go == null)
             go = Managers.Pool.GrabPrefabs(EPrefabsType.POPUP, "PopupCanvas", Managers.ManagerObj.transform);
 
-        if (go.TryGetComponent(out Canvas canvas))
+        PopupCanvas popupCanvas = go.GetComponent<PopupCanvas>();
+        if(popupCanvas != null)
         {
-            _canvas = canvas;
+            _canvas = popupCanvas.Canvas;
+            if (!_groupDic.ContainsKey(PopupType.NORMAL))
+                _groupDic.Add(PopupType.NORMAL, popupCanvas.NomalGroup);
+            if (!_groupDic.ContainsKey(PopupType.IMPORTANT))
+                _groupDic.Add(PopupType.IMPORTANT, popupCanvas.ImportantGroup);
         }
         else
         {
-            _canvas = go.AddComponent<Canvas>();
             Debug.LogError("not canvas");
         }
-
-        // Popup Manager의 _canvas의 prefab이 변경될 때 popup을 세팅해줘야 함. 아니면 혹시 Init주석처럼??
-        _groupDic.Add(PopupType.NORMAL, _canvas.transform.GetChild(0).gameObject);
-        _groupDic.Add(PopupType.IMPORTANT, _canvas.transform.GetChild(1).gameObject);
     }
 
     private void OnNotification(Notification noti)
