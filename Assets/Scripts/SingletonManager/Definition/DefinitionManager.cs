@@ -25,14 +25,20 @@ public class DefinitionManager
                 switch (li["type"])
                 {
                     case "string":
-                        _definitionDic.Add((string)li["name"], value);
-                        break;
-                    case "int":
-                        _definitionDic.Add((string)li["name"], int.Parse(value));
-                        break;
                     case "[]string":
-                        _definitionDic.Add((string)li["name"], value);  // 일단 그대로 추가, 나중에 형식에 따라 변환할 예정
+                        if (!_definitionDic.ContainsKey((string)li["name"]))
+                            _definitionDic.Add((string)li["name"], value);
+                        else
+                            _definitionDic[(string)li["name"]] = value;
                         break;
+
+                    case "int":
+                        if (!_definitionDic.ContainsKey((string)li["name"]))
+                            _definitionDic.Add((string)li["name"], int.Parse(value));
+                        else
+                            _definitionDic[(string)li["name"]] = int.Parse(value);
+                        break;
+
                     default:
                         break;
                 }
