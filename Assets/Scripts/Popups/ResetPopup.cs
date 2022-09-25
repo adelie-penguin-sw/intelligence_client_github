@@ -60,11 +60,6 @@ namespace MainTab
                 _tpRewardTextIncomplete.text = string.Format("{0} TP", 0);
             }
         }
-        public override void Dispose()
-        {
-            base.Dispose();
-            Managers.Notification.PostNotification(ENotiMessage.CLOSE_RESET_POPUP);
-        }
 
         public async void OnClick_Reset()
         {
