@@ -26,18 +26,6 @@ namespace MainTab
             }
         }
 
-        public InGame.LeaderboardPopup LeaderboardPopup
-        {
-            get
-            {
-                return _leaderboardPopup;
-            }
-            set
-            {
-                _leaderboardPopup = value;
-            }
-        }
-
         public InGame.NPCostPopup NPCostPopup
         {
             get
