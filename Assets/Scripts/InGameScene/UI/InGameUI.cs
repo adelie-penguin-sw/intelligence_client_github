@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using InGame;
 public class InGameUI : MonoBehaviour, IGameBasicModule
 {
     [SerializeField] private TextMeshProUGUI _txtCoreIntellect;
@@ -65,7 +65,12 @@ public class InGameUI : MonoBehaviour, IGameBasicModule
 
     public void OnClick_LeaderBoard()
     {
-        Managers.Notification.PostNotification(ENotiMessage.ONCLICK_LEADERBOARD);
+        LeaderboardPopup leaderboardPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "LeaderboardPopup", PopupType.NORMAL)
+                            .GetComponent<LeaderboardPopup>();
+        if (leaderboardPopup != null)
+        {
+            leaderboardPopup.Init();
+        }
     }
 
     public void OnClick_Logout()
