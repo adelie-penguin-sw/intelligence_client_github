@@ -52,7 +52,8 @@ namespace InGame
                         _inputMap.Add("pastBrainGenCount", new UpArrowNotation(UserData.PastBrainGenCount));
                         _inputMap.Add("tpu01", new UpArrowNotation(UserData.TPUpgradeCounts[1]));
 
-                        _costText.text = "Cost: " + Managers.Definition.CalcEquation(_inputMap, (string)Managers.Definition["brainGeneratingCostEquation"]).ToString() + " NP";
+                        if(Managers.Definition["brainGeneratingCostEquation"]!=null)
+                            _costText.text = "Cost: " + Managers.Definition.CalcEquation(_inputMap, (string)Managers.Definition["brainGeneratingCostEquation"]).ToString() + " NP";
                     }
                     break;
 
