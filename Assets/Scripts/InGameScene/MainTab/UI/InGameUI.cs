@@ -99,7 +99,12 @@ namespace InGame
 
         public void OnClick_LeaderBoard()
         {
-            Managers.Notification.PostNotification(ENotiMessage.ONCLICK_LEADERBOARD);
+            LeaderboardPopup leaderboardPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "LeaderboardPopup", PopupType.NORMAL)
+                                .GetComponent<LeaderboardPopup>();
+            if (leaderboardPopup != null)
+            {
+                leaderboardPopup.Init();
+            }
         }
 
         public void OnClick_Logout()
@@ -111,11 +116,11 @@ namespace InGame
         public void OnClick_Reset()
         {
             Managers.Notification.PostNotification(ENotiMessage.EXPERIMENT_COMPLETE);
-            //SingleNetworkResponse res = await NetworkManager.Instance.API_NetworkReset();
+        }
 
-            //Hashtable sendData = new Hashtable();
-            //sendData.Add(EDataParamKey.SINGLE_NETWORK_WRAPPER, new SingleNetworkWrapper(res));
-            //Managers.Notification.PostNotification(ENotiMessage.ONCLICK_RESET_NETWORK, sendData);
+        public void OnClick_UserInfo()
+        {
+            Managers.Popup.CreatePopup(EPrefabsType.POPUP, "UserInfoPopup", PopupType.NORMAL);
         }
     }
 

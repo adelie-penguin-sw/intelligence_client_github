@@ -60,18 +60,42 @@ namespace MainTab
 
             switch (noti.msg)
             {
-                case ENotiMessage.ONCLICK_LEADERBOARD:
-                    _view.LeaderboardPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "LeaderboardPopup", PopupType.NORMAL)
-                                .GetComponent<InGame.LeaderboardPopup>();
-                    if (_view.LeaderboardPopup != null)
-                    {
-                        _view.LeaderboardPopup.Init();
-                    }
-                    ChangeState(EBehaviorState.SHOW_POPUP);
+
+                case ENotiMessage.EXPERIMENT_COMPLETE:
+                    Managers.Popup.DeleteAll(PopupType.NORMAL);  // 현재 떠있는 모든 팝업 닫음
+                    ResetPopup resetPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "CompletePopup", PopupType.NORMAL)
+                        .GetComponent<ResetPopup>();
+                    resetPopup.Init();
+                    break;
+                    break;
+                case ENotiMessage.ONCLICK_UPGRADE_BRAIN:
+                    long brainId = (long)noti.data[EDataParamKey.BRAIN_ID];
+                    UpgradeBrain(brainId);
                     break;
             }
         }
 
+        private async void UpgradeBrain(long id)
+        {
+            var req = new CreateSingleNetworkBrainNumberRequest();
+            req.brain = id;
+            req.level = 1;
+            CreateSingleNetworkBrainNumberResponse res = await Managers.Network.API_UpgradeBrain(req);
+
+            if (res != null)
+            {
+                // 브레인 업그레이드 상태가 바로 반영되도록 업데이트해주는 콜백 추가
+                _model.SingleNetworkWrapper.UpdateSingleNetworkData(res, () =>
+                {
+                    Managers.Notification.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
+
+                    SingleNetworkWrapper wrapper = _model.SingleNetworkWrapper;
+                    BrainNetwork network = _model.BrainNetwork;
+                    _view.InfoPopup.Set(network.GetBrainForID(id), wrapper, network);
+                });
+            }
+
+        }
         private void AddObservers()
         {
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.DRAG_START_CREATEBRAIN);
@@ -82,12 +106,7 @@ namespace MainTab
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.MOUSE_UP_BRAIN);
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.MOUSE_ENTER_BRAIN);
 
-            Managers.Notification.AddObserver(OnNotification, ENotiMessage.CLOSE_BRAININFO_POPUP);
-            Managers.Notification.AddObserver(OnNotification, ENotiMessage.CLOSE_RESET_POPUP);
-            Managers.Notification.AddObserver(OnNotification, ENotiMessage.CLOSE_LEADERBOARD_POPUP);
-
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.ONCLICK_UPGRADE_BRAIN);
-            Managers.Notification.AddObserver(OnNotification, ENotiMessage.ONCLICK_LEADERBOARD);
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.ONCLICK_RESET_BUTTON);
 
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.EXPERIMENT_COMPLETE);
@@ -102,12 +121,7 @@ namespace MainTab
             Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.MOUSE_UP_BRAIN);
             Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.MOUSE_ENTER_BRAIN);
 
-            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.CLOSE_BRAININFO_POPUP);
-            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.CLOSE_RESET_POPUP);
-            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.CLOSE_LEADERBOARD_POPUP);
-
             Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_UPGRADE_BRAIN);
-            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_LEADERBOARD);
             Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_RESET_BUTTON);
 
             Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.EXPERIMENT_COMPLETE);
@@ -122,7 +136,6 @@ namespace MainTab
             _handlers.Add(EBehaviorState.NONE, new StateHandlerNone());
             _handlers.Add(EBehaviorState.CREATE_BRAIN, new StateHandlerCreateBrain());
             _handlers.Add(EBehaviorState.CREATE_CHANNEL, new StateHandlerCreateChannel());
-            _handlers.Add(EBehaviorState.SHOW_POPUP, new StateHandlerShowPopup());
 
             foreach (EBehaviorState state in _handlers.Keys)
             {
@@ -190,7 +203,7 @@ namespace MainTab
 
             public void AdvanceTime(float dt_sec)
             {
-                if (InGame.InGameManager.IsCompleteExp)
+                if (InGame.InGameManager.IsCompleteExp || Managers.Popup.Count > 0)
                     return;
 
                 if (_isTwoTouch)
@@ -207,7 +220,7 @@ namespace MainTab
             public void LateAdvanceTime(float dt_sec)
             {
 
-                if (InGame.InGameManager.IsCompleteExp)
+                if (InGame.InGameManager.IsCompleteExp || Managers.Popup.Count > 0)
                     return;
 
 
@@ -248,7 +261,6 @@ namespace MainTab
                             _controller._view.InfoPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "BrainInfoPopup", PopupType.NORMAL)
                                 .GetComponent<InGame.BrainInfoPopup>();
                             _controller._view.InfoPopup.Init(_controller._recentSelectBrain, _model.SingleNetworkWrapper, _model.BrainNetwork);
-                            _controller.ChangeState(EBehaviorState.SHOW_POPUP);
                         }
                         else
                         {
@@ -269,7 +281,6 @@ namespace MainTab
                         ResetPopup infoPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "ResetPopup", PopupType.NORMAL)
                             .GetComponent<ResetPopup>();
                         infoPopup.Init();
-                        _controller.ChangeState(EBehaviorState.SHOW_POPUP);
                         break;
                 }
             }
@@ -583,81 +594,6 @@ namespace MainTab
                 _controller.ChangeState(EBehaviorState.NONE);
             }
         }
-
-        /// <summary>
-        /// popup state class
-        /// </summary>
-        protected class StateHandlerShowPopup : IBehaviorStateModule
-        {
-            private BehaviorController _controller;
-            public void Init(BehaviorController controller)
-            {
-                _controller = controller;
-            }
-
-            public void OnEnter()
-            {
-            }
-
-            public void AdvanceTime(float dt_sec)
-            {
-            }
-
-            public void LateAdvanceTime(float dt_sec)
-            {
-            }
-            public void OnNotification(Notification noti)
-            {
-                switch (noti.msg)
-                {
-                    case ENotiMessage.CLOSE_BRAININFO_POPUP:
-                    case ENotiMessage.CLOSE_RESET_POPUP:
-                    case ENotiMessage.CLOSE_LEADERBOARD_POPUP:
-                        _controller.ChangeState(EBehaviorState.NONE);
-                        break;
-                    case ENotiMessage.ONCLICK_UPGRADE_BRAIN:
-                        long brainId = (long)noti.data[EDataParamKey.BRAIN_ID];
-                        UpgradeBrain(brainId);
-                        break;
-                    case ENotiMessage.EXPERIMENT_COMPLETE:
-                        Managers.Popup.DeleteAll(PopupType.NORMAL);  // 현재 떠있는 모든 팝업 닫음
-                        ResetPopup infoPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "CompletePopup", PopupType.NORMAL)
-                            .GetComponent<ResetPopup>();
-                        infoPopup.Init();
-                        break;
-                }
-            }
-
-            public void OnExit()
-            {
-            }
-
-            public void Dispose()
-            {
-            }
-
-            private async void UpgradeBrain(long id)
-            {
-                var req = new CreateSingleNetworkBrainNumberRequest();
-                req.brain = id;
-                req.level = 1;
-                CreateSingleNetworkBrainNumberResponse res = await Managers.Network.API_UpgradeBrain(req);
-
-                if (res != null)
-                {
-                    // 브레인 업그레이드 상태가 바로 반영되도록 업데이트해주는 콜백 추가
-                    _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(res, () =>
-                    {
-                        Managers.Notification.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
-
-                        SingleNetworkWrapper wrapper = _controller._model.SingleNetworkWrapper;
-                        BrainNetwork network = _controller._model.BrainNetwork;
-                        _controller._view.InfoPopup.Set(network.GetBrainForID(id), wrapper, network);
-                    });
-                }
-                
-            }
-        }
 #endregion
     }
 
@@ -670,7 +606,6 @@ namespace MainTab
         NONE,
         CREATE_BRAIN,
         CREATE_CHANNEL,
-        SHOW_POPUP,
     }
 
     /// <summary>

@@ -124,7 +124,6 @@ namespace InGame
         public override void Dispose()
         {
             base.Dispose();
-            Managers.Notification.PostNotification(ENotiMessage.CLOSE_BRAININFO_POPUP);
         }
 
         public void OnClick_SellBrain()
