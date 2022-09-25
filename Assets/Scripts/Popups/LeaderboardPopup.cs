@@ -51,7 +51,6 @@ namespace InGame
             {
                 item.Dispose();
             }
-            Managers.Notification.PostNotification(ENotiMessage.CLOSE_LEADERBOARD_POPUP);
         }
     }
 }
