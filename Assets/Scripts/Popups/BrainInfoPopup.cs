@@ -72,7 +72,12 @@ namespace InGame
         {
             base.AdvanceTime(dt_sec);
 
-            UpArrowNotation storedNP = Exchange.GetNPRewardForBrainDecomposition(_brain.BrainData.Intellect);
+            Dictionary<string, UpArrowNotation> inputMap = new Dictionary<string, UpArrowNotation>();
+            inputMap.Clear();
+            inputMap.Add("intellect", _brain.BrainData.Intellect);
+            inputMap.Add("tpu04", new UpArrowNotation(UserData.TPUpgradeCounts[4]));   // 아직 반영안됨!!!
+            UpArrowNotation storedNP = Managers.Definition.CalcEquation(inputMap, (string)Managers.Definition["brainDecomposingGainEquation"]);
+
             _idText.text = _brain.BrainData.id.ToString();
             switch (_brain.BrainData.brainType)
             {
@@ -97,12 +102,10 @@ namespace InGame
                 //UpArrowNotation upgradeCost = new UpArrowNotation(3);
                 //upgradeCost *= Mathf.Pow(2f, (float)UpArrowNotation.Log10Top3Layer(_brain.BrainData.multiplier));
 
-                Dictionary<string, UpArrowNotation> inputMap = new Dictionary<string, UpArrowNotation>();
-
-                inputMap.Add("multiplier", _brain.BrainData.multiplier);
-                inputMap.Add("tpu03", new UpArrowNotation());   // 아직 반영안됨!!!
-                UpArrowNotation upgradeCost = Managers.Definition.CalcEquation(inputMap, (string)Managers.Definition["BrainUpgradeCostEquation"]);
                 inputMap.Clear();
+                inputMap.Add("multiplier", _brain.BrainData.multiplier);
+                inputMap.Add("tpu03", new UpArrowNotation(UserData.TPUpgradeCounts[3]));   // 아직 반영안됨!!!
+                UpArrowNotation upgradeCost = Managers.Definition.CalcEquation(inputMap, (string)Managers.Definition["BrainUpgradeCostEquation"]);
 
                 string upgradeText = _brain.SenderIdList.Count == 0 ? "+1 Intellect" : "x2 Multiplier";
                 _upgradeCost.text = string.Format(upgradeText + "\nCost: {0} NP", upgradeCost);
@@ -113,7 +116,7 @@ namespace InGame
                     //totalSenderNP += Exchange.GetNPRewardForBrainDecomposition(brain.Intellect);
                     inputMap.Clear();
                     inputMap.Add("intellect", brain.Intellect);
-                    inputMap.Add("tpu04", new UpArrowNotation());   // 아직 반영안됨!!!
+                    inputMap.Add("tpu04", new UpArrowNotation(UserData.TPUpgradeCounts[4]));   // 아직 반영안됨!!!
                     totalSenderNP += Managers.Definition.CalcEquation(inputMap, (string)Managers.Definition["brainDecomposingGainEquation"]);
                 }
                 _decomposeReward.text = _brain.SenderIdList.Count == 0 ?
