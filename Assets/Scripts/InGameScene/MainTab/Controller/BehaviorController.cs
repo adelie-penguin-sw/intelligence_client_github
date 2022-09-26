@@ -621,7 +621,6 @@ namespace MainTab
                         UpgradeBrain(brainId);
                         break;
                     case ENotiMessage.EXPERIMENT_COMPLETE:
-                        UserData.ExperimentElapsedTime = DateTimeOffset.Now.ToUnixTimeMilliseconds() * 1000000 - UserData.ExperimentStartTime;
                         Managers.Popup.DeleteAll(PopupType.NORMAL);  // 현재 떠있는 모든 팝업 닫음
                         ResetPopup reserPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "CompletePopup", PopupType.NORMAL)
                             .GetComponent<ResetPopup>();
