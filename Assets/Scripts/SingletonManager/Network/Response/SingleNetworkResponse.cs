@@ -15,6 +15,7 @@ public class SingleNetworkResponse
     public long calcTime;
     public long allBrainCount;
     public int experimentLevel;
+    public List<int> resetCounts;
     public int statusCode;
     public List<Structure> structures;
     public List<UpgradeCondition> upgradeCondition;
@@ -71,6 +72,8 @@ public class SingleNetworkWrapper
             res.TP.top3Coeffs[2],
             res.TP.operatorLayerCount);
             calcTime = res.calcTime;
+
+            UserData.ResetCounts = res.resetCounts;
 
             achievements = res.achievements;
 
