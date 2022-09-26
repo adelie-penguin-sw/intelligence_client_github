@@ -14,7 +14,7 @@ public class SingleNetworkResponse
     public List<BrainAttributes> brainAttributes;
     public long calcTime;
     public long allBrainCount;
-    public int resetCount;
+    public int experimentLevel;
     public int statusCode;
     public List<Structure> structures;
     public List<UpgradeCondition> upgradeCondition;
@@ -31,7 +31,7 @@ public class SingleNetworkWrapper
     [ShowInInspector] public Dictionary<long, HashSet<long>> receiverBrainsDic = new Dictionary<long, HashSet<long>>();
     [ShowInInspector] public long calcTime;
     [ShowInInspector] public List<Achievements> achievements = new List<Achievements>();
-    [ShowInInspector] public int resetCount;
+    [ShowInInspector] public int experimentLevel;
 
     public SingleNetworkWrapper(SingleNetworkResponse res)
     {
@@ -74,7 +74,7 @@ public class SingleNetworkWrapper
 
             achievements = res.achievements;
 
-            resetCount = res.resetCount;
+            experimentLevel = res.experimentLevel;
         }
     }
 

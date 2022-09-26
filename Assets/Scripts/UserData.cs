@@ -50,16 +50,16 @@ public class UserData
         }
     }
 
-    private static int _resetCount = 0;
-    public static int ResetCount
+    private static int _experimentLevel = 0;
+    public static int ExperimentLevel
     {
         get
         {
-            return _resetCount;
+            return _experimentLevel;
         }
         set
         {
-            _resetCount = value;
+            _experimentLevel = value;
         }
     }
 
