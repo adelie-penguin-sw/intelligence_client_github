@@ -76,19 +76,6 @@ public class UserData
         }
     }
 
-    private static long _experimentElapsedTime = 0;
-    public static long ExperimentElapsedTime
-    {
-        get
-        {
-            return _experimentElapsedTime;
-        }
-        set
-        {
-            _experimentElapsedTime = value;
-        }
-    }
-
     private static List<int> _resetCounts = new List<int>();
     public static List<int> ResetCounts
     {
