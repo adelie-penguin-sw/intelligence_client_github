@@ -45,12 +45,16 @@ namespace MainTab
             if (complete)
             {
                 _titleText.text = "Experiment Complete";
-
-                // 이거는 실험 레벨이랑 해당 레벨 실험 완료할때까지 시도 횟수 들어가야함!!
                 _expLvTextComplete.text = string.Format("You've just completed\n<b>Lv.{0} experiment</b>\nafter <b>{1} attempt(s).</b>", UserData.ExperimentLevel, UserData.ResetCounts[UserData.ExperimentLevel] + 1);
 
                 // 해당 레벨의 실험을 최초 시작하고부터 성공하기까지 소요된 총 시간, 분, 초가 들어가야함!!
-                _elapesdTimeTextComplete.text = string.Format("0000h 00m 00s");
+                // 실험 완료하고 나갔다들어오면 시간 바뀌어있는 문제점 남아있음
+                long elapsedSecs = UserData.ExperimentElapsedTime / 1000000000;
+                long elapsedMins = elapsedSecs / 60;
+                elapsedSecs %= 60;
+                long elapsedHours = elapsedMins / 60;
+                elapsedMins %= 60;
+                _elapesdTimeTextComplete.text = string.Format("{0:D4}h {1:D2}m {2:D2}s", elapsedHours, elapsedMins, elapsedSecs);
 
                 inputMap.Clear();
                 inputMap.Add("coreBrainIntellect", UserData.CoreIntellect);
@@ -58,7 +62,7 @@ namespace MainTab
             }
             else
             {
-                _titleText.text = "Reser Network";
+                _titleText.text = "Reset Network";
 
                 _currentCoreIntellectTextIncomplete.text = UserData.CoreIntellect.ToString();
 
