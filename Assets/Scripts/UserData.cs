@@ -50,6 +50,45 @@ public class UserData
         }
     }
 
+    private static int _experimentLevel = 0;
+    public static int ExperimentLevel
+    {
+        get
+        {
+            return _experimentLevel;
+        }
+        set
+        {
+            _experimentLevel = value;
+        }
+    }
+
+    private static long _experimentStartTime = 0;
+    public static long ExperimentStartTime
+    {
+        get
+        {
+            return _experimentStartTime;
+        }
+        set
+        {
+            _experimentStartTime = value;
+        }
+    }
+
+    private static List<int> _resetCounts = new List<int>();
+    public static List<int> ResetCounts
+    {
+        get
+        {
+            return _resetCounts;
+        }
+        set
+        {
+            _resetCounts = value;
+        }
+    }
+
     private static Dictionary<long, long> _tpUpgradeCounts = new Dictionary<long, long>();
     public static Dictionary<long, long> TPUpgradeCounts
     {
