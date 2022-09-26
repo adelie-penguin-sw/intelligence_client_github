@@ -15,6 +15,7 @@ public class SingleNetworkResponse
     public long calcTime;
     public long allBrainCount;
     public int experimentLevel;
+    public long experimentStartTime;
     public List<int> resetCounts;
     public int statusCode;
     public List<Structure> structures;
@@ -73,6 +74,7 @@ public class SingleNetworkWrapper
             res.TP.operatorLayerCount);
             calcTime = res.calcTime;
 
+            UserData.ExperimentStartTime = res.experimentStartTime;
             UserData.ResetCounts = res.resetCounts;
 
             achievements = res.achievements;
