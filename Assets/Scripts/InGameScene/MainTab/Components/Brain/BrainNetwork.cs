@@ -67,8 +67,8 @@ namespace MainTab
         public void UpdateBrainNetwork(SingleNetworkWrapper wrapper)
         {
             ClearNetwork();
-            _resetCount = wrapper.resetCount;
-            _experimentGoal = ((List<UpArrowNotation>)Managers.Definition["ExperimentGoalList"])[UserData.ResetCount];
+            _resetCount = wrapper.experimentLevel;
+            _experimentGoal = ((List<UpArrowNotation>)Managers.Definition["ExperimentGoalList"])[UserData.ExperimentLevel];
             foreach (var id in wrapper.brainAttributesDic.Keys)
             {
                 BrainData data = wrapper.GetBrainDataForID(id);
