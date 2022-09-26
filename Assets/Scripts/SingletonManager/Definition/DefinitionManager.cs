@@ -33,6 +33,10 @@ public class DefinitionManager
                         break;
 
                     case "int":
+                        _definitionDic.Add((string)li["name"], int.Parse(value));
+                        break;
+                    case "[]string":
+                        _definitionDic.Add((string)li["name"], value);  // 일단 그대로 추가, 나중에 형식에 따라 변환할 예정
                         if (!_definitionDic.ContainsKey((string)li["name"]))
                             _definitionDic.Add((string)li["name"], int.Parse(value));
                         else
@@ -63,6 +67,27 @@ public class DefinitionManager
         {"-", 1},
         {"(", 0},
     };
+
+    private List<UpArrowNotation> ConvertToUANList(string data)
+    {
+        List<UpArrowNotation> result = new List<UpArrowNotation>();
+        int initLength = data.Length;
+
+        data = data.Substring(2, initLength - 4);
+        string[] splittedData = data.Split("], [");
+
+        foreach (string segment in splittedData)
+        {
+            string[] coeffs = segment.Split(", ");
+            float top1Coeff = float.Parse(coeffs[0]);
+            float top2Coeff = float.Parse(coeffs[1]);
+            float top3Coeff = float.Parse(coeffs[2]);
+
+            result.Add(new UpArrowNotation(top1Coeff, top2Coeff, top3Coeff));
+        }
+
+        return result;
+    }
 
     public List<string> ConvEquationToPostfix(string s)
     {
