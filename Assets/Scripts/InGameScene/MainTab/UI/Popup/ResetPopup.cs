@@ -27,8 +27,8 @@ namespace MainTab
         {
             base.Init();
 
-            _expGoalTextComplete.text = ((List<UpArrowNotation>)Managers.Definition["ExperimentGoalList"])[UserData.ResetCount].ToString();
-            _expGoalTextIncomplete.text = ((List<UpArrowNotation>)Managers.Definition["ExperimentGoalList"])[UserData.ResetCount].ToString();
+            _expGoalTextComplete.text = ((List<UpArrowNotation>)Managers.Definition["ExperimentGoalList"])[UserData.ExperimentLevel].ToString();
+            _expGoalTextIncomplete.text = ((List<UpArrowNotation>)Managers.Definition["ExperimentGoalList"])[UserData.ExperimentLevel].ToString();
         }
 
         private Hashtable _sendData = new Hashtable();
