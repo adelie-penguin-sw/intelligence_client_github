@@ -95,5 +95,10 @@ namespace MainTab
             }
             Managers.Pool.DespawnObject(EPrefabsType.TAP_APPLICATION, this.gameObject);
         }
+
+        public void OnClick_ResetButton()
+        {
+            Managers.Notification.PostNotification(ENotiMessage.ONCLICK_RESET_BUTTON);
+        }
     }
 }
