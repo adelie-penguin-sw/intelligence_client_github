@@ -47,7 +47,7 @@ namespace MainTab
                 _titleText.text = "Experiment Complete";
 
                 // 이거는 실험 레벨이랑 해당 레벨 실험 완료할때까지 시도 횟수 들어가야함!!
-                _expLvTextComplete.text = string.Format("You've just completed\n<b>Lv.{0} experiment</b>\nafter <b>{1} attempt(s).</b>", 1, 1);
+                _expLvTextComplete.text = string.Format("You've just completed\n<b>Lv.{0} experiment</b>\nafter <b>{1} attempt(s).</b>", UserData.ExperimentLevel, UserData.ResetCounts[UserData.ExperimentLevel] + 1);
 
                 // 해당 레벨의 실험을 최초 시작하고부터 성공하기까지 소요된 총 시간, 분, 초가 들어가야함!!
                 _elapesdTimeTextComplete.text = string.Format("0000h 00m 00s");

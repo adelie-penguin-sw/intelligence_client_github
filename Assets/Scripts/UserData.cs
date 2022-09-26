@@ -63,6 +63,19 @@ public class UserData
         }
     }
 
+    private static List<int> _resetCounts = new List<int>();
+    public static List<int> ResetCounts
+    {
+        get
+        {
+            return _resetCounts;
+        }
+        set
+        {
+            _resetCounts = value;
+        }
+    }
+
     private static Dictionary<long, long> _tpUpgradeCounts = new Dictionary<long, long>();
     public static Dictionary<long, long> TPUpgradeCounts
     {
