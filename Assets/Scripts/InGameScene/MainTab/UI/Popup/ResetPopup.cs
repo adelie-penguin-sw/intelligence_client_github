@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
+
 namespace MainTab
 {
     public class ResetPopup : PopupBase
@@ -48,8 +50,9 @@ namespace MainTab
                 _expLvTextComplete.text = string.Format("You've just completed\n<b>Lv.{0} experiment</b>\nafter <b>{1} attempt(s).</b>", UserData.ExperimentLevel, UserData.ResetCounts[UserData.ExperimentLevel] + 1);
 
                 // 해당 레벨의 실험을 최초 시작하고부터 성공하기까지 소요된 총 시간, 분, 초가 들어가야함!!
-                // 실험 완료하고 나갔다들어오면 시간 바뀌어있는 문제점 남아있음
-                long elapsedSecs = UserData.ExperimentElapsedTime / 1000000000;
+                // 팝업 내에서 시간이 계속 흐르는 문제가 있음
+                long elapsedSecsNano = DateTimeOffset.Now.ToUnixTimeMilliseconds() * 1000000 - UserData.ExperimentStartTime;
+                long elapsedSecs = elapsedSecsNano / 1000000000;
                 long elapsedMins = elapsedSecs / 60;
                 elapsedSecs %= 60;
                 long elapsedHours = elapsedMins / 60;
