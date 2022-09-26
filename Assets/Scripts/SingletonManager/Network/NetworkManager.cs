@@ -215,6 +215,7 @@ public class NetworkManager
                     PATH_SINGLE_NETWORK_RESET,
                     ENetworkSendType.POST,
                     json);
+        UserData.ExperimentLevel = res.experimentLevel;
         UserData.PastBrainGenCount = res.allBrainCount;
         return res;
     }
@@ -245,6 +246,7 @@ public class NetworkManager
             await SendToServer<SingleNetworkResponse>(
                     PATH_SINGLE_NETWORK,
                     ENetworkSendType.GET);
+        UserData.ExperimentLevel = res.experimentLevel;
         UserData.UpdateTPUpgradeCounts(res.upgradeCondition);
         UserData.PastBrainGenCount = res.allBrainCount;
         return res;
