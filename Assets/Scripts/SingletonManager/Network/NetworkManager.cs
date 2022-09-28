@@ -150,6 +150,11 @@ public class NetworkManager
     public const string PATH_LEADERBOARD = "/v1/leaderboard/single";
     public const string PATH_S3DATA = "/v1/assets/";
 
+    ///
+    /// GET & POST PATH
+    ///
+    public const string PATH_USERNAME = "/v1/user/username";
+
     /// 
     /// DELETE PATH
     /// 
@@ -171,6 +176,17 @@ public class NetworkManager
             Debug.Log(res.token);
             UserData.SetString("Token", res.token);
         }
+    }
+
+    public async UniTask<PostUsernameResponse> API_PostUsername(PostUsernameRequest req)
+    {
+        string json = JsonUtility.ToJson(req);
+        var res =
+            await SendToServer<PostUsernameResponse>(
+                PATH_USERNAME,
+                ENetworkSendType.POST,
+                json);
+        return res;
     }
 
     public async UniTask<CreateSingleNetworkBrainResponse> API_CreateBrain(CreateSingleNetworkBrainRequest req)
@@ -258,6 +274,15 @@ public class NetworkManager
             await SendToServer<AuthValidationResponse>(
                     PATH_TOKEN_VALIDATION,
                     ENetworkSendType.GET);
+        return res;
+    }
+
+    public async UniTask<GetUsernameResponse> API_GetUsername()
+    {
+        var res =
+            await SendToServer<GetUsernameResponse>(
+                PATH_USERNAME,
+                ENetworkSendType.GET);
         return res;
     }
 
