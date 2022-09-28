@@ -27,7 +27,7 @@ namespace InGame
             _costType = type;
         }
 
-        public void Set()
+        public override void Set()
         {
             base.Set();
         }
