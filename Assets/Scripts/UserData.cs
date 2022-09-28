@@ -9,6 +9,19 @@ public class UserData
 {
     public static string token;
 
+    private static string _username;
+    public static string Username
+    {
+        get
+        {
+            return _username;
+        }
+        set
+        {
+            _username = value;
+        }
+    }
+
     private static UpArrowNotation _coreIntellect = new UpArrowNotation();
     public static UpArrowNotation CoreIntellect
     {
