@@ -16,6 +16,7 @@ namespace InGame
         [SerializeField] private TextMeshProUGUI _txtCoreIntellect;
         [SerializeField] private TextMeshProUGUI _txtNP;
         [SerializeField] private TextMeshProUGUI _txtTP;
+        [SerializeField] private TextMeshProUGUI _txtUsername;
 
         public void Init()
         {
@@ -30,6 +31,7 @@ namespace InGame
             UpdateCoreIntellectText();
             UpdateNPText();
             UpdateTPText();
+            SetUsernameText();
         }
 
         public void Set()
@@ -37,6 +39,7 @@ namespace InGame
             UpdateCoreIntellectText();
             UpdateNPText();
             UpdateTPText();
+            SetUsernameText();
         }
 
         public void AdvanceTime(float dt_sec)
@@ -95,6 +98,11 @@ namespace InGame
         public void UpdateTPText()
         {
             _txtTP.text = string.Format("TP: {0}", UserData.TP.ToString());
+        }
+
+        public void SetUsernameText()
+        {
+            _txtUsername.text = UserData.Username;
         }
 
         public void OnClick_LeaderBoard()
