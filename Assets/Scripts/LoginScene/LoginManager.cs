@@ -9,9 +9,18 @@ public class LoginManager : MonoBehaviour
 {
     [SerializeField] private TMP_InputField _textEmail;
     [SerializeField] private TMP_InputField _textDomain;
+    [SerializeField] private TMP_InputField _textUsername;
+
+    [SerializeField] private TextMeshProUGUI _usernameText;
+
+    [SerializeField] private GameObject _contentNotLoggedIn;
+    [SerializeField] private GameObject _contentLoggedIn;
 
     public void Start()
     {
+        _contentNotLoggedIn.SetActive(true);
+        _contentLoggedIn.SetActive(false);
+
         //PlayerPrefs.DeleteAll();
         UserData.LoadAllData();
         CheckChangeScene();
@@ -23,7 +32,21 @@ public class LoginManager : MonoBehaviour
         req.email = _textEmail.text;
         req.domain = _textDomain.text;
         await Managers.Network.API_Login(req);
-        CheckChangeScene();
+
+        GetUsernameResponse res = await Managers.Network.API_GetUsername();
+        if (res != null)
+        {
+            if (string.IsNullOrEmpty(res.username))   // 유저네임 아직 설정 안했을때
+            {
+                _contentNotLoggedIn.SetActive(false);
+                _contentLoggedIn.SetActive(true);
+            }
+            else                        // 이미 유저네임을 가진 상태에서 로그인할때
+            {
+                UserData.Username = res.username;
+                CheckChangeScene();
+            }
+        }
     }
 
     private async void CheckChangeScene()
@@ -47,6 +70,18 @@ public class LoginManager : MonoBehaviour
                         break;
                 }
             }
+        }
+    }
+
+    public async void OnClick_Start()
+    {
+        PostUsernameRequest req = new PostUsernameRequest();
+        req.username = _textUsername.text;
+        var res = await Managers.Network.API_PostUsername(req);
+        if (res != null)
+        {
+            UserData.Username = _textUsername.text;
+            CheckChangeScene();
         }
     }
 }
