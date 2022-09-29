@@ -14,13 +14,13 @@ namespace MainTab
         private MainTabView _view;
         [SerializeField] private Brain _recentSelectBrain;
 
-
         public override void Init(MainTabApplication app)
         {
             base.Init(app);
             _model = app.MainTabModel;
             _view = app.MainTabView;
-
+            _view.TempBrain.Init(new BrainData(-1, EBrainType.GUIDEBRAIN));
+            Debug.LogError("INIT cccc");
             InitHandlers();
             ChangeState(EBehaviorState.NONE);
             AddObservers();
@@ -417,14 +417,15 @@ namespace MainTab
             public void Init(BehaviorController controller)
             {
                 _controller = controller;
-                _tempBrain = Managers.Pool.GrabPrefabs(EPrefabsType.BRAIN, "Brain", controller._view.transform)
-                            .GetComponent<Brain>();
-                _tempBrain.Init(new BrainData(-1,EBrainType.GUIDEBRAIN));
             }
 
             public void OnEnter()
             {
-                _tempBrain.gameObject.SetActive(true);
+                _tempBrain = _controller._view.TempBrain;
+                if (_tempBrain != null)
+                {
+                    _tempBrain.gameObject.SetActive(true);
+                }
                 _controller._view.NPCostPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "NPCostPopup", PopupType.NORMAL)
                         .GetComponent<InGame.NPCostPopup>();
                 _controller._view.NPCostPopup.Init(ENPCostType.BRAIN_GEN);
@@ -462,7 +463,7 @@ namespace MainTab
 
             public void Dispose()
             {
-                _tempBrain.Dispose();
+                _tempBrain = null;
             }
 
             private async void CreateBrain()
@@ -524,6 +525,7 @@ namespace MainTab
             public void LateAdvanceTime(float dt_sec)
             {
             }
+
             public void OnNotification(Notification noti)
             {
                 switch (noti.msg)
