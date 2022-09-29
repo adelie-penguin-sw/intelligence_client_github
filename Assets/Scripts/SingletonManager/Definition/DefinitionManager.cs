@@ -1,7 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class DefinitionManager
@@ -76,14 +76,25 @@ public class DefinitionManager
         int initLength = data.Length;
 
         data = data.Substring(2, initLength - 4);
-        string[] splittedData = data.Split("], [");
+        data = data.Replace("], [", "/");
+        string[] splittedData = data.Split('/');
 
         foreach (string segment in splittedData)
         {
-            string[] coeffs = segment.Split(", ");
-            float top1Coeff = float.Parse(coeffs[0]);
-            float top2Coeff = float.Parse(coeffs[1]);
-            float top3Coeff = float.Parse(coeffs[2]);
+            string[] coeffs = segment.Replace(", ", "/").Split('/');
+            float top1Coeff, top2Coeff, top3Coeff;
+            if(!float.TryParse(coeffs[0],out top1Coeff))
+            {
+                Debug.LogErrorFormat("Float Parse Error : {0}",coeffs[0]);
+            }
+            if (!float.TryParse(coeffs[1], out top2Coeff))
+            {
+                Debug.LogErrorFormat("Float Parse Error : {0}", coeffs[1]);
+            }
+            if (!float.TryParse(coeffs[2], out top3Coeff))
+            {
+                Debug.LogErrorFormat("Float Parse Error : {0}", coeffs[2]);
+            }
 
             result.Add(new UpArrowNotation(top1Coeff, top2Coeff, top3Coeff));
         }
