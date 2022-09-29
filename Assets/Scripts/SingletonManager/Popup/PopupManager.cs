@@ -19,10 +19,6 @@ public class PopupManager
         {
             if (!_stackDic.ContainsKey(type))
                 _stackDic.Add(type, new Stack<PopupBase>());
-            //if (!_groupDic.ContainsKey(type) && _canvas.transform.childCount >= (int)type)
-            //{
-            //    _groupDic.Add(type, _canvas.transform.GetChild((int)type).gameObject);
-            //}
         }
 
         foreach (var item in _stackDic)
@@ -32,8 +28,6 @@ public class PopupManager
                 popup.Init();
             }
         }
-        //NotificationCenter.Instance.AddObserver(OnNotification, ENotiMessage.ChangeSceneState);
-
     }
 
     public void AdvanceTime(float dt_sec )
@@ -42,7 +36,10 @@ public class PopupManager
         {
             foreach (var popup in item.Value)
             {
-                popup.AdvanceTime(dt_sec);
+                if (popup != null)
+                {
+                    popup.AdvanceTime(dt_sec);
+                }
             }
         }
     }
@@ -63,6 +60,8 @@ public class PopupManager
 
     private void CreateCanvas()
     {
+        if (_canvas != null)
+            return;
         GameObject go = GameObject.Find("PopupCanvas");
         if (go == null)
             go = Managers.Pool.GrabPrefabs(EPrefabsType.POPUP, "PopupCanvas", Managers.ManagerObj.transform);
@@ -84,15 +83,6 @@ public class PopupManager
 
     private void OnNotification(Notification noti)
     {
-        //switch (noti.msg)
-        //{
-        //    case ENotiMessage.ChangeSceneState:
-        //        _canvas = null;
-        //        DeleteAll();
-        //        SetCanvas();
-        //        if (_canvas == null) Debug.LogError("[Self] expected PopupCanvas");
-        //        break;
-        //}
     }
 
     private GameObject CreatePopupObj(EPrefabsType type, string name, Transform layer)
