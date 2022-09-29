@@ -1,11 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System;
-using UnityEditor;
-using Cysharp.Threading.Tasks.Triggers;
-using UnityEngine.Rendering.Universal.Internal;
-using System.Text.RegularExpressions;
 using Sirenix.OdinInspector;
 
 public class PopupManager
