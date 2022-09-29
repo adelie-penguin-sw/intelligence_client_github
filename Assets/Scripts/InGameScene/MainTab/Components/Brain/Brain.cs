@@ -180,7 +180,7 @@ namespace MainTab
         #region EventData
         private void OnMouseDown()
         {
-            if (_brainData == null)
+            if (_brainData == null || EventSystem.current.IsPointerOverGameObject())
                 return;
             if (_brainData.brainType != EBrainType.GUIDEBRAIN)
             {
@@ -192,7 +192,7 @@ namespace MainTab
 
         private void OnMouseExit()
         {
-            if (_brainData == null)
+            if (_brainData == null || EventSystem.current.IsPointerOverGameObject())
                 return;
             if (_brainData.brainType != EBrainType.GUIDEBRAIN)
             {
@@ -202,7 +202,7 @@ namespace MainTab
 
         private void OnMouseUp()
         {
-            if (_brainData == null)
+            if (_brainData == null || EventSystem.current.IsPointerOverGameObject())
                 return;
             if (_brainData.brainType != EBrainType.GUIDEBRAIN)
             {
@@ -212,7 +212,7 @@ namespace MainTab
 
         private void OnMouseEnter()
         {
-            if (_brainData == null)
+            if (_brainData == null || EventSystem.current.IsPointerOverGameObject())
                 return;
             if (_brainData.brainType != EBrainType.GUIDEBRAIN)
             {
