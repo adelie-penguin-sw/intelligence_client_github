@@ -502,6 +502,11 @@ namespace Rewired.Utils {
             return Rewired.Internal.ControllerTemplateFactory.templateInterfaceTypes;
         }
 
+        public void WindowsStandalone_ForwardRawInput(System.IntPtr rawInputHeaderIndices, System.IntPtr rawInputDataIndices, uint indicesCount, System.IntPtr rawInputData, uint rawInputDataSize)
+        {
+            throw new System.NotImplementedException();
+        }
+
         #endregion
     }
 }
