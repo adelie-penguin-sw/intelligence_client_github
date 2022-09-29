@@ -1,10 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System;
 using Sirenix.OdinInspector;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 
 public class UpArrowNotation
 {
