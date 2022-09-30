@@ -10,7 +10,6 @@ public class DefinitionManager
     public List<Dictionary<string, object>> CSVData { get { return _csvData; } }
 
     private Dictionary<string, object> _definitionDic = new Dictionary<string, object>();
-    public object this[string name] { get { return _definitionDic[name]; } }
 
     private async void LoadS3Data()
     {
@@ -49,6 +48,19 @@ public class DefinitionManager
                         break;
                 }
             }
+        }
+    }
+
+    public T GetData<T>(string dataName)
+    {
+        if (_definitionDic.ContainsKey(dataName))
+        {
+            return (T)_definitionDic[dataName];
+        }
+        else
+        {
+            Debug.LogError("NULL DATA DICTIONARY");
+            return default;
         }
     }
 
@@ -227,5 +239,9 @@ public class DefinitionManager
         return CalcPostfix(inputMap, ConvEquationToPostfix(equation));
     }
 
+    public string CalcEquationToString(Dictionary<string, UpArrowNotation> inputMap, string equationKey)
+    {
+        return CalcPostfix(inputMap, ConvEquationToPostfix(GetData<string>(equationKey))).ToString();
+    }
 }
 
