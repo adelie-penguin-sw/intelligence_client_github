@@ -201,6 +201,7 @@ public enum ENotiMessage
     //  Input????
     DRAG_START_CREATEBRAIN,
     DRAG_END_CREATEBRAIN,
+    CANCEL_CREATEBRAIN,
 
     MOUSE_DOWN_BRAIN,
     MOUSE_UP_BRAIN,
