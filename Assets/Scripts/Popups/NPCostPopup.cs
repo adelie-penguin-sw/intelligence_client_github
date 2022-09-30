@@ -92,7 +92,7 @@ namespace InGame
                         _inputMap.Add("senderIntellect", _senderBrain.Intellect);
                         _inputMap.Add("tpu02", new UpArrowNotation(UserData.TPUpgradeCounts[2]));
 
-                        UpArrowNotation channelGenCost = Managers.Definition.CalcEquation(_inputMap, (string)Managers.Definition.GetData<string>(DefinitionKey.channelGeneratingCostEquation));
+                        UpArrowNotation channelGenCost = Managers.Definition.CalcEquation(_inputMap, Managers.Definition.GetData<string>(DefinitionKey.channelGeneratingCostEquation));
 
                         _costText.text = "Cost: " + channelGenCost.ToString() + " NP";
                         if (channelGenCost <= UserData.NP)
