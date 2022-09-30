@@ -49,6 +49,7 @@ public class DefinitionManager
                 }
             }
         }
+        await System.Threading.Tasks.Task.Delay(3000);
     }
 
     public T GetData<T>(string dataName)
