@@ -61,17 +61,17 @@ public class NetworkManager
         SetHeaders(request);
         try
         {
-            var res = await request.SendWebRequest().WithCancellation(cts.Token);
-            Debug.Log(res.downloadHandler.text);
+            await request.SendWebRequest().WithCancellation(cts.Token);
+            Debug.Log(request.downloadHandler.text);
             T result;
             switch (resType)
             {
                 case ENetworkRecvType.JSON:
-                    result = JsonUtility.FromJson<T>(res.downloadHandler.text);
+                    result = JsonUtility.FromJson<T>(request.downloadHandler.text);
                     break;
                 case ENetworkRecvType.FILE:
                     //result = JsonUtility.FromJson<T>("{\"csvDataString\":\"" +  res.downloadHandler.text + "\"}");
-                    result = (T)(object)res.downloadHandler.text;
+                    result = (T)(object)request.downloadHandler.text;
                     break;
                 default:
                     result = default(T);
