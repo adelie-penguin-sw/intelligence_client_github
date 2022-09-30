@@ -28,7 +28,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -45,12 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 789406bc0a30c4cb1b79f86898863eac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _data:
-    id: 0
-    trFrom: {fileID: 0}
-    trTo: {fileID: 0}
-    fromId: 0
-    toId: 0
   _lineRenderer: {fileID: 5562768445090821555}
   _material: {fileID: 2100000, guid: c6a7c824f794c4dbcb36b0e2b4bc507d, type: 2}
 --- !u!120 &5562768445090821555
@@ -64,7 +57,6 @@ LineRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 0
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
@@ -91,7 +83,7 @@ LineRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1617472993
+  m_SortingLayerID: 897107835
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_Positions:
