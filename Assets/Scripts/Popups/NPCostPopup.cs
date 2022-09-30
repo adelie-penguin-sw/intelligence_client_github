@@ -52,17 +52,15 @@ namespace InGame
                         _inputMap.Add("physicalDistance", new UpArrowNotation(physicalDistance));
                         _inputMap.Add("pastBrainGenCount", new UpArrowNotation(UserData.PastBrainGenCount));
                         _inputMap.Add("tpu01", new UpArrowNotation(UserData.TPUpgradeCounts[1]));
+                        
+                        UpArrowNotation brainGenCost = Managers.Definition.CalcEquation(_inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainGeneratingCostEquation));
 
-                        if (Managers.Definition["brainGeneratingCostEquation"] != null)
-                        {
-                            UpArrowNotation brainGenCost = Managers.Definition.CalcEquation(_inputMap, (string)Managers.Definition["brainGeneratingCostEquation"]);
-
-                            _costText.text = "Cost: " + brainGenCost.ToString() + " NP";
-                            if (brainGenCost <= UserData.NP)
-                                _costText.color = new Color32(255, 255, 255, 255);
-                            else
-                                _costText.color = new Color32(255, 0, 0, 255);
-                        }
+                        _costText.text = "Cost: " + brainGenCost.ToString() + " NP";
+                        if (brainGenCost <= UserData.NP)
+                            _costText.color = new Color32(255, 255, 255, 255);
+                        else
+                            _costText.color = new Color32(255, 0, 0, 255);
+                        
                             
                     }
                     break;
@@ -94,16 +92,13 @@ namespace InGame
                         _inputMap.Add("senderIntellect", _senderBrain.Intellect);
                         _inputMap.Add("tpu02", new UpArrowNotation(UserData.TPUpgradeCounts[2]));
 
-                        if (Managers.Definition["channelGeneratingCostEquation"] != null)
-                        {
-                            UpArrowNotation channelGenCost = Managers.Definition.CalcEquation(_inputMap, (string)Managers.Definition["channelGeneratingCostEquation"]);
+                        UpArrowNotation channelGenCost = Managers.Definition.CalcEquation(_inputMap, (string)Managers.Definition.GetData<string>(DefinitionKey.channelGeneratingCostEquation));
 
-                            _costText.text = "Cost: " + channelGenCost.ToString() + " NP";
-                            if (channelGenCost <= UserData.NP)
-                                _costText.color = new Color32(255, 255, 255, 255);
-                            else
-                                _costText.color = new Color32(255, 0, 0, 255);
-                        }
+                        _costText.text = "Cost: " + channelGenCost.ToString() + " NP";
+                        if (channelGenCost <= UserData.NP)
+                            _costText.color = new Color32(255, 255, 255, 255);
+                        else
+                            _costText.color = new Color32(255, 0, 0, 255);
                     }
                     break;
 
