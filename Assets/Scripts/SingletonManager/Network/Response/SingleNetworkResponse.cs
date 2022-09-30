@@ -287,7 +287,7 @@ public class SingleNetworkWrapper
                 brainAttributesDic[brainId] = attribute;
             }
         }
-        Debug.LogError(res.NP.top3Coeffs != null);
+
         UserData.NP = new UpArrowNotation(
             res.NP.top3Coeffs[0],
             res.NP.top3Coeffs[1],

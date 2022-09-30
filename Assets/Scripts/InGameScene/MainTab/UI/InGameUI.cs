@@ -17,7 +17,6 @@ namespace InGame
         [SerializeField] private TextMeshProUGUI _txtNP;
         [SerializeField] private TextMeshProUGUI _txtTP;
         [SerializeField] private TextMeshProUGUI _txtUsername;
-
         public void Init()
         {
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.UPDATE_NP);
@@ -28,10 +27,7 @@ namespace InGame
                 tab.OnClickTab = OnClick_Tab;
             }
 
-            UpdateCoreIntellectText();
-            UpdateNPText();
-            UpdateTPText();
-            SetUsernameText();
+            Set();
         }
 
         public void Set()
