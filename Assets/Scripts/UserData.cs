@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,16 +23,13 @@ public class UserData
         }
     }
 
-    private static UpArrowNotation _coreIntellect = new UpArrowNotation();
     public static UpArrowNotation CoreIntellect
     {
         get
         {
-            return _coreIntellect;
-        }
-        set
-        {
-            _coreIntellect = value;
+            double elapsedTime = (double)(DateTimeOffset.Now.ToUnixTimeMilliseconds() - LastCalcTime) / 1000f;
+            UpArrowNotation intellect = Equation.GetCurrentIntellect(SingleNetworkWrapper.GetBrainDataForID(0).intellectEquation, elapsedTime);
+            return intellect;
         }
     }
 
@@ -172,4 +170,6 @@ public class UserData
             return _singleNetworkWrapper.experimentLevel;
         }
     }
+
+    public static long LastCalcTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 }
