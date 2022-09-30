@@ -23,8 +23,6 @@ public class BrainEventUIItem : EventObject
             case EEventObjectType.CREATE_BRAIN_UI:
                 Managers.Notification.PostNotification(ENotiMessage.DRAG_END_CREATEBRAIN);
                 break;
-            case EEventObjectType.CREATE_BRAIN_TUTORIAL:
-                break;
         }
     }
 
@@ -34,9 +32,7 @@ public class BrainEventUIItem : EventObject
         switch (_objType)
         {
             case EEventObjectType.CREATE_BRAIN_UI:
-                Managers.Notification.PostNotification(ENotiMessage.DRAG_END_CREATEBRAIN);
-                break;
-            case EEventObjectType.CREATE_BRAIN_TUTORIAL:
+                Managers.Notification.PostNotification(_isPointerEntering ? ENotiMessage.CANCEL_CREATEBRAIN : ENotiMessage.DRAG_END_CREATEBRAIN);
                 break;
         }
     }
@@ -48,8 +44,6 @@ public class BrainEventUIItem : EventObject
         {
             case EEventObjectType.CREATE_BRAIN_UI:
                 Managers.Notification.PostNotification(ENotiMessage.DRAG_START_CREATEBRAIN);
-                break;
-            case EEventObjectType.CREATE_BRAIN_TUTORIAL:
                 break;
         }
     }
