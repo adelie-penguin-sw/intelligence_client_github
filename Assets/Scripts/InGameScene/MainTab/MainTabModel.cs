@@ -90,18 +90,18 @@ namespace MainTab
         }
 
         #region UserData
-        [SerializeField] private SingleNetworkWrapper _singleNetworkWrapper;
-        public SingleNetworkWrapper SingleNetworkWrapper
-        {
-            get
-            {
-                return _singleNetworkWrapper;
-            }
-            set
-            {
-                _singleNetworkWrapper = value;
-            }
-        }
+        //[SerializeField] private SingleNetworkWrapper _singleNetworkWrapper;
+        //public SingleNetworkWrapper SingleNetworkWrapper
+        //{
+        //    get
+        //    {
+        //        return _singleNetworkWrapper;
+        //    }
+        //    set
+        //    {
+        //        _singleNetworkWrapper = value;
+        //    }
+        //}
 
         #endregion
     }
