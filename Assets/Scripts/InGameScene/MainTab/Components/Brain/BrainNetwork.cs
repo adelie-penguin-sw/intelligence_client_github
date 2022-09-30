@@ -68,7 +68,7 @@ namespace MainTab
         {
             ClearNetwork();
             _resetCount = wrapper.experimentLevel;
-            _experimentGoal = ((List<UpArrowNotation>)Managers.Definition["ExperimentGoalList"])[UserData.ExperimentLevel];
+            _experimentGoal = Managers.Definition.GetData<List<UpArrowNotation>>(DefinitionKey.experimentGoalList)[UserData.ExperimentLevel];
             foreach (var id in wrapper.brainAttributesDic.Keys)
             {
                 BrainData data = wrapper.GetBrainDataForID(id);
