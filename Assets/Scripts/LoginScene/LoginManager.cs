@@ -31,20 +31,22 @@ public class LoginManager : MonoBehaviour
         TemporaryRequest req = new TemporaryRequest();
         req.email = _textEmail.text;
         req.domain = _textDomain.text;
-        await Managers.Network.API_Login(req);
 
-        GetUsernameResponse res = await Managers.Network.API_GetUsername();
-        if (res != null)
+        if (await Managers.Network.API_Login(req))
         {
-            if (string.IsNullOrEmpty(res.username))   // 유저네임 아직 설정 안했을때
+            GetUsernameResponse res = await Managers.Network.API_GetUsername();
+            if (res != null)
             {
-                _contentNotLoggedIn.SetActive(false);
-                _contentLoggedIn.SetActive(true);
-            }
-            else                        // 이미 유저네임을 가진 상태에서 로그인할때
-            {
-                UserData.Username = res.username;
-                CheckChangeScene();
+                if (string.IsNullOrEmpty(res.username))   // 유저네임 아직 설정 안했을때
+                {
+                    _contentNotLoggedIn.SetActive(false);
+                    _contentLoggedIn.SetActive(true);
+                }
+                else                        // 이미 유저네임을 가진 상태에서 로그인할때
+                {
+                    UserData.Username = res.username;
+                    CheckChangeScene();
+                }
             }
         }
     }
@@ -77,10 +79,8 @@ public class LoginManager : MonoBehaviour
     {
         PostUsernameRequest req = new PostUsernameRequest();
         req.username = _textUsername.text;
-        var res = await Managers.Network.API_PostUsername(req);
-        if (res != null)
+        if (await Managers.Network.API_PostUsername(req, _textUsername.text))
         {
-            UserData.Username = _textUsername.text;
             CheckChangeScene();
         }
     }
