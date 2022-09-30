@@ -20,7 +20,6 @@ namespace MainTab
             _model = app.MainTabModel;
             _view = app.MainTabView;
             _view.TempBrain.Init(new BrainData(-1, EBrainType.GUIDEBRAIN));
-            Debug.LogError("INIT cccc");
             InitHandlers();
             ChangeState(EBehaviorState.NONE);
             AddObservers();
@@ -100,6 +99,7 @@ namespace MainTab
         {
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.DRAG_START_CREATEBRAIN);
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.DRAG_END_CREATEBRAIN);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.CANCEL_CREATEBRAIN);
 
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.MOUSE_DOWN_BRAIN);
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.MOUSE_EXIT_BRAIN);
@@ -115,6 +115,7 @@ namespace MainTab
         {
             Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.DRAG_START_CREATEBRAIN);
             Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.DRAG_END_CREATEBRAIN);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.CANCEL_CREATEBRAIN);
 
             Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.MOUSE_DOWN_BRAIN);
             Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.MOUSE_EXIT_BRAIN);
@@ -451,6 +452,9 @@ namespace MainTab
                 {
                     case ENotiMessage.DRAG_END_CREATEBRAIN:
                         CreateBrain();
+                        _controller.ChangeState(EBehaviorState.NONE);
+                        break;
+                    case ENotiMessage.CANCEL_CREATEBRAIN:
                         _controller.ChangeState(EBehaviorState.NONE);
                         break;
                 }
