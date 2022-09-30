@@ -79,19 +79,12 @@ namespace MainTab
             var req = new CreateSingleNetworkBrainNumberRequest();
             req.brain = id;
             req.level = 1;
-            CreateSingleNetworkBrainNumberResponse res = await Managers.Network.API_UpgradeBrain(req);
-
-            if (res != null)
+            if (await Managers.Network.API_UpgradeBrain(req))
             {
-                // 브레인 업그레이드 상태가 바로 반영되도록 업데이트해주는 콜백 추가
-                _model.SingleNetworkWrapper.UpdateSingleNetworkData(res, () =>
-                {
-                    Managers.Notification.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
+                Managers.Notification.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
 
-                    SingleNetworkWrapper wrapper = _model.SingleNetworkWrapper;
-                    BrainNetwork network = _model.BrainNetwork;
-                    _view.InfoPopup.Set(network.GetBrainForID(id), wrapper, network);
-                });
+                BrainNetwork network = _model.BrainNetwork;
+                _view.InfoPopup.Set(network.GetBrainForID(id), network);
             }
 
         }
@@ -261,7 +254,7 @@ namespace MainTab
                         {
                             _controller._view.InfoPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "BrainInfoPopup", PopupType.NORMAL)
                                 .GetComponent<InGame.BrainInfoPopup>();
-                            _controller._view.InfoPopup.Init(_controller._recentSelectBrain, _model.SingleNetworkWrapper, _model.BrainNetwork);
+                            _controller._view.InfoPopup.Init(_controller._recentSelectBrain, _model.BrainNetwork);
                         }
                         else
                         {
@@ -478,11 +471,13 @@ namespace MainTab
                     req.x = _tempBrain.transform.position.x;
                     req.y = _tempBrain.transform.position.y;
 
-                    var res = await Managers.Network.API_CreateBrain(req);
-                    if (res != null)
+                    if (await Managers.Network.API_CreateBrain(req))
                     {
-                        _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(req, res);
                         Managers.Notification.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
+                    }
+                    else
+                    {
+                        Debug.LogError("Network Fail");
                     }
                 }
                 else
@@ -587,13 +582,13 @@ namespace MainTab
                     CreateSingleNetworkChannelRequest req = new CreateSingleNetworkChannelRequest();
                     req.from = _currentSenderBrain.ID;
                     req.to = _currentEnterBrain.ID;
-                    var res = await Managers.Network.API_CreateChannel(req);
-                    if (res != null)
+                    if (await Managers.Network.API_CreateChannel(req))
                     {
-                        _controller._model.SingleNetworkWrapper.UpdateSingleNetworkData(req, res, () =>
-                        {
-                            Managers.Notification.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
-                        });
+                        Managers.Notification.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
+                    }
+                    else
+                    {
+                        Debug.LogError("Network Fail");
                     }
                 }
 

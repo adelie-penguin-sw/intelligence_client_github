@@ -63,19 +63,6 @@ public class UserData
         }
     }
 
-    private static int _experimentLevel = 0;
-    public static int ExperimentLevel
-    {
-        get
-        {
-            return _experimentLevel;
-        }
-        set
-        {
-            _experimentLevel = value;
-        }
-    }
-
     private static long _experimentStartTime = 0;
     public static long ExperimentStartTime
     {
@@ -132,18 +119,6 @@ public class UserData
         }
     }
 
-    private static long _pastBrainGenCount = 0;
-    public static long PastBrainGenCount
-    {
-        get
-        {
-            return _pastBrainGenCount;
-        }
-        set
-        {
-            _pastBrainGenCount = value;
-        }
-    }
 
     public static void SetString(string key, string value)
     {
@@ -161,5 +136,40 @@ public class UserData
     {
         token = PlayerPrefs.GetString("Token");
         Debug.Log(token);
+    }
+
+
+    private static SingleNetworkWrapper _singleNetworkWrapper = new SingleNetworkWrapper();
+    public static SingleNetworkWrapper SingleNetworkWrapper
+    {
+        get
+        {
+            return _singleNetworkWrapper;
+        }
+        set
+        {
+            _singleNetworkWrapper = value;
+        }
+    }
+
+
+    public static long TotalBrainGenCount
+    {
+        get
+        {
+            return _singleNetworkWrapper.totalBrainGenCount;
+        }
+        set
+        {
+            _singleNetworkWrapper.totalBrainGenCount = value;
+        }
+    }
+
+    public static int ExperimentLevel
+    {
+        get
+        {
+            return _singleNetworkWrapper.experimentLevel;
+        }
     }
 }

@@ -30,12 +30,12 @@ namespace InGame
 
         private List<Brain> _deletableSenderList = new List<Brain>();
 
-        public void Init(Brain brain, SingleNetworkWrapper networkWrapper, BrainNetwork brainNetwork)
+        public void Init(Brain brain, BrainNetwork brainNetwork)
         {
             base.Init();
-            Set(brain, networkWrapper, brainNetwork);
+            Set(brain, brainNetwork);
         }
-        public void Set(Brain brain, SingleNetworkWrapper networkWrapper, BrainNetwork brainNetwork)
+        public void Set(Brain brain, BrainNetwork brainNetwork)
         {
             base.Set();
             _brain = brain;
@@ -55,7 +55,7 @@ namespace InGame
             // 해당 브레인을 삭제할 때 같이 삭제되는 모든 브레인들의 id리스트
             if (isNormalBrain)
             {
-                List<long> deletableSenderIdList = networkWrapper.GetAllDeletableSenderIdListForID(_brain.BrainData.id);
+                List<long> deletableSenderIdList = UserData.SingleNetworkWrapper.GetAllDeletableSenderIdListForID(_brain.BrainData.id);
 
                 foreach (var deletableSenderID in deletableSenderIdList)
                 {
