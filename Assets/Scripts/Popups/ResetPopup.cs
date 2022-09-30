@@ -77,12 +77,9 @@ namespace MainTab
 
         public async void OnClick_Reset()
         {
-            var res = await Managers.Network.API_NetworkReset();
-            if (res != null)
+            if (await Managers.Network.API_NetworkReset())
             {
-                Hashtable sendData = new Hashtable();
-                sendData.Add(EDataParamKey.SINGLE_NETWORK_WRAPPER, new SingleNetworkWrapper(res));
-                Managers.Notification.PostNotification(ENotiMessage.ONCLICK_RESET_NETWORK, sendData);
+                Managers.Notification.PostNotification(ENotiMessage.ONCLICK_RESET_NETWORK);
                 Dispose();
             }
         }
