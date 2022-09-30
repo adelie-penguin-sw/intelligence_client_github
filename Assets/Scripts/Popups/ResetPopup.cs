@@ -29,8 +29,8 @@ namespace MainTab
         {
             base.Init();
 
-            _expGoalTextComplete.text = ((List<UpArrowNotation>)Managers.Definition["ExperimentGoalList"])[UserData.ExperimentLevel].ToString();
-            _expGoalTextIncomplete.text = ((List<UpArrowNotation>)Managers.Definition["ExperimentGoalList"])[UserData.ExperimentLevel].ToString();
+            _expGoalTextComplete.text = Managers.Definition.GetData<List<UpArrowNotation>>(DefinitionKey.experimentGoalList)[UserData.ExperimentLevel].ToString();
+            _expGoalTextIncomplete.text = Managers.Definition.GetData<List<UpArrowNotation>>(DefinitionKey.experimentGoalList)[UserData.ExperimentLevel].ToString();
         }
 
         private Hashtable _sendData = new Hashtable();
@@ -61,7 +61,7 @@ namespace MainTab
 
                 inputMap.Clear();
                 inputMap.Add("coreBrainIntellect", UserData.CoreIntellect);
-                _tpRewardTextIncomplete.text = Managers.Definition.CalcEquation(inputMap, (string)Managers.Definition["TPrewardForReset"]) + " TP";
+                _tpRewardTextIncomplete.text = Managers.Definition.CalcEquationToString(inputMap, DefinitionKey.tpRewardForReset) + " TP";
             }
             else
             {
@@ -71,7 +71,7 @@ namespace MainTab
 
                 inputMap.Clear();
                 inputMap.Add("coreBrainIntellect", UserData.CoreIntellect);
-                _tpRewardTextIncomplete.text = Managers.Definition.CalcEquation(inputMap, (string)Managers.Definition["TPrewardForReset"]) + " TP";
+                _tpRewardTextIncomplete.text = Managers.Definition.CalcEquationToString(inputMap, DefinitionKey.tpRewardForReset) + " TP";
             }
         }
 
