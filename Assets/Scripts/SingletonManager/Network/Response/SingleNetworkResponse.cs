@@ -20,6 +20,7 @@ public class SingleNetworkResponse
     public int statusCode;
     public List<Structure> structures;
     public List<UpgradeCondition> upgradeCondition;
+    public long totalBrainGenCount;
 }
 
 [Serializable]
@@ -34,7 +35,11 @@ public class SingleNetworkWrapper
     [ShowInInspector] public long calcTime;
     [ShowInInspector] public List<Achievements> achievements = new List<Achievements>();
     [ShowInInspector] public int experimentLevel;
+    [ShowInInspector] public long totalBrainGenCount;
+    public SingleNetworkWrapper()
+    {
 
+    }
     public SingleNetworkWrapper(SingleNetworkResponse res)
     {
         if (res != null)
@@ -80,6 +85,8 @@ public class SingleNetworkWrapper
             achievements = res.achievements;
 
             experimentLevel = res.experimentLevel;
+
+            totalBrainGenCount = res.allBrainCount;
         }
     }
 
@@ -198,6 +205,8 @@ public class SingleNetworkWrapper
             }
         }
         calcTime = res.calcTime;
+
+        totalBrainGenCount = res.allBrainCount;
     }
 
     /// <summary>
@@ -205,9 +214,8 @@ public class SingleNetworkWrapper
     /// </summary>
     /// <param name="req"></param>
     /// <param name="res"></param>
-    public void UpdateSingleNetworkData(CreateSingleNetworkChannelRequest req, CreateSingleNetworkChannelResponse res, Action callback)
+    public void UpdateSingleNetworkData(CreateSingleNetworkChannelRequest req, CreateSingleNetworkChannelResponse res)
     {
-
         UserData.NP = new UpArrowNotation(
             res.NP.top3Coeffs[0],
             res.NP.top3Coeffs[1],
@@ -237,11 +245,9 @@ public class SingleNetworkWrapper
         if (!receiverBrainsDic.ContainsKey(req.from))
             receiverBrainsDic.Add(req.from, new HashSet<long>());
         receiverBrainsDic[req.from].Add(req.to);
-
-        callback();
     }
     
-    public void UpdateSingleNetworkData(CreateSingleNetworkBrainNumberResponse res, Action callback)
+    public void UpdateSingleNetworkData(CreateSingleNetworkBrainNumberResponse res)
     {
         long brainId;
         foreach (var attribute in res.brainAttributes)
@@ -264,8 +270,6 @@ public class SingleNetworkWrapper
             res.NP.operatorLayerCount);
 
         calcTime = res.calcTime;
-
-        callback();
     }
 
     public void UpdateSingleNetworkData(DeleteSingleNetworkBrainResponse res)
@@ -283,7 +287,7 @@ public class SingleNetworkWrapper
                 brainAttributesDic[brainId] = attribute;
             }
         }
-
+        Debug.LogError(res.NP.top3Coeffs != null);
         UserData.NP = new UpArrowNotation(
             res.NP.top3Coeffs[0],
             res.NP.top3Coeffs[1],
@@ -291,7 +295,6 @@ public class SingleNetworkWrapper
             res.NP.operatorLayerCount);
 
         calcTime = res.calcTime;
-
         foreach(var removeId in res.deletedBrains)
         {
             RemoveDataForID(removeId);
