@@ -28,7 +28,7 @@ namespace MainTab
                 {
                     _brainNetwork = _app.MainTabModel.BrainNetwork;
                     _brainNetwork.Init(_app.MainTabView.transform);
-                    _brainNetwork.Set(_app.MainTabModel.SingleNetworkWrapper);
+                    _brainNetwork.Set();
                 }
             }
         }
@@ -68,19 +68,10 @@ namespace MainTab
                     RemoveBrain(sellBrain);
                     break;
                 case ENotiMessage.ONCLICK_RESET_NETWORK:
-                    SingleNetworkWrapper wrapper = (SingleNetworkWrapper)(noti.data[EDataParamKey.SINGLE_NETWORK_WRAPPER]);
-                    if (wrapper != null)
-                    {
-                        _app.MainTabModel.SingleNetworkWrapper = wrapper;
-                        ResetBrainNetWork();
-                    }
-                    else
-                    {
-                        Debug.LogError("wrapper null");
-                    }
+                    ResetBrainNetWork();
                     break;
                 case ENotiMessage.UPDATE_BRAIN_NETWORK:
-                    _brainNetwork.UpdateBrainNetwork(_app.MainTabModel.SingleNetworkWrapper);
+                    _brainNetwork.UpdateBrainNetwork();
                     break;
             }
         }
@@ -89,10 +80,8 @@ namespace MainTab
         {
             if(data.brainType == EBrainType.NORMALBRAIN)
             {
-                var res = await Managers.Network.API_DeleteBrain(data.id);
-                if (res != null)
+                if (await Managers.Network.API_DeleteBrain(data.id))
                 {
-                    _app.MainTabModel.SingleNetworkWrapper.UpdateSingleNetworkData(res);
                     ResetBrainNetWork();
                 }
             }
