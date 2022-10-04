@@ -162,7 +162,7 @@ public class NetworkManager
    
     #region POST
 
-    public async UniTask API_Login(TemporaryRequest req)
+    public async UniTask<bool> API_Login(TemporaryRequest req)
     {
         Debug.Log("API_Login");
         string json = JsonUtility.ToJson(req);
@@ -176,9 +176,11 @@ public class NetworkManager
             Debug.Log(res.token);
             UserData.SetString("Token", res.token);
         }
+
+        return (res != null);
     }
 
-    public async UniTask<PostUsernameResponse> API_PostUsername(PostUsernameRequest req)
+    public async UniTask<bool> API_PostUsername(PostUsernameRequest req,string userName)
     {
         string json = JsonUtility.ToJson(req);
         var res =
@@ -186,10 +188,12 @@ public class NetworkManager
                 PATH_USERNAME,
                 ENetworkSendType.POST,
                 json);
-        return res;
+
+        UserData.Username = userName;
+        return (res != null);
     }
 
-    public async UniTask<CreateSingleNetworkBrainResponse> API_CreateBrain(CreateSingleNetworkBrainRequest req)
+    public async UniTask<bool> API_CreateBrain(CreateSingleNetworkBrainRequest req)
     {
         string json = JsonUtility.ToJson(req);
         var res =
@@ -197,11 +201,14 @@ public class NetworkManager
                     PATH_CREATE_SINGLE_NETWORK_BRAIN,
                     ENetworkSendType.POST,
                     json);
-        UserData.PastBrainGenCount = res.allBrainCount;
-        return res;
+        if (res != null)
+        {
+            UserData.SingleNetworkWrapper.UpdateSingleNetworkData(req, res);
+        }
+        return (res != null);
     }
 
-    public async UniTask<CreateSingleNetworkChannelResponse> API_CreateChannel(CreateSingleNetworkChannelRequest req)
+    public async UniTask<bool> API_CreateChannel(CreateSingleNetworkChannelRequest req)
     {
         string json = JsonUtility.ToJson(req);
         var res =
@@ -209,10 +216,14 @@ public class NetworkManager
                     PATH_CREATE_SINGLE_NETWORK_CHANNEL,
                     ENetworkSendType.POST,
                     json);
-        return res;
+        if (res != null && res.statusCode == (int)EStatusCode.SUCCESS)
+        {
+            UserData.SingleNetworkWrapper.UpdateSingleNetworkData(req, res);
+        }
+        return (res != null);
     }
 
-    public async UniTask<CreateSingleNetworkBrainNumberResponse> API_UpgradeBrain(CreateSingleNetworkBrainNumberRequest req)
+    public async UniTask<bool> API_UpgradeBrain(CreateSingleNetworkBrainNumberRequest req)
     {
         string json = JsonUtility.ToJson(req);
         var res =
@@ -220,10 +231,14 @@ public class NetworkManager
                     PATH_SINGLE_NETWORK_BRAIN_NUMBER,
                     ENetworkSendType.POST,
                     json);
-        return res;
+        if (res != null && res.statusCode == (int)EStatusCode.SUCCESS)
+        {
+            UserData.SingleNetworkWrapper.UpdateSingleNetworkData(res);
+        }
+        return (res != null);
     }
 
-    public async UniTask<SingleNetworkResponse> API_NetworkReset()
+    public async UniTask<bool> API_NetworkReset()
     {
         string json = "";
         var res =
@@ -231,12 +246,14 @@ public class NetworkManager
                     PATH_SINGLE_NETWORK_RESET,
                     ENetworkSendType.POST,
                     json);
-        UserData.ExperimentLevel = res.experimentLevel;
-        UserData.PastBrainGenCount = res.allBrainCount;
-        return res;
+        if (res != null && res.statusCode == (int)EStatusCode.SUCCESS)
+        {
+            UserData.SingleNetworkWrapper = new SingleNetworkWrapper(res);
+        }
+        return (res != null);
     }
 
-    public async UniTask<TpUpgradeSingleNetworkResponse> API_TpUpgrade(TpUpgradeSingleNetworkRequest req)
+    public async UniTask<bool> API_TpUpgrade(TpUpgradeSingleNetworkRequest req)
     {
         string json = JsonUtility.ToJson(req);
         var res =
@@ -244,28 +261,33 @@ public class NetworkManager
                     PATH_TP_UPGRADE,
                     ENetworkSendType.POST,
                     json);
-        UserData.UpdateTPUpgradeCounts(res.upgradeCondition);
-        UserData.TP = new UpArrowNotation(
-        res.TP.top3Coeffs[0],
-        res.TP.top3Coeffs[1],
-        res.TP.top3Coeffs[2],
-        res.TP.operatorLayerCount);
-        return res;
+        if (res != null && res.statusCode == (int)EStatusCode.SUCCESS)
+        {
+            UserData.UpdateTPUpgradeCounts(res.upgradeCondition);
+            UserData.TP = new UpArrowNotation(
+            res.TP.top3Coeffs[0],
+            res.TP.top3Coeffs[1],
+            res.TP.top3Coeffs[2],
+            res.TP.operatorLayerCount);
+        }
+        return (res != null);
     }
     #endregion
 
     #region GET
 
-    public async UniTask<SingleNetworkResponse> API_LoadUserData()
+    public async UniTask<bool> API_LoadUserData()
     {
         var res =
             await SendToServer<SingleNetworkResponse>(
                     PATH_SINGLE_NETWORK,
                     ENetworkSendType.GET);
-        UserData.ExperimentLevel = res.experimentLevel;
-        UserData.UpdateTPUpgradeCounts(res.upgradeCondition);
-        UserData.PastBrainGenCount = res.allBrainCount;
-        return res;
+        if (res != null)
+        {
+            UserData.SingleNetworkWrapper = new SingleNetworkWrapper(res);
+            UserData.UpdateTPUpgradeCounts(res.upgradeCondition);
+        }
+        return (res != null);
     }
 
     public async UniTask<AuthValidationResponse> API_TokenValidation()
@@ -308,13 +330,17 @@ public class NetworkManager
 
     #region DELETE
 
-    public async UniTask<DeleteSingleNetworkBrainResponse> API_DeleteBrain(long brainID)
+    public async UniTask<bool> API_DeleteBrain(long brainID)
     {
         var res =
             await SendToServer<DeleteSingleNetworkBrainResponse>(
                     PATH_DELETE_SINGLE_NETWORK_BRAIN + brainID.ToString(),
                     ENetworkSendType.DELETE);
-        return res;
+        if (res != null)
+        {
+            UserData.SingleNetworkWrapper.UpdateSingleNetworkData(res);
+        }
+        return (res != null);
     }
     #endregion
 }
