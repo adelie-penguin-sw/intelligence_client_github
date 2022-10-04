@@ -14,6 +14,7 @@ namespace InGame
     public class BrainInfoPopup : PopupBase
     {
         [SerializeField] private Button _sellBtn;
+        [SerializeField] private Button _resetBtn;
         [SerializeField] private Button _upgradeBtn;
         [SerializeField] private GameObject _multiplierArea;
         [SerializeField] private GameObject _storedNPArea;
@@ -41,19 +42,10 @@ namespace InGame
             _brain = brain;
             _deletableSenderList.Clear();
 
-            bool isNormalBrain = _brain.BrainData.brainType == EBrainType.NORMALBRAIN;
-
-            // 코어 브레인은 업그레이드 및 분해 등의 동작이 필요하지 않으므로 버튼 비활성화
-            _sellBtn.gameObject.SetActive(isNormalBrain);
-            _upgradeBtn.gameObject.SetActive(isNormalBrain);
-
-            // 코어 브레인은 증폭계수, NP축적량, 거리 개념이 필요하지 않으므로 표시영역 모두 비활성화
-            _multiplierArea.SetActive(isNormalBrain);
-            _storedNPArea.SetActive(isNormalBrain);
-            _distanceArea.SetActive(isNormalBrain);
+            ItemActiveSetting(_brain.BrainData.brainType == EBrainType.NORMALBRAIN);
 
             // 해당 브레인을 삭제할 때 같이 삭제되는 모든 브레인들의 id리스트
-            if (isNormalBrain)
+            if (_brain.BrainData.brainType == EBrainType.NORMALBRAIN)
             {
                 List<long> deletableSenderIdList = UserData.SingleNetworkWrapper.GetAllDeletableSenderIdListForID(_brain.BrainData.id);
 
@@ -149,6 +141,25 @@ namespace InGame
             {
                 Debug.LogError("브레인 데이터 Null");
             }
+        }
+        public void OnClick_Reset()
+        {
+            Managers.Notification.PostNotification(ENotiMessage.EXPERIMENT_COMPLETE);
+            Dispose();
+        }
+
+        private void ItemActiveSetting(bool isNormalBrain)
+        {
+            _resetBtn.gameObject.SetActive(!isNormalBrain);
+
+            // 코어 브레인은 업그레이드 및 분해 등의 동작이 필요하지 않으므로 버튼 비활성화
+            _sellBtn.gameObject.SetActive(isNormalBrain);
+            _upgradeBtn.gameObject.SetActive(isNormalBrain);
+
+            // 코어 브레인은 증폭계수, NP축적량, 거리 개념이 필요하지 않으므로 표시영역 모두 비활성화
+            _multiplierArea.SetActive(isNormalBrain);
+            _storedNPArea.SetActive(isNormalBrain);
+            _distanceArea.SetActive(isNormalBrain);
         }
     }
 }
