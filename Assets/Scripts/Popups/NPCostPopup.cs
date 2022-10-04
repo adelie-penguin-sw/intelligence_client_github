@@ -50,7 +50,7 @@ namespace InGame
                         float physicalDistance = curpos.magnitude;
 
                         _inputMap.Add("physicalDistance", new UpArrowNotation(physicalDistance));
-                        _inputMap.Add("pastBrainGenCount", new UpArrowNotation(UserData.PastBrainGenCount));
+                        _inputMap.Add("pastBrainGenCount", new UpArrowNotation(UserData.TotalBrainGenCount));
                         _inputMap.Add("tpu01", new UpArrowNotation(UserData.TPUpgradeCounts[1]));
                         
                         UpArrowNotation brainGenCost = Managers.Definition.CalcEquation(_inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainGeneratingCostEquation));
