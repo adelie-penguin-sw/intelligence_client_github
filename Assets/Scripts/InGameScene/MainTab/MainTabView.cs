@@ -10,11 +10,11 @@ namespace MainTab
     {
         [SerializeField] private Canvas _canvas;
         [SerializeField] private Brain _tempBrain;
-
         private InGame.BrainInfoPopup _infoPopup;
         private InGame.LeaderboardPopup _leaderboardPopup;
-        private InGame.NPCostPopup _npCostPopup;
 
+        [SerializeField] private ShowCostUI _showCostUI;
+        [SerializeField] public ShowCostUI ShowCostUI { get { return _showCostUI; } }
         public InGame.BrainInfoPopup InfoPopup
         {
             get
@@ -24,18 +24,6 @@ namespace MainTab
             set
             {
                 _infoPopup = value;
-            }
-        }
-
-        public InGame.NPCostPopup NPCostPopup
-        {
-            get
-            {
-                return _npCostPopup;
-            }
-            set
-            {
-                _npCostPopup = value;
             }
         }
 
