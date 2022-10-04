@@ -216,6 +216,9 @@ public enum ENotiMessage
 
     EXPERIMENT_COMPLETE,
 
+    QUEST_CREATE_BRAIN,
+    QUEST_CREATE_CHANNEL,
+
     //server 통신 관련
     UPDATE_BRAIN_NETWORK,
 
