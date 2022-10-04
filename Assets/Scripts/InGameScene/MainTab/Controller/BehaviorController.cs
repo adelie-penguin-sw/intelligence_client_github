@@ -476,6 +476,7 @@ namespace MainTab
                     if (await Managers.Network.API_CreateBrain(req))
                     {
                         Managers.Notification.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
+                        Managers.Notification.PostNotification(ENotiMessage.QUEST_CREATE_BRAIN);
                     }
                     else
                     {
@@ -584,6 +585,7 @@ namespace MainTab
                     if (await Managers.Network.API_CreateChannel(req))
                     {
                         Managers.Notification.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
+                        Managers.Notification.PostNotification(ENotiMessage.QUEST_CREATE_CHANNEL);
                     }
                     else
                     {
