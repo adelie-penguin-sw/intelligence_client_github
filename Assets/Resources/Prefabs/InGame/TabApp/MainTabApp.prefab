@@ -106,6 +106,7 @@ Transform:
   - {fileID: 7324327026599027573}
   - {fileID: 7540635599146276353}
   - {fileID: 4018027145626243680}
+  - {fileID: 7126384490171842247}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -124,6 +125,7 @@ MonoBehaviour:
   _controllers:
   - {fileID: 1048921139784648279}
   - {fileID: 927357518409113951}
+  - {fileID: 4399508511298377518}
   _mainTabView: {fileID: 1532247997423297809}
   _mainTabModel:
     _curMousePos: {x: 0, y: 0, z: 0}
@@ -212,6 +214,49 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &919510477492894599
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7126384490171842247}
+  - component: {fileID: 4399508511298377518}
+  m_Layer: 7
+  m_Name: QuestController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7126384490171842247
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919510477492894599}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8935309896432258202}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4399508511298377518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919510477492894599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a851c91d150a1a48bfaa36226bd6e96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1320153330746438839
 GameObject:
   m_ObjectHideFlags: 0
@@ -401,7 +446,6 @@ GameObject:
   - component: {fileID: 8805685258858446945}
   - component: {fileID: 7514398082674338924}
   - component: {fileID: 1756426444270074414}
-  - component: {fileID: 2359002178389167820}
   - component: {fileID: 2604318933568977785}
   m_Layer: 5
   m_Name: QuestUI
@@ -469,19 +513,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2359002178389167820
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1705634911432332343}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5382678a0e5cdc4d88497cc99d544a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _costText: {fileID: 187012391840298048}
 --- !u!114 &2604318933568977785
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -852,6 +883,7 @@ MonoBehaviour:
   _canvas: {fileID: 5066772353450249811}
   _tempBrain: {fileID: 5652205833850634202}
   _showCostUI: {fileID: 6787374145676396413}
+  _questUI: {fileID: 2604318933568977785}
 --- !u!223 &5066772353450249811
 Canvas:
   m_ObjectHideFlags: 0
@@ -1399,6 +1431,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f28d1f7304d614393822bcd85d235713, type: 3}
+--- !u!4 &5652205833850634200 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 732825806509084175, guid: f28d1f7304d614393822bcd85d235713, type: 3}
+  m_PrefabInstance: {fileID: 4925581686419763671}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &5652205833850634202 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 732825806509084173, guid: f28d1f7304d614393822bcd85d235713, type: 3}
@@ -1410,8 +1447,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f40dcab3c8324f8893f2a07686d10a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &5652205833850634200 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 732825806509084175, guid: f28d1f7304d614393822bcd85d235713, type: 3}
-  m_PrefabInstance: {fileID: 4925581686419763671}
-  m_PrefabAsset: {fileID: 0}
