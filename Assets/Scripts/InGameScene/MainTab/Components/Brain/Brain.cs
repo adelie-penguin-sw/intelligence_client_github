@@ -14,7 +14,6 @@ namespace MainTab
         [SerializeField] private BrainData _brainData;
 
         [SerializeField] private bool _isCollision = false;
-        [SerializeField] private long _lastCalcTime;
 
         #region property
         public HashSet<long> ReceiverIdList { get { return _brainData.receiverIds; } }
@@ -29,13 +28,9 @@ namespace MainTab
         {
             get
             {
-                double elapsedTime = (double)(DateTimeOffset.Now.ToUnixTimeMilliseconds() - _lastCalcTime) / 1000f;
+                double elapsedTime = (double)(DateTimeOffset.Now.ToUnixTimeMilliseconds() - LastCalcTime) / 1000f;
                 UpArrowNotation intellect = Equation.GetCurrentIntellect(_brainData.intellectEquation, elapsedTime);
 
-                if (_brainData.id == 0)
-                {
-                    UserData.CoreIntellect = intellect;
-                }
                 return intellect;
             }
         }
@@ -43,7 +38,7 @@ namespace MainTab
         /// <summary>
         /// 마지막으로 지능이 계산된 시각 반환
         /// </summary>
-        public long LastCalcTime { get { return _lastCalcTime; } }
+        public long LastCalcTime { get { return _brainData.LastCalcTime; } }
 
         /// <summary>
         /// 지능 증폭계수 반환
@@ -106,8 +101,7 @@ namespace MainTab
                 }
 
                 transform.position = new Vector2(_brainData.coordinates.x, _brainData.coordinates.y);
-                _brainData.lastCalcTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-                _lastCalcTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                _brainData.LastCalcTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             }
         }
 
