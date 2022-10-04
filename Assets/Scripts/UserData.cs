@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,16 +23,13 @@ public class UserData
         }
     }
 
-    private static UpArrowNotation _coreIntellect = new UpArrowNotation();
     public static UpArrowNotation CoreIntellect
     {
         get
         {
-            return _coreIntellect;
-        }
-        set
-        {
-            _coreIntellect = value;
+            double elapsedTime = (double)(DateTimeOffset.Now.ToUnixTimeMilliseconds() - LastCalcTime) / 1000f;
+            UpArrowNotation intellect = Equation.GetCurrentIntellect(SingleNetworkWrapper.GetBrainDataForID(0).intellectEquation, elapsedTime);
+            return intellect;
         }
     }
 
@@ -60,19 +58,6 @@ public class UserData
         {
             _np = value;
             Managers.Notification.PostNotification(ENotiMessage.UPDATE_NP);
-        }
-    }
-
-    private static int _experimentLevel = 0;
-    public static int ExperimentLevel
-    {
-        get
-        {
-            return _experimentLevel;
-        }
-        set
-        {
-            _experimentLevel = value;
         }
     }
 
@@ -132,18 +117,6 @@ public class UserData
         }
     }
 
-    private static long _pastBrainGenCount = 0;
-    public static long PastBrainGenCount
-    {
-        get
-        {
-            return _pastBrainGenCount;
-        }
-        set
-        {
-            _pastBrainGenCount = value;
-        }
-    }
 
     public static void SetString(string key, string value)
     {
@@ -162,4 +135,41 @@ public class UserData
         token = PlayerPrefs.GetString("Token");
         Debug.Log(token);
     }
+
+
+    private static SingleNetworkWrapper _singleNetworkWrapper = new SingleNetworkWrapper();
+    public static SingleNetworkWrapper SingleNetworkWrapper
+    {
+        get
+        {
+            return _singleNetworkWrapper;
+        }
+        set
+        {
+            _singleNetworkWrapper = value;
+        }
+    }
+
+
+    public static long TotalBrainGenCount
+    {
+        get
+        {
+            return _singleNetworkWrapper.totalBrainGenCount;
+        }
+        set
+        {
+            _singleNetworkWrapper.totalBrainGenCount = value;
+        }
+    }
+
+    public static int ExperimentLevel
+    {
+        get
+        {
+            return _singleNetworkWrapper.experimentLevel;
+        }
+    }
+
+    public static long LastCalcTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 }
