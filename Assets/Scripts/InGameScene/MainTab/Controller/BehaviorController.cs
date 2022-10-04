@@ -222,7 +222,6 @@ namespace MainTab
                 if (InGame.InGameManager.IsCompleteExp || Managers.Popup.Count > 0)
                     return;
 
-
                 if (!_isTouchStartBrain)
                 {
 #if UNITY_EDITOR

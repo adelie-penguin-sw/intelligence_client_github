@@ -63,6 +63,18 @@ public class NetworkManager
         {
             await request.SendWebRequest().WithCancellation(cts.Token);
             Debug.Log(request.downloadHandler.text);
+            if(request.responseCode != (int)EStatusCode.SUCCESS)
+            {
+                ErrorResponse errorResult = JsonUtility.FromJson<ErrorResponse>(request.downloadHandler.text);
+
+                GameObject go = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "ErrorPopup", PopupType.IMPORTANT);
+                go.GetComponent<ErrorPopup>().Init(errorResult);
+
+                loadingPopup.Dispose();
+                request.Dispose();
+                return default;
+            }
+
             T result;
             switch (resType)
             {
@@ -97,16 +109,14 @@ public class NetworkManager
         {
             ErrorResponse errorResult = JsonUtility.FromJson<ErrorResponse>(request.downloadHandler.text);
 
-            GameObject go = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "ErrorPopup", PopupType.NORMAL);
+            GameObject go = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "ErrorPopup", PopupType.IMPORTANT);
             go.GetComponent<ErrorPopup>().Init(errorResult);
 
             loadingPopup.Dispose();
             request.Dispose();
             return default;
-
-            //Debug.LogError(e.Message);
-            //return default;
         }
+
         loadingPopup.Dispose();
         request.Dispose();
         return default;
