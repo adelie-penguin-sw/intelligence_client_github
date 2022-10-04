@@ -238,6 +238,4 @@ public enum EDataParamKey
     BRAIN_ID,
     EGAMESTATE,
 
-    SINGLE_NETWORK_WRAPPER,
-
 }

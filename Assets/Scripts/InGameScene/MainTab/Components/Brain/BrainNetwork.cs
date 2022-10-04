@@ -29,9 +29,9 @@ namespace MainTab
             _brainLayer = brainLayer;
         }
 
-        public void Set(SingleNetworkWrapper wrapper)
+        public void Set()
         {
-            UpdateBrainNetwork(wrapper);
+            UpdateBrainNetwork();
         }
 
         public void AdvanceTime(float dt_sec)
@@ -64,9 +64,10 @@ namespace MainTab
             ClearNetwork();
         }
 
-        public void UpdateBrainNetwork(SingleNetworkWrapper wrapper)
+        public void UpdateBrainNetwork()
         {
             ClearNetwork();
+            SingleNetworkWrapper wrapper = UserData.SingleNetworkWrapper;
             _resetCount = wrapper.experimentLevel;
             _experimentGoal = Managers.Definition.GetData<List<UpArrowNotation>>(DefinitionKey.experimentGoalList)[UserData.ExperimentLevel];
             foreach (var id in wrapper.brainAttributesDic.Keys)
