@@ -117,11 +117,6 @@ namespace InGame
             SceneManager.LoadScene("LoginScene");
         }
 
-        public void OnClick_Reset()
-        {
-            Managers.Notification.PostNotification(ENotiMessage.EXPERIMENT_COMPLETE);
-        }
-
         public void OnClick_UserInfo()
         {
             Managers.Popup.CreatePopup(EPrefabsType.POPUP, "UserInfoPopup", PopupType.NORMAL);
