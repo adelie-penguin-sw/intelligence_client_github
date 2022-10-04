@@ -44,8 +44,19 @@ namespace MainTab
         /// </summary>
         public long UpgradeCondition;
 
-        public long lastCalcTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-
+        private long _lastCalcTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+        public long LastCalcTime
+        {
+            get
+            {
+                return _lastCalcTime;
+            }
+            set
+            {
+                UserData.LastCalcTime = value;
+                _lastCalcTime = value;
+            }
+        }
         /// <summary>
         /// 지능 수치 계산하여 반환
         /// </summary>
@@ -53,13 +64,13 @@ namespace MainTab
         {
             get
             {
-                double elapsedTime = (double)(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastCalcTime) / 1000f;
+                double elapsedTime = (double)(DateTimeOffset.Now.ToUnixTimeMilliseconds() - LastCalcTime) / 1000f;
                 UpArrowNotation intellect = Equation.GetCurrentIntellect(intellectEquation, elapsedTime);
 
-                if (id == 0)
-                {
-                    UserData.CoreIntellect = intellect;
-                }
+                //if (id == 0)
+                //{
+                //    UserData.CoreIntellect = intellect;
+                //}
                 return intellect;
             }
         }
