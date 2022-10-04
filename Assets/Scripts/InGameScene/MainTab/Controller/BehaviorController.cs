@@ -27,6 +27,7 @@ namespace MainTab
 
         public override void Set()
         {
+            _view.ShowCostUI.Dispose();
         }
 
         public override void AdvanceTime(float dt_sec)
@@ -36,6 +37,10 @@ namespace MainTab
                 GetStateHandler(_currentState).AdvanceTime(dt_sec);
             }
 
+            if (_view != null && _view.ShowCostUI != null)
+            {
+                _view.ShowCostUI.AdvanceTime(dt_sec);
+            }
         }
 
         public override void LateAdvanceTime(float dt_sec)
@@ -420,9 +425,7 @@ namespace MainTab
                 {
                     _tempBrain.gameObject.SetActive(true);
                 }
-                _controller._view.NPCostPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "NPCostPopup", PopupType.NORMAL)
-                        .GetComponent<InGame.NPCostPopup>();
-                _controller._view.NPCostPopup.Init(ENPCostType.BRAIN_GEN);
+                _controller._view.ShowCostUI.Set(ENPCostType.BRAIN_GEN);
             }
 
             private Vector2 _curPos;
@@ -432,7 +435,7 @@ namespace MainTab
                 {
                     _curPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     _tempBrain.transform.position = _curPos;
-                    _controller._view.NPCostPopup.SetCollisoinState(_tempBrain.IsCollision);
+                    _controller._view.ShowCostUI.SetCollisoinState(_tempBrain.IsCollision);
                 }
             }
 
@@ -455,7 +458,7 @@ namespace MainTab
             public void OnExit()
             {
                 _tempBrain.gameObject.SetActive(false);
-                _controller._view.NPCostPopup.Dispose();
+                _controller._view.ShowCostUI.Dispose();
             }
 
             public void Dispose()
@@ -505,11 +508,8 @@ namespace MainTab
             {
                 Debug.Log("CreateChannel!");
                 _currentSenderBrain = _controller._recentSelectBrain;
-
-                _controller._view.NPCostPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "NPCostPopup", PopupType.NORMAL)
-                        .GetComponent<InGame.NPCostPopup>();
-                _controller._view.NPCostPopup.Init(ENPCostType.CHNNL_GEN);
-                _controller._view.NPCostPopup.SetBrain(_currentSenderBrain, null);
+                _controller._view.ShowCostUI.Set(ENPCostType.CHNNL_GEN);
+                _controller._view.ShowCostUI.SetBrain(_currentSenderBrain, null);
 
                 CreateTempChannel();
             }
@@ -534,18 +534,18 @@ namespace MainTab
                         break;
                     case ENotiMessage.MOUSE_ENTER_BRAIN:
                         _currentEnterBrain = (Brain)noti.data[EDataParamKey.CLASS_BRAIN];
-                        _controller._view.NPCostPopup.SetBrain(_currentSenderBrain, _currentEnterBrain);
+                        _controller._view.ShowCostUI.SetBrain(_currentSenderBrain, _currentEnterBrain);
                         break;
                     case ENotiMessage.MOUSE_EXIT_BRAIN:
                         _currentEnterBrain = null;
-                        _controller._view.NPCostPopup.SetBrain(_currentSenderBrain, _currentEnterBrain);
+                        _controller._view.ShowCostUI.SetBrain(_currentSenderBrain, _currentEnterBrain);
                         break;
 
                 }
             }
             public void OnExit()
             {
-                _controller._view.NPCostPopup.Dispose();
+                _controller._view.ShowCostUI.Dispose();
             }
 
             public void Dispose()
