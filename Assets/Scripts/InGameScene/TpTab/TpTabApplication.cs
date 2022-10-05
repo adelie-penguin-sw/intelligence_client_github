@@ -60,43 +60,43 @@ namespace TpTab
 
             Dictionary<string, UpArrowNotation> inputMap = new Dictionary<string, UpArrowNotation>();
 
-            if (!UserData.TPUpgradeCounts.ContainsKey(1)) { UserData.TPUpgradeCounts.Add(1, 0); }
-            inputMap.Add("upgradeCount", new UpArrowNotation(UserData.TPUpgradeCounts[1]));
+            if (!UserData.TPUpgradeCounts.ContainsKey(11)) { UserData.TPUpgradeCounts.Add(11, 0); }
+            inputMap.Add("upgradeCount", new UpArrowNotation(UserData.TPUpgradeCounts[11]));
             _tpTabModel.TPU01CostText.text = Managers.Definition.CalcEquationToString(inputMap, DefinitionKey.tpu011CostEquation) + " TP";
             inputMap.Clear();
 
-            if (!UserData.TPUpgradeCounts.ContainsKey(2)) { UserData.TPUpgradeCounts.Add(2, 0); }
-            inputMap.Add("upgradeCount", new UpArrowNotation(UserData.TPUpgradeCounts[2]));
+            if (!UserData.TPUpgradeCounts.ContainsKey(13)) { UserData.TPUpgradeCounts.Add(13, 0); }
+            inputMap.Add("upgradeCount", new UpArrowNotation(UserData.TPUpgradeCounts[13]));
             _tpTabModel.TPU02CostText.text = Managers.Definition.CalcEquationToString(inputMap, DefinitionKey.tpu013CostEquation) + " TP";
             inputMap.Clear();
 
-            if (!UserData.TPUpgradeCounts.ContainsKey(3)) { UserData.TPUpgradeCounts.Add(3, 0); }
-            inputMap.Add("upgradeCount", new UpArrowNotation(UserData.TPUpgradeCounts[3]));
+            if (!UserData.TPUpgradeCounts.ContainsKey(12)) { UserData.TPUpgradeCounts.Add(12, 0); }
+            inputMap.Add("upgradeCount", new UpArrowNotation(UserData.TPUpgradeCounts[12]));
             _tpTabModel.TPU03CostText.text = Managers.Definition.CalcEquationToString(inputMap, DefinitionKey.tpu012CostEquation) + " TP";
-            inputMap.Clear();
-
-            if (!UserData.TPUpgradeCounts.ContainsKey(4)) { UserData.TPUpgradeCounts.Add(4, 0); }
-            inputMap.Add("upgradeCount", new UpArrowNotation(UserData.TPUpgradeCounts[4]));
-            _tpTabModel.TPU04CostText.text = Managers.Definition.CalcEquationToString(inputMap, DefinitionKey.tpu008CostEquation) + " TP";
-            inputMap.Clear();
-
-            if (!UserData.TPUpgradeCounts.ContainsKey(5)) { UserData.TPUpgradeCounts.Add(5, 0); }
-            inputMap.Add("upgradeCount", new UpArrowNotation(UserData.TPUpgradeCounts[5]));
-            _tpTabModel.TPU05CostText.text = Managers.Definition.CalcEquationToString(inputMap, DefinitionKey.tpu001CostEquation) + " TP";
-            inputMap.Clear();
-
-            if (!UserData.TPUpgradeCounts.ContainsKey(6)) { UserData.TPUpgradeCounts.Add(6, 0); }
-            inputMap.Add("upgradeCount", new UpArrowNotation(UserData.TPUpgradeCounts[6]));
-            _tpTabModel.TPU06CostText.text = Managers.Definition.CalcEquationToString(inputMap, DefinitionKey.tpu016CostEquation) + " TP";
-            inputMap.Clear();
-
-            if (!UserData.TPUpgradeCounts.ContainsKey(7)) { UserData.TPUpgradeCounts.Add(7, 0); }
-            inputMap.Add("upgradeCount", new UpArrowNotation(UserData.TPUpgradeCounts[7]));
-            _tpTabModel.TPU07CostText.text = Managers.Definition.CalcEquationToString(inputMap, DefinitionKey.tpu005CostEquation) + " TP";
             inputMap.Clear();
 
             if (!UserData.TPUpgradeCounts.ContainsKey(8)) { UserData.TPUpgradeCounts.Add(8, 0); }
             inputMap.Add("upgradeCount", new UpArrowNotation(UserData.TPUpgradeCounts[8]));
+            _tpTabModel.TPU04CostText.text = Managers.Definition.CalcEquationToString(inputMap, DefinitionKey.tpu008CostEquation) + " TP";
+            inputMap.Clear();
+
+            if (!UserData.TPUpgradeCounts.ContainsKey(1)) { UserData.TPUpgradeCounts.Add(1, 0); }
+            inputMap.Add("upgradeCount", new UpArrowNotation(UserData.TPUpgradeCounts[1]));
+            _tpTabModel.TPU05CostText.text = Managers.Definition.CalcEquationToString(inputMap, DefinitionKey.tpu001CostEquation) + " TP";
+            inputMap.Clear();
+
+            if (!UserData.TPUpgradeCounts.ContainsKey(16)) { UserData.TPUpgradeCounts.Add(16, 0); }
+            inputMap.Add("upgradeCount", new UpArrowNotation(UserData.TPUpgradeCounts[16]));
+            _tpTabModel.TPU06CostText.text = Managers.Definition.CalcEquationToString(inputMap, DefinitionKey.tpu016CostEquation) + " TP";
+            inputMap.Clear();
+
+            if (!UserData.TPUpgradeCounts.ContainsKey(5)) { UserData.TPUpgradeCounts.Add(5, 0); }
+            inputMap.Add("upgradeCount", new UpArrowNotation(UserData.TPUpgradeCounts[5]));
+            _tpTabModel.TPU07CostText.text = Managers.Definition.CalcEquationToString(inputMap, DefinitionKey.tpu005CostEquation) + " TP";
+            inputMap.Clear();
+
+            if (!UserData.TPUpgradeCounts.ContainsKey(6)) { UserData.TPUpgradeCounts.Add(6, 0); }
+            inputMap.Add("upgradeCount", new UpArrowNotation(UserData.TPUpgradeCounts[6]));
             _tpTabModel.TPU08CostText.text = Managers.Definition.CalcEquationToString(inputMap, DefinitionKey.tpu006CostEquation) + " TP";
             inputMap.Clear();
         }
