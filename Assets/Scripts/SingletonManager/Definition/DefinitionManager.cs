@@ -11,7 +11,7 @@ public class DefinitionManager
 
     private Dictionary<string, object> _definitionDic = new Dictionary<string, object>();
 
-    private async void LoadS3Data()
+    public async void LoadS3Data()
     {
         string res = await Managers.Network.API_S3Data("base.csv");
         if (res != null)
@@ -69,11 +69,6 @@ public class DefinitionManager
             Debug.LogError("NULL DATA DICTIONARY");
             return default;
         }
-    }
-
-    public void Init()
-    {
-        LoadS3Data();
     }
 
     private Dictionary<string, int> PRIORITY = new Dictionary<string, int>()
