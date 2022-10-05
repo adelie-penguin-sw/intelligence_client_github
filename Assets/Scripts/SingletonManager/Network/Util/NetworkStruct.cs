@@ -41,7 +41,9 @@ public struct Structure
 public struct UpgradeCondition
 {
     public long id;
+    public bool unlocked;
     public long upgrade;
+    public bool maxed;
 }
 
 [Serializable]

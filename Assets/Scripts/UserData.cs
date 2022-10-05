@@ -3,6 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct TPUpgrade
+{
+    public bool Unlocked;
+    public long UpgradeCount;
+    public bool Maxed;
+
+    public TPUpgrade(bool unlocked, long upgradeCount, bool maxed)
+    {
+        Unlocked = unlocked;
+        UpgradeCount = upgradeCount;
+        Maxed = maxed;
+    }
+}
+
 /// <summary>
 /// Player Prefers로 저장되는 데이터 , 글로벌 유저 데이터 저장
 /// </summary>
@@ -87,33 +101,33 @@ public class UserData
         }
     }
 
-    private static Dictionary<long, long> _tpUpgradeCounts = new Dictionary<long, long>();
-    public static Dictionary<long, long> TPUpgradeCounts
+    private static Dictionary<long, TPUpgrade> _tpUpgrades = new Dictionary<long, TPUpgrade>();
+    public static Dictionary<long, TPUpgrade> TPUpgrades
     {
         get
         {
-            return _tpUpgradeCounts;
+            return _tpUpgrades;
         }
     }
 
     public static void UpdateTPUpgradeCounts(List<UpgradeCondition> upgradeConditions)
     {
-        _tpUpgradeCounts.Clear();
+        _tpUpgrades.Clear();
 
         foreach (UpgradeCondition cond in upgradeConditions)
         {
-            _tpUpgradeCounts.Add(cond.id, cond.upgrade);
+            _tpUpgrades.Add(cond.id, new TPUpgrade(cond.unlocked, cond.upgrade, cond.maxed));
         }
-        for (int i = 1; i <= 8; i++)
+        for (int i = 1; i <= 29; i++)
         {
-            if (!_tpUpgradeCounts.ContainsKey(i))
+            if (!_tpUpgrades.ContainsKey(i))
             {
-                _tpUpgradeCounts.Add(i, 0);
+                _tpUpgrades.Add(i, new TPUpgrade(false, 0, false));
             }
         }
-        if (_tpUpgradeCounts.ContainsKey(0))
+        if (_tpUpgrades.ContainsKey(0))
         {
-            _tpUpgradeCounts.Remove(0);
+            _tpUpgrades.Remove(0);
         }
     }
 
