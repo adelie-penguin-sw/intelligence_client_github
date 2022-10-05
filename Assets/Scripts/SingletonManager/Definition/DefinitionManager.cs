@@ -126,6 +126,11 @@ public class DefinitionManager
         List<List<long>> result = new List<List<long>>();
         int initlength = data.Length;
 
+        if (initlength <= 4)
+        {
+            return result;
+        }
+
         data = data.Substring(2, initlength - 4);
         data = data.Replace("], [", "/");
         string[] splittedData = data.Split('/');
