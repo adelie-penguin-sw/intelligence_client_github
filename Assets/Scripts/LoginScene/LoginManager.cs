@@ -47,6 +47,7 @@ public class LoginManager : MonoBehaviour
                     UserData.Username = res.username;
                     CheckChangeScene();
                 }
+                Managers.Definition.LoadS3Data();  // 나중에 이동해야할듯
             }
         }
     }
