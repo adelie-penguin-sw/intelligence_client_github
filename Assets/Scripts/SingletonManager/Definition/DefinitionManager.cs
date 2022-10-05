@@ -43,6 +43,12 @@ public class DefinitionManager
                         else
                             _definitionDic[(string)li["name"]] = ConvertToUANList(value);
                         break;
+                    case "[][2]int":
+                        if (!_definitionDic.ContainsKey((string)li["name"]))
+                            _definitionDic.Add((string)li["name"], ConvertToIntList(value));
+                        else
+                            _definitionDic[(string)li["name"]] = ConvertToIntList(value);
+                        break;
 
                     default:
                         break;
@@ -110,6 +116,35 @@ public class DefinitionManager
             }
 
             result.Add(new UpArrowNotation(top1Coeff, top2Coeff, top3Coeff));
+        }
+
+        return result;
+    }
+
+    private List<List<long>> ConvertToIntList(string data)
+    {
+        List<List<long>> result = new List<List<long>>();
+        int initlength = data.Length;
+
+        data = data.Substring(2, initlength - 4);
+        data = data.Replace("], [", "/");
+        string[] splittedData = data.Split('/');
+
+        foreach (string segment in splittedData)
+        {
+            List<long> intList = new List<long>();
+
+            string[] intStrList = segment.Replace(", ", "/").Split('/');
+            foreach (string intStr in intStrList)
+            {
+                long intVal;
+                if (!long.TryParse(intStr, out intVal))
+                {
+                    Debug.LogErrorFormat("Int Parse Error : {0}", intStr);
+                }
+                intList.Add(intVal);
+            }
+            result.Add(intList);
         }
 
         return result;
