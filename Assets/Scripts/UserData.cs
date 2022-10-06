@@ -185,5 +185,13 @@ public class UserData
         }
     }
 
+    public static long MaxDepth
+    {
+        get
+        {
+            return _singleNetworkWrapper.maxDepth;
+        }
+    }
+
     public static long LastCalcTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 }
