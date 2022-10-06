@@ -47,7 +47,6 @@ public class LoginManager : MonoBehaviour
                     UserData.Username = res.username;
                     CheckChangeScene();
                 }
-                Managers.Definition.LoadS3Data();  // 나중에 이동해야할듯
             }
         }
     }
@@ -62,10 +61,12 @@ public class LoginManager : MonoBehaviour
                 switch ((EStatusCode)res.statusCode)
                 {
                     case EStatusCode.SUCCESS:
+                        Managers.Definition.LoadS3Data();
                         SceneManager.LoadScene("InGameScene");
                         break;
                     case EStatusCode.JWT_REFRESH:
                         UserData.SetString("Token", res.token);
+                        Managers.Definition.LoadS3Data();
                         SceneManager.LoadScene("InGameScene");
                         break;
                     default:
