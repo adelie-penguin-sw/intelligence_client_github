@@ -99,7 +99,7 @@ namespace InGame
                 inputMap.Add("tpu012", new UpArrowNotation(UserData.TPUpgrades[12].UpgradeCount));   // 아직 반영안됨!!!
                 UpArrowNotation upgradeCost = Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainUpgradeCostEquation));
 
-                string upgradeText = _brain.SenderIdList.Count == 0 ? "+1 Intellect" : "x2 Multiplier";
+                string upgradeText = _brain.SenderIdList.Count == 0 ? "+1 Intellect" : $"x{UserData.BrainUpgradePower} Multiplier";
                 _upgradeCost.text = string.Format(upgradeText + "\nCost: {0} NP", upgradeCost);
 
                 UpArrowNotation totalSenderNP = new UpArrowNotation(0);
