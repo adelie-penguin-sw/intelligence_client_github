@@ -27,7 +27,7 @@ namespace MainTab
 
         public override void Set()
         {
-            if (_view.ShowCostUI != null)       // 여기서 자꾸 널레퍼런스에러나서 임시방편으로 함
+            if (_view != null)       // 여기서 자꾸 널레퍼런스에러나서 임시방편으로 함
             {
                 _view.ShowCostUI.Dispose();
             }

@@ -21,6 +21,7 @@ public class SingleNetworkResponse
     public List<Structure> structures;
     public List<UpgradeCondition> upgradeCondition;
     public long totalBrainGenCount;
+    public long maxDepth;
 }
 
 [Serializable]
@@ -36,6 +37,7 @@ public class SingleNetworkWrapper
     [ShowInInspector] public List<Achievements> achievements = new List<Achievements>();
     [ShowInInspector] public int experimentLevel;
     [ShowInInspector] public long totalBrainGenCount;
+    [ShowInInspector] public long maxDepth;
     public SingleNetworkWrapper()
     {
 
@@ -87,6 +89,8 @@ public class SingleNetworkWrapper
             experimentLevel = res.experimentLevel;
 
             totalBrainGenCount = res.allBrainCount;
+
+            maxDepth = res.maxDepth;
         }
     }
 
