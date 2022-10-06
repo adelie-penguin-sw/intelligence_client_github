@@ -22,6 +22,7 @@ public class SingleNetworkResponse
     public List<UpgradeCondition> upgradeCondition;
     public long totalBrainGenCount;
     public long maxDepth;
+    public long brainUpgradePower;
 }
 
 [Serializable]
@@ -38,6 +39,7 @@ public class SingleNetworkWrapper
     [ShowInInspector] public int experimentLevel;
     [ShowInInspector] public long totalBrainGenCount;
     [ShowInInspector] public long maxDepth;
+    [ShowInInspector] public long brainUpgradePower;
     public SingleNetworkWrapper()
     {
 
@@ -91,6 +93,8 @@ public class SingleNetworkWrapper
             totalBrainGenCount = res.allBrainCount;
 
             maxDepth = res.maxDepth;
+
+            brainUpgradePower = res.brainUpgradePower;
         }
     }
 

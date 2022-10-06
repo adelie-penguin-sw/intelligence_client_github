@@ -279,6 +279,7 @@ public class NetworkManager
             res.TP.top3Coeffs[1],
             res.TP.top3Coeffs[2],
             res.TP.operatorLayerCount);
+            UserData.BrainUpgradePower = res.brainUpgradePower;
         }
         return (res != null);
     }
