@@ -20,10 +20,7 @@ namespace InGame
         public static bool IsCompleteExp = false;
         void Awake()
         {
-            if (UserData.token != null)
-            {
-                Managers.Definition.LoadS3Data();  // 나중에 이동해야할듯
-            }
+            
         }
 
         void Start()
