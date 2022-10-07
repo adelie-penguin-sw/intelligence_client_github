@@ -80,6 +80,11 @@ namespace MainTab
                             _costText.text = "Cannot connect to an isolated brain";
                             _costText.color = new Color32(255, 0, 0, 255);
                         }
+                        else if (_receiverBrain.Distance >= UserData.MaxDepth)    // ?????? ?????? ?????? ???????? ?????? ?? ????
+                        {
+                            _costText.text = $"Cannot make a chain longer than {UserData.MaxDepth}";
+                            _costText.color = new Color32(255, 0, 0, 255);
+                        }
                         else                                                                            // ?????? ???? ????. NP???? ????
                         {
                             _inputMap.Add("receiverDistance", new UpArrowNotation(_receiverBrain.Distance));
