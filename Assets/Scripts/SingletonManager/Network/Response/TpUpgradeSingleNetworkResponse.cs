@@ -12,5 +12,6 @@ public class TpUpgradeSingleNetworkResponse
 	public List<UpgradeCondition> upgradeCondition;
 	public long calcTime;
 	public long brainUpgradePower;
+	public long maxDepth;
 	public long newBrain;		// 이거 뭐예요 ??
 }
