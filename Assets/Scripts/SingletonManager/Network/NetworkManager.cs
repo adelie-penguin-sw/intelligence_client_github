@@ -63,7 +63,7 @@ public class NetworkManager
         {
             await request.SendWebRequest().WithCancellation(cts.Token);
             Debug.Log(request.downloadHandler.text);
-            if(request.responseCode != (int)EStatusCode.SUCCESS)
+            if(request.responseCode != (int)EStatusCode.SUCCESS && request.responseCode != (int)EStatusCode.JWT_REFRESH)
             {
                 ErrorResponse errorResult = JsonUtility.FromJson<ErrorResponse>(request.downloadHandler.text);
 
@@ -280,6 +280,7 @@ public class NetworkManager
             res.TP.top3Coeffs[1],
             res.TP.top3Coeffs[2],
             res.TP.operatorLayerCount);
+            UserData.BrainUpgradePower = res.brainUpgradePower;
         }
         return (res != null);
     }

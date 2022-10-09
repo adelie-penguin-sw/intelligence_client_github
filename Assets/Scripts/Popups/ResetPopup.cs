@@ -17,10 +17,12 @@ namespace MainTab
         [SerializeField] private TextMeshProUGUI _expLvTextComplete;
         [SerializeField] private TextMeshProUGUI _expGoalTextComplete;
         [SerializeField] private TextMeshProUGUI _elapesdTimeTextComplete;
+        [SerializeField] private TextMeshProUGUI _multiplierRewardTextComplete;
         [SerializeField] private TextMeshProUGUI _tpRewardTextComplete;
 
         [SerializeField] private TextMeshProUGUI _currentCoreIntellectTextIncomplete;
         [SerializeField] private TextMeshProUGUI _expGoalTextIncomplete;
+        [SerializeField] private TextMeshProUGUI _multiplierRewardTextIncomplete;
         [SerializeField] private TextMeshProUGUI _tpRewardTextIncomplete;
 
         private Dictionary<string, UpArrowNotation> inputMap = new Dictionary<string, UpArrowNotation>();
@@ -61,7 +63,10 @@ namespace MainTab
 
                 inputMap.Clear();
                 inputMap.Add("coreBrainIntellect", UserData.CoreIntellect);
-                _tpRewardTextIncomplete.text = Managers.Definition.CalcEquationToString(inputMap, DefinitionKey.tpRewardForReset) + " TP";
+                _tpRewardTextComplete.text = Managers.Definition.CalcEquationToString(inputMap, DefinitionKey.tpRewardForReset) + " TP";
+
+                inputMap.Add("tpu004", UserData.CoreIntellect);
+                _multiplierRewardTextComplete.text = "x" + Managers.Definition.CalcEquationToString(inputMap, DefinitionKey.multiplierRewardForReset) + " Mult.";
             }
             else
             {
@@ -72,6 +77,9 @@ namespace MainTab
                 inputMap.Clear();
                 inputMap.Add("coreBrainIntellect", UserData.CoreIntellect);
                 _tpRewardTextIncomplete.text = Managers.Definition.CalcEquationToString(inputMap, DefinitionKey.tpRewardForReset) + " TP";
+
+                inputMap.Add("tpu004", UserData.CoreIntellect);
+                _multiplierRewardTextIncomplete.text = "x" + Managers.Definition.CalcEquationToString(inputMap, DefinitionKey.multiplierRewardForReset) + " Mult.";
             }
         }
 

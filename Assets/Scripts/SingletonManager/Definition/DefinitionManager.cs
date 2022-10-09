@@ -11,7 +11,7 @@ public class DefinitionManager
 
     private Dictionary<string, object> _definitionDic = new Dictionary<string, object>();
 
-    private async void LoadS3Data()
+    public async void LoadS3Data()
     {
         string res = await Managers.Network.API_S3Data("base.csv");
         if (res != null)
@@ -43,6 +43,12 @@ public class DefinitionManager
                         else
                             _definitionDic[(string)li["name"]] = ConvertToUANList(value);
                         break;
+                    case "[][2]int":
+                        if (!_definitionDic.ContainsKey((string)li["name"]))
+                            _definitionDic.Add((string)li["name"], ConvertToIntList(value));
+                        else
+                            _definitionDic[(string)li["name"]] = ConvertToIntList(value);
+                        break;
 
                     default:
                         break;
@@ -63,11 +69,6 @@ public class DefinitionManager
             Debug.LogError("NULL DATA DICTIONARY");
             return default;
         }
-    }
-
-    public void Init()
-    {
-        LoadS3Data();
     }
 
     private Dictionary<string, int> PRIORITY = new Dictionary<string, int>()
@@ -110,6 +111,40 @@ public class DefinitionManager
             }
 
             result.Add(new UpArrowNotation(top1Coeff, top2Coeff, top3Coeff));
+        }
+
+        return result;
+    }
+
+    private List<List<long>> ConvertToIntList(string data)
+    {
+        List<List<long>> result = new List<List<long>>();
+        int initlength = data.Length;
+
+        if (initlength <= 4)
+        {
+            return result;
+        }
+
+        data = data.Substring(2, initlength - 4);
+        data = data.Replace("], [", "/");
+        string[] splittedData = data.Split('/');
+
+        foreach (string segment in splittedData)
+        {
+            List<long> intList = new List<long>();
+
+            string[] intStrList = segment.Replace(", ", "/").Split('/');
+            foreach (string intStr in intStrList)
+            {
+                long intVal;
+                if (!long.TryParse(intStr, out intVal))
+                {
+                    Debug.LogErrorFormat("Int Parse Error : {0}", intStr);
+                }
+                intList.Add(intVal);
+            }
+            result.Add(intList);
         }
 
         return result;
