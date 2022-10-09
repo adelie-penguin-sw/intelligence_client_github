@@ -291,7 +291,7 @@ public class NetworkManager
         string json = JsonUtility.ToJson(req);
         var res =
             await SendToServer<CompleteQuestResponse>(
-                    PATH_TP_UPGRADE,
+                    PATH_TUTORIAL_QUEST,
                     ENetworkSendType.POST,
                     json);
         if (res != null && res.statusCode == (int)EStatusCode.SUCCESS)
