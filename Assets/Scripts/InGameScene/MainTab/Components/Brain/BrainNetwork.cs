@@ -78,19 +78,22 @@ namespace MainTab
                     if (id == 0)
                     {
                         Brain brain = Managers.Pool.GrabPrefabs(EPrefabsType.BRAIN, "CoreBrain", _brainLayer).GetComponent<Brain>();
-                        brain.Init(data);
+                        brain.Init(data, _brainNetWork);
                         _brainNetWork.Add(id, brain);
                     }
                     else
                     {
                         Brain brain = Managers.Pool.GrabPrefabs(EPrefabsType.BRAIN, "Brain", _brainLayer).GetComponent<Brain>();
-                        brain.Init(data);
+                        brain.Init(data, _brainNetWork);
                         _brainNetWork.Add(id, brain);
                     }
                     
                 }
             }
-
+            foreach (var brain in _brainNetWork.Values)
+            {
+                brain.UpdateFullMultiplier();
+            }
             ClearAndDrawChannel();
         }
 
