@@ -96,47 +96,6 @@ public class UserData
         }
     }
 
-    public static void UpdateTPUpgradeCounts(List<UpgradeCondition> upgradeConditions)
-    {
-        _tpUpgradeCounts.Clear();
-
-        foreach (UpgradeCondition cond in upgradeConditions)
-        {
-            _tpUpgradeCounts.Add(cond.id, cond.upgrade);
-        }
-        for (int i = 1; i <= 8; i++)
-        {
-            if (!_tpUpgradeCounts.ContainsKey(i))
-            {
-                _tpUpgradeCounts.Add(i, 0);
-            }
-        }
-        if (_tpUpgradeCounts.ContainsKey(0))
-        {
-            _tpUpgradeCounts.Remove(0);
-        }
-    }
-
-
-    public static void SetString(string key, string value)
-    {
-        PlayerPrefs.SetString(key, value);
-
-        switch(key)
-        {
-            case "Token":
-                token = value;
-                break;
-        }
-    }
-
-    public static void LoadAllData()
-    {
-        token = PlayerPrefs.GetString("Token");
-        Debug.Log(token);
-    }
-
-
     private static SingleNetworkWrapper _singleNetworkWrapper = new SingleNetworkWrapper();
     public static SingleNetworkWrapper SingleNetworkWrapper
     {
@@ -172,4 +131,59 @@ public class UserData
     }
 
     public static long LastCalcTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+
+    private static Dictionary<long, QuestAttributes> _dicQuest = new Dictionary<long, QuestAttributes>();
+    public static Dictionary<long, QuestAttributes> DicQuest { get { return _dicQuest; } }
+
+    public static void UpdateTutorialQuest(CompleteQuestResponse res)
+    {
+        if (res != null)
+        {
+            _dicQuest.Clear();
+            foreach (var quest in res.questAttributes)
+            {
+                _dicQuest.Add(quest.questId, quest);
+            }
+        }
+    }
+
+    public static void UpdateTPUpgradeCounts(List<UpgradeCondition> upgradeConditions)
+    {
+        _tpUpgradeCounts.Clear();
+
+        foreach (UpgradeCondition cond in upgradeConditions)
+        {
+            _tpUpgradeCounts.Add(cond.id, cond.upgrade);
+        }
+        for (int i = 1; i <= 8; i++)
+        {
+            if (!_tpUpgradeCounts.ContainsKey(i))
+            {
+                _tpUpgradeCounts.Add(i, 0);
+            }
+        }
+        if (_tpUpgradeCounts.ContainsKey(0))
+        {
+            _tpUpgradeCounts.Remove(0);
+        }
+    }
+
+
+    public static void SetString(string key, string value)
+    {
+        PlayerPrefs.SetString(key, value);
+
+        switch (key)
+        {
+            case "Token":
+                token = value;
+                break;
+        }
+    }
+
+    public static void LoadAllData()
+    {
+        token = PlayerPrefs.GetString("Token");
+        Debug.Log(token);
+    }
 }

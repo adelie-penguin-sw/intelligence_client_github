@@ -59,3 +59,11 @@ public struct ViewSingleLeaderboard
     public long resetCount;
     public AnsEquation maximumCoreIntellect;
 }
+
+[Serializable] 
+public struct QuestAttributes
+{
+    public long questId;
+    public long questLevel;
+    public bool isCompleted;
+}
