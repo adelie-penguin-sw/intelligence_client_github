@@ -23,6 +23,7 @@ public class SingleNetworkResponse
     public long totalBrainGenCount;
     public long maxDepth;
     public long brainUpgradePower;
+    public AnsEquation multiplierRewardForReset;
 }
 
 [Serializable]
@@ -40,10 +41,13 @@ public class SingleNetworkWrapper
     [ShowInInspector] public long totalBrainGenCount;
     [ShowInInspector] public long maxDepth;
     [ShowInInspector] public long brainUpgradePower;
+    [ShowInInspector] public UpArrowNotation multiplierRewardForReset;
+
     public SingleNetworkWrapper()
     {
 
     }
+
     public SingleNetworkWrapper(SingleNetworkResponse res)
     {
         if (res != null)
@@ -95,6 +99,12 @@ public class SingleNetworkWrapper
             maxDepth = res.maxDepth;
 
             brainUpgradePower = res.brainUpgradePower;
+
+            multiplierRewardForReset = new UpArrowNotation(
+                res.multiplierRewardForReset.top3Coeffs[0],
+                res.multiplierRewardForReset.top3Coeffs[1],
+                res.multiplierRewardForReset.top3Coeffs[2],
+                res.multiplierRewardForReset.operatorLayerCount);
         }
     }
 
@@ -124,14 +134,14 @@ public class SingleNetworkWrapper
             AnsEquation m = brainAttributesDic[id].multiplier;
             if (m.top3Coeffs != null)
             {
-                data.multiplier = new UpArrowNotation(m.top3Coeffs[0],
+                data.upgradedMultiplier = new UpArrowNotation(m.top3Coeffs[0],
                                                       m.top3Coeffs[1],
                                                       m.top3Coeffs[2],
                                                       m.operatorLayerCount);
             }
             else
             {
-                data.multiplier = new UpArrowNotation(1);
+                data.upgradedMultiplier = new UpArrowNotation(1);
             }
 
             data.distance = brainAttributesDic[id].distance;
