@@ -58,13 +58,21 @@ public class LoginManager : MonoBehaviour
             AuthValidationResponse res = await Managers.Network.API_TokenValidation();
             if (res != null)
             {
+                // 유저네임 못받을때가 있어서 일단 이렇게 덕지덕지 발라놨어요
+                GetUsernameResponse usernameRes;
                 switch ((EStatusCode)res.statusCode)
                 {
                     case EStatusCode.SUCCESS:
+                        Managers.Definition.LoadS3Data();
+                        usernameRes = await Managers.Network.API_GetUsername();
+                        UserData.Username = usernameRes.username;
                         SceneManager.LoadScene("InGameScene");
                         break;
                     case EStatusCode.JWT_REFRESH:
                         UserData.SetString("Token", res.token);
+                        Managers.Definition.LoadS3Data();
+                        usernameRes = await Managers.Network.API_GetUsername();
+                        UserData.Username = usernameRes.username;
                         SceneManager.LoadScene("InGameScene");
                         break;
                     default:
