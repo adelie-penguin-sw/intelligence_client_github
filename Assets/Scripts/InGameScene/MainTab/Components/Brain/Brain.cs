@@ -244,11 +244,45 @@ namespace MainTab
             if (UserData.TPUpgrades[20].UpgradeCount > 0)       // TPU-020: 센더 부스터 체이닝
             {
                 inputMap.Clear();
-                inputMap.Add("brainCount", new UpArrowNotation());      // 이거 어떻게 세야할까..??
+                inputMap.Add("brainCount", new UpArrowNotation(CountAllSenders()));
                 passiveMultiplier.Mul(Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.multiplierBoostForTPU020)));
             }
 
             return passiveMultiplier;
+        }
+
+        private long CountAllSenders()
+        {
+            long senderCount = 0;
+
+            List<long> visitedList = new List<long>();
+            List<long> toVisitList = new List<long>();
+
+            foreach (long id in _brainData.senderIds)
+            {
+                toVisitList.Add(id);
+                senderCount++;
+            }
+
+            while (toVisitList.Count > 0)
+            {
+                long currentID = toVisitList[0];
+                visitedList.Add(currentID);
+                toVisitList.RemoveAt(0);
+                if (_brainNetwork.ContainsKey(currentID))
+                {
+                    foreach (long id in _brainNetwork[currentID]._brainData.senderIds)
+                    {
+                        if (!visitedList.Contains(id))
+                        {
+                            toVisitList.Add(id);
+                            senderCount++;
+                        }
+                    }
+                }
+            }
+
+            return senderCount;
         }
 
         private void SetNumText(UpArrowNotation num)
