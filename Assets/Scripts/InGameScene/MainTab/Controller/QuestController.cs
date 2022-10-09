@@ -64,14 +64,16 @@ namespace MainTab
                     }
                     break;
             }
-
             _view.QuestUI.UpdateClearCount(_dicQuest[_currentQuestKey].clearCount);
             QuestClearCheck();
         }
 
-        private void QuestClearCheck()
+        private async void QuestClearCheck()
         {
-            if(_dicQuest[_currentQuestKey].clearCount>= _dicQuest[_currentQuestKey].goalCount)
+            var req = new CompleteQuestRequest();
+            req.questId = _currentQuestKey;
+            await Managers.Network.API_QuestComplete(req);
+            if (_dicQuest[_currentQuestKey].clearCount>= _dicQuest[_currentQuestKey].goalCount)
             {
                 if (_dicQuest.ContainsKey(_currentQuestKey+1))
                 {
