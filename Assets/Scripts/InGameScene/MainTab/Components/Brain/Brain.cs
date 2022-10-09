@@ -11,7 +11,9 @@ namespace MainTab
     {
         [SerializeField] private TextMeshPro _textNum;
         [SerializeField] private TextMeshPro _textMul;
+        [SerializeField] private Dictionary<long, Brain> _brainNetwork;
         [SerializeField] private BrainData _brainData;
+        [SerializeField] private UpArrowNotation _fullMultiplier;
 
         [SerializeField] private bool _isCollision = false;
 
@@ -43,7 +45,13 @@ namespace MainTab
         /// <summary>
         /// 지능 증폭계수 반환
         /// </summary>
-        public UpArrowNotation Multiplier { get { return _brainData.multiplier; } }
+        public UpArrowNotation Multiplier
+        {
+            get
+            {
+                return _fullMultiplier;
+            }
+        }
 
         /// <summary>
         /// 해당 브레인의 ID
@@ -69,12 +77,14 @@ namespace MainTab
         }
         #endregion
 
-        public void Init(BrainData data)
+        public void Init(BrainData data, Dictionary<long, Brain> brainNetwork = null)
         {
             _brainData = data;
+            _brainNetwork = brainNetwork;
             if (_brainData.brainType == EBrainType.GUIDEBRAIN)
                 gameObject.SetActive(false);
             Set();
+            UpdateFullMultiplier();
             SetNumText(Intellect);
             SetMulText(Multiplier);
         }
@@ -159,6 +169,86 @@ namespace MainTab
         public bool IsContainsReceiver(int id)
         {
             return _brainData.receiverIds.Contains(id);
+        }
+
+        public void UpdateFullMultiplier()
+        {
+            if (_brainData.brainType != EBrainType.GUIDEBRAIN)
+            {
+                _fullMultiplier = GetBaseMultiplier() * GetPassiveMultiplier() * _brainData.upgradedMultiplier;
+            }
+            else
+            {
+                _fullMultiplier = new UpArrowNotation();
+            }
+        }
+
+        private UpArrowNotation GetBaseMultiplier()
+        {
+            Dictionary<string, UpArrowNotation> inputMap = new Dictionary<string, UpArrowNotation>();
+
+            UpArrowNotation baseMultiplier = UserData.MultiplierRewardForReset.Copy();
+            if (UserData.TPUpgrades[10].UpgradeCount > 0)       // TPU-010: 브레인 연합 부스터
+            {
+                inputMap.Clear();
+                inputMap.Add("brainCount", new UpArrowNotation(_brainNetwork.Count));
+                baseMultiplier.Mul(Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.multiplierBoostForTPU010)));
+            }
+            if (UserData.TPUpgrades[26].UpgradeCount > 0)       // TPU-026: NP 부스터
+            {
+                inputMap.Clear();
+                inputMap.Add("NP", UserData.NP);
+                baseMultiplier.Mul(Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.multiplierBoostForTPU026)));
+            }
+            if (UserData.TPUpgrades[28].UpgradeCount > 0)       // TPU-028: TP 부스터
+            {
+                inputMap.Clear();
+                inputMap.Add("TP", UserData.TP);
+                baseMultiplier.Mul(Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.multiplierBoostForTPU028)));
+            }
+
+            return baseMultiplier;
+        }
+
+        private UpArrowNotation GetPassiveMultiplier()
+        {
+            Dictionary<string, UpArrowNotation> inputMap = new Dictionary<string, UpArrowNotation>();
+
+            UpArrowNotation passiveMultiplier = new UpArrowNotation(1);
+            if (UserData.TPUpgrades[7].UpgradeCount > 0)        // TPU-007: 브레인 길드 부스터
+            {
+                long brainCount = 0;
+                foreach (Brain brain in _brainNetwork.Values)
+                {
+                    if (brain.Distance == Distance)
+                    {
+                        brainCount++;
+                    }
+                }
+                inputMap.Clear();
+                inputMap.Add("brainCount", new UpArrowNotation(brainCount));
+                passiveMultiplier.Mul(Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.multiplierBoostForTPU007)));
+            }
+            if (UserData.TPUpgrades[15].UpgradeCount > 0)       // TPU-015: 센더 부스터
+            {
+                inputMap.Clear();
+                inputMap.Add("brainCount", new UpArrowNotation(_brainData.senderIds.Count));
+                passiveMultiplier.Mul(Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.multiplierBoostForTPU015)));
+            }
+            if (UserData.TPUpgrades[19].UpgradeCount > 0)       // TPU-019: 리시버 부스터
+            {
+                inputMap.Clear();
+                inputMap.Add("brainCount", new UpArrowNotation(_brainData.receiverIds.Count));
+                passiveMultiplier.Mul(Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.multiplierBoostForTPU019)));
+            }
+            if (UserData.TPUpgrades[20].UpgradeCount > 0)       // TPU-020: 센더 부스터 체이닝
+            {
+                inputMap.Clear();
+                inputMap.Add("brainCount", new UpArrowNotation());      // 이거 어떻게 세야할까..??
+                passiveMultiplier.Mul(Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.multiplierBoostForTPU020)));
+            }
+
+            return passiveMultiplier;
         }
 
         private void SetNumText(UpArrowNotation num)
