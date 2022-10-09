@@ -27,7 +27,10 @@ namespace MainTab
 
         public override void Set()
         {
-            _view.ShowCostUI.Dispose();
+            if (_view != null)       // 여기서 자꾸 널레퍼런스에러나서 임시방편으로 함
+            {
+                _view.ShowCostUI.Dispose();
+            }
         }
 
         public override void AdvanceTime(float dt_sec)
