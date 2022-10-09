@@ -151,6 +151,7 @@ public class NetworkManager
     public const string PATH_SINGLE_NETWORK_BRAIN_NUMBER = "/v1/experiment/single/network/brain/intelligence";
     public const string PATH_SINGLE_NETWORK_RESET = "/v1/experiment/single/network/reset";
     public const string PATH_TP_UPGRADE = "/v1/experiment/single/network/reinforcement";
+    public const string PATH_TUTORIAL_QUEST = "/v1/experiment/single/quest";
 
     /// 
     /// GET PATH
@@ -280,6 +281,29 @@ public class NetworkManager
             res.TP.top3Coeffs[2],
             res.TP.operatorLayerCount);
         }
+        return (res != null);
+    }
+
+
+    public async UniTask<bool> API_QuestComplete(CompleteQuestRequest req)
+    {
+        string json = JsonUtility.ToJson(req);
+        var res =
+            await SendToServer<CompleteQuestResponse>(
+                    PATH_TP_UPGRADE,
+                    ENetworkSendType.POST,
+                    json);
+        if (res != null && res.statusCode == (int)EStatusCode.SUCCESS)
+        {
+            UserData.NP = new UpArrowNotation(
+            res.NP.top3Coeffs[0],
+            res.NP.top3Coeffs[1],
+            res.NP.top3Coeffs[2],
+            res.NP.operatorLayerCount);
+
+            UserData.UpdateTutorialQuest(res);
+        }
+
         return (res != null);
     }
     #endregion
