@@ -205,5 +205,17 @@ public class UserData
         }
     }
 
+    public static UpArrowNotation MultiplierRewardForReset
+    {
+        get
+        {
+            return _singleNetworkWrapper.multiplierRewardForReset;
+        }
+        set
+        {
+            _singleNetworkWrapper.multiplierRewardForReset = value;
+        }
+    }
+
     public static long LastCalcTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 }

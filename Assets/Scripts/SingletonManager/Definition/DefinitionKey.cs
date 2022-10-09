@@ -4,15 +4,28 @@ using UnityEngine;
 public class DefinitionKey
 {
     public const string experimentGoalList = "ExperimentGoalList";
+
     #region BRAIN
     public const string brainGeneratingCostEquation = "BrainGeneratingCostEquation";
     public const string brainDecomposingGainEquation = "BrainDecomposingGainEquation";
     public const string brainUpgradeCostEquation = "BrainUpgradeCostEquation";
-
     #endregion
+
     #region CHANNEL
     public const string channelGeneratingCostEquation = "ChannelGeneratingCostEquation";
     #endregion
+
+    #region MULTIPLIER
+    public const string multiplierRewardForReset = "MultiplierRewardForReset";
+    public const string multiplierBoostForTPU007 = "MultiplierBoostForTPU007";
+    public const string multiplierBoostForTPU010 = "MultiplierBoostForTPU010";
+    public const string multiplierBoostForTPU015 = "MultiplierBoostForTPU015";
+    public const string multiplierBoostForTPU019 = "MultiplierBoostForTPU019";
+    public const string multiplierBoostForTPU020 = "MultiplierBoostForTPU020";
+    public const string multiplierBoostForTPU026 = "MultiplierBoostForTPU026";
+    public const string multiplierBoostForTPU028 = "MultiplierBoostForTPU028";
+    #endregion
+
     #region TP
     public const string tpRewardForReset = "TPrewardForReset";
 
