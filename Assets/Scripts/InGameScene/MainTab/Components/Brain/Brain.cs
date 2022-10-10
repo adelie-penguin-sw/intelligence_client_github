@@ -22,6 +22,13 @@ namespace MainTab
         public HashSet<long> SenderIdList { get { return _brainData.senderIds; } }
 
         public BrainData BrainData { get { return _brainData; } }
+        public Dictionary<long, Brain> BrainNetwork
+        {
+            get
+            {
+                return _brainNetwork;
+            }
+        }
 
         /// <summary>
         /// 지능 수치 계산하여 반환
