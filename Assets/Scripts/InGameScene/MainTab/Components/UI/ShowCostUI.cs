@@ -48,6 +48,7 @@ namespace MainTab
                             _inputMap.Add("physicalDistance", new UpArrowNotation(physicalDistance));
                             _inputMap.Add("pastBrainGenCount", new UpArrowNotation(UserData.TotalBrainGenCount));
                             _inputMap.Add("tpu011", new UpArrowNotation(UserData.TPUpgrades[11].UpgradeCount));
+                            _inputMap.Add("tpu021", new UpArrowNotation(UserData.TPUpgrades[21].UpgradeCount));
 
                             UpArrowNotation brainGenCost = Managers.Definition.CalcEquation(_inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainGeneratingCostEquation));
 
@@ -90,6 +91,7 @@ namespace MainTab
                             _inputMap.Add("receiverDistance", new UpArrowNotation(_receiverBrain.Distance));
                             _inputMap.Add("senderIntellect", _senderBrain.Intellect);
                             _inputMap.Add("tpu013", new UpArrowNotation(UserData.TPUpgrades[13].UpgradeCount));
+                            _inputMap.Add("tpu023", new UpArrowNotation(UserData.TPUpgrades[23].UpgradeCount));
 
                             UpArrowNotation channelGenCost = Managers.Definition.CalcEquation(_inputMap, Managers.Definition.GetData<string>(DefinitionKey.channelGeneratingCostEquation));
 
