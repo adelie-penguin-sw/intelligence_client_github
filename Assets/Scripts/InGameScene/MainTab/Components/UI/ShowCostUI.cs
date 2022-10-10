@@ -61,12 +61,14 @@ namespace MainTab
                         break;
 
                     case ENPCostType.CHNNL_GEN:
+                        long strctureLevel = UserData.TPUpgrades[18].UpgradeCount + UserData.TPUpgrades[24].UpgradeCount;
+
                         if (_senderBrain.ID == 0)                                                       // ?????????? ?????? ???? ?? ????
                         {
                             _costText.text = "Cannot generate a channel from Core Brain";
                             _costText.color = new Color32(255, 0, 0, 255);
                         }
-                        else if (_senderBrain.ReceiverIdList.Count > 0)                                 // ?????? ?? ?????? ???????? ?? ???? (???????? ???? ???? ?????? ????)
+                        else if (strctureLevel == 0 && _senderBrain.ReceiverIdList.Count > 0)           // ?????? ?? ?????? ???????? ?? ???? (???????? ???? ???? ?????? ????)
                         {
                             _costText.text = "This brain already has a channel";
                             _costText.color = new Color32(255, 0, 0, 255);
@@ -84,6 +86,21 @@ namespace MainTab
                         else if (_receiverBrain.Distance >= UserData.MaxDepth)    // ?????? ?????? ?????? ???????? ?????? ?? ????
                         {
                             _costText.text = $"Cannot make a chain longer than {UserData.MaxDepth}";
+                            _costText.color = new Color32(255, 0, 0, 255);
+                        }
+                        else if (strctureLevel == 1 && !IsReceiverDistanceMatch())
+                        {
+                            _costText.text = "All receivers' distance must be identical";
+                            _costText.color = new Color32(255, 0, 0, 255);
+                        }
+                        else if (strctureLevel == 2 && ContainsLoop(_senderBrain.BrainNetwork, _senderBrain.ID, _receiverBrain.ID))
+                        {
+                            _costText.text = "Cannot generate a loop";
+                            _costText.color = new Color32(255, 0, 0, 255);
+                        }
+                        else if (strctureLevel > 0 && _senderBrain.ReceiverIdList.Contains(_receiverBrain.ID))
+                        {
+                            _costText.text = "Connection already exists";
                             _costText.color = new Color32(255, 0, 0, 255);
                         }
                         else                                                                            // ?????? ???? ????. NP???? ????
@@ -124,6 +141,83 @@ namespace MainTab
         public void SetCollisoinState(bool state)
         {
             _isCollision = state;
+        }
+
+        private bool IsReceiverDistanceMatch()
+        {
+            if (_senderBrain.ReceiverIdList.Count == 0)
+            {
+                return true;
+            }
+
+            foreach (long id in _senderBrain.ReceiverIdList)
+            {
+                if (_receiverBrain.Distance != _senderBrain.BrainNetwork[id].Distance)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private class BrainConnection
+        {
+            public HashSet<long> senderBrains;
+            public HashSet<long> receiverBrains;
+
+            public BrainConnection(HashSet<long> senderBrains, HashSet<long> receiverBrains)
+            {
+                this.senderBrains = new HashSet<long>(senderBrains);
+                this.receiverBrains = new HashSet<long>(receiverBrains);
+            }
+        }
+
+        private Dictionary<long, BrainConnection> ConvertToBrainConnection(Dictionary<long, Brain> brainNetwork)
+        {
+            Dictionary<long, BrainConnection> result = new Dictionary<long, BrainConnection>();
+            foreach (long brain in brainNetwork.Keys)
+            {
+                result.Add(brain, new BrainConnection(brainNetwork[brain].SenderIdList, brainNetwork[brain].ReceiverIdList));
+            }
+            return result;
+        }
+
+        private bool ContainsLoop(Dictionary<long, Brain> brainNetwork, long senderID, long receiverID)
+        {
+            // 새 연결관계가 추가됐다고 가정
+            Dictionary<long, BrainConnection> allConnections = ConvertToBrainConnection(brainNetwork);
+            allConnections[senderID].receiverBrains.Add(receiverID);
+            allConnections[receiverID].senderBrains.Add(senderID);
+
+            List<long> visited = new List<long>();
+            Stack<long> toVisit = new Stack<long>();
+            visited.Add(receiverID);
+            foreach (long brain in allConnections[receiverID].receiverBrains)
+            {
+                toVisit.Push(brain);
+            }
+
+            // DFS
+            long currentBrain;
+            while (toVisit.Count > 0)
+            {
+                currentBrain = toVisit.Pop();
+                visited.Add(currentBrain);
+                foreach (long brain in allConnections[currentBrain].receiverBrains)
+                {
+                    if (brain == senderID)
+                    {
+                        return true;
+                    }
+                    if (!visited.Contains(brain) && !toVisit.Contains(brain))
+                    {
+                        toVisit.Push(brain);
+                    }
+                }
+            }
+
+            return false;
         }
     }
 
