@@ -97,6 +97,7 @@ namespace InGame
                 inputMap.Clear();
                 inputMap.Add("multiplier", _brain.BrainData.upgradedMultiplier);
                 inputMap.Add("tpu012", new UpArrowNotation(UserData.TPUpgrades[12].UpgradeCount));
+                inputMap.Add("tpu022", new UpArrowNotation(UserData.TPUpgrades[22].UpgradeCount));
                 UpArrowNotation upgradeCost = Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainUpgradeCostEquation));
 
                 string upgradeText = _brain.SenderIdList.Count == 0 ? "+1 Intellect" : $"x{UserData.BrainUpgradePower} Multiplier";
