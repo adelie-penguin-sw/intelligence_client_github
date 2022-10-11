@@ -4,6 +4,15 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
+using UnityEngine.SocialPlatforms.GameCenter;
+using UnityEngine.SocialPlatforms;
+using AppleAuth;
+using AppleAuth.Native;
+using AppleAuth.Enums;
+using AppleAuth.Interfaces;
+using System.Text;
+using AppleAuth.Extensions;
+using UnityEngine.UI;
 
 public class LoginManager : MonoBehaviour
 {
@@ -16,21 +25,98 @@ public class LoginManager : MonoBehaviour
     [SerializeField] private GameObject _contentNotLoggedIn;
     [SerializeField] private GameObject _contentLoggedIn;
 
+    [SerializeField] private Button _btnAppleLogin;
+    private IAppleAuthManager appleAuthManager;
+    public const string AppleUserIdKey = "AppleUserIdKey";
+
     public void Start()
     {
         _contentNotLoggedIn.SetActive(true);
         _contentLoggedIn.SetActive(false);
 
-        //PlayerPrefs.DeleteAll();
+        _btnAppleLogin.gameObject.SetActive(false);
+
         UserData.LoadAllData();
         CheckChangeScene();
+#if UNITY_IOS
+        _btnAppleLogin.gameObject.SetActive(true);
+        if (AppleAuthManager.IsCurrentPlatformSupported)
+        {
+            // Creates a default JSON deserializer, to transform JSON Native responses to C# instances
+            var deserializer = new PayloadDeserializer();
+            // Creates an Apple Authentication manager with the deserializer
+            this.appleAuthManager = new AppleAuthManager(deserializer);
+        }
+#endif
+#if UNITY_ANDROID
+#endif
     }
 
-    public async void OnClick_Login()
+    public void Update()
+    {
+#if UNITY_IOS
+        if (this.appleAuthManager != null)
+        {
+            this.appleAuthManager.Update();
+        }
+#endif
+#if UNITY_ANDROID
+#endif
+    }
+
+
+    /// <summary>
+    /// 애플로그인 클릭
+    /// </summary>
+    public void OnClickAppleLogin()
+    {
+        var loginArgs = new AppleAuthLoginArgs(LoginOptions.IncludeEmail | LoginOptions.IncludeFullName);
+
+        this.appleAuthManager.LoginWithAppleId(
+            loginArgs,
+            credential =>
+            {
+                // Obtained credential, cast it to IAppleIDCredential
+                var appleIdCredential = credential as IAppleIDCredential;
+                        if (appleIdCredential != null)
+                        {
+                    // Apple User ID
+                    // PlayerPrefs로 저장하고 있
+                    var userId = appleIdCredential.User;
+                            PlayerPrefs.SetString(AppleUserIdKey, userId);
+                    // Email 첫 로그인시 가져옴.
+                    var email = appleIdCredential.Email;
+
+                    // Full name 첫 로그인시 가져옴. 
+                    var fullName = appleIdCredential.FullName;
+
+                    // Identity token 로그인 할 때마다 바뀜
+                    var identityToken = Encoding.UTF8.GetString(
+                                appleIdCredential.IdentityToken,
+                                0,
+                                appleIdCredential.IdentityToken.Length);
+
+                    // Authorization code 로그인 할 때마다 바뀜
+                    var authorizationCode = Encoding.UTF8.GetString(
+                                appleIdCredential.AuthorizationCode,
+                                0,
+                                appleIdCredential.AuthorizationCode.Length);
+
+                    this.Login(userId, AppleUserIdKey);
+                }
+            },
+            error =>
+            {
+                // Something went wrong
+                var authorizationErrorCode = error.GetAuthorizationErrorCode();
+            });
+    }
+
+    public async void Login(string email, string domain)
     {
         TemporaryRequest req = new TemporaryRequest();
-        req.email = _textEmail.text;
-        req.domain = _textDomain.text;
+        req.email = email;
+        req.domain = domain;
 
         if (await Managers.Network.API_Login(req))
         {
@@ -49,6 +135,10 @@ public class LoginManager : MonoBehaviour
                 }
             }
         }
+    }
+    public void OnClick_Login()
+    {
+        this.Login(_textEmail.text, _textDomain.text);
     }
 
     private async void CheckChangeScene()
