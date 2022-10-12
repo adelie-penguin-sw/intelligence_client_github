@@ -150,6 +150,8 @@ public class NetworkManager
     public const string PATH_CREATE_SINGLE_NETWORK_CHANNEL = "/v1/experiment/single/network/channel";
     public const string PATH_SINGLE_NETWORK_BRAIN_NUMBER = "/v1/experiment/single/network/brain/intelligence";
     public const string PATH_SINGLE_NETWORK_RESET = "/v1/experiment/single/network/reset";
+    public const string PATH_FIXED_NETWORK_BRAIN = "/v1/experiment/single/fn/brain";
+    public const string PATH_FIXED_NETWORK_CHANNEL = "/v1/experiment/single/fn/channel";
     public const string PATH_TP_UPGRADE = "/v1/experiment/single/network/reinforcement";
     public const string PATH_TUTORIAL_QUEST = "/v1/experiment/single/quest";
 
@@ -157,6 +159,7 @@ public class NetworkManager
     /// GET PATH
     /// 
     public const string PATH_SINGLE_NETWORK = "/v1/experiment/single/network";
+    public const string PATH_FIXED_NETWORK = "/v1/experiment/single/fn";
     public const string PATH_TOKEN_VALIDATION = "/v1/auth/validation";
     public const string PATH_LEADERBOARD = "/v1/leaderboard/single";
     public const string PATH_S3DATA = "/v1/assets/";
@@ -264,6 +267,21 @@ public class NetworkManager
         return (res != null);
     }
 
+    public async UniTask<bool> API_CreateFixedBrain(CreateFixedNetworkBrainRequest req)
+    {
+        string json = JsonUtility.ToJson(req);
+        var res =
+            await SendToServer<CreateFixedNetworkBrainResponse>(
+                    PATH_FIXED_NETWORK_BRAIN,
+                    ENetworkSendType.POST,
+                    json);
+        if (res != null)
+        {
+            UserData.SingleNetworkWrapper.UpdateSingleNetworkData(req, res);
+        }
+        return (res != null);
+    }
+
     public async UniTask<bool> API_TpUpgrade(TpUpgradeSingleNetworkRequest req)
     {
         string json = JsonUtility.ToJson(req);
@@ -348,6 +366,15 @@ public class NetworkManager
         var res =
             await SendToServer<LeaderboardResponse>(
                     PATH_LEADERBOARD,
+                    ENetworkSendType.GET);
+        return res;
+    }
+
+    public async UniTask<GetFixedNetworkResponse> API_GetFixedNetwork()
+    {
+        var res =
+            await SendToServer<GetFixedNetworkResponse>(
+                    PATH_FIXED_NETWORK,
                     ENetworkSendType.GET);
         return res;
     }
