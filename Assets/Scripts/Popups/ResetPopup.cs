@@ -63,8 +63,11 @@ namespace MainTab
 
                 inputMap.Clear();
                 inputMap.Add("coreBrainIntellect", UserData.CoreIntellect);
+                inputMap.Add("tpu027", new UpArrowNotation(UserData.TPUpgrades[27].UpgradeCount));
                 _tpRewardTextComplete.text = Managers.Definition.CalcEquationToString(inputMap, DefinitionKey.tpRewardForReset) + " TP";
 
+                inputMap.Clear();
+                inputMap.Add("coreBrainIntellect", UserData.CoreIntellect);
                 inputMap.Add("tpu004", UserData.CoreIntellect);
                 _multiplierRewardTextComplete.text = "x" + Managers.Definition.CalcEquationToString(inputMap, DefinitionKey.multiplierRewardForReset) + " Mult.";
             }
@@ -76,8 +79,11 @@ namespace MainTab
 
                 inputMap.Clear();
                 inputMap.Add("coreBrainIntellect", UserData.CoreIntellect);
+                inputMap.Add("tpu027", new UpArrowNotation(UserData.TPUpgrades[27].UpgradeCount));
                 _tpRewardTextIncomplete.text = Managers.Definition.CalcEquationToString(inputMap, DefinitionKey.tpRewardForReset) + " TP";
 
+                inputMap.Clear();
+                inputMap.Add("coreBrainIntellect", UserData.CoreIntellect);
                 inputMap.Add("tpu004", UserData.CoreIntellect);
                 _multiplierRewardTextIncomplete.text = "x" + Managers.Definition.CalcEquationToString(inputMap, DefinitionKey.multiplierRewardForReset) + " Mult.";
             }
