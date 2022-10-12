@@ -228,6 +228,34 @@ public class SingleNetworkWrapper
     }
 
     /// <summary>
+    /// 고정 브레인 추가시 받는 데이터 업데이트 해주는 함수
+    /// </summary>
+    /// <param name="req"></param>
+    /// <param name="res"></param>
+    public void UpdateSingleNetworkData(CreateFixedNetworkBrainRequest req, CreateFixedNetworkBrainResponse res)
+    {
+        UserData.TP = new UpArrowNotation(
+            res.TP.top3Coeffs[0],
+            res.TP.top3Coeffs[1],
+            res.TP.top3Coeffs[2],
+            res.TP.operatorLayerCount);
+
+        long brainId;
+        foreach (var attribute in res.FNBrainAttributes)
+        {
+            brainId = attribute.id;
+            if (!brainAttributesDic.ContainsKey(brainId))
+            {
+                brainAttributesDic.Add(brainId, attribute);
+            }
+            else
+            {
+                brainAttributesDic[brainId] = attribute;
+            }
+        }
+    }
+
+    /// <summary>
     /// 채널 추가시 받는 데이터 업데이트 해주는 함수
     /// </summary>
     /// <param name="req"></param>
@@ -264,7 +292,43 @@ public class SingleNetworkWrapper
             receiverBrainsDic.Add(req.from, new HashSet<long>());
         receiverBrainsDic[req.from].Add(req.to);
     }
-    
+
+    /// <summary>
+    /// 고정 채널 추가시 받는 데이터 업데이트 해주는 함수
+    /// </summary>
+    /// <param name="req"></param>
+    /// <param name="res"></param>
+    public void UpdateSingleNetworkData(CreateFixedNetworkChannelRequest req, CreateFixedNetworkChannelResponse res)
+    {
+        UserData.TP = new UpArrowNotation(
+            res.TP.top3Coeffs[0],
+            res.TP.top3Coeffs[1],
+            res.TP.top3Coeffs[2],
+            res.TP.operatorLayerCount);
+
+        long brainId;
+        foreach (var attribute in res.FNBrainAttributes)
+        {
+            brainId = attribute.id;
+            if (!brainAttributesDic.ContainsKey(brainId))
+            {
+                brainAttributesDic.Add(brainId, attribute);
+            }
+            else
+            {
+                brainAttributesDic[brainId] = attribute;
+            }
+        }
+
+        if (!senderBrainsDic.ContainsKey(req.to))
+            senderBrainsDic.Add(req.to, new HashSet<long>());
+        senderBrainsDic[req.to].Add(req.from);
+
+        if (!receiverBrainsDic.ContainsKey(req.from))
+            receiverBrainsDic.Add(req.from, new HashSet<long>());
+        receiverBrainsDic[req.from].Add(req.to);
+    }
+
     public void UpdateSingleNetworkData(CreateSingleNetworkBrainNumberResponse res)
     {
         long brainId;
