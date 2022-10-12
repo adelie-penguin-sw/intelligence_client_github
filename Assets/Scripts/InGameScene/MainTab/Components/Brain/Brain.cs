@@ -22,6 +22,13 @@ namespace MainTab
         public HashSet<long> SenderIdList { get { return _brainData.senderIds; } }
 
         public BrainData BrainData { get { return _brainData; } }
+        public Dictionary<long, Brain> BrainNetwork
+        {
+            get
+            {
+                return _brainNetwork;
+            }
+        }
 
         /// <summary>
         /// 지능 수치 계산하여 반환
@@ -232,19 +239,20 @@ namespace MainTab
             if (UserData.TPUpgrades[15].UpgradeCount > 0)       // TPU-015: 센더 부스터
             {
                 inputMap.Clear();
-                inputMap.Add("brainCount", new UpArrowNotation(_brainData.senderIds.Count));
+                inputMap.Add("brainCount", new UpArrowNotation(_brainData.senderIds.Count == 0 ? 1 : _brainData.senderIds.Count));
                 passiveMultiplier.Mul(Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.multiplierBoostForTPU015)));
             }
             if (UserData.TPUpgrades[19].UpgradeCount > 0)       // TPU-019: 리시버 부스터
             {
                 inputMap.Clear();
-                inputMap.Add("brainCount", new UpArrowNotation(_brainData.receiverIds.Count));
+                inputMap.Add("brainCount", new UpArrowNotation(_brainData.receiverIds.Count == 0 ? 1 : _brainData.receiverIds.Count));
                 passiveMultiplier.Mul(Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.multiplierBoostForTPU019)));
             }
             if (UserData.TPUpgrades[20].UpgradeCount > 0)       // TPU-020: 센더 부스터 체이닝
             {
                 inputMap.Clear();
-                inputMap.Add("brainCount", new UpArrowNotation(CountAllSenders()));
+                long allSenders = CountAllSenders();
+                inputMap.Add("brainCount", new UpArrowNotation(allSenders == 0 ? 1 : allSenders));
                 passiveMultiplier.Mul(Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.multiplierBoostForTPU020)));
             }
 
