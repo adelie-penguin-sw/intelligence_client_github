@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
-using System.Threading.Tasks;
-using UnityEngine.SocialPlatforms.GameCenter;
-using UnityEngine.SocialPlatforms;
 using AppleAuth;
-using AppleAuth.Native;
 using AppleAuth.Enums;
 using AppleAuth.Interfaces;
 using System.Text;
 using AppleAuth.Extensions;
 using UnityEngine.UI;
+using GooglePlayGames;
 
 public class LoginManager : MonoBehaviour
 {
@@ -26,8 +23,11 @@ public class LoginManager : MonoBehaviour
     [SerializeField] private GameObject _contentLoggedIn;
 
     [SerializeField] private Button _btnAppleLogin;
+    [SerializeField] private Button _btnGoogleLogin;
+
     private IAppleAuthManager appleAuthManager;
     public const string AppleUserIdKey = "AppleUserIdKey";
+    public const string GoogleUserIdKey = "GoogleUserIdKey";
 
     public void Start()
     {
@@ -35,9 +35,11 @@ public class LoginManager : MonoBehaviour
         _contentLoggedIn.SetActive(false);
 
         _btnAppleLogin.gameObject.SetActive(false);
+        _btnGoogleLogin.gameObject.SetActive(false);
 
         UserData.LoadAllData();
         CheckChangeScene();
+
 #if UNITY_IOS
         _btnAppleLogin.gameObject.SetActive(true);
         if (AppleAuthManager.IsCurrentPlatformSupported)
@@ -49,6 +51,9 @@ public class LoginManager : MonoBehaviour
         }
 #endif
 #if UNITY_ANDROID
+        _btnGoogleLogin.gameObject.SetActive(true);
+        PlayGamesPlatform.DebugLogEnabled = true;
+        PlayGamesPlatform.Activate();
 #endif
     }
 
@@ -64,6 +69,19 @@ public class LoginManager : MonoBehaviour
 #endif
     }
 
+    public void OnClickGoogleLogin()
+    {
+        if(!PlayGamesPlatform.Instance.localUser.authenticated)
+        {
+            Social.localUser.Authenticate((bool success) =>
+            {
+                if(success)
+                {
+                    this.Login(Social.localUser.id, GoogleUserIdKey);
+                }
+            });
+        }
+    }
 
     /// <summary>
     /// 애플로그인 클릭
