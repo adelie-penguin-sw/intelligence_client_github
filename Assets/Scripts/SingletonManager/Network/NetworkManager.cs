@@ -62,7 +62,7 @@ public class NetworkManager
         try
         {
             await request.SendWebRequest().WithCancellation(cts.Token);
-            Debug.Log(request.downloadHandler.text);
+            Debug.Log(url+ ": " + request.downloadHandler.text);
             if(request.responseCode != (int)EStatusCode.SUCCESS && request.responseCode != (int)EStatusCode.JWT_REFRESH)
             {
                 ErrorResponse errorResult = JsonUtility.FromJson<ErrorResponse>(request.downloadHandler.text);
@@ -108,7 +108,7 @@ public class NetworkManager
         catch(Exception e)
         {
             ErrorResponse errorResult = JsonUtility.FromJson<ErrorResponse>(request.downloadHandler.text);
-
+            Debug.LogError(e.Message);
             GameObject go = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "ErrorPopup", PopupType.IMPORTANT);
             go.GetComponent<ErrorPopup>().Init(errorResult);
 
