@@ -6,11 +6,13 @@ using UnityEngine.SceneManagement;
 using AppleAuth;
 using AppleAuth.Enums;
 using AppleAuth.Interfaces;
-using System.Text;
 using AppleAuth.Extensions;
+using System.Text;
 using UnityEngine.UI;
-using GooglePlayGames;
 
+#if UNITY_ANDROID
+using GooglePlayGames;
+#endif
 public class LoginManager : MonoBehaviour
 {
     [SerializeField] private TMP_InputField _textEmail;

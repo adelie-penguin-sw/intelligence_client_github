@@ -368,8 +368,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Cost: 0 NP'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 836a3a392dc3c4c578bfba339a999616, type: 2}
-  m_sharedMaterial: {fileID: -5457076052982106898, guid: 836a3a392dc3c4c578bfba339a999616, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 27d33256482e7dc4f9751cbe43b7fd82, type: 2}
+  m_sharedMaterial: {fileID: 907008920609416805, guid: 27d33256482e7dc4f9751cbe43b7fd82, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -669,8 +669,8 @@ MonoBehaviour:
   m_text: " - \uC67C\uCABD \uD558\uB2E8 \uBC84\uD2BC\uC744 \uB4DC\uB798\uADF8 \uD558\uC5EC
     \uBE0C\uB808\uC778 \uC0DD\uC131\uD558\uAE30 (0/1)"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1c579ae45bd9bc849807e76ca0b95b11, type: 2}
-  m_sharedMaterial: {fileID: -2457906843445382093, guid: 1c579ae45bd9bc849807e76ca0b95b11, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 27d33256482e7dc4f9751cbe43b7fd82, type: 2}
+  m_sharedMaterial: {fileID: 907008920609416805, guid: 27d33256482e7dc4f9751cbe43b7fd82, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -694,7 +694,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20.5
+  m_fontSize: 18.15
   m_fontSizeBase: 48
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -859,7 +859,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 288000380785874171}
-  - {fileID: 5652205833850634200}
+  - {fileID: 3189201757749942977}
   m_Father: {fileID: 8935309896432258202}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -881,7 +881,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canvas: {fileID: 5066772353450249811}
-  _tempBrain: {fileID: 5652205833850634202}
+  _tempBrain: {fileID: 3189201757749942979}
   _showCostUI: {fileID: 6787374145676396413}
   _questUI: {fileID: 2604318933568977785}
 --- !u!223 &5066772353450249811
@@ -1374,7 +1374,7 @@ MonoBehaviour:
   _posEndDrag: {x: 0, y: 0}
   _posStartDown: {x: 0, y: 0}
   _isPointerEntering: 1
---- !u!1001 &4925581686419763671
+--- !u!1001 &2767980020454003918
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -1383,7 +1383,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 732825806509084170, guid: f28d1f7304d614393822bcd85d235713, type: 3}
       propertyPath: m_Name
-      value: tempBrain
+      value: Brain
+      objectReference: {fileID: 0}
+    - target: {fileID: 732825806509084173, guid: f28d1f7304d614393822bcd85d235713, type: 3}
+      propertyPath: _brainData.brainType
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 732825806509084175, guid: f28d1f7304d614393822bcd85d235713, type: 3}
       propertyPath: m_RootOrder
@@ -1431,15 +1435,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f28d1f7304d614393822bcd85d235713, type: 3}
---- !u!4 &5652205833850634200 stripped
+--- !u!4 &3189201757749942977 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 732825806509084175, guid: f28d1f7304d614393822bcd85d235713, type: 3}
-  m_PrefabInstance: {fileID: 4925581686419763671}
+  m_PrefabInstance: {fileID: 2767980020454003918}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5652205833850634202 stripped
+--- !u!114 &3189201757749942979 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 732825806509084173, guid: f28d1f7304d614393822bcd85d235713, type: 3}
-  m_PrefabInstance: {fileID: 4925581686419763671}
+  m_PrefabInstance: {fileID: 2767980020454003918}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
