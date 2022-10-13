@@ -176,17 +176,21 @@ public class LoginManager : MonoBehaviour
                 switch ((EStatusCode)res.statusCode)
                 {
                     case EStatusCode.SUCCESS:
-                        Managers.Definition.LoadS3Data();
-                        usernameRes = await Managers.Network.API_GetUsername();
-                        UserData.Username = usernameRes.username;
-                        SceneManager.LoadScene("InGameScene");
+                        if (await Managers.Definition.LoadS3Data())
+                        {
+                            usernameRes = await Managers.Network.API_GetUsername();
+                            UserData.Username = usernameRes.username;
+                            SceneManager.LoadScene("InGameScene");
+                        }
                         break;
                     case EStatusCode.JWT_REFRESH:
                         UserData.SetString("Token", res.token);
-                        Managers.Definition.LoadS3Data();
-                        usernameRes = await Managers.Network.API_GetUsername();
-                        UserData.Username = usernameRes.username;
-                        SceneManager.LoadScene("InGameScene");
+                        if (await Managers.Definition.LoadS3Data())
+                        {
+                            usernameRes = await Managers.Network.API_GetUsername();
+                            UserData.Username = usernameRes.username;
+                            SceneManager.LoadScene("InGameScene");
+                        }
                         break;
                     default:
                         Debug.LogError(res.statusCode);
