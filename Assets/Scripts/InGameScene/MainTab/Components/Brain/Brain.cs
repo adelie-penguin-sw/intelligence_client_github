@@ -13,6 +13,7 @@ namespace MainTab
         [SerializeField] private TextMeshPro _textMul;
         [SerializeField] private Dictionary<long, Brain> _brainNetwork;
         [SerializeField] private BrainData _brainData;
+        [SerializeField] private UpArrowNotation _currentIntellectLimit;
         [SerializeField] private UpArrowNotation _fullMultiplier;
 
         [SerializeField] private bool _isCollision = false;
@@ -61,6 +62,17 @@ namespace MainTab
         }
 
         /// <summary>
+        /// 현재 지능 한계치 반환
+        /// </summary>
+        public UpArrowNotation CurrentIntellectLimit
+        {
+            get
+            {
+                return _currentIntellectLimit;
+            }
+        }
+
+        /// <summary>
         /// 해당 브레인의 ID
         /// </summary>
         public long ID { get { return _brainData.id; } }
@@ -92,6 +104,7 @@ namespace MainTab
                 gameObject.SetActive(false);
             Set();
             UpdateFullMultiplier();
+            UpdateCurrentIntellectLimit();
             SetNumText(Intellect);
             SetMulText(Multiplier);
         }
@@ -178,11 +191,29 @@ namespace MainTab
             return _brainData.receiverIds.Contains(id);
         }
 
+        public void UpdateCurrentIntellectLimit()
+        {
+            if (_brainData.brainType != EBrainType.GUIDEBRAIN)
+            {
+                Dictionary<string, UpArrowNotation> inputMap = new Dictionary<string, UpArrowNotation>();
+
+                inputMap.Add("baseLimit", Managers.Definition.GetData<List<UpArrowNotation>>(DefinitionKey.baseIntellectLimitList)[(int)UserData.TPUpgrades[2].UpgradeCount]);
+                inputMap.Add("upgradeCount", new UpArrowNotation(_brainData.multiplierUpgradeCount));
+                inputMap.Add("tpu002", new UpArrowNotation(UserData.TPUpgrades[2].UpgradeCount));
+
+                _currentIntellectLimit = Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainLimitEquation));
+            }
+            else
+            {
+                _currentIntellectLimit = new UpArrowNotation();
+            }
+        }
+
         public void UpdateFullMultiplier()
         {
             if (_brainData.brainType != EBrainType.GUIDEBRAIN)
             {
-                _fullMultiplier = GetBaseMultiplier() * GetPassiveMultiplier() * _brainData.upgradedMultiplier;
+                _fullMultiplier = GetBaseMultiplier() * GetPassiveMultiplier() * GetUpgradedMultiplier();
             }
             else
             {
@@ -257,6 +288,16 @@ namespace MainTab
             }
 
             return passiveMultiplier;
+        }
+
+        private UpArrowNotation GetUpgradedMultiplier()
+        {
+            Dictionary<string, UpArrowNotation> inputMap = new Dictionary<string, UpArrowNotation>();
+
+            inputMap.Add("upgradeCount", new UpArrowNotation(_brainData.multiplierUpgradeCount));
+            inputMap.Add("tpu001", new UpArrowNotation(UserData.TPUpgrades[1].UpgradeCount));
+
+            return Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainMultiplierEquation));
         }
 
         private long CountAllSenders()
