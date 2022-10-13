@@ -22,7 +22,6 @@ public class SingleNetworkResponse
     public List<UpgradeCondition> upgradeCondition;
     public long totalBrainGenCount;
     public long maxDepth;
-    public long brainUpgradePower;
     public AnsEquation multiplierRewardForReset;
 }
 
@@ -40,7 +39,6 @@ public class SingleNetworkWrapper
     [ShowInInspector] public int experimentLevel;
     [ShowInInspector] public long totalBrainGenCount;
     [ShowInInspector] public long maxDepth;
-    [ShowInInspector] public long brainUpgradePower;
     [ShowInInspector] public UpArrowNotation multiplierRewardForReset;
 
     public SingleNetworkWrapper()
@@ -98,8 +96,6 @@ public class SingleNetworkWrapper
 
             maxDepth = res.maxDepth;
 
-            brainUpgradePower = res.brainUpgradePower;
-
             multiplierRewardForReset = new UpArrowNotation(
                 res.multiplierRewardForReset.top3Coeffs[0],
                 res.multiplierRewardForReset.top3Coeffs[1],
@@ -116,11 +112,12 @@ public class SingleNetworkWrapper
     public BrainData GetBrainDataForID(long id)
     {
         BrainData data = new BrainData();
+        Dictionary<string, UpArrowNotation> inputMap = new Dictionary<string, UpArrowNotation>();
 
         data.id = id;
         data.brainType = (id == 0) ? EBrainType.MAINBRAIN : EBrainType.NORMALBRAIN;
 
-        if(brainAttributesDic.ContainsKey(id))
+        if (brainAttributesDic.ContainsKey(id))
         {
             foreach (AnsEquation ans in brainAttributesDic[id].ansEquation)
             {
@@ -130,19 +127,9 @@ public class SingleNetworkWrapper
                                                        ans.operatorLayerCount));
             }
 
+            data.multiplierUpgradeCount = brainAttributesDic[id].multiplierUpgradeCount;
 
-            AnsEquation m = brainAttributesDic[id].multiplier;
-            if (m.top3Coeffs != null)
-            {
-                data.upgradedMultiplier = new UpArrowNotation(m.top3Coeffs[0],
-                                                      m.top3Coeffs[1],
-                                                      m.top3Coeffs[2],
-                                                      m.operatorLayerCount);
-            }
-            else
-            {
-                data.upgradedMultiplier = new UpArrowNotation(1);
-            }
+            data.limitUpgradeCount = brainAttributesDic[id].limitUpgradeCount;
 
             data.distance = brainAttributesDic[id].distance;
 
