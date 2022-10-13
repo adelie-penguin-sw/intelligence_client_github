@@ -138,7 +138,6 @@ public class NetworkManager
         //필요한 Header 추가.
         request.SetRequestHeader("Content-Type", "application/json");
         request.SetRequestHeader("Authorization", "Bearer " + UserData.token);
-        Debug.LogError("Authorization" + " Bearer " + UserData.token);
     }
 
     #endregion
