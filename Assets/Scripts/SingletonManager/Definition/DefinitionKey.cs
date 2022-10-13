@@ -8,7 +8,10 @@ public class DefinitionKey
     #region BRAIN
     public const string brainGeneratingCostEquation = "BrainGeneratingCostEquation";
     public const string brainDecomposingGainEquation = "BrainDecomposingGainEquation";
-    public const string brainUpgradeCostEquation = "BrainUpgradeCostEquation";
+    public const string brainMultiplierUpgradeCostEquation = "BrainMultiplierUpgradeCostEquation";
+    public const string brainMultiplierEquation = "BrainMultiplierEquation";
+    public const string brainLimitUpgradeCostEquation = "BrainLimitUpgradeCostEquation";
+    public const string brainLimitEquation = "BrainLimitEquation";
     #endregion
 
     #region CHANNEL
@@ -178,6 +181,10 @@ public class DefinitionKey
     public const string tpu027CostEquation = "TPU027CostEquation";
     public const string tpu028CostEquation = "TPU028CostEquation";
     public const string tpu029CostEquation = "TPU029CostEquation";
+    #endregion
+
+    #region LIMITS
+    public const string baseIntellectLimitList = "BaseIntellectLimitList";
     #endregion
 
 }

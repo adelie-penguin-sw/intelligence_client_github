@@ -93,6 +93,7 @@ namespace MainTab
             foreach (var brain in _brainNetWork.Values)
             {
                 brain.UpdateFullMultiplier();
+                brain.UpdateCurrentIntellectLimit();
             }
             ClearAndDrawChannel();
         }
