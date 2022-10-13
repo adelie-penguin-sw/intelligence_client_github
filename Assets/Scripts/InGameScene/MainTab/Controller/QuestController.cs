@@ -13,18 +13,18 @@ namespace MainTab
             base.Init(app);
             _view = app.MainTabView;
             _currentQuestKey = 1;
-            _dicQuest.Add(1, new Quest("브레인 생성하기 {0}/{1}",EQuestType.CREATE_BRAIN,1));
-            _dicQuest.Add(2, new Quest("채널 생성하기 {0}/{1}", EQuestType.CREATE_CHANNEL, 1));
-            _dicQuest.Add(3, new Quest("브레인 업그레이드하기 {0}/{1}", EQuestType.BRAIN_UPGRADE, 2));
+            _dicQuest.Add(1, new Quest("??? ???? {0}/{1}",EQuestType.CREATE_BRAIN,1));
+            _dicQuest.Add(2, new Quest("?? ???? {0}/{1}", EQuestType.CREATE_CHANNEL, 1));
+            _dicQuest.Add(3, new Quest("??? ??????? {0}/{1}", EQuestType.BRAIN_UPGRADE, 2));
 
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.QUEST_CREATE_BRAIN);
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.QUEST_CREATE_CHANNEL);
+            SetQuestUI(_dicQuest[_currentQuestKey]);
         }
 
         public override void Set()
         {
             base.Set();
-            SetQuestUI(_dicQuest[_currentQuestKey]);
         }
         public override void AdvanceTime(float dt_sec)
         {
