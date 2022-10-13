@@ -66,36 +66,54 @@ namespace MainTab
                 GetStateHandler(_currentState).OnNotification(noti);
             }
 
+            long brainId;
             switch (noti.msg)
             {
-
                 case ENotiMessage.EXPERIMENT_COMPLETE:
                     Managers.Popup.DeleteAll(PopupType.NORMAL);  // 현재 떠있는 모든 팝업 닫음
                     ResetPopup resetPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "ResetPopup", PopupType.NORMAL)
                         .GetComponent<ResetPopup>();
                     resetPopup.Init();
                     break;
-                case ENotiMessage.ONCLICK_UPGRADE_BRAIN:
-                    long brainId = (long)noti.data[EDataParamKey.BRAIN_ID];
-                    UpgradeBrain(brainId);
+                case ENotiMessage.ONCLICK_UPGRADE_BRAIN_MULTIPLIER:
+                    brainId = (long)noti.data[EDataParamKey.BRAIN_ID];
+                    UpgradeBrainMultiplier(brainId);
+                    break;
+                case ENotiMessage.ONCLICK_UPGRADE_BRAIN_LIMIT:
+                    brainId = (long)noti.data[EDataParamKey.BRAIN_ID];
+                    UpgradeBrainLimit(brainId);
                     break;
             }
         }
 
-        private async void UpgradeBrain(long id)
+        private async void UpgradeBrainMultiplier(long id)
         {
-            var req = new CreateSingleNetworkBrainNumberRequest();
+            var req = new UpgradeSingleNetworkBrainMultiplierRequest();
             req.brain = id;
             req.level = 1;
-            if (await Managers.Network.API_UpgradeBrain(req))
+            if (await Managers.Network.API_UpgradeBrainMultiplier(req))
             {
                 Managers.Notification.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
 
                 BrainNetwork network = _model.BrainNetwork;
                 _view.InfoPopup.Set(network.GetBrainForID(id), network);
             }
-
         }
+
+        private async void UpgradeBrainLimit(long id)
+        {
+            var req = new UpgradeSingleNetworkBrainLimitRequest();
+            req.brain = id;
+            req.level = 1;
+            if (await Managers.Network.API_UpgradeBrainLimit(req))
+            {
+                Managers.Notification.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
+
+                BrainNetwork network = _model.BrainNetwork;
+                _view.InfoPopup.Set(network.GetBrainForID(id), network);
+            }
+        }
+
         private void AddObservers()
         {
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.DRAG_START_CREATEBRAIN);
@@ -107,7 +125,8 @@ namespace MainTab
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.MOUSE_UP_BRAIN);
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.MOUSE_ENTER_BRAIN);
 
-            Managers.Notification.AddObserver(OnNotification, ENotiMessage.ONCLICK_UPGRADE_BRAIN);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.ONCLICK_UPGRADE_BRAIN_MULTIPLIER);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.ONCLICK_UPGRADE_BRAIN_LIMIT);
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.ONCLICK_RESET_BUTTON);
 
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.EXPERIMENT_COMPLETE);
@@ -123,7 +142,8 @@ namespace MainTab
             Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.MOUSE_UP_BRAIN);
             Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.MOUSE_ENTER_BRAIN);
 
-            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_UPGRADE_BRAIN);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_UPGRADE_BRAIN_MULTIPLIER);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_UPGRADE_BRAIN_LIMIT);
             Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_RESET_BUTTON);
 
             Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.EXPERIMENT_COMPLETE);
@@ -574,7 +594,7 @@ namespace MainTab
             private async void CreateChannel()
             {
                 _channel.Dispose();
-                if (_currentEnterBrain == null || _currentSenderBrain.Type == EBrainType.MAINBRAIN)
+                if (_currentEnterBrain == null || _currentSenderBrain.Type == EBrainType.COREBRAIN)
                 {
                     _controller.ChangeState(EBehaviorState.NONE);
                     return;
