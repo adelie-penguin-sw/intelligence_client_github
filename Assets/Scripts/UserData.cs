@@ -152,18 +152,6 @@ public class UserData
         }
     }
 
-    public static long BrainUpgradePower
-    {
-        get
-        {
-            return _singleNetworkWrapper.brainUpgradePower;
-        }
-        set
-        {
-            _singleNetworkWrapper.brainUpgradePower = value;
-        }
-    }
-
     public static UpArrowNotation MultiplierRewardForReset
     {
         get
