@@ -16,13 +16,18 @@ namespace InGame
         [SerializeField] private Button _sellBtn;
         [SerializeField] private Button _resetBtn;
         [SerializeField] private Button _upgradeBtn;
+
+        [SerializeField] private GameObject _intellectLimitArea;
         [SerializeField] private GameObject _multiplierArea;
         [SerializeField] private GameObject _storedNPArea;
         [SerializeField] private GameObject _distanceArea;
+
         [SerializeField] private Brain _brain;
+
         [SerializeField] private TextMeshProUGUI _idText;
         [SerializeField] private TextMeshProUGUI _typeText;
         [SerializeField] private TextMeshProUGUI _intellectText;
+        [SerializeField] private TextMeshProUGUI _intellectLimitText;
         [SerializeField] private TextMeshProUGUI _multiplierText;
         [SerializeField] private TextMeshProUGUI _npText;
         [SerializeField] private TextMeshProUGUI _distanceText;
@@ -87,6 +92,8 @@ namespace InGame
 
             if (_brain.BrainData.brainType == EBrainType.NORMALBRAIN)
             {
+                _intellectLimitText.text = _brain.CurrentIntellectLimit.ToString();
+
                 _multiplierText.text = "x" + _brain.Multiplier.ToString();
                 _npText.text = storedNP.ToString();
                 _distanceText.text = _brain.BrainData.distance.ToString();
@@ -95,12 +102,12 @@ namespace InGame
                 //upgradeCost *= Mathf.Pow(2f, (float)UpArrowNotation.Log10Top3Layer(_brain.BrainData.multiplier));
 
                 inputMap.Clear();
-                inputMap.Add("multiplier", _brain.BrainData.upgradedMultiplier);
+                inputMap.Add("upgradeCount", new UpArrowNotation(_brain.BrainData.multiplierUpgradeCount));
                 inputMap.Add("tpu012", new UpArrowNotation(UserData.TPUpgrades[12].UpgradeCount));
                 inputMap.Add("tpu022", new UpArrowNotation(UserData.TPUpgrades[22].UpgradeCount));
-                UpArrowNotation upgradeCost = Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainUpgradeCostEquation));
+                UpArrowNotation upgradeCost = Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainMultiplierUpgradeCostEquation));
 
-                string upgradeText = _brain.SenderIdList.Count == 0 ? "+1 Intellect" : $"x{UserData.BrainUpgradePower} Multiplier";
+                string upgradeText = _brain.SenderIdList.Count == 0 ? "+1 Intellect" : $"x{UserData.TPUpgrades[1].UpgradeCount + 2} Multiplier";
                 _upgradeCost.text = string.Format(upgradeText + "\nCost: {0} NP", upgradeCost);
 
                 UpArrowNotation totalSenderNP = new UpArrowNotation(0);
@@ -158,6 +165,7 @@ namespace InGame
             _upgradeBtn.gameObject.SetActive(isNormalBrain);
 
             // 코어 브레인은 증폭계수, NP축적량, 거리 개념이 필요하지 않으므로 표시영역 모두 비활성화
+            _intellectLimitArea.SetActive(isNormalBrain);
             _multiplierArea.SetActive(isNormalBrain);
             _storedNPArea.SetActive(isNormalBrain);
             _distanceArea.SetActive(isNormalBrain);

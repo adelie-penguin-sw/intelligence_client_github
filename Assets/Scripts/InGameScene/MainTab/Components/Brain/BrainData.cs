@@ -20,9 +20,13 @@ namespace MainTab
         /// </summary>        
         [ShowInInspector] public List<UpArrowNotation> intellectEquation;
         /// <summary>
-        /// 브레인 업그레이드로 얻은 지능 증폭계수
+        /// 지능 증폭계수 NP업글횟수
         /// </summary>        
-        [ShowInInspector] public UpArrowNotation upgradedMultiplier;
+        [ShowInInspector] public long multiplierUpgradeCount;
+        /// <summary>
+        /// 지능 한계치 NP업글횟수
+        /// </summary>        
+        [ShowInInspector] public long limitUpgradeCount;
         /// <summary>
         /// 거리
         /// </summary>
@@ -84,24 +88,23 @@ namespace MainTab
             senderIds = new HashSet<long>();
             deletableSenderIds = new HashSet<long>();
             this.intellectEquation = new List<UpArrowNotation>();
-            this.upgradedMultiplier = new UpArrowNotation(1);
         }
 
         public BrainData(int id, EBrainType brainType)
         {
             this.id = id;
             this.intellectEquation = new List<UpArrowNotation> { new UpArrowNotation(1)};
-            this.upgradedMultiplier = new UpArrowNotation(1);
             this.brainType = brainType;
             receiverIds = new HashSet<long>();
             senderIds = new HashSet<long>();
             deletableSenderIds = new HashSet<long>();
         }
-        public BrainData(int id, List<UpArrowNotation> intellect, UpArrowNotation multiplier, int distance, EBrainType brainType)
+        public BrainData(int id, List<UpArrowNotation> intellect, long multiplierUpgradeCount, long limitUpgradeCount, int distance, EBrainType brainType)
         {
             this.id = id;
             this.intellectEquation = intellect;
-            this.upgradedMultiplier = multiplier;
+            this.multiplierUpgradeCount = multiplierUpgradeCount;
+            this.limitUpgradeCount = limitUpgradeCount;
             this.brainType = brainType;
             this.distance = distance;
             receiverIds = new HashSet<long>();
