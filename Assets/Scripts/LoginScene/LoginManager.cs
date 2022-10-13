@@ -71,6 +71,7 @@ public class LoginManager : MonoBehaviour
 
     public void OnClickGoogleLogin()
     {
+#if UNITY_ANDROID
         if(!PlayGamesPlatform.Instance.localUser.authenticated)
         {
             Social.localUser.Authenticate((bool success) =>
@@ -81,6 +82,8 @@ public class LoginManager : MonoBehaviour
                 }
             });
         }
+        
+#endif
     }
 
     /// <summary>
