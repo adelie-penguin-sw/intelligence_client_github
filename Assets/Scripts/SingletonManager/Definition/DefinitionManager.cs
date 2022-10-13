@@ -1,72 +1,104 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
+public interface ILoader<Key,Value>
+{
+    Dictionary<Key, Value> MakeDict();
+}
 
 public class DefinitionManager
 {
     private List<Dictionary<string, object>> _csvData;
-    public List<Dictionary<string, object>> CSVData { get { return _csvData; } }
+     
+    private Dictionary<EDefType, IDictionary> _definitions = new Dictionary<EDefType, IDictionary>();
 
-    private Dictionary<string, object> _definitionDic = new Dictionary<string, object>();
-
-    public async void LoadS3Data()
+    public async UniTask<bool> LoadS3Data()
     {
+        #region base.csv
         string res = await Managers.Network.API_S3Data("base.csv");
-        if (res != null)
+        if (res == null) return false;
+        
+        _csvData = CSVReader.Read(res);
+        _definitions.Add(EDefType.BASE, new Dictionary<string, object>());
+        foreach (var li in _csvData)
         {
-            _csvData = CSVReader.Read(res);
-
-            foreach (var li in _csvData)
+            string value = li["value"].ToString();
+            switch (li["type"])
             {
-                string value = li["value"].ToString();
-                switch (li["type"])
-                {
-                    case "string":
-                    case "[]string":
-                        if (!_definitionDic.ContainsKey((string)li["name"]))
-                            _definitionDic.Add((string)li["name"], value);
-                        else
-                            _definitionDic[(string)li["name"]] = value;
-                        break;
+                case "string":
+                case "[]string":
+                    if (!_definitions[EDefType.BASE].Contains((string)li["name"]))
+                        _definitions[EDefType.BASE].Add((string)li["name"], value);
+                    else
+                        _definitions[EDefType.BASE][(string)li["name"]] = value;
+                    break;
 
-                    case "int":
-                        if (!_definitionDic.ContainsKey((string)li["name"]))
-                            _definitionDic.Add((string)li["name"], int.Parse(value));
-                        else
-                            _definitionDic[(string)li["name"]] = int.Parse(value);
-                        break;
-                    case "[]UpArrowNotation":
-                        if (!_definitionDic.ContainsKey((string)li["name"]))
-                            _definitionDic.Add((string)li["name"], ConvertToUANList(value));
-                        else
-                            _definitionDic[(string)li["name"]] = ConvertToUANList(value);
-                        break;
-                    case "[][2]int":
-                        if (!_definitionDic.ContainsKey((string)li["name"]))
-                            _definitionDic.Add((string)li["name"], ConvertToIntList(value));
-                        else
-                            _definitionDic[(string)li["name"]] = ConvertToIntList(value);
-                        break;
+                case "int":
+                    if (!_definitions[EDefType.BASE].Contains((string)li["name"]))
+                        _definitions[EDefType.BASE].Add((string)li["name"], int.Parse(value));
+                    else
+                        _definitions[EDefType.BASE][(string)li["name"]] = int.Parse(value);
+                    break;
+                case "[]UpArrowNotation":
+                    if (!_definitions[EDefType.BASE].Contains((string)li["name"]))
+                        _definitions[EDefType.BASE].Add((string)li["name"], ConvertToUANList(value));
+                    else
+                        _definitions[EDefType.BASE][(string)li["name"]] = ConvertToUANList(value);
+                    break;
+                case "[][2]int":
+                    if (!_definitions[EDefType.BASE].Contains((string)li["name"]))
+                        _definitions[EDefType.BASE].Add((string)li["name"], ConvertToIntList(value));
+                    else
+                        _definitions[EDefType.BASE][(string)li["name"]] = ConvertToIntList(value);
+                    break;
 
-                    default:
-                        break;
-                }
+                default:
+                    break;
             }
         }
-        await System.Threading.Tasks.Task.Delay(3000);
+        #endregion
+
+        #region TpUpgrade.csv
+        res = await Managers.Network.API_S3Data("TpUpgrade.csv");
+        if (res == null) return false;
+        _definitions.Add(EDefType.TP_UPGRADE, new TpUpgradeDefinitions(CSVReader.Read(res)).MakeDict());
+        #endregion
+
+        return true;
     }
 
-    public T GetData<T>(string dataName)
+    public T GetData<T>(string dataName, EDefType type = EDefType.BASE)
     {
-        if (_definitionDic.ContainsKey(dataName))
+        var dic = GetDatas<IDictionary>(type);
+        if(dic == null)
         {
-            return (T)_definitionDic[dataName];
+            return default;
+        }
+
+        if (dic.Contains(dataName))
+        {
+            return (T)dic[dataName];
         }
         else
         {
-            Debug.LogError("NULL DATA DICTIONARY");
+            Debug.LogError("NULL DATA IN DICTIONARY");
+            return default;
+        }
+    }
+
+    public T GetDatas<T>(EDefType type)
+    {
+        if(_definitions.ContainsKey(type))
+        {
+            return (T)_definitions[type];
+        }
+        else
+        {
+            Debug.LogError("NULL DICTIONARY");
             return default;
         }
     }
@@ -275,9 +307,18 @@ public class DefinitionManager
         return CalcPostfix(inputMap, ConvEquationToPostfix(equation));
     }
 
-    public string CalcEquationToString(Dictionary<string, UpArrowNotation> inputMap, string equationKey)
+    public string CalcEquationToStringForStr(Dictionary<string, UpArrowNotation> inputMap, string equation)
+    {
+        return CalcPostfix(inputMap, ConvEquationToPostfix(equation)).ToString();
+    }
+    public string CalcEquationToStringForKey(Dictionary<string, UpArrowNotation> inputMap, string equationKey)
     {
         return CalcPostfix(inputMap, ConvEquationToPostfix(GetData<string>(equationKey))).ToString();
     }
 }
 
+public enum EDefType
+{
+    BASE,
+    TP_UPGRADE,
+}
