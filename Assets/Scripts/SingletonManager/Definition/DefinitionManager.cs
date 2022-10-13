@@ -13,7 +13,8 @@ public class DefinitionManager
 
     public async void LoadS3Data()
     {
-        string res = await Managers.Network.API_S3Data("base.csv");
+        //string res = await Managers.Network.API_S3Data("base.csv");
+        string res = await Managers.Network.API_S3Data("test.csv");
         if (res != null)
         {
             _csvData = CSVReader.Read(res);
