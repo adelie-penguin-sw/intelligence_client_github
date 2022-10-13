@@ -16,7 +16,8 @@ public class BrainAttributes
     public List<AnsEquation> ansEquation = new List<AnsEquation>();
     public long distance;
     public long id;
-    public AnsEquation multiplier = new AnsEquation();
+    public long multiplierUpgradeCount;
+    public long limitUpgradeCount;
     public long skinCode;
     public double x;
     public double y;
