@@ -15,7 +15,8 @@ namespace InGame
     {
         [SerializeField] private Button _sellBtn;
         [SerializeField] private Button _resetBtn;
-        [SerializeField] private Button _upgradeBtn;
+        [SerializeField] private Button _upgradeMultiplierBtn;
+        [SerializeField] private Button _upgradeLimitBtn;
 
         [SerializeField] private GameObject _intellectLimitArea;
         [SerializeField] private GameObject _multiplierArea;
@@ -31,7 +32,8 @@ namespace InGame
         [SerializeField] private TextMeshProUGUI _multiplierText;
         [SerializeField] private TextMeshProUGUI _npText;
         [SerializeField] private TextMeshProUGUI _distanceText;
-        [SerializeField] private TextMeshProUGUI _upgradeCost;
+        [SerializeField] private TextMeshProUGUI _upgradeMultiplierCost;
+        [SerializeField] private TextMeshProUGUI _upgradeLimitCost;
         [SerializeField] private TextMeshProUGUI _decomposeReward;
 
         private List<Brain> _deletableSenderList = new List<Brain>();
@@ -78,7 +80,7 @@ namespace InGame
             _idText.text = _brain.BrainData.id.ToString();
             switch (_brain.BrainData.brainType)
             {
-                case EBrainType.MAINBRAIN:
+                case EBrainType.COREBRAIN:
                     _typeText.text = "Core Brain";
                     break;
                 case EBrainType.NORMALBRAIN:
@@ -105,10 +107,19 @@ namespace InGame
                 inputMap.Add("upgradeCount", new UpArrowNotation(_brain.BrainData.multiplierUpgradeCount));
                 inputMap.Add("tpu012", new UpArrowNotation(UserData.TPUpgrades[12].UpgradeCount));
                 inputMap.Add("tpu022", new UpArrowNotation(UserData.TPUpgrades[22].UpgradeCount));
-                UpArrowNotation upgradeCost = Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainMultiplierUpgradeCostEquation));
+                UpArrowNotation multiplierUpgradeCost = Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainMultiplierUpgradeCostEquation));
 
-                string upgradeText = _brain.SenderIdList.Count == 0 ? "+1 Intellect" : $"x{UserData.TPUpgrades[1].UpgradeCount + 2} Multiplier";
-                _upgradeCost.text = string.Format(upgradeText + "\nCost: {0} NP", upgradeCost);
+                string multiplierUpgradeText = _brain.SenderIdList.Count == 0 ? "+1 Intellect" : $"x{UserData.TPUpgrades[1].UpgradeCount + 2} Multiplier";
+                _upgradeMultiplierCost.text = string.Format(multiplierUpgradeText + "\nCost: {0} NP", multiplierUpgradeCost);
+
+                inputMap.Clear();
+                inputMap.Add("distance", new UpArrowNotation(_brain.Distance));
+                inputMap.Add("upgradeCount", new UpArrowNotation(_brain.BrainData.limitUpgradeCount));
+                inputMap.Add("tpu002", new UpArrowNotation(UserData.TPUpgrades[2].UpgradeCount));
+                UpArrowNotation limitUpgradeCost = Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainLimitUpgradeCostEquation));
+
+                string limitUpgradeText = $"Break Limit to {_brain.GetNextIntellectLimit()}";
+                _upgradeLimitCost.text = string.Format(limitUpgradeText + "\nCost: {0} NP", limitUpgradeCost);
 
                 UpArrowNotation totalSenderNP = new UpArrowNotation(0);
                 foreach (Brain brain in _deletableSenderList)
@@ -137,19 +148,34 @@ namespace InGame
             Dispose();
         }
 
-        public void OnClick_UpgradeBrain()
+        public void OnClick_UpgradeBrainMultiplier()
         {
             if (_brain.BrainData != null)
             {
                 Hashtable _sendData = new Hashtable();
                 _sendData.Add(EDataParamKey.BRAIN_ID, _brain.BrainData.id);
-                Managers.Notification.PostNotification(ENotiMessage.ONCLICK_UPGRADE_BRAIN, _sendData);
+                Managers.Notification.PostNotification(ENotiMessage.ONCLICK_UPGRADE_BRAIN_MULTIPLIER, _sendData);
             }
             else
             {
                 Debug.LogError("브레인 데이터 Null");
             }
         }
+
+        public void OnClick_UpgradeBrainLimit()
+        {
+            if (_brain.BrainData != null)
+            {
+                Hashtable _sendData = new Hashtable();
+                _sendData.Add(EDataParamKey.BRAIN_ID, _brain.BrainData.id);
+                Managers.Notification.PostNotification(ENotiMessage.ONCLICK_UPGRADE_BRAIN_LIMIT, _sendData);
+            }
+            else
+            {
+                Debug.LogError("브레인 데이터 Null");
+            }
+        }
+
         public void OnClick_Reset()
         {
             Managers.Notification.PostNotification(ENotiMessage.EXPERIMENT_COMPLETE);
@@ -162,7 +188,8 @@ namespace InGame
 
             // 코어 브레인은 업그레이드 및 분해 등의 동작이 필요하지 않으므로 버튼 비활성화
             _sellBtn.gameObject.SetActive(isNormalBrain);
-            _upgradeBtn.gameObject.SetActive(isNormalBrain);
+            _upgradeMultiplierBtn.gameObject.SetActive(isNormalBrain);
+            _upgradeLimitBtn.gameObject.SetActive(isNormalBrain);
 
             // 코어 브레인은 증폭계수, NP축적량, 거리 개념이 필요하지 않으므로 표시영역 모두 비활성화
             _intellectLimitArea.SetActive(isNormalBrain);
