@@ -25,7 +25,7 @@ namespace MainTab
         public void Set(ENPCostType type)
         {
             _costType = type;
-            gameObject.SetActive(true);
+            this.gameObject.SetActive(true);
         }
         public void AdvanceTime(float dt_sec)
         {
