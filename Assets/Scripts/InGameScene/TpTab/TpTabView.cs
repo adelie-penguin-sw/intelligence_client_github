@@ -18,18 +18,5 @@ namespace TpTab
                 _tpUpgradeItems[index].SetCostText(index, costEquation);
             }
         }
-
-        public async void OnClick_TpUpgrade(int upgrade)
-        {
-            TpUpgradeSingleNetworkRequest req = new TpUpgradeSingleNetworkRequest();
-            req.upgrade = upgrade;
-            req.upgradeCount = 1;
-            await Managers.Network.API_TpUpgrade(req);
-
-            foreach(var items in _tpUpgradeItems)
-            {
-                items.UpdateCostText();
-            }
-        }
     }
 }

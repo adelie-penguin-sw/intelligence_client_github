@@ -144,6 +144,14 @@ public class UserData
         }
     }
 
+    public static string ExpGoalStr
+    {
+        get
+        {
+            return Managers.Definition.GetData<List<UpArrowNotation>>(DefinitionKey.experimentGoalList)[ExperimentLevel].ToString();
+        }
+    }
+
     public static long MaxDepth
     {
         get
