@@ -9,13 +9,49 @@ public class TpUpgradeDefinition
     public string nameText;
     public string effectText;
     public string costEquation;
+    public int maxLevel;
+    public List<List<int>> unlockRequirement;
 
-    public TpUpgradeDefinition(object key, object nameText, object effectText, object costEquation)
+    public TpUpgradeDefinition(object key, object nameText, object effectText, object costEquation, object maxLevel, object unlockRequirement)
     {
         this.key = int.Parse(key.ToString());
         this.nameText = nameText.ToString();
         this.effectText = effectText.ToString();
         this.costEquation = costEquation.ToString();
+        this.maxLevel = int.Parse(maxLevel.ToString());
+        this.unlockRequirement = ConvertIntPairList(unlockRequirement.ToString());
+    }
+
+    private List<List<int>> ConvertIntPairList(string data)
+    {
+        List<List<int>> result = new List<List<int>>();
+        int initLength = data.Length;
+        if (initLength == 2)
+        {
+            return result;
+        }
+
+        data = data.Substring(2, initLength - 4);
+        data = data.Replace("], [", "/");
+        string[] splittedData = data.Split('/');
+
+        foreach (string segment in splittedData)
+        {
+            string[] intPair = segment.Replace(", ", "/").Split('/');
+            int upgrade, requirement;
+            if (!int.TryParse(intPair[0], out upgrade))
+            {
+                Debug.LogErrorFormat("Float Parse Error : {0}", intPair[0]);
+            }
+            if (!int.TryParse(intPair[1], out requirement))
+            {
+                Debug.LogErrorFormat("Float Parse Error : {0}", intPair[1]);
+            }
+
+            result.Add(new List<int> { upgrade, requirement });
+        }
+
+        return result;
     }
 }
 
@@ -34,7 +70,7 @@ public class TpUpgradeDefinitions : ILoader<int, TpUpgradeDefinition>
         foreach(var data in _csvData)
         {
             dict.Add(int.Parse(data["key"].ToString()),
-                new TpUpgradeDefinition(data["key"], data["nameText"], data["effectText"], data["costEquation"]));
+                new TpUpgradeDefinition(data["key"], data["nameText"], data["effectText"], data["costEquation"], data["maxLevel"], data["unlockRequirement"]));
         }
         return dict;
     }
