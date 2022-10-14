@@ -58,7 +58,7 @@ public struct Achievements
 public struct ViewSingleLeaderboard
 {
     public long rank;
-    public string email;
+    public string username;
     public long resetCount;
     public AnsEquation maximumCoreIntellect;
 }
