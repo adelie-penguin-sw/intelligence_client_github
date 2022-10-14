@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
+
 namespace InGame
 {
     /// <summary>
@@ -14,21 +16,23 @@ namespace InGame
         [SerializeField] private Canvas _canvas;
         [SerializeField] private GameObject _anchor;
         [SerializeField] private InGameUI _ui;
+
         /// <summary>
         /// 연구 달성 상태 여부
         /// </summary>
         public static bool IsCompleteExp = false;
         void Awake()
         {
-
+            
         }
 
         void Start()
         {
-            NotificationManager.Instance.AddObserver(OnNotiChangeTab, ENotiMessage.ONCLICK_CHANGE_TAB);
+            Managers.Notification.AddObserver(OnNotiChangeTab, ENotiMessage.ONCLICK_CHANGE_TAB);
+            //Managers.Notification.AddObserver(OnNotification, ENotiMessage.CHANGE_SCENE);
             if (_ui != null)
             {
-                _ui.Init();
+                _ui.Init(this);
             }
             InitHandlers();
             ChangeState(EGameState.MAIN_TAB);
@@ -63,9 +67,16 @@ namespace InGame
             }
         }
 
+        public void LogOut()
+        {
+            Dispose();
+            PlayerPrefs.DeleteAll();
+            SceneManager.LoadScene("LoginScene");
+        }
+
         public void Dispose()
         {
-            NotificationManager.Instance.RemoveObserver(OnNotiChangeTab, ENotiMessage.ONCLICK_CHANGE_TAB);
+            Managers.Notification.RemoveObserver(OnNotiChangeTab, ENotiMessage.ONCLICK_CHANGE_TAB);
             _ui.Dispose();
             this.Dispose(true);
             GC.SuppressFinalize(this);
@@ -93,11 +104,11 @@ namespace InGame
         {
             _handlers.Clear();
 
-            _goTemp = PoolManager.Instance.GrabPrefabs(EPrefabsType.TAP_APPLICATION, "MainTabApp", transform);
+            _goTemp = Managers.Pool.GrabPrefabs(EPrefabsType.TAP_APPLICATION, "MainTabApp", transform);
             _handlers.Add(EGameState.MAIN_TAB, _goTemp.GetComponent<MainTab.MainTabApplication>());
 
-            _goTemp = PoolManager.Instance.GrabPrefabs(EPrefabsType.TAP_APPLICATION, "TpTabApp", transform);
-            _handlers.Add(EGameState.TP_UPGRADE_TAB, _goTemp.GetComponent<TpTabApplication>());
+            _goTemp = Managers.Pool.GrabPrefabs(EPrefabsType.TAP_APPLICATION, "TpTabApp", transform);
+            _handlers.Add(EGameState.TP_UPGRADE_TAB, _goTemp.GetComponent<TpTab.TpTabApplication>());
 
             foreach (EGameState state in _handlers.Keys)
             {
