@@ -141,7 +141,15 @@ namespace InGame
             _inputMap.Add("tpu012", new UpArrowNotation(UserData.TPUpgrades[12].UpgradeCount));
             _inputMap.Add("tpu022", new UpArrowNotation(UserData.TPUpgrades[22].UpgradeCount));
             UpArrowNotation multiplierUpgradeCost = Managers.Definition.CalcEquation(_inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainMultiplierUpgradeCostEquation));
-            string multiplierUpgradeText = _brain.SenderIdList.Count == 0 ? "+1 Intellect" : $"x{UserData.TPUpgrades[1].UpgradeCount + 2} Multiplier";
+            string multiplierUpgradeText;
+            if (UserData.TPUpgrades[0].UpgradeCount > 0)
+            {
+                multiplierUpgradeText = _brain.SenderIdList.Count == 0 ? "+1 Intellect" : $"x{UserData.TPUpgrades[1].UpgradeCount + 2} Multiplier";
+            }
+            else
+            {
+                multiplierUpgradeText = "+1 Intellect";
+            }
             _upgradeMultiplierCost.text = string.Format(multiplierUpgradeText + "\nCost: {0} NP", multiplierUpgradeCost);
 
             // limit upgrade btn text
