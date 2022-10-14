@@ -247,7 +247,6 @@ namespace MainTab
 
             public void LateAdvanceTime(float dt_sec)
             {
-
                 if (InGame.InGameManager.IsCompleteExp || Managers.Popup.Count > 0)
                     return;
 
@@ -574,6 +573,9 @@ namespace MainTab
             public void OnExit()
             {
                 _controller._view.ShowCostUI.Dispose();
+                _channel = null;
+                _currentEnterBrain = null;
+                _currentSenderBrain = null;
             }
 
             public void Dispose()
