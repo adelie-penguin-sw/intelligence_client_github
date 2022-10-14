@@ -174,17 +174,38 @@ public class UserData
 
     public static long LastCalcTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
-    private static Dictionary<long, QuestAttributes> _dicQuest = new Dictionary<long, QuestAttributes>();
-    public static Dictionary<long, QuestAttributes> DicQuest { get { return _dicQuest; } }
+    public static Dictionary<long, QuestAttributes> DicQuest { get { return _singleNetworkWrapper.questAttributeDic; } }
+    public static bool IsTutorialClear
+    {
+        get
+        {
+            foreach (var quest in DicQuest.Values)
+            {
+                if (!quest.isCompleted) return false;
+            }
+            return true;
+        }
+    }
 
+    public static long CurrentTutorialKey
+    {
+        get
+        {
+            foreach (var quest in DicQuest.Values)
+            {
+                if (!quest.isCompleted) return quest.questId;
+            }
+            return -1;
+        }
+    }
     public static void UpdateTutorialQuest(CompleteQuestResponse res)
     {
         if (res != null)
         {
-            _dicQuest.Clear();
+            _singleNetworkWrapper.questAttributeDic.Clear();
             foreach (var quest in res.questAttributes)
             {
-                _dicQuest.Add(quest.questId, quest);
+                _singleNetworkWrapper.questAttributeDic.Add(quest.questId, quest);
             }
         }
     }

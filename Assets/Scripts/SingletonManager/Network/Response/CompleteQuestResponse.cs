@@ -6,7 +6,7 @@ using UnityEngine;
 [Serializable]
 public class CompleteQuestResponse
 {
-    public AnsEquation NP;
+    public AnsEquation TP;
     public List<QuestAttributes> questAttributes;
     public int statusCode;
 }
