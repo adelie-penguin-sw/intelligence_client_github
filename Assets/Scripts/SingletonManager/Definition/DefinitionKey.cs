@@ -32,6 +32,7 @@ public class DefinitionKey
     #region TP
     public const string tpRewardForReset = "TPrewardForReset";
 
+    public const string tpu000MaxLevel = "TPU000MaxLevel";
     public const string tpu001MaxLevel = "TPU001MaxLevel";
     public const string tpu002MaxLevel = "TPU002MaxLevel";
     public const string tpu003MaxLevel = "TPU003MaxLevel";
@@ -62,6 +63,7 @@ public class DefinitionKey
     public const string tpu028MaxLevel = "TPU028MaxLevel";
     public const string tpu029MaxLevel = "TPU029MaxLevel";
 
+    public const string tpu000UnlockRequirement = "TPU000UnlockRequirement";
     public const string tpu001UnlockRequirement = "TPU001UnlockRequirement";
     public const string tpu002UnlockRequirement = "TPU002UnlockRequirement";
     public const string tpu003UnlockRequirement = "TPU003UnlockRequirement";
@@ -92,6 +94,7 @@ public class DefinitionKey
     public const string tpu028UnlockRequirement = "TPU028UnlockRequirement";
     public const string tpu029UnlockRequirement = "TPU029UnlockRequirement";
 
+    public const string tpu000NameText = "TPU000NameText";
     public const string tpu001NameText = "TPU001NameText";
     public const string tpu002NameText = "TPU002NameText";
     public const string tpu003NameText = "TPU003NameText";
@@ -122,6 +125,7 @@ public class DefinitionKey
     public const string tpu028NameText = "TPU028NameText";
     public const string tpu029NameText = "TPU029NameText";
 
+    public const string tpu000EffectText = "TPU000EffectText";
     public const string tpu001EffectText = "TPU001EffectText";
     public const string tpu002EffectText = "TPU002EffectText";
     public const string tpu003EffectText = "TPU003EffectText";
@@ -152,6 +156,7 @@ public class DefinitionKey
     public const string tpu028EffectText = "TPU028EffectText";
     public const string tpu029EffectText = "TPU029EffectText";
 
+    public const string tpu000CostEquation = "TPU000CostEquation";
     public const string tpu001CostEquation = "TPU001CostEquation";
     public const string tpu002CostEquation = "TPU002CostEquation";
     public const string tpu003CostEquation = "TPU003CostEquation";
