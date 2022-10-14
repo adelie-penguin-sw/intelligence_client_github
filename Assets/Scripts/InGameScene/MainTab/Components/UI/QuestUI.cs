@@ -10,13 +10,12 @@ namespace MainTab {
         public void Set(Quest quest)
         {
             _quest = quest;
-            _txtQuest.text = string.Format(quest.text, quest.clearCount, quest.goalCount);
+            _txtQuest.text = string.Format(quest.text, UserData.DicQuest[quest.id].questLevel, quest.goalCount);
         }
 
-        public void UpdateClearCount(long clearCount)
+        public void UpdateClearCount()
         {
-            _quest.clearCount = clearCount;
-            _txtQuest.text = string.Format(_quest.text, _quest.clearCount, _quest.goalCount);
+            _txtQuest.text = string.Format(_quest.text, UserData.DicQuest[_quest.id].questLevel, _quest.goalCount);
         }
     }
 }

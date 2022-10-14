@@ -23,6 +23,7 @@ public class SingleNetworkResponse
     public long totalBrainGenCount;
     public long maxDepth;
     public AnsEquation multiplierRewardForReset;
+    public List<QuestAttributes> questAttributes;
 }
 
 [Serializable]
@@ -40,6 +41,7 @@ public class SingleNetworkWrapper
     [ShowInInspector] public long totalBrainGenCount;
     [ShowInInspector] public long maxDepth;
     [ShowInInspector] public UpArrowNotation multiplierRewardForReset;
+    [ShowInInspector] public Dictionary<long, QuestAttributes> questAttributeDic = new Dictionary<long, QuestAttributes>();
 
     public SingleNetworkWrapper()
     {
@@ -101,6 +103,11 @@ public class SingleNetworkWrapper
                 res.multiplierRewardForReset.top3Coeffs[1],
                 res.multiplierRewardForReset.top3Coeffs[2],
                 res.multiplierRewardForReset.operatorLayerCount);
+
+            foreach (var data in res.questAttributes)
+            {
+                questAttributeDic.Add(data.questId, data);
+            }
         }
     }
 
