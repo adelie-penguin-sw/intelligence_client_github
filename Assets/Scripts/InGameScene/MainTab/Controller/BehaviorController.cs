@@ -100,6 +100,7 @@ namespace MainTab
             if (await Managers.Network.API_UpgradeBrainMultiplier(req))
             {
                 Managers.Notification.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
+                Managers.Notification.PostNotification(ENotiMessage.QUEST_BRAIN_INTELLIGENCE_UPGRADE);
 
                 BrainNetwork network = _model.BrainNetwork;
                 _view.InfoPopup.Set(network.GetBrainForID(id), network);
