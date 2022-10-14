@@ -278,7 +278,10 @@ public class NetworkManager
                     json);
         if (res != null && res.statusCode == (int)EStatusCode.SUCCESS)
         {
-            UserData.SingleNetworkWrapper = new SingleNetworkWrapper(res);
+            var questDic = UserData.SingleNetworkWrapper.questAttributeDic;
+            var wrapper = new SingleNetworkWrapper(res);
+            wrapper.questAttributeDic = questDic;
+            UserData.SingleNetworkWrapper = wrapper;
         }
         return (res != null);
     }
@@ -329,11 +332,11 @@ public class NetworkManager
                     json);
         if (res != null && res.statusCode == (int)EStatusCode.SUCCESS)
         {
-            UserData.NP = new UpArrowNotation(
-            res.NP.top3Coeffs[0],
-            res.NP.top3Coeffs[1],
-            res.NP.top3Coeffs[2],
-            res.NP.operatorLayerCount);
+            UserData.TP = new UpArrowNotation(
+            res.TP.top3Coeffs[0],
+            res.TP.top3Coeffs[1],
+            res.TP.top3Coeffs[2],
+            res.TP.operatorLayerCount);
 
             UserData.UpdateTutorialQuest(res);
         }
