@@ -13,6 +13,7 @@ namespace MainTab
             base.Init(app);
             _view = app.MainTabView;
             _currentQuestKey = 1;
+            _dicQuest.Clear();
             _dicQuest.Add(1, new Quest("??? ???? {0}/{1}",EQuestType.CREATE_BRAIN,1));
             _dicQuest.Add(2, new Quest("?? ???? {0}/{1}", EQuestType.CREATE_CHANNEL, 1));
             _dicQuest.Add(3, new Quest("??? ??????? {0}/{1}", EQuestType.BRAIN_UPGRADE, 2));
