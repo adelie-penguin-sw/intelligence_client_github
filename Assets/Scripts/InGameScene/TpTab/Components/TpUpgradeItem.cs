@@ -34,15 +34,15 @@ public class TpUpgradeItem : MonoBehaviour
     public void UpdateCostText()
     {
         inputMap.Clear();
-        if (!UserData.TPUpgrades.ContainsKey(_index + 1)) { UserData.TPUpgrades.Add(_index + 1, new TPUpgrade(false, 0, false)); }
-        inputMap.Add("upgradeCount", new UpArrowNotation(UserData.TPUpgrades[_index + 1].UpgradeCount));
+        if (!UserData.TPUpgrades.ContainsKey(_index)) { UserData.TPUpgrades.Add(_index, new TPUpgrade(false, 0, false)); }
+        inputMap.Add("upgradeCount", new UpArrowNotation(UserData.TPUpgrades[_index].UpgradeCount));
         _costText.text = Managers.Definition.CalcEquationToStringForStr(inputMap, _costEquation) + " TP";
     }
 
     public async void OnClick_TpUpgrade()
     {
         TpUpgradeSingleNetworkRequest req = new TpUpgradeSingleNetworkRequest();
-        req.upgrade = _index + 1;
+        req.upgrade = _index;
         req.upgradeCount = 1;
         await Managers.Network.API_TpUpgrade(req);
 
