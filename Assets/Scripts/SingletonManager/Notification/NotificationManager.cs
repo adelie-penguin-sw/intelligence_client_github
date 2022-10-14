@@ -226,6 +226,8 @@ public enum ENotiMessage
     //UserData 관련
     UPDATE_TP,
     UPDATE_NP,
+
+    CHANGE_SCENE,
 }
 
 /// <summary>
