@@ -1,0 +1,3 @@
+Documentation: https://docs.michsky.com/docs/lss/
+
+The old documentation can be also found here: https://docs.google.com/document/d/1ShWxKg6_7fL-6VThSMdP2C1dHgbyBn7K2qyQ8VUJ8v8/
