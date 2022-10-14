@@ -203,7 +203,6 @@ namespace InGame
         public void OnClick_Reset()
         {
             Managers.Notification.PostNotification(ENotiMessage.EXPERIMENT_COMPLETE);
-            Dispose();
         }
 
         private void ItemActiveSetting(bool isNormalBrain)
