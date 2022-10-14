@@ -29,7 +29,7 @@ public class Managers : MonoBehaviour
 
     private void Update()
     {
-        if(_popupManager!=null)
+        if(_popupManager != null)
         {
             _popupManager.AdvanceTime(Time.deltaTime);
         }
