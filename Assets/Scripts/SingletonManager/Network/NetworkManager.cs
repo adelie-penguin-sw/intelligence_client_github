@@ -15,7 +15,7 @@ public class NetworkManager
     protected static double timeout = 5;
     //private const string _baseUrl = "http://ec2-43-200-22-171.ap-northeast-2.compute.amazonaws.com:8080"; //테스트 서버 url
     public string editorBaseUrl;
-    private const string _baseUrl = "https://test.dataintelligencedomain451.com";
+    private const string _baseUrl = "https://www.dataintelligencedomain451.com";
 
     private async UniTask<T> SendToServer<T>(string url, ENetworkSendType sendType, string jsonBody = null, ENetworkRecvType resType = ENetworkRecvType.JSON)
     {
@@ -34,7 +34,7 @@ public class NetworkManager
                 editorBaseUrl = "https://test.dataintelligencedomain451.com"; //테스트 서버 url
                 break;
             case UrlType.DEPLOY:
-                editorBaseUrl = "http://ec2-52-79-187-33.ap-northeast-2.compute.amazonaws.com:8080"; //배포 서버 url
+                editorBaseUrl = "https://www.dataintelligencedomain451.com"; //배포 서버 url
                 break;
             case UrlType.LOCAL:
                 editorBaseUrl = "http://localhost:8080";
