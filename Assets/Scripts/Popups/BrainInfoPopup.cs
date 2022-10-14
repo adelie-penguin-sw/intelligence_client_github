@@ -185,6 +185,7 @@ namespace InGame
                 _sendData.Add(EDataParamKey.BRAIN_ID, _brain.BrainData.id);
                 Managers.Notification.PostNotification(ENotiMessage.ONCLICK_UPGRADE_BRAIN_LIMIT, _sendData);
                 UpdateInfo();
+                _brain.IsLocked = false;
             }
             else
             {
