@@ -1,54 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using static NotificationManager;
 
-/// <summary>
-/// ??? ??? ??? ??? <br />
-/// ????? ???? ?? <br />
-/// </summary>
-public class NotificationManager : MonoBehaviour
+public class NotificationManager
 {
-    #region Singelton
     private static bool _appIsClosing = false;
-    private static NotificationManager _instance;
-    public static NotificationManager Instance
-    {
-        get
-        {
-            if (_appIsClosing)
-            {
-                return null;
-            }
-
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<NotificationManager>();
-                if (FindObjectsOfType<NotificationManager>().Length > 1)
-                {
-                    Debug.LogError("[Singleton] Something went really wrong " +
-                        " - there should never be more than 1 singleton!" +
-                        " Reopening the scene might fix it.");
-                    return _instance;
-                }
-
-                if (_instance == null)
-                {
-                    GameObject go = new GameObject("Default Notification Center");
-                    _instance = go.AddComponent<NotificationManager>();
-                }
-            }
-
-            return _instance;
-        }
-    }
 
     void OnApplicationQuit()
     {
         // release reference on exit
         _appIsClosing = true;
     }
-    #endregion
 
     Hashtable _notifications = new Hashtable();
 
@@ -239,6 +201,7 @@ public enum ENotiMessage
     //  Input????
     DRAG_START_CREATEBRAIN,
     DRAG_END_CREATEBRAIN,
+    CANCEL_CREATEBRAIN,
 
     MOUSE_DOWN_BRAIN,
     MOUSE_UP_BRAIN,
@@ -248,15 +211,16 @@ public enum ENotiMessage
     ONCLICK_SELL_BRAIN,
     ONCLICK_RESET_BUTTON,
     ONCLICK_RESET_NETWORK,
-    ONCLICK_UPGRADE_BRAIN,
-    ONCLICK_LEADERBOARD,
+    ONCLICK_UPGRADE_BRAIN_MULTIPLIER,
+    ONCLICK_UPGRADE_BRAIN_LIMIT,
     ONCLICK_CHANGE_TAB,
 
-    CLOSE_BRAININFO_POPUP,
-    CLOSE_RESET_POPUP,
-    CLOSE_LEADERBOARD_POPUP,
-
     EXPERIMENT_COMPLETE,
+
+    QUEST_CREATE_BRAIN,
+    QUEST_CREATE_CHANNEL,
+    QUEST_BRAIN_INTELLIGENCE_UPGRADE,
+    QUEST_BRAIN_SELL,
 
     //server 통신 관련
     UPDATE_BRAIN_NETWORK,
@@ -264,6 +228,8 @@ public enum ENotiMessage
     //UserData 관련
     UPDATE_TP,
     UPDATE_NP,
+
+    CHANGE_SCENE,
 }
 
 /// <summary>
@@ -279,7 +245,5 @@ public enum EDataParamKey
     STRUCT_BRAINRELATION,
     BRAIN_ID,
     EGAMESTATE,
-
-    SINGLE_NETWORK_WRAPPER,
 
 }

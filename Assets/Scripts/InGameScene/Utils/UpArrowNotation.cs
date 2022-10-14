@@ -1,9 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System;
 using Sirenix.OdinInspector;
-using Unity.Mathematics;
 
 public class UpArrowNotation
 {
@@ -578,6 +575,33 @@ public class UpArrowNotation
         _checkLayer();
     }
 
+    public static UpArrowNotation Log(UpArrowNotation a, UpArrowNotation b)
+    {
+        return new UpArrowNotation(Log10Top3Layer(a) / Log10Top3Layer(b));
+    }
+
+    public static UpArrowNotation Log(float a, UpArrowNotation b)
+    {
+        return new UpArrowNotation(Math.Log10(a) / Log10Top3Layer(b));
+    }
+
+    public static UpArrowNotation Log(int a, UpArrowNotation b)
+    {
+        return new UpArrowNotation(Math.Log10(a) / Log10Top3Layer(b));
+    }
+
+    public static UpArrowNotation Log(UpArrowNotation a, float b)
+    {
+        return new UpArrowNotation(Log10Top3Layer(a) / Math.Log10(b));
+    }
+
+    public static UpArrowNotation Log(UpArrowNotation a, int b)
+    {
+        return new UpArrowNotation(Log10Top3Layer(a) / Math.Log10(b));
+    }
+
+
+
     public static double Log10Top3Layer(UpArrowNotation uan)
     {
         if (uan._top3Coeffs[0] <= 0.0)
@@ -587,6 +611,35 @@ public class UpArrowNotation
         double power = uan.CalculateTop2Layer();
         double logCoeff = Math.Log10(uan._top3Coeffs[0]);
         return logCoeff + power;
+    }
+
+    public static UpArrowNotation Slog10(UpArrowNotation uan)
+    {
+        if (uan.OperatorLayerCount > 9)
+        {
+            throw new Exception("Expressions with tetration or higher are not allowed");
+        }
+
+        double topLayerValue;
+        List<double> top3Layer = uan.Top3Layer;
+
+        switch (uan.OperatorLayerCount)
+        {
+            case 0:
+                topLayerValue = top3Layer[0];
+                break;
+            case 1:
+                topLayerValue = top3Layer[1] + Math.Log10(top3Layer[0]);
+                break;
+            default:
+                topLayerValue = top3Layer[2] + Math.Log10(top3Layer[1]);
+                break;
+        }
+
+        double ln10 = Math.Log(10);
+        double fracPart = Math.Log(Math.Log10(topLayerValue) * (ln10 - 1) + 1, ln10);
+
+        return new UpArrowNotation(uan.OperatorLayerCount + fracPart);
     }
 
     /// <summary>
