@@ -70,6 +70,11 @@ public class DefinitionManager
         _definitions.Add(EDefType.TP_UPGRADE, new TpUpgradeDefinitions(CSVReader.Read(res)).MakeDict());
         #endregion
 
+        #region TutorialQuest.csv
+        res = await Managers.Network.API_S3Data("TutorialQuest.csv");
+        if (res == null) return false;
+        _definitions.Add(EDefType.TUTORIAL_QUEST, new TutorialQuestDefinitions(CSVReader.Read(res)).MakeDict());
+        #endregion
         return true;
     }
 
@@ -323,4 +328,5 @@ public enum EDefType
 {
     BASE,
     TP_UPGRADE,
+    TUTORIAL_QUEST,
 }

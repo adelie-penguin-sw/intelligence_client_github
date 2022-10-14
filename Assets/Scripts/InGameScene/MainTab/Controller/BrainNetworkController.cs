@@ -82,6 +82,7 @@ namespace MainTab
             {
                 if (await Managers.Network.API_DeleteBrain(data.id))
                 {
+                    Managers.Notification.PostNotification(ENotiMessage.QUEST_BRAIN_SELL);
                     ResetBrainNetWork();
                 }
             }

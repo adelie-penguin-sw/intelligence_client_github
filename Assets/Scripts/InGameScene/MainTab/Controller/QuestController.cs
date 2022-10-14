@@ -7,19 +7,27 @@ namespace MainTab
     {
         private MainTabView _view;
         private Dictionary<int, Quest> _dicQuest = new Dictionary<int, Quest>();
+        private Dictionary<int, TutorialQuestDefinition> _dicQuestDef;
         private int _currentQuestKey;
         public override void Init(MainTabApplication app)
         {
             base.Init(app);
+            _dicQuestDef = Managers.Definition.GetDatas<Dictionary<int, TutorialQuestDefinition>>(EDefType.TUTORIAL_QUEST);
             _view = app.MainTabView;
             _currentQuestKey = 1;
+
             _dicQuest.Clear();
-            _dicQuest.Add(1, new Quest("??? ???? {0}/{1}",EQuestType.CREATE_BRAIN,1));
-            _dicQuest.Add(2, new Quest("?? ???? {0}/{1}", EQuestType.CREATE_CHANNEL, 1));
-            _dicQuest.Add(3, new Quest("??? ??????? {0}/{1}", EQuestType.BRAIN_UPGRADE, 2));
+            _dicQuest.Add(1, new Quest(_dicQuestDef[1].text,EQuestType.CREATE_BRAIN,_dicQuestDef[1].requirement));
+            _dicQuest.Add(2, new Quest(_dicQuestDef[2].text, EQuestType.CREATE_CHANNEL, _dicQuestDef[2].requirement));
+            _dicQuest.Add(3, new Quest(_dicQuestDef[3].text, EQuestType.BRAIN_UPGRADE, _dicQuestDef[3].requirement));
+            _dicQuest.Add(4, new Quest(_dicQuestDef[4].text, EQuestType.NETWORK_RESET, _dicQuestDef[4].requirement));
+            _dicQuest.Add(5, new Quest(_dicQuestDef[5].text, EQuestType.BRAIN_SELL_FOR_NP, _dicQuestDef[5].requirement));
 
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.QUEST_CREATE_BRAIN);
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.QUEST_CREATE_CHANNEL);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.QUEST_BRAIN_INTELLIGENCE_UPGRADE);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.ONCLICK_RESET_NETWORK);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.QUEST_BRAIN_SELL);
             SetQuestUI(_dicQuest[_currentQuestKey]);
         }
 
@@ -42,6 +50,9 @@ namespace MainTab
             base.Dispose();
             Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.QUEST_CREATE_BRAIN);
             Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.QUEST_CREATE_CHANNEL);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.QUEST_BRAIN_INTELLIGENCE_UPGRADE);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_RESET_NETWORK);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.QUEST_BRAIN_SELL);
         }
 
         public void SetQuestUI(Quest quest)
@@ -60,6 +71,24 @@ namespace MainTab
                     break;
                 case ENotiMessage.QUEST_CREATE_CHANNEL:
                     if (_dicQuest[_currentQuestKey].type == EQuestType.CREATE_CHANNEL)
+                    {
+                        _dicQuest[_currentQuestKey].clearCount++;
+                    }
+                    break;
+                case ENotiMessage.QUEST_BRAIN_INTELLIGENCE_UPGRADE:
+                    if (_dicQuest[_currentQuestKey].type == EQuestType.BRAIN_UPGRADE)
+                    {
+                        _dicQuest[_currentQuestKey].clearCount++;
+                    }
+                    break;
+                case ENotiMessage.ONCLICK_RESET_NETWORK:
+                    if (_dicQuest[_currentQuestKey].type == EQuestType.NETWORK_RESET)
+                    {
+                        _dicQuest[_currentQuestKey].clearCount++;
+                    }
+                    break;
+                case ENotiMessage.QUEST_BRAIN_SELL:
+                    if (_dicQuest[_currentQuestKey].type == EQuestType.BRAIN_SELL_FOR_NP)
                     {
                         _dicQuest[_currentQuestKey].clearCount++;
                     }
