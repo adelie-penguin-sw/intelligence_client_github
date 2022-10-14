@@ -148,7 +148,8 @@ public class NetworkManager
     public const string PATH_TEMPORARY = "/v1/auth/temporary";
     public const string PATH_CREATE_SINGLE_NETWORK_BRAIN = "/v1/experiment/single/network/brain";
     public const string PATH_CREATE_SINGLE_NETWORK_CHANNEL = "/v1/experiment/single/network/channel";
-    public const string PATH_SINGLE_NETWORK_BRAIN_NUMBER = "/v1/experiment/single/network/brain/intelligence";
+    public const string PATH_SINGLE_NETWORK_BRAIN_MULTIPLIER = "/v1/experiment/single/network/brain/multiplier";
+    public const string PATH_SINGLE_NETWORK_BRAIN_LIMIT = "/v1/experiment/single/network/brain/limit";
     public const string PATH_SINGLE_NETWORK_RESET = "/v1/experiment/single/network/reset";
     public const string PATH_FIXED_NETWORK_BRAIN = "/v1/experiment/single/fn/brain";
     public const string PATH_FIXED_NETWORK_CHANNEL = "/v1/experiment/single/fn/channel";
@@ -237,12 +238,27 @@ public class NetworkManager
         return (res != null);
     }
 
-    public async UniTask<bool> API_UpgradeBrain(CreateSingleNetworkBrainNumberRequest req)
+    public async UniTask<bool> API_UpgradeBrainMultiplier(UpgradeSingleNetworkBrainMultiplierRequest req)
     {
         string json = JsonUtility.ToJson(req);
         var res =
-            await SendToServer<CreateSingleNetworkBrainNumberResponse>(
-                    PATH_SINGLE_NETWORK_BRAIN_NUMBER,
+            await SendToServer<UpgradeSingleNetworkBrainMultiplierResponse>(
+                    PATH_SINGLE_NETWORK_BRAIN_MULTIPLIER,
+                    ENetworkSendType.POST,
+                    json);
+        if (res != null && res.statusCode == (int)EStatusCode.SUCCESS)
+        {
+            UserData.SingleNetworkWrapper.UpdateSingleNetworkData(res);
+        }
+        return (res != null);
+    }
+
+    public async UniTask<bool> API_UpgradeBrainLimit(UpgradeSingleNetworkBrainLimitRequest req)
+    {
+        string json = JsonUtility.ToJson(req);
+        var res =
+            await SendToServer<UpgradeSingleNetworkBrainLimitResponse>(
+                    PATH_SINGLE_NETWORK_BRAIN_LIMIT,
                     ENetworkSendType.POST,
                     json);
         if (res != null && res.statusCode == (int)EStatusCode.SUCCESS)
