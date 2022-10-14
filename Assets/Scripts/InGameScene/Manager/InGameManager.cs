@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
+
 namespace InGame
 {
     /// <summary>
@@ -14,6 +16,7 @@ namespace InGame
         [SerializeField] private Canvas _canvas;
         [SerializeField] private GameObject _anchor;
         [SerializeField] private InGameUI _ui;
+
         /// <summary>
         /// 연구 달성 상태 여부
         /// </summary>
@@ -26,9 +29,10 @@ namespace InGame
         void Start()
         {
             Managers.Notification.AddObserver(OnNotiChangeTab, ENotiMessage.ONCLICK_CHANGE_TAB);
+            //Managers.Notification.AddObserver(OnNotification, ENotiMessage.CHANGE_SCENE);
             if (_ui != null)
             {
-                _ui.Init();
+                _ui.Init(this);
             }
             InitHandlers();
             ChangeState(EGameState.MAIN_TAB);
@@ -61,6 +65,13 @@ namespace InGame
                 EGameState state = (EGameState)noti.data[EDataParamKey.EGAMESTATE]; 
                 ChangeState(state);
             }
+        }
+
+        public void LogOut()
+        {
+            Dispose();
+            PlayerPrefs.DeleteAll();
+            SceneManager.LoadScene("LoginScene");
         }
 
         public void Dispose()
