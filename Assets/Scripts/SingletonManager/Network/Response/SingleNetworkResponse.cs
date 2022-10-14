@@ -115,7 +115,7 @@ public class SingleNetworkWrapper
         Dictionary<string, UpArrowNotation> inputMap = new Dictionary<string, UpArrowNotation>();
 
         data.id = id;
-        data.brainType = (id == 0) ? EBrainType.MAINBRAIN : EBrainType.NORMALBRAIN;
+        data.brainType = (id == 0) ? EBrainType.COREBRAIN : EBrainType.NORMALBRAIN;
 
         if (brainAttributesDic.ContainsKey(id))
         {
@@ -316,7 +316,32 @@ public class SingleNetworkWrapper
         receiverBrainsDic[req.from].Add(req.to);
     }
 
-    public void UpdateSingleNetworkData(CreateSingleNetworkBrainNumberResponse res)
+    public void UpdateSingleNetworkData(UpgradeSingleNetworkBrainMultiplierResponse res)
+    {
+        long brainId;
+        foreach (var attribute in res.brainAttributes)
+        {
+            brainId = attribute.id;
+            if (!brainAttributesDic.ContainsKey(brainId))
+            {
+                brainAttributesDic.Add(brainId, attribute);
+            }
+            else
+            {
+                brainAttributesDic[brainId] = attribute;
+            }
+        }
+
+        UserData.NP = new UpArrowNotation(
+            res.NP.top3Coeffs[0],
+            res.NP.top3Coeffs[1],
+            res.NP.top3Coeffs[2],
+            res.NP.operatorLayerCount);
+
+        calcTime = res.calcTime;
+    }
+
+    public void UpdateSingleNetworkData(UpgradeSingleNetworkBrainLimitResponse res)
     {
         long brainId;
         foreach (var attribute in res.brainAttributes)

@@ -34,7 +34,7 @@ namespace MainTab
         /// <summary>
         /// 현재 브레인 타입
         /// </summary>
-        public EBrainType brainType = EBrainType.MAINBRAIN;
+        public EBrainType brainType = EBrainType.COREBRAIN;
         /// <summary>
         /// 브레인 좌표
         /// </summary>
@@ -118,7 +118,7 @@ namespace MainTab
     /// </summary>
     public enum EBrainType
     {
-        MAINBRAIN,
+        COREBRAIN,
         NORMALBRAIN,
         GUIDEBRAIN,
     }
