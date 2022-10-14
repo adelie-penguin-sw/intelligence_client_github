@@ -120,7 +120,7 @@ namespace MainTab
         public void CheckCompleteExperiment()
         {
             if (_brainNetWork.ContainsKey(1) &&
-                _brainNetWork[0].Type == EBrainType.MAINBRAIN &&
+                _brainNetWork[0].Type == EBrainType.COREBRAIN &&
                 _brainNetWork[0].Intellect >= _experimentGoal)
             {
                 InGame.InGameManager.IsCompleteExp = true;
