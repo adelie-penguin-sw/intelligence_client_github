@@ -32,6 +32,7 @@ public class DefinitionKey
     #region TP
     public const string tpRewardForReset = "TPrewardForReset";
 
+    public const string tpu000MaxLevel = "TPU000MaxLevel";
     public const string tpu001MaxLevel = "TPU001MaxLevel";
     public const string tpu002MaxLevel = "TPU002MaxLevel";
     public const string tpu003MaxLevel = "TPU003MaxLevel";
@@ -62,6 +63,7 @@ public class DefinitionKey
     public const string tpu028MaxLevel = "TPU028MaxLevel";
     public const string tpu029MaxLevel = "TPU029MaxLevel";
 
+    public const string tpu000UnlockRequirement = "TPU000UnlockRequirement";
     public const string tpu001UnlockRequirement = "TPU001UnlockRequirement";
     public const string tpu002UnlockRequirement = "TPU002UnlockRequirement";
     public const string tpu003UnlockRequirement = "TPU003UnlockRequirement";
