@@ -17,7 +17,10 @@ namespace InGame
         [SerializeField] private TextMeshProUGUI _txtNP;
         [SerializeField] private TextMeshProUGUI _txtTP;
         [SerializeField] private TextMeshProUGUI _txtUsername;
-        public void Init()
+
+        public delegate void LogOutEvent();
+        public event LogOutEvent LogOut;
+        public void Init(InGameManager manager)
         {
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.UPDATE_NP);
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.UPDATE_TP);
@@ -28,6 +31,7 @@ namespace InGame
             }
 
             Set();
+            LogOut = manager.LogOut;
         }
 
         public void Set()
@@ -113,8 +117,7 @@ namespace InGame
 
         public void OnClick_Logout()
         {
-            PlayerPrefs.DeleteAll();
-            SceneManager.LoadScene("LoginScene");
+            LogOut();
         }
 
         public void OnClick_UserInfo()
