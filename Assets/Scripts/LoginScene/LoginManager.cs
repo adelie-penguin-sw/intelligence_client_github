@@ -9,6 +9,7 @@ using AppleAuth.Interfaces;
 using AppleAuth.Extensions;
 using System.Text;
 using UnityEngine.UI;
+using AppleAuth.Native;
 
 #if UNITY_ANDROID
 using GooglePlayGames;
@@ -180,7 +181,11 @@ public class LoginManager : MonoBehaviour
                         {
                             usernameRes = await Managers.Network.API_GetUsername();
                             UserData.Username = usernameRes.username;
-                            SceneManager.LoadScene("InGameScene");
+
+                            if (await Managers.Network.API_LoadUserData())
+                            {
+                                SceneManager.LoadScene("InGameScene");
+                            }
                         }
                         break;
                     case EStatusCode.JWT_REFRESH:
@@ -189,7 +194,11 @@ public class LoginManager : MonoBehaviour
                         {
                             usernameRes = await Managers.Network.API_GetUsername();
                             UserData.Username = usernameRes.username;
-                            SceneManager.LoadScene("InGameScene");
+
+                            if (await Managers.Network.API_LoadUserData())
+                            {
+                                SceneManager.LoadScene("InGameScene");
+                            }
                         }
                         break;
                     default:
