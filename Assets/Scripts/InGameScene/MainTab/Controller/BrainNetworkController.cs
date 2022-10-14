@@ -14,10 +14,10 @@ namespace MainTab
         public override void Init(MainTabApplication app)
         {
             base.Init(app);
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.ONCLICK_SELL_BRAIN);
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.ONCLICK_RESET_NETWORK);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.ONCLICK_SELL_BRAIN);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.ONCLICK_RESET_NETWORK);
 
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.UPDATE_BRAIN_NETWORK);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.UPDATE_BRAIN_NETWORK);
         }
 
         public override void Set()
@@ -27,8 +27,8 @@ namespace MainTab
                 if (_app.MainTabModel != null)
                 {
                     _brainNetwork = _app.MainTabModel.BrainNetwork;
-                    _brainNetwork.Init(_app.MainTabView.transform);
-                    _brainNetwork.Set(_app.MainTabModel.SingleNetworkWrapper);
+                    _brainNetwork.Init(_app.MainTabView.BrainNetworkLayer);
+                    _brainNetwork.Set();
                 }
             }
         }
@@ -46,13 +46,13 @@ namespace MainTab
 
         public override void Dispose()
         {
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_SELL_BRAIN);
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_RESET_NETWORK);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_SELL_BRAIN);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_RESET_NETWORK);
 
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.UPDATE_BRAIN_NETWORK);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.UPDATE_BRAIN_NETWORK);
 
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.UPDATE_TP);
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.UPDATE_NP);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.UPDATE_TP);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.UPDATE_NP);
 
             _brainNetwork.Dispose();
             _brainNetwork = null;
@@ -68,19 +68,10 @@ namespace MainTab
                     RemoveBrain(sellBrain);
                     break;
                 case ENotiMessage.ONCLICK_RESET_NETWORK:
-                    SingleNetworkWrapper wrapper = (SingleNetworkWrapper)(noti.data[EDataParamKey.SINGLE_NETWORK_WRAPPER]);
-                    if (wrapper != null)
-                    {
-                        _app.MainTabModel.SingleNetworkWrapper = wrapper;
-                        ResetBrainNetWork();
-                    }
-                    else
-                    {
-                        Debug.LogError("wrapper null");
-                    }
+                    ResetBrainNetWork();
                     break;
                 case ENotiMessage.UPDATE_BRAIN_NETWORK:
-                    _brainNetwork.UpdateBrainNetwork(_app.MainTabModel.SingleNetworkWrapper);
+                    _brainNetwork.UpdateBrainNetwork();
                     break;
             }
         }
@@ -89,10 +80,9 @@ namespace MainTab
         {
             if(data.brainType == EBrainType.NORMALBRAIN)
             {
-                var res = await NetworkManager.Instance.API_DeleteBrain(data.id);
-                if (res != null)
+                if (await Managers.Network.API_DeleteBrain(data.id))
                 {
-                    _app.MainTabModel.SingleNetworkWrapper.UpdateSingleNetworkData(res);
+                    Managers.Notification.PostNotification(ENotiMessage.QUEST_BRAIN_SELL);
                     ResetBrainNetWork();
                 }
             }
