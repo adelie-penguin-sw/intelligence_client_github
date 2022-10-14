@@ -174,7 +174,7 @@ public class PopupManager
     public void DeleteAll(PopupType type)
     {
         while (_stackDic[type].Count > 0)
-            _stackDic[type].Pop().Dispose(); 
+            _stackDic[type].Peek().Dispose(); 
     }
 
     /// <summary>
