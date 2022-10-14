@@ -204,10 +204,6 @@ public class UserData
                 _tpUpgrades.Add(i, new TPUpgrade(false, 0, false));
             }
         }
-        if (_tpUpgrades.ContainsKey(0))
-        {
-            _tpUpgrades.Remove(0);
-        }
     }
 
 
