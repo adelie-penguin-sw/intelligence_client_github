@@ -29,14 +29,9 @@ namespace MainTab
         public override async void Init()
         {
             base.Init();
-            var res = await NetworkManager.Instance.API_LoadUserData();
 
-            if (res != null)
+            if (await Managers.Network.API_LoadUserData())
             {
-                SingleNetworkWrapper wrapper = new SingleNetworkWrapper(res);
-
-                _mainTabModel.SingleNetworkWrapper = wrapper;
-
                 foreach (var controller in _controllers)
                 {
                     controller.Init(this);
@@ -49,13 +44,9 @@ namespace MainTab
             base.OnEnter();
 
             Camera.main.transform.position = new Vector3(0, 0, -10);
-            var res = await NetworkManager.Instance.API_LoadUserData();
-            if (res != null)
+
+            if (await Managers.Network.API_LoadUserData())
             {
-                SingleNetworkWrapper wrapper = new SingleNetworkWrapper(res);
-
-                _mainTabModel.SingleNetworkWrapper = wrapper;
-
                 foreach (var controller in _controllers)
                 {
                     controller.Set();
@@ -93,7 +84,12 @@ namespace MainTab
             {
                 controller.Dispose();
             }
-            PoolManager.Instance.DespawnObject(EPrefabsType.TAP_APPLICATION, this.gameObject);
+            Managers.Pool.DespawnObject(EPrefabsType.TAP_APPLICATION, this.gameObject);
+        }
+
+        public void OnClick_ResetButton()
+        {
+            Managers.Notification.PostNotification(ENotiMessage.ONCLICK_RESET_BUTTON);
         }
     }
 }

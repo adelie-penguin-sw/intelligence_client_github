@@ -9,10 +9,15 @@ namespace MainTab
     public class MainTabView : MonoBehaviour
     {
         [SerializeField] private Canvas _canvas;
-
+        [SerializeField] private Brain _tempBrain;
+        [SerializeField] private ShowCostUI _showCostUI;
+        [SerializeField] private QuestUI _questUI;
+        [SerializeField] private GameObject _brainNetworkLayer;
         private InGame.BrainInfoPopup _infoPopup;
         private InGame.LeaderboardPopup _leaderboardPopup;
 
+        [SerializeField] public ShowCostUI ShowCostUI { get { return _showCostUI; } }
+        [SerializeField] public QuestUI QuestUI { get { return _questUI; } }
         public InGame.BrainInfoPopup InfoPopup
         {
             get
@@ -25,15 +30,19 @@ namespace MainTab
             }
         }
 
-        public InGame.LeaderboardPopup LeaderboardPopup
+        public Brain TempBrain
         {
             get
             {
-                return _leaderboardPopup;
+                return _tempBrain;
             }
-            set
+        }
+
+        public Transform BrainNetworkLayer
+        {
+            get
             {
-                _leaderboardPopup = value;
+                return _brainNetworkLayer.transform;
             }
         }
     }

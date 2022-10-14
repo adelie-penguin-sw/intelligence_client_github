@@ -13,10 +13,17 @@ public class SingleNetworkResponse
     public List<Achievements> achievements;
     public List<BrainAttributes> brainAttributes;
     public long calcTime;
-    public int resetCount;
+    public long allBrainCount;
+    public int experimentLevel;
+    public long experimentStartTime;
+    public List<int> resetCounts;
     public int statusCode;
     public List<Structure> structures;
     public List<UpgradeCondition> upgradeCondition;
+    public long totalBrainGenCount;
+    public long maxDepth;
+    public AnsEquation multiplierRewardForReset;
+    public List<QuestAttributes> questAttributes;
 }
 
 [Serializable]
@@ -30,7 +37,16 @@ public class SingleNetworkWrapper
     [ShowInInspector] public Dictionary<long, HashSet<long>> receiverBrainsDic = new Dictionary<long, HashSet<long>>();
     [ShowInInspector] public long calcTime;
     [ShowInInspector] public List<Achievements> achievements = new List<Achievements>();
-    [ShowInInspector] public int resetCount;
+    [ShowInInspector] public int experimentLevel;
+    [ShowInInspector] public long totalBrainGenCount;
+    [ShowInInspector] public long maxDepth;
+    [ShowInInspector] public UpArrowNotation multiplierRewardForReset;
+    [ShowInInspector] public Dictionary<long, QuestAttributes> questAttributeDic = new Dictionary<long, QuestAttributes>();
+
+    public SingleNetworkWrapper()
+    {
+
+    }
 
     public SingleNetworkWrapper(SingleNetworkResponse res)
     {
@@ -71,9 +87,27 @@ public class SingleNetworkWrapper
             res.TP.operatorLayerCount);
             calcTime = res.calcTime;
 
+            UserData.ExperimentStartTime = res.experimentStartTime;
+            UserData.ResetCounts = res.resetCounts;
+
             achievements = res.achievements;
 
-            resetCount = res.resetCount;
+            experimentLevel = res.experimentLevel;
+
+            totalBrainGenCount = res.allBrainCount;
+
+            maxDepth = res.maxDepth;
+
+            multiplierRewardForReset = new UpArrowNotation(
+                res.multiplierRewardForReset.top3Coeffs[0],
+                res.multiplierRewardForReset.top3Coeffs[1],
+                res.multiplierRewardForReset.top3Coeffs[2],
+                res.multiplierRewardForReset.operatorLayerCount);
+
+            foreach (var data in res.questAttributes)
+            {
+                questAttributeDic.Add(data.questId, data);
+            }
         }
     }
 
@@ -85,11 +119,12 @@ public class SingleNetworkWrapper
     public BrainData GetBrainDataForID(long id)
     {
         BrainData data = new BrainData();
+        Dictionary<string, UpArrowNotation> inputMap = new Dictionary<string, UpArrowNotation>();
 
         data.id = id;
-        data.brainType = (id == 0) ? EBrainType.MAINBRAIN : EBrainType.NORMALBRAIN;
+        data.brainType = (id == 0) ? EBrainType.COREBRAIN : EBrainType.NORMALBRAIN;
 
-        if(brainAttributesDic.ContainsKey(id))
+        if (brainAttributesDic.ContainsKey(id))
         {
             foreach (AnsEquation ans in brainAttributesDic[id].ansEquation)
             {
@@ -99,19 +134,9 @@ public class SingleNetworkWrapper
                                                        ans.operatorLayerCount));
             }
 
+            data.multiplierUpgradeCount = brainAttributesDic[id].multiplierUpgradeCount;
 
-            AnsEquation m = brainAttributesDic[id].multiplier;
-            if (m.top3Coeffs != null)
-            {
-                data.multiplier = new UpArrowNotation(m.top3Coeffs[0],
-                                                      m.top3Coeffs[1],
-                                                      m.top3Coeffs[2],
-                                                      m.operatorLayerCount);
-            }
-            else
-            {
-                data.multiplier = new UpArrowNotation(1);
-            }
+            data.limitUpgradeCount = brainAttributesDic[id].limitUpgradeCount;
 
             data.distance = brainAttributesDic[id].distance;
 
@@ -192,6 +217,36 @@ public class SingleNetworkWrapper
             }
         }
         calcTime = res.calcTime;
+
+        totalBrainGenCount = res.allBrainCount;
+    }
+
+    /// <summary>
+    /// 고정 브레인 추가시 받는 데이터 업데이트 해주는 함수
+    /// </summary>
+    /// <param name="req"></param>
+    /// <param name="res"></param>
+    public void UpdateSingleNetworkData(CreateFixedNetworkBrainRequest req, CreateFixedNetworkBrainResponse res)
+    {
+        UserData.TP = new UpArrowNotation(
+            res.TP.top3Coeffs[0],
+            res.TP.top3Coeffs[1],
+            res.TP.top3Coeffs[2],
+            res.TP.operatorLayerCount);
+
+        long brainId;
+        foreach (var attribute in res.FNBrainAttributes)
+        {
+            brainId = attribute.id;
+            if (!brainAttributesDic.ContainsKey(brainId))
+            {
+                brainAttributesDic.Add(brainId, attribute);
+            }
+            else
+            {
+                brainAttributesDic[brainId] = attribute;
+            }
+        }
     }
 
     /// <summary>
@@ -199,9 +254,8 @@ public class SingleNetworkWrapper
     /// </summary>
     /// <param name="req"></param>
     /// <param name="res"></param>
-    public void UpdateSingleNetworkData(CreateSingleNetworkChannelRequest req, CreateSingleNetworkChannelResponse res, Action callback)
+    public void UpdateSingleNetworkData(CreateSingleNetworkChannelRequest req, CreateSingleNetworkChannelResponse res)
     {
-
         UserData.NP = new UpArrowNotation(
             res.NP.top3Coeffs[0],
             res.NP.top3Coeffs[1],
@@ -231,11 +285,45 @@ public class SingleNetworkWrapper
         if (!receiverBrainsDic.ContainsKey(req.from))
             receiverBrainsDic.Add(req.from, new HashSet<long>());
         receiverBrainsDic[req.from].Add(req.to);
-
-        callback();
     }
-    
-    public void UpdateSingleNetworkData(CreateSingleNetworkBrainNumberResponse res, Action callback)
+
+    /// <summary>
+    /// 고정 채널 추가시 받는 데이터 업데이트 해주는 함수
+    /// </summary>
+    /// <param name="req"></param>
+    /// <param name="res"></param>
+    public void UpdateSingleNetworkData(CreateFixedNetworkChannelRequest req, CreateFixedNetworkChannelResponse res)
+    {
+        UserData.TP = new UpArrowNotation(
+            res.TP.top3Coeffs[0],
+            res.TP.top3Coeffs[1],
+            res.TP.top3Coeffs[2],
+            res.TP.operatorLayerCount);
+
+        long brainId;
+        foreach (var attribute in res.FNBrainAttributes)
+        {
+            brainId = attribute.id;
+            if (!brainAttributesDic.ContainsKey(brainId))
+            {
+                brainAttributesDic.Add(brainId, attribute);
+            }
+            else
+            {
+                brainAttributesDic[brainId] = attribute;
+            }
+        }
+
+        if (!senderBrainsDic.ContainsKey(req.to))
+            senderBrainsDic.Add(req.to, new HashSet<long>());
+        senderBrainsDic[req.to].Add(req.from);
+
+        if (!receiverBrainsDic.ContainsKey(req.from))
+            receiverBrainsDic.Add(req.from, new HashSet<long>());
+        receiverBrainsDic[req.from].Add(req.to);
+    }
+
+    public void UpdateSingleNetworkData(UpgradeSingleNetworkBrainMultiplierResponse res)
     {
         long brainId;
         foreach (var attribute in res.brainAttributes)
@@ -258,8 +346,31 @@ public class SingleNetworkWrapper
             res.NP.operatorLayerCount);
 
         calcTime = res.calcTime;
+    }
 
-        callback();
+    public void UpdateSingleNetworkData(UpgradeSingleNetworkBrainLimitResponse res)
+    {
+        long brainId;
+        foreach (var attribute in res.brainAttributes)
+        {
+            brainId = attribute.id;
+            if (!brainAttributesDic.ContainsKey(brainId))
+            {
+                brainAttributesDic.Add(brainId, attribute);
+            }
+            else
+            {
+                brainAttributesDic[brainId] = attribute;
+            }
+        }
+
+        UserData.NP = new UpArrowNotation(
+            res.NP.top3Coeffs[0],
+            res.NP.top3Coeffs[1],
+            res.NP.top3Coeffs[2],
+            res.NP.operatorLayerCount);
+
+        calcTime = res.calcTime;
     }
 
     public void UpdateSingleNetworkData(DeleteSingleNetworkBrainResponse res)
@@ -285,7 +396,6 @@ public class SingleNetworkWrapper
             res.NP.operatorLayerCount);
 
         calcTime = res.calcTime;
-
         foreach(var removeId in res.deletedBrains)
         {
             RemoveDataForID(removeId);
