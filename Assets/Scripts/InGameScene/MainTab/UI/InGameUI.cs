@@ -79,7 +79,7 @@ namespace InGame
         /// <param name="intellect">변경할 intellect</param>
         public void UpdateCoreIntellectText()
         {
-            _txtCoreIntellect.text = UserData.CoreIntellect.ToString();
+            _txtCoreIntellect.text = string.Format("{0} / {1}", UserData.CoreIntellect.ToString(), UserData.ExpGoalStr);
         }
 
         /// <summary>
