@@ -14,7 +14,7 @@ namespace TpTab
             foreach(var id in _definition.Keys)
             {
                 _app.TpTabView.SetUpgradeItem(
-                    id - 1,
+                    id,
                     _definition[id].nameText,
                     string.Format("#{0}", id),
                     _definition[id].effectText,
