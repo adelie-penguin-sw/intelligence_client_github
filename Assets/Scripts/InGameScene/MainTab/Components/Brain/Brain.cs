@@ -11,16 +11,26 @@ namespace MainTab
     {
         [SerializeField] private TextMeshPro _textNum;
         [SerializeField] private TextMeshPro _textMul;
+        [SerializeField] private Dictionary<long, Brain> _brainNetwork;
         [SerializeField] private BrainData _brainData;
+        [SerializeField] private UpArrowNotation _currentIntellectLimit;
+        [SerializeField] private UpArrowNotation _fullMultiplier;
 
         [SerializeField] private bool _isCollision = false;
-        [SerializeField] private long _lastCalcTime;
+        [SerializeField] private bool _isLocked = false;
 
         #region property
         public HashSet<long> ReceiverIdList { get { return _brainData.receiverIds; } }
         public HashSet<long> SenderIdList { get { return _brainData.senderIds; } }
 
         public BrainData BrainData { get { return _brainData; } }
+        public Dictionary<long, Brain> BrainNetwork
+        {
+            get
+            {
+                return _brainNetwork;
+            }
+        }
 
         /// <summary>
         /// 지능 수치 계산하여 반환
@@ -29,13 +39,9 @@ namespace MainTab
         {
             get
             {
-                double elapsedTime = (double)(DateTimeOffset.Now.ToUnixTimeMilliseconds() - _lastCalcTime) / 1000f;
+                double elapsedTime = (double)(DateTimeOffset.Now.ToUnixTimeMilliseconds() - LastCalcTime) / 1000f;
                 UpArrowNotation intellect = Equation.GetCurrentIntellect(_brainData.intellectEquation, elapsedTime);
 
-                if (_brainData.id == 0)
-                {
-                    UserData.CoreIntellect = intellect;
-                }
                 return intellect;
             }
         }
@@ -43,12 +49,29 @@ namespace MainTab
         /// <summary>
         /// 마지막으로 지능이 계산된 시각 반환
         /// </summary>
-        public long LastCalcTime { get { return _lastCalcTime; } }
+        public long LastCalcTime { get { return _brainData.LastCalcTime; } }
 
         /// <summary>
         /// 지능 증폭계수 반환
         /// </summary>
-        public UpArrowNotation Multiplier { get { return _brainData.multiplier; } }
+        public UpArrowNotation Multiplier
+        {
+            get
+            {
+                return _fullMultiplier;
+            }
+        }
+
+        /// <summary>
+        /// 현재 지능 한계치 반환
+        /// </summary>
+        public UpArrowNotation CurrentIntellectLimit
+        {
+            get
+            {
+                return _currentIntellectLimit;
+            }
+        }
 
         /// <summary>
         /// 해당 브레인의 ID
@@ -74,14 +97,19 @@ namespace MainTab
         }
         #endregion
 
-        public void Init(BrainData data)
+        public void Init(BrainData data, Dictionary<long, Brain> brainNetwork = null)
         {
             _brainData = data;
+            _brainNetwork = brainNetwork;
             if (_brainData.brainType == EBrainType.GUIDEBRAIN)
                 gameObject.SetActive(false);
             Set();
+            UpdateFullMultiplier();
+            UpdateCurrentIntellectLimit();
             SetNumText(Intellect);
             SetMulText(Multiplier);
+
+            _isLocked = false;
         }
 
         public void Set()
@@ -96,7 +124,7 @@ namespace MainTab
                         _textNum.gameObject.SetActive(false);
                         _textMul.gameObject.SetActive(false);
                         break;
-                    case EBrainType.MAINBRAIN:
+                    case EBrainType.COREBRAIN:
                         _brainData.distance = 0;
                         transform.localScale = new Vector2(2f, 2f);
                         break;
@@ -106,8 +134,7 @@ namespace MainTab
                 }
 
                 transform.position = new Vector2(_brainData.coordinates.x, _brainData.coordinates.y);
-                _brainData.lastCalcTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-                _lastCalcTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                _brainData.LastCalcTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             }
         }
 
@@ -117,14 +144,31 @@ namespace MainTab
             {
                 SetNumText(Intellect);
                 SetMulText(Multiplier);
+                if (_brainData.brainType == EBrainType.NORMALBRAIN &&
+                    !_isLocked &&
+                    Intellect > CurrentIntellectLimit)
+                {
+                    UpdateLockedStatus();
+                }
+            }
+        }
+
+        private async void UpdateLockedStatus()
+        {
+            _isLocked = true;
+            if(await Managers.Network.API_LoadUserData())
+            {
+                Managers.Notification.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
             }
         }
 
         public void Dispose()
         {
             _brainData = null;
+            _isLocked = false;
             _collisionCount = 0;
-            PoolManager.Instance.DespawnObject(EPrefabsType.BRAIN, gameObject);
+            Managers.Pool.DespawnObject(EPrefabsType.BRAIN, gameObject);
+
         }
 
         /// <summary>
@@ -167,6 +211,159 @@ namespace MainTab
             return _brainData.receiverIds.Contains(id);
         }
 
+        public void UpdateCurrentIntellectLimit()
+        {
+            if (_brainData.brainType != EBrainType.GUIDEBRAIN)
+            {
+                Dictionary<string, UpArrowNotation> inputMap = new Dictionary<string, UpArrowNotation>();
+
+                inputMap.Add("baseLimit", Managers.Definition.GetData<List<UpArrowNotation>>(DefinitionKey.baseIntellectLimitList)[(int)UserData.TPUpgrades[2].UpgradeCount]);
+                inputMap.Add("upgradeCount", new UpArrowNotation(_brainData.limitUpgradeCount));
+                inputMap.Add("tpu002", new UpArrowNotation(UserData.TPUpgrades[2].UpgradeCount));
+
+                _currentIntellectLimit = Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainLimitEquation));
+            }
+            else
+            {
+                _currentIntellectLimit = new UpArrowNotation();
+            }
+        }
+        public UpArrowNotation GetNextIntellectLimit()
+        {
+            Dictionary<string, UpArrowNotation> inputMap = new Dictionary<string, UpArrowNotation>();
+
+            inputMap.Add("baseLimit", Managers.Definition.GetData<List<UpArrowNotation>>(DefinitionKey.baseIntellectLimitList)[(int)UserData.TPUpgrades[2].UpgradeCount]);
+            inputMap.Add("upgradeCount", new UpArrowNotation(_brainData.limitUpgradeCount + 1));
+            inputMap.Add("tpu002", new UpArrowNotation(UserData.TPUpgrades[2].UpgradeCount));
+
+            return Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainLimitEquation));
+        }
+
+        public void UpdateFullMultiplier()
+        {
+            if (_brainData.brainType != EBrainType.GUIDEBRAIN)
+            {
+                _fullMultiplier = GetBaseMultiplier() * GetPassiveMultiplier() * GetUpgradedMultiplier();
+            }
+            else
+            {
+                _fullMultiplier = new UpArrowNotation();
+            }
+        }
+
+        private UpArrowNotation GetBaseMultiplier()
+        {
+            Dictionary<string, UpArrowNotation> inputMap = new Dictionary<string, UpArrowNotation>();
+
+            UpArrowNotation baseMultiplier = UserData.MultiplierRewardForReset.Copy();
+            if (UserData.TPUpgrades[10].UpgradeCount > 0)       // TPU-010: 브레인 연합 부스터
+            {
+                inputMap.Clear();
+                inputMap.Add("brainCount", new UpArrowNotation(_brainNetwork.Count));
+                baseMultiplier.Mul(Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.multiplierBoostForTPU010)));
+            }
+            if (UserData.TPUpgrades[26].UpgradeCount > 0)       // TPU-026: NP 부스터
+            {
+                inputMap.Clear();
+                inputMap.Add("NP", UserData.NP);
+                baseMultiplier.Mul(Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.multiplierBoostForTPU026)));
+            }
+            if (UserData.TPUpgrades[28].UpgradeCount > 0)       // TPU-028: TP 부스터
+            {
+                inputMap.Clear();
+                inputMap.Add("TP", UserData.TP);
+                baseMultiplier.Mul(Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.multiplierBoostForTPU028)));
+            }
+
+            return baseMultiplier;
+        }
+
+        private UpArrowNotation GetPassiveMultiplier()
+        {
+            Dictionary<string, UpArrowNotation> inputMap = new Dictionary<string, UpArrowNotation>();
+
+            UpArrowNotation passiveMultiplier = new UpArrowNotation(1);
+            if (UserData.TPUpgrades[7].UpgradeCount > 0)        // TPU-007: 브레인 길드 부스터
+            {
+                long brainCount = 0;
+                foreach (Brain brain in _brainNetwork.Values)
+                {
+                    if (brain.Distance == Distance)
+                    {
+                        brainCount++;
+                    }
+                }
+                inputMap.Clear();
+                inputMap.Add("brainCount", new UpArrowNotation(brainCount));
+                passiveMultiplier.Mul(Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.multiplierBoostForTPU007)));
+            }
+            if (UserData.TPUpgrades[15].UpgradeCount > 0)       // TPU-015: 센더 부스터
+            {
+                inputMap.Clear();
+                inputMap.Add("brainCount", new UpArrowNotation(_brainData.senderIds.Count == 0 ? 1 : _brainData.senderIds.Count));
+                passiveMultiplier.Mul(Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.multiplierBoostForTPU015)));
+            }
+            if (UserData.TPUpgrades[19].UpgradeCount > 0)       // TPU-019: 리시버 부스터
+            {
+                inputMap.Clear();
+                inputMap.Add("brainCount", new UpArrowNotation(_brainData.receiverIds.Count == 0 ? 1 : _brainData.receiverIds.Count));
+                passiveMultiplier.Mul(Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.multiplierBoostForTPU019)));
+            }
+            if (UserData.TPUpgrades[20].UpgradeCount > 0)       // TPU-020: 센더 부스터 체이닝
+            {
+                inputMap.Clear();
+                long allSenders = CountAllSenders();
+                inputMap.Add("brainCount", new UpArrowNotation(allSenders == 0 ? 1 : allSenders));
+                passiveMultiplier.Mul(Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.multiplierBoostForTPU020)));
+            }
+
+            return passiveMultiplier;
+        }
+
+        private UpArrowNotation GetUpgradedMultiplier()
+        {
+            Dictionary<string, UpArrowNotation> inputMap = new Dictionary<string, UpArrowNotation>();
+
+            inputMap.Add("upgradeCount", new UpArrowNotation(_brainData.multiplierUpgradeCount));
+            inputMap.Add("tpu001", new UpArrowNotation(UserData.TPUpgrades[1].UpgradeCount));
+
+            return Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainMultiplierEquation));
+        }
+
+        private long CountAllSenders()
+        {
+            long senderCount = 0;
+
+            List<long> visitedList = new List<long>();
+            List<long> toVisitList = new List<long>();
+
+            foreach (long id in _brainData.senderIds)
+            {
+                toVisitList.Add(id);
+                senderCount++;
+            }
+
+            while (toVisitList.Count > 0)
+            {
+                long currentID = toVisitList[0];
+                visitedList.Add(currentID);
+                toVisitList.RemoveAt(0);
+                if (_brainNetwork.ContainsKey(currentID))
+                {
+                    foreach (long id in _brainNetwork[currentID]._brainData.senderIds)
+                    {
+                        if (!visitedList.Contains(id))
+                        {
+                            toVisitList.Add(id);
+                            senderCount++;
+                        }
+                    }
+                }
+            }
+
+            return senderCount;
+        }
+
         private void SetNumText(UpArrowNotation num)
         {
             _textNum.text = num.ToString();
@@ -180,52 +377,52 @@ namespace MainTab
         #region EventData
         private void OnMouseDown()
         {
-            if (_brainData == null)
+            if (_brainData == null || Managers.Popup.Count > 0)
                 return;
             if (_brainData.brainType != EBrainType.GUIDEBRAIN)
             {
                 Hashtable _sendData = new Hashtable();
                 _sendData.Add(EDataParamKey.CLASS_BRAIN, this);
-                NotificationManager.Instance.PostNotification(ENotiMessage.MOUSE_DOWN_BRAIN, _sendData);
+                Managers.Notification.PostNotification(ENotiMessage.MOUSE_DOWN_BRAIN, _sendData);
             }
         }
 
         private void OnMouseExit()
         {
-            if (_brainData == null)
+            if (_brainData == null || Managers.Popup.Count > 0)
                 return;
             if (_brainData.brainType != EBrainType.GUIDEBRAIN)
             {
-                NotificationManager.Instance.PostNotification(ENotiMessage.MOUSE_EXIT_BRAIN);
+                Managers.Notification.PostNotification(ENotiMessage.MOUSE_EXIT_BRAIN);
             }
         }
 
         private void OnMouseUp()
         {
-            if (_brainData == null)
+            if (_brainData == null || Managers.Popup.Count > 0)
                 return;
             if (_brainData.brainType != EBrainType.GUIDEBRAIN)
             {
-                NotificationManager.Instance.PostNotification(ENotiMessage.MOUSE_UP_BRAIN);
+                Managers.Notification.PostNotification(ENotiMessage.MOUSE_UP_BRAIN);
             }
         }
 
         private void OnMouseEnter()
         {
-            if (_brainData == null)
+            if (_brainData == null || Managers.Popup.Count > 0)
                 return;
             if (_brainData.brainType != EBrainType.GUIDEBRAIN)
             {
                 Hashtable _sendData = new Hashtable();
                 _sendData.Add(EDataParamKey.CLASS_BRAIN, this);
-                NotificationManager.Instance.PostNotification(ENotiMessage.MOUSE_ENTER_BRAIN, _sendData);
+                Managers.Notification.PostNotification(ENotiMessage.MOUSE_ENTER_BRAIN, _sendData);
             }
         }
 
         private int _collisionCount = 0;
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (_brainData == null)
+            if (_brainData == null || Managers.Popup.Count > 0)
                 return;
             _collisionCount++;
             _isCollision = true;
@@ -233,7 +430,7 @@ namespace MainTab
 
         private void OnTriggerExit2D(Collider2D collision)
         {
-            if (_brainData == null)
+            if (_brainData == null || Managers.Popup.Count > 0)
                 return;
 
             _collisionCount--;

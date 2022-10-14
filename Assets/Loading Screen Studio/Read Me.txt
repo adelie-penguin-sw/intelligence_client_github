@@ -1,0 +1,13 @@
+Loading Screen Studio - v1.2.2
+
+Import TextMesh Pro and its essentials from Package Manager if you haven't already!
+Online documentation: https://docs.michsky.com/docs/lss/
+Changelog: https://assetstore.unity.com/packages/tools/gui/loading-screen-studio-169978#releases
+
+Contact me via:
+E-mail: https://www.michsky.com/contact/
+Discord: https://discord.gg/VXpHyUt
+Twitter: https://twitter.com/michskyHQ
+YouTube: https://www.youtube.com/c/michsky
+Reddit: https://www.reddit.com/u/michsky
+Website: https://www.michsky.com

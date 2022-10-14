@@ -29,9 +29,9 @@ namespace MainTab
             _brainLayer = brainLayer;
         }
 
-        public void Set(SingleNetworkWrapper wrapper)
+        public void Set()
         {
-            UpdateBrainNetwork(wrapper);
+            UpdateBrainNetwork();
         }
 
         public void AdvanceTime(float dt_sec)
@@ -64,11 +64,12 @@ namespace MainTab
             ClearNetwork();
         }
 
-        public void UpdateBrainNetwork(SingleNetworkWrapper wrapper)
+        public void UpdateBrainNetwork()
         {
             ClearNetwork();
-            _resetCount = wrapper.resetCount;
-            _experimentGoal = new UpArrowNotation(1, 2, 1 + _resetCount, 2);
+            SingleNetworkWrapper wrapper = UserData.SingleNetworkWrapper;
+            _resetCount = wrapper.experimentLevel;
+            _experimentGoal = Managers.Definition.GetData<List<UpArrowNotation>>(DefinitionKey.experimentGoalList)[UserData.ExperimentLevel];
             foreach (var id in wrapper.brainAttributesDic.Keys)
             {
                 BrainData data = wrapper.GetBrainDataForID(id);
@@ -76,20 +77,24 @@ namespace MainTab
                 {
                     if (id == 0)
                     {
-                        Brain brain = PoolManager.Instance.GrabPrefabs(EPrefabsType.BRAIN, "CoreBrain", _brainLayer).GetComponent<Brain>();
-                        brain.Init(data);
+                        Brain brain = Managers.Pool.GrabPrefabs(EPrefabsType.BRAIN, "CoreBrain", _brainLayer).GetComponent<Brain>();
+                        brain.Init(data, _brainNetWork);
                         _brainNetWork.Add(id, brain);
                     }
                     else
                     {
-                        Brain brain = PoolManager.Instance.GrabPrefabs(EPrefabsType.BRAIN, "Brain", _brainLayer).GetComponent<Brain>();
-                        brain.Init(data);
+                        Brain brain = Managers.Pool.GrabPrefabs(EPrefabsType.BRAIN, "Brain", _brainLayer).GetComponent<Brain>();
+                        brain.Init(data, _brainNetWork);
                         _brainNetWork.Add(id, brain);
                     }
                     
                 }
             }
-
+            foreach (var brain in _brainNetWork.Values)
+            {
+                brain.UpdateFullMultiplier();
+                brain.UpdateCurrentIntellectLimit();
+            }
             ClearAndDrawChannel();
         }
 
@@ -115,11 +120,11 @@ namespace MainTab
         public void CheckCompleteExperiment()
         {
             if (_brainNetWork.ContainsKey(1) &&
-                _brainNetWork[0].Type == EBrainType.MAINBRAIN &&
+                _brainNetWork[0].Type == EBrainType.COREBRAIN &&
                 _brainNetWork[0].Intellect >= _experimentGoal)
             {
                 InGame.InGameManager.IsCompleteExp = true;
-                NotificationManager.Instance.PostNotification(ENotiMessage.EXPERIMENT_COMPLETE);
+                Managers.Notification.PostNotification(ENotiMessage.EXPERIMENT_COMPLETE);
             }
             else
             {
@@ -143,7 +148,7 @@ namespace MainTab
                 foreach (var receiver in brain.ReceiverIdList)
                 {
                     var channel =
-                        PoolManager.Instance.GrabPrefabs(EPrefabsType.CHANNEL, "Channel", _brainLayer).GetComponent<Channel>();
+                        Managers.Pool.GrabPrefabs(EPrefabsType.CHANNEL, "Channel", _brainLayer).GetComponent<Channel>();
                     channel.Init(EChannelType.NORMAL, brain.transform, _brainNetWork[receiver].transform);
                     _channelList.Add(channel);
                 }

@@ -2,56 +2,81 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TpTabApplication : BaseTabApplication
+namespace TpTab
 {
-    [SerializeField] private BaseTabController<TpTabApplication>[] _controllers;
-    [SerializeField] private TpTabView _tpTabView;
-
-    public TpTabView TpTabView
+    public class TpTabApplication : BaseTabApplication
     {
-        get
+        [SerializeField] private BaseTabController<TpTabApplication>[] _controllers;
+        [SerializeField] private TpTabView _tpTabView;
+        public TpTabView TpTabView
         {
-            return _tpTabView;
+            get
+            {
+                return _tpTabView;
+            }
+        }
+
+        [SerializeField] private TpTabModel _tpTabModel;
+        public TpTabModel TpTabModel
+        {
+            get
+            {
+                return _tpTabModel;
+            }
+        }
+
+        public override void Init()
+        {
+            base.Init();
+
+            foreach (var controller in _controllers)
+            {
+                controller.Init(this);
+            }
+        }
+
+        public override void OnEnter()
+        {
+            base.OnEnter();
+
+            foreach (var controller in _controllers)
+            {
+                controller.Set();
+            }
+        }
+
+        public override void AdvanceTime(float dt_sec)
+        {
+            base.AdvanceTime(dt_sec);
+
+            foreach (var controller in _controllers)
+            {
+                controller.AdvanceTime(dt_sec);
+            }
+        }
+
+        public override void LateAdvanceTime(float dt_sec)
+        {
+            base.LateAdvanceTime(dt_sec);
+
+            foreach (var controller in _controllers)
+            {
+                controller.LateAdvanceTime(dt_sec);
+            }
+        }
+
+        public override void OnExit()
+        {
+            base.OnExit();
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            foreach (var controller in _controllers)
+            {
+                controller.Dispose();
+            }
         }
     }
-
-    [SerializeField] private TpTabModel _tpTabModel;
-    public TpTabModel TpTabModel
-    {
-        get
-        {
-            return _tpTabModel;
-        }
-    }
-
-    public override void Init()
-    {
-        base.Init();
-    }
-
-    public override void OnEnter()
-    {
-        base.OnEnter();
-    }
-
-    public override void AdvanceTime(float dt_sec)
-    {
-        base.AdvanceTime(dt_sec);
-    }
-
-    public override void LateAdvanceTime(float dt_sec)
-    {
-        base.LateAdvanceTime(dt_sec);
-    }
-
-    public override void OnExit()
-    {
-        base.OnExit();
-    }
-
-    public override void Dispose()
-    {
-        base.Dispose();
-    }
-
 }
