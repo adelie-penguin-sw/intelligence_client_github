@@ -17,10 +17,22 @@ namespace MainTab
         [SerializeField] private UpArrowNotation _fullMultiplier;
 
         [SerializeField] private bool _isCollision = false;
+        [SerializeField] private bool _isLocked = false;
 
         #region property
         public HashSet<long> ReceiverIdList { get { return _brainData.receiverIds; } }
         public HashSet<long> SenderIdList { get { return _brainData.senderIds; } }
+        public bool IsLocked
+        {
+            get
+            {
+                return _isLocked;
+            }
+            set
+            {
+                _isLocked = value;
+            }
+        }
 
         public BrainData BrainData { get { return _brainData; } }
         public Dictionary<long, Brain> BrainNetwork
@@ -107,6 +119,8 @@ namespace MainTab
             UpdateCurrentIntellectLimit();
             SetNumText(Intellect);
             SetMulText(Multiplier);
+
+            _isLocked = false;
         }
 
         public void Set()
@@ -141,14 +155,26 @@ namespace MainTab
             {
                 SetNumText(Intellect);
                 SetMulText(Multiplier);
+                if (!_isLocked && Intellect >= CurrentIntellectLimit)
+                {
+                    UpdateLockedStatus();
+                }
             }
+        }
+
+        private async void UpdateLockedStatus()
+        {
+            _isLocked = true;
+            await Managers.Network.API_LoadUserData();
         }
 
         public void Dispose()
         {
             _brainData = null;
+            _isLocked = false;
             _collisionCount = 0;
             Managers.Pool.DespawnObject(EPrefabsType.BRAIN, gameObject);
+
         }
 
         /// <summary>
