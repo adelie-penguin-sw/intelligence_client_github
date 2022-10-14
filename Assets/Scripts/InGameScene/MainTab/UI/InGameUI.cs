@@ -122,7 +122,8 @@ namespace InGame
 
         public void OnClick_UserInfo()
         {
-            Managers.Popup.CreatePopup(EPrefabsType.POPUP, "UserInfoPopup", PopupType.NORMAL);
+            var popupObj = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "UserInfoPopup", PopupType.NORMAL);
+            popupObj.GetComponent<UserInfoPopup>().Init();
         }
     }
 
