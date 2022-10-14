@@ -27,7 +27,7 @@ namespace MainTab
                 if (_app.MainTabModel != null)
                 {
                     _brainNetwork = _app.MainTabModel.BrainNetwork;
-                    _brainNetwork.Init(_app.MainTabView.transform);
+                    _brainNetwork.Init(_app.MainTabView.BrainNetworkLayer);
                     _brainNetwork.Set();
                 }
             }
