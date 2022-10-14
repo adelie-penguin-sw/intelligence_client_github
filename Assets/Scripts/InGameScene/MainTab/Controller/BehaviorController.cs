@@ -10,8 +10,8 @@ namespace MainTab
     /// </summary>
     public class BehaviorController : BaseTabController<MainTabApplication>
     {
-        private MainTabModel _model;
-        private MainTabView _view;
+        protected MainTabModel _model;
+        protected MainTabView _view;
         [SerializeField] private Brain _recentSelectBrain;
 
         public override void Init(MainTabApplication app)
@@ -27,6 +27,7 @@ namespace MainTab
 
         public override void Set()
         {
+            _view = _app.MainTabView;
             if (_view != null)       // 여기서 자꾸 널레퍼런스에러나서 임시방편으로 함
             {
                 _view.ShowCostUI.Dispose();
@@ -57,6 +58,11 @@ namespace MainTab
         public override void Dispose()
         {
             RemoveObservers();
+
+            foreach (EBehaviorState state in _handlers.Keys)
+            {
+                _handlers[state].Dispose();
+            }
         }
 
         private void OnNotification(Notification noti)
@@ -529,7 +535,6 @@ namespace MainTab
 
             public void OnEnter()
             {
-                Debug.Log("CreateChannel!");
                 _currentSenderBrain = _controller._recentSelectBrain;
                 _controller._view.ShowCostUI.Set(ENPCostType.CHNNL_GEN);
                 _controller._view.ShowCostUI.SetBrain(_currentSenderBrain, null);
