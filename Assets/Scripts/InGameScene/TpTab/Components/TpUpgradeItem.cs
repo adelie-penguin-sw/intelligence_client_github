@@ -38,4 +38,14 @@ public class TpUpgradeItem : MonoBehaviour
         inputMap.Add("upgradeCount", new UpArrowNotation(UserData.TPUpgrades[_index + 1].UpgradeCount));
         _costText.text = Managers.Definition.CalcEquationToStringForStr(inputMap, _costEquation) + " TP";
     }
+
+    public async void OnClick_TpUpgrade()
+    {
+        TpUpgradeSingleNetworkRequest req = new TpUpgradeSingleNetworkRequest();
+        req.upgrade = _index + 1;
+        req.upgradeCount = 1;
+        await Managers.Network.API_TpUpgrade(req);
+
+        UpdateCostText();
+    }
 }
