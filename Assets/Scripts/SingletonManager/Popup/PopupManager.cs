@@ -25,7 +25,7 @@ public class PopupManager
         }
     }
 
-    public void AdvanceTime(float dt_sec )
+    public void AdvanceTime(float dt_sec)
     {
         foreach (var item in _stackDic)
         {
