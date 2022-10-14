@@ -12,6 +12,7 @@ namespace MainTab
         [SerializeField] private Brain _tempBrain;
         [SerializeField] private ShowCostUI _showCostUI;
         [SerializeField] private QuestUI _questUI;
+        [SerializeField] private GameObject _brainNetworkLayer;
         private InGame.BrainInfoPopup _infoPopup;
         private InGame.LeaderboardPopup _leaderboardPopup;
 
@@ -34,6 +35,14 @@ namespace MainTab
             get
             {
                 return _tempBrain;
+            }
+        }
+
+        public Transform BrainNetworkLayer
+        {
+            get
+            {
+                return _brainNetworkLayer.transform;
             }
         }
     }
