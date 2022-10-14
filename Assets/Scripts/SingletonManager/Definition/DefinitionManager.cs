@@ -18,6 +18,8 @@ public class DefinitionManager
 
     public async UniTask<bool> LoadS3Data()
     {
+        _definitions.Clear();
+
         #region base.csv
         string res = await Managers.Network.API_S3Data("base.csv");
         if (res == null) return false;
