@@ -16,7 +16,8 @@ public class BrainAttributes
     public List<AnsEquation> ansEquation = new List<AnsEquation>();
     public long distance;
     public long id;
-    public AnsEquation multiplier = new AnsEquation();
+    public long multiplierUpgradeCount;
+    public long limitUpgradeCount;
     public long skinCode;
     public double x;
     public double y;
@@ -41,7 +42,9 @@ public struct Structure
 public struct UpgradeCondition
 {
     public long id;
+    public bool unlocked;
     public long upgrade;
+    public bool maxed;
 }
 
 [Serializable]
@@ -55,7 +58,15 @@ public struct Achievements
 public struct ViewSingleLeaderboard
 {
     public long rank;
-    public string email;
+    public string username;
     public long resetCount;
     public AnsEquation maximumCoreIntellect;
+}
+
+[Serializable] 
+public struct QuestAttributes
+{
+    public long questId;
+    public long questLevel;
+    public bool isCompleted;
 }

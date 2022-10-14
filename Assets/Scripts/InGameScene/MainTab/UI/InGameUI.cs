@@ -16,20 +16,22 @@ namespace InGame
         [SerializeField] private TextMeshProUGUI _txtCoreIntellect;
         [SerializeField] private TextMeshProUGUI _txtNP;
         [SerializeField] private TextMeshProUGUI _txtTP;
+        [SerializeField] private TextMeshProUGUI _txtUsername;
 
-        public void Init()
+        public delegate void LogOutEvent();
+        public event LogOutEvent LogOut;
+        public void Init(InGameManager manager)
         {
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.UPDATE_NP);
-            NotificationManager.Instance.AddObserver(OnNotification, ENotiMessage.UPDATE_TP);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.UPDATE_NP);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.UPDATE_TP);
             foreach (var tab in _bottomTabs)
             {
                 tab.Init();
                 tab.OnClickTab = OnClick_Tab;
             }
 
-            UpdateCoreIntellectText();
-            UpdateNPText();
-            UpdateTPText();
+            Set();
+            LogOut = manager.LogOut;
         }
 
         public void Set()
@@ -37,6 +39,7 @@ namespace InGame
             UpdateCoreIntellectText();
             UpdateNPText();
             UpdateTPText();
+            SetUsernameText();
         }
 
         public void AdvanceTime(float dt_sec)
@@ -59,15 +62,15 @@ namespace InGame
 
         public void Dispose()
         {
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.UPDATE_NP);
-            NotificationManager.Instance.RemoveObserver(OnNotification, ENotiMessage.UPDATE_TP);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.UPDATE_NP);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.UPDATE_TP);
         }
 
         private void OnClick_Tab(EGameState tab)
         {
             Hashtable sendData = new Hashtable();
             sendData.Add(EDataParamKey.EGAMESTATE, tab);
-            NotificationManager.Instance.PostNotification(ENotiMessage.ONCLICK_CHANGE_TAB, sendData);
+            Managers.Notification.PostNotification(ENotiMessage.ONCLICK_CHANGE_TAB, sendData);
         }
 
         /// <summary>
@@ -76,7 +79,7 @@ namespace InGame
         /// <param name="intellect">변경할 intellect</param>
         public void UpdateCoreIntellectText()
         {
-            _txtCoreIntellect.text = UserData.CoreIntellect.ToString();
+            _txtCoreIntellect.text = string.Format("{0} / {1}", UserData.CoreIntellect.ToString(), UserData.ExpGoalStr);
         }
 
         /// <summary>
@@ -97,20 +100,30 @@ namespace InGame
             _txtTP.text = string.Format("TP: {0}", UserData.TP.ToString());
         }
 
+        public void SetUsernameText()
+        {
+            _txtUsername.text = UserData.Username;
+        }
+
         public void OnClick_LeaderBoard()
         {
-            NotificationManager.Instance.PostNotification(ENotiMessage.ONCLICK_LEADERBOARD);
+            LeaderboardPopup leaderboardPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "LeaderboardPopup", PopupType.NORMAL)
+                                .GetComponent<LeaderboardPopup>();
+            if (leaderboardPopup != null)
+            {
+                leaderboardPopup.Init();
+            }
         }
 
         public void OnClick_Logout()
         {
-            PlayerPrefs.DeleteAll();
-            SceneManager.LoadScene("LoginScene");
+            LogOut();
         }
 
-        public async void OnClick_Reset()
+        public void OnClick_UserInfo()
         {
-            await NetworkManager.Instance.API_NetworkReset();
+            var popupObj = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "UserInfoPopup", PopupType.NORMAL);
+            popupObj.GetComponent<UserInfoPopup>().Init();
         }
     }
 
