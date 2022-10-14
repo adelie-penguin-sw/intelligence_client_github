@@ -121,7 +121,7 @@ namespace MainTab
                         _textNum.gameObject.SetActive(false);
                         _textMul.gameObject.SetActive(false);
                         break;
-                    case EBrainType.MAINBRAIN:
+                    case EBrainType.COREBRAIN:
                         _brainData.distance = 0;
                         transform.localScale = new Vector2(2f, 2f);
                         break;
@@ -198,7 +198,7 @@ namespace MainTab
                 Dictionary<string, UpArrowNotation> inputMap = new Dictionary<string, UpArrowNotation>();
 
                 inputMap.Add("baseLimit", Managers.Definition.GetData<List<UpArrowNotation>>(DefinitionKey.baseIntellectLimitList)[(int)UserData.TPUpgrades[2].UpgradeCount]);
-                inputMap.Add("upgradeCount", new UpArrowNotation(_brainData.multiplierUpgradeCount));
+                inputMap.Add("upgradeCount", new UpArrowNotation(_brainData.limitUpgradeCount));
                 inputMap.Add("tpu002", new UpArrowNotation(UserData.TPUpgrades[2].UpgradeCount));
 
                 _currentIntellectLimit = Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainLimitEquation));
@@ -207,6 +207,16 @@ namespace MainTab
             {
                 _currentIntellectLimit = new UpArrowNotation();
             }
+        }
+        public UpArrowNotation GetNextIntellectLimit()
+        {
+            Dictionary<string, UpArrowNotation> inputMap = new Dictionary<string, UpArrowNotation>();
+
+            inputMap.Add("baseLimit", Managers.Definition.GetData<List<UpArrowNotation>>(DefinitionKey.baseIntellectLimitList)[(int)UserData.TPUpgrades[2].UpgradeCount]);
+            inputMap.Add("upgradeCount", new UpArrowNotation(_brainData.limitUpgradeCount + 1));
+            inputMap.Add("tpu002", new UpArrowNotation(UserData.TPUpgrades[2].UpgradeCount));
+
+            return Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainLimitEquation));
         }
 
         public void UpdateFullMultiplier()
