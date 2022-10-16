@@ -216,7 +216,7 @@ namespace InGame
 
             // 코어 브레인은 증폭계수, NP축적량, 거리 개념이 필요하지 않으므로 표시영역 모두 비활성화
             _intellectLimitArea.SetActive(isNormalBrain);
-            _multiplierArea.SetActive(isNormalBrain);
+            _multiplierArea.SetActive(isNormalBrain && UserData.TPUpgrades[0].UpgradeCount > 0);    // 증폭계수 언락 전까지는 표시영역 비활성화
             _storedNPArea.SetActive(isNormalBrain);
             _distanceArea.SetActive(isNormalBrain);
         }
