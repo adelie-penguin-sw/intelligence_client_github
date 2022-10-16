@@ -88,6 +88,11 @@ namespace MainTab
         /// </summary>
         public long Distance { get { return _brainData.distance; } set { _brainData.distance = value; } }
 
+        /// <summary>
+        /// 브레인 락이 걸렸는가?
+        /// </summary>
+        public bool IsLocked { get { return _isLocked; } }
+
         public bool IsCollision
         {
             get
