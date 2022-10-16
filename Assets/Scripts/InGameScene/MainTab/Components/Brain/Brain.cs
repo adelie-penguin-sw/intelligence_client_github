@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 using System;
@@ -15,6 +16,11 @@ namespace MainTab
         [SerializeField] private BrainData _brainData;
         [SerializeField] private UpArrowNotation _currentIntellectLimit;
         [SerializeField] private UpArrowNotation _fullMultiplier;
+
+        [SerializeField] private Canvas _intellectVisualizerCanvas;
+        [SerializeField] private Image _coeff1Visualizer;
+        [SerializeField] private Image _coeff2Visualizer;
+        [SerializeField] private Image _coeff3Visualizer;
 
         [SerializeField] private bool _isCollision = false;
         [SerializeField] private bool _isLocked = false;
@@ -156,6 +162,17 @@ namespace MainTab
                 {
                     UpdateLockedStatus();
                 }
+                UpdateIntellectVisualizer();
+            }
+        }
+
+        private void UpdateIntellectVisualizer()
+        {
+            if (_coeff1Visualizer != null && _coeff2Visualizer != null && _coeff3Visualizer != null)
+            {
+                _coeff1Visualizer.fillAmount = (float)Intellect.Top3Layer[0] / 10f;
+                _coeff2Visualizer.fillAmount = (float)Intellect.Top3Layer[1] / 10f;
+                _coeff3Visualizer.fillAmount = (float)Intellect.Top3Layer[2] / 10f;
             }
         }
 
