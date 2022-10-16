@@ -366,12 +366,12 @@ namespace MainTab
 
         private void SetNumText(UpArrowNotation num)
         {
-            _textNum.text = num.ToString();
+            _textNum.text = num.ToString(ECurrencyType.INTELLECT);
         }
 
         private void SetMulText(UpArrowNotation num)
         {
-            _textMul.text = "x" + num.ToString();
+            _textMul.text = "x" + num.ToString(ECurrencyType.MULTIPLIER);
         }
 
         #region EventData

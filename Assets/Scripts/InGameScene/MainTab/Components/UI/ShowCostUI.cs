@@ -52,7 +52,7 @@ namespace MainTab
 
                             UpArrowNotation brainGenCost = Managers.Definition.CalcEquation(_inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainGeneratingCostEquation));
 
-                            _costText.text = "Cost: " + brainGenCost.ToString() + " NP";
+                            _costText.text = "Cost: " + brainGenCost.ToString(ECurrencyType.NP) + " NP";
                             if (brainGenCost <= UserData.NP)
                                 _costText.color = new Color32(255, 255, 255, 255);
                             else
@@ -112,7 +112,7 @@ namespace MainTab
 
                             UpArrowNotation channelGenCost = Managers.Definition.CalcEquation(_inputMap, Managers.Definition.GetData<string>(DefinitionKey.channelGeneratingCostEquation));
 
-                            _costText.text = "Cost: " + channelGenCost.ToString() + " NP";
+                            _costText.text = "Cost: " + channelGenCost.ToString(ECurrencyType.NP) + " NP";
                             if (channelGenCost <= UserData.NP)
                                 _costText.color = new Color32(255, 255, 255, 255);
                             else

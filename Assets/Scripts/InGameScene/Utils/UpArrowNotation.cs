@@ -158,17 +158,28 @@ public class UpArrowNotation
     /// 화면에 출력하는 형식을 결정하여 문자열화합니다.
     /// </summary>
     /// <returns>문자열화된 숫자표현식</returns>
-    public override string ToString()
+    public string ToString(ECurrencyType displayType = ECurrencyType.NORMAL)
     {
         if (_top3Coeffs[2] == 0f)
         {
-            if (_top3Coeffs[1] >= 0f)
+            switch (displayType)
             {
-                return (_top3Coeffs[0] * Math.Pow(10, _top3Coeffs[1])).ToString("N0");
-            }
-            else
-            {
-                return (_top3Coeffs[0] * Math.Pow(10, _top3Coeffs[1])).ToString("N" + (-_top3Coeffs[1]).ToString("N0"));
+                case ECurrencyType.NORMAL:
+                    if (_top3Coeffs[1] >= 0f)
+                    {
+                        return (_top3Coeffs[0] * Math.Pow(10, _top3Coeffs[1])).ToString("N0");
+                    }
+                    else
+                    {
+                        return (_top3Coeffs[0] * Math.Pow(10, _top3Coeffs[1])).ToString("N" + (-_top3Coeffs[1]).ToString("N0"));
+                    }
+                case ECurrencyType.INTELLECT:
+                    return (_top3Coeffs[0] * Math.Pow(10, _top3Coeffs[1])).ToString("N0");
+                case ECurrencyType.MULTIPLIER:
+                case ECurrencyType.NP:
+                    return (_top3Coeffs[0] * Math.Pow(10, _top3Coeffs[1])).ToString("N" + (_top3Coeffs[1] < 4 ? "2" : "0"));
+                case ECurrencyType.TP:
+                    return (_top3Coeffs[0] * Math.Pow(10, _top3Coeffs[1])).ToString("N0");
             }
         }
 
@@ -879,4 +890,13 @@ public class UpArrowNotation
     public static bool operator <(double a, UpArrowNotation b) => (new UpArrowNotation(a)) < b;
 
     public static bool operator <(int a, UpArrowNotation b) => (new UpArrowNotation(a)) < b;
+}
+
+public enum ECurrencyType
+{
+    NORMAL, 
+    INTELLECT,
+    MULTIPLIER, 
+    NP,
+    TP, 
 }
