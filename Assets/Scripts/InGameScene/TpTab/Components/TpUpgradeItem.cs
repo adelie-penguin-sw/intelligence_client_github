@@ -111,7 +111,7 @@ public class TpUpgradeItem : MonoBehaviour
             inputMap.Clear();
             if (!UserData.TPUpgrades.ContainsKey(_index)) { UserData.TPUpgrades.Add(_index, new TPUpgrade(false, 0, false)); }
             inputMap.Add("upgradeCount", new UpArrowNotation(UserData.TPUpgrades[_index].UpgradeCount));
-            _costText.text = $"잠금 해제\n{Managers.Definition.CalcEquationToStringForStr(inputMap, _costEquation)} TP";  // csv..??
+            _costText.text = $"잠금 해제\n{Managers.Definition.CalcEquationForStr(inputMap, _costEquation).ToString(ECurrencyType.TP)} TP";  // csv..??
         }
         else if (_maxed && _maxLevel > 1)
         {
@@ -128,7 +128,7 @@ public class TpUpgradeItem : MonoBehaviour
                 inputMap.Clear();
                 if (!UserData.TPUpgrades.ContainsKey(_index)) { UserData.TPUpgrades.Add(_index, new TPUpgrade(false, 0, false)); }
                 inputMap.Add("upgradeCount", new UpArrowNotation(UserData.TPUpgrades[_index].UpgradeCount));
-                _costText.text = $"업그레이드\n{Managers.Definition.CalcEquationToStringForStr(inputMap, _costEquation)} TP";  // csv..??
+                _costText.text = $"업그레이드\n{Managers.Definition.CalcEquationForStr(inputMap, _costEquation).ToString(ECurrencyType.TP)} TP";  // csv..??
             }
         }
     }
