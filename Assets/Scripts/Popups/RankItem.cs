@@ -23,7 +23,7 @@ public class RankItem : MonoBehaviour
         _rankNumText.text = item.rank.ToString();
         _nameText.text = item.username;
         _tierText.text = item.resetCount.ToString();
-        _highestCoreIntellectText.text = maxCoreIntellect.ToString();
+        _highestCoreIntellectText.text = maxCoreIntellect.ToString(ECurrencyType.INTELLECT);
         _meText.gameObject.SetActive(isMe);
     }
 
