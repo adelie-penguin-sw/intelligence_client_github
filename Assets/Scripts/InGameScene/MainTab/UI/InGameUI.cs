@@ -79,7 +79,7 @@ namespace InGame
         /// <param name="intellect">변경할 intellect</param>
         public void UpdateCoreIntellectText()
         {
-            _txtCoreIntellect.text = string.Format("{0} / {1}", UserData.CoreIntellect.ToString(), UserData.ExpGoalStr);
+            _txtCoreIntellect.text = string.Format("{0} / {1}", UserData.CoreIntellect.ToString(ECurrencyType.INTELLECT), UserData.ExpGoalStr);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace InGame
         /// <param name="np">변경할 np</param>
         public void UpdateNPText()
         {
-            _txtNP.text = string.Format("NP: {0}", UserData.NP.ToString());
+            _txtNP.text = string.Format("NP: {0}", UserData.NP.ToString(ECurrencyType.NP));
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace InGame
         /// <param name="tp">변경할 tp</param>
         public void UpdateTPText()
         {
-            _txtTP.text = string.Format("TP: {0}", UserData.TP.ToString());
+            _txtTP.text = string.Format("TP: {0}", UserData.TP.ToString(ECurrencyType.TP));
         }
 
         public void SetUsernameText()

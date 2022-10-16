@@ -80,7 +80,7 @@ namespace InGame
             _inputMap.Add("intellect", _brain.BrainData.Intellect);
             _inputMap.Add("tpu008", new UpArrowNotation(UserData.TPUpgrades[8].UpgradeCount));
             UpArrowNotation storedNP = Managers.Definition.CalcEquation(_inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainDecomposingGainEquation));
-            _intellectText.text = _brain.BrainData.Intellect.ToString();
+            _intellectText.text = _brain.BrainData.Intellect.ToString(ECurrencyType.INTELLECT);
 
             if (_brain.BrainData.brainType == EBrainType.NORMALBRAIN)
             {
@@ -97,8 +97,8 @@ namespace InGame
                     totalSenderNP += Managers.Definition.CalcEquation(_inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainDecomposingGainEquation));
                 }
                 _decomposeReward.text = _brain.SenderIdList.Count == 0 ?
-                    string.Format("Decompose\nfor {0} NP\n", storedNP) :
-                    string.Format("Decompose\nfor {0} NP\n+ {1} NP", storedNP, totalSenderNP);   // "총" 획득 NP량 계산해서 표시
+                    string.Format("Decompose\nfor {0} NP\n", storedNP.ToString(ECurrencyType.NP)) :
+                    string.Format("Decompose\nfor {0} NP\n+ {1} NP", storedNP.ToString(ECurrencyType.NP), totalSenderNP.ToString(ECurrencyType.NP));   // "총" 획득 NP량 계산해서 표시
             }
         }
         public override void Dispose()
@@ -127,10 +127,10 @@ namespace InGame
             }
 
             // current intellect limit
-            _intellectLimitText.text = _brain.CurrentIntellectLimit.ToString();
+            _intellectLimitText.text = _brain.CurrentIntellectLimit.ToString(ECurrencyType.INTELLECT);
 
             // current multiplier
-            _multiplierText.text = "x" + _brain.Multiplier.ToString();
+            _multiplierText.text = "x" + _brain.Multiplier.ToString(ECurrencyType.MULTIPLIER);
 
             // current distance
             _distanceText.text = _brain.BrainData.distance.ToString();
@@ -150,7 +150,7 @@ namespace InGame
             {
                 multiplierUpgradeText = "+1 Intellect";
             }
-            _upgradeMultiplierCost.text = string.Format(multiplierUpgradeText + "\nCost: {0} NP", multiplierUpgradeCost);
+            _upgradeMultiplierCost.text = string.Format(multiplierUpgradeText + "\nCost: {0} NP", multiplierUpgradeCost.ToString(ECurrencyType.NP));
 
             // limit upgrade btn text
             _inputMap.Clear();
@@ -158,8 +158,8 @@ namespace InGame
             _inputMap.Add("upgradeCount", new UpArrowNotation(_brain.BrainData.limitUpgradeCount));
             _inputMap.Add("tpu002", new UpArrowNotation(UserData.TPUpgrades[2].UpgradeCount));
             UpArrowNotation limitUpgradeCost = Managers.Definition.CalcEquation(_inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainLimitUpgradeCostEquation));
-            string limitUpgradeText = $"Break Limit to {_brain.GetNextIntellectLimit()}";
-            _upgradeLimitCost.text = string.Format(limitUpgradeText + "\nCost: {0} NP", limitUpgradeCost);
+            string limitUpgradeText = $"Break Limit to {_brain.GetNextIntellectLimit().ToString(ECurrencyType.INTELLECT)}";
+            _upgradeLimitCost.text = string.Format(limitUpgradeText + "\nCost: {0} NP", limitUpgradeCost.ToString(ECurrencyType.NP));
         }
 
         public void OnClick_DecomposeBrain()
