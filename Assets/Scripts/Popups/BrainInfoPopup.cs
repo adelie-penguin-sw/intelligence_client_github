@@ -22,6 +22,7 @@ namespace InGame
         [SerializeField] private GameObject _multiplierArea;
         [SerializeField] private GameObject _storedNPArea;
         [SerializeField] private GameObject _distanceArea;
+        [SerializeField] private GameObject _statusArea;
 
         [SerializeField] private Brain _brain;
 
@@ -32,6 +33,7 @@ namespace InGame
         [SerializeField] private TextMeshProUGUI _multiplierText;
         [SerializeField] private TextMeshProUGUI _npText;
         [SerializeField] private TextMeshProUGUI _distanceText;
+        [SerializeField] private TextMeshProUGUI _statusText;
         [SerializeField] private TextMeshProUGUI _upgradeMultiplierCost;
         [SerializeField] private TextMeshProUGUI _upgradeLimitCost;
         [SerializeField] private TextMeshProUGUI _decomposeReward;
@@ -135,6 +137,28 @@ namespace InGame
             // current distance
             _distanceText.text = _brain.BrainData.distance.ToString();
 
+            // current status
+            if (_brain.ReceiverIdList.Count == 0)
+            {
+                _statusText.text = "Disconnected";
+                _statusText.color = new Color32(255, 0, 0, 255);
+            }
+            else if (_brain.Intellect.Top3Layer[0] == 0f)
+            {
+                _statusText.text = "Idle";
+                _statusText.color = new Color32(255, 255, 255, 255);
+            }
+            else if (_brain.IsLocked)
+            {
+                _statusText.text = "Locked At Limit";
+                _statusText.color = new Color32(255, 0, 0, 255);
+            }
+            else
+            {
+                _statusText.text = "Working";
+                _statusText.color = new Color32(255, 255, 255, 255);
+            }
+
             // multiplier upgrade btn text
             _inputMap.Clear();
             _inputMap.Add("upgradeCount", new UpArrowNotation(_brain.BrainData.multiplierUpgradeCount));
@@ -214,11 +238,12 @@ namespace InGame
             _upgradeMultiplierBtn.gameObject.SetActive(isNormalBrain);
             _upgradeLimitBtn.gameObject.SetActive(isNormalBrain);
 
-            // 코어 브레인은 증폭계수, NP축적량, 거리 개념이 필요하지 않으므로 표시영역 모두 비활성화
+            // 코어 브레인은 증폭계수, NP축적량, 거리, 상태 개념이 필요하지 않으므로 표시영역 모두 비활성화
             _intellectLimitArea.SetActive(isNormalBrain);
             _multiplierArea.SetActive(isNormalBrain && UserData.TPUpgrades[0].UpgradeCount > 0);    // 증폭계수 언락 전까지는 표시영역 비활성화
             _storedNPArea.SetActive(isNormalBrain);
-            _distanceArea.SetActive(isNormalBrain);
+            _distanceArea.SetActive(isNormalBrain && _brain.ReceiverIdList.Count > 0);              // 네트워크에 연결하기 전까지는 표시영역 비활성화
+            _statusArea.SetActive(isNormalBrain);
         }
     }
 }
