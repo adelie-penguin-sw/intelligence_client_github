@@ -64,12 +64,12 @@ namespace MainTab
                 inputMap.Clear();
                 inputMap.Add("coreBrainIntellect", UserData.CoreIntellect);
                 inputMap.Add("tpu027", new UpArrowNotation(UserData.TPUpgrades[27].UpgradeCount));
-                _tpRewardTextComplete.text = Managers.Definition.CalcEquationToStringForKey(inputMap, DefinitionKey.tpRewardForReset) + " TP";
+                _tpRewardTextComplete.text = Managers.Definition.CalcEquationForKey(inputMap, DefinitionKey.tpRewardForReset).ToString(ECurrencyType.TP) + " TP";
 
                 inputMap.Clear();
                 inputMap.Add("coreBrainIntellect", UserData.CoreIntellect);
                 inputMap.Add("tpu004", UserData.CoreIntellect);
-                _multiplierRewardTextComplete.text = "x" + Managers.Definition.CalcEquationToStringForKey(inputMap, DefinitionKey.multiplierRewardForReset) + " Mult.";
+                _multiplierRewardTextComplete.text = "x" + Managers.Definition.CalcEquationForKey(inputMap, DefinitionKey.multiplierRewardForReset).ToString(ECurrencyType.MULTIPLIER) + " Mult.";
             }
             else
             {
@@ -80,12 +80,12 @@ namespace MainTab
                 inputMap.Clear();
                 inputMap.Add("coreBrainIntellect", UserData.CoreIntellect);
                 inputMap.Add("tpu027", new UpArrowNotation(UserData.TPUpgrades[27].UpgradeCount));
-                _tpRewardTextIncomplete.text = Managers.Definition.CalcEquationToStringForKey(inputMap, DefinitionKey.tpRewardForReset) + " TP";
+                _tpRewardTextIncomplete.text = Managers.Definition.CalcEquationForKey(inputMap, DefinitionKey.tpRewardForReset).ToString(ECurrencyType.TP) + " TP";
 
                 inputMap.Clear();
                 inputMap.Add("coreBrainIntellect", UserData.CoreIntellect);
                 inputMap.Add("tpu004", UserData.CoreIntellect);
-                _multiplierRewardTextIncomplete.text = "x" + Managers.Definition.CalcEquationToStringForKey(inputMap, DefinitionKey.multiplierRewardForReset) + " Mult.";
+                _multiplierRewardTextIncomplete.text = "x" + Managers.Definition.CalcEquationForKey(inputMap, DefinitionKey.multiplierRewardForReset).ToString(ECurrencyType.MULTIPLIER) + " Mult.";
             }
         }
 
