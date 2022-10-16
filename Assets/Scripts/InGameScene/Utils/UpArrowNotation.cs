@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System;
 using Sirenix.OdinInspector;
+using Unity.Mathematics;
 
 public class UpArrowNotation
 {
@@ -179,7 +180,7 @@ public class UpArrowNotation
                 case ECurrencyType.NP:
                     return (_top3Coeffs[0] * Math.Pow(10, _top3Coeffs[1])).ToString("N" + (_top3Coeffs[1] < 4 ? "2" : "0"));
                 case ECurrencyType.TP:
-                    return (_top3Coeffs[0] * Math.Pow(10, _top3Coeffs[1])).ToString("N0");
+                    return Math.Floor(_top3Coeffs[0] * Math.Pow(10, _top3Coeffs[1])).ToString("N0");
             }
         }
 
