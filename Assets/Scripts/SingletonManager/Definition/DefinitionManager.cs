@@ -314,6 +314,15 @@ public class DefinitionManager
         return CalcPostfix(inputMap, ConvEquationToPostfix(equation));
     }
 
+    public UpArrowNotation CalcEquationForStr(Dictionary<string, UpArrowNotation> inputMap, string equation)
+    {
+        return CalcPostfix(inputMap, ConvEquationToPostfix(equation));
+    }
+    public UpArrowNotation CalcEquationForKey(Dictionary<string, UpArrowNotation> inputMap, string equationKey)
+    {
+        return CalcPostfix(inputMap, ConvEquationToPostfix(GetData<string>(equationKey)));
+    }
+
     public string CalcEquationToStringForStr(Dictionary<string, UpArrowNotation> inputMap, string equation)
     {
         return CalcPostfix(inputMap, ConvEquationToPostfix(equation)).ToString();
