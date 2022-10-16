@@ -33,6 +33,9 @@ namespace MainTab
 
             _expGoalTextComplete.text = UserData.ExpGoalStr;
             _expGoalTextIncomplete.text = UserData.ExpGoalStr;
+
+            _multiplierRewardTextComplete.gameObject.SetActive(UserData.TPUpgrades[0].UpgradeCount > 0);
+            _multiplierRewardTextIncomplete.gameObject.SetActive(UserData.TPUpgrades[0].UpgradeCount > 0);
         }
 
         private Hashtable _sendData = new Hashtable();
@@ -68,7 +71,7 @@ namespace MainTab
 
                 inputMap.Clear();
                 inputMap.Add("coreBrainIntellect", UserData.CoreIntellect);
-                inputMap.Add("tpu004", UserData.CoreIntellect);
+                inputMap.Add("tpu004", new UpArrowNotation(UserData.TPUpgrades[4].UpgradeCount));
                 _multiplierRewardTextComplete.text = "x" + Managers.Definition.CalcEquationForKey(inputMap, DefinitionKey.multiplierRewardForReset).ToString(ECurrencyType.MULTIPLIER) + " Mult.";
             }
             else
@@ -84,7 +87,7 @@ namespace MainTab
 
                 inputMap.Clear();
                 inputMap.Add("coreBrainIntellect", UserData.CoreIntellect);
-                inputMap.Add("tpu004", UserData.CoreIntellect);
+                inputMap.Add("tpu004", new UpArrowNotation(UserData.TPUpgrades[4].UpgradeCount));
                 _multiplierRewardTextIncomplete.text = "x" + Managers.Definition.CalcEquationForKey(inputMap, DefinitionKey.multiplierRewardForReset).ToString(ECurrencyType.MULTIPLIER) + " Mult.";
             }
         }

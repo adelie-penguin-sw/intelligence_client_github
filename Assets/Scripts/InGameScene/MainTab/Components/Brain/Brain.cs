@@ -109,6 +109,7 @@ namespace MainTab
             SetNumText(Intellect);
             SetMulText(Multiplier);
 
+            _textMul.gameObject.SetActive(_brainData.brainType != EBrainType.GUIDEBRAIN && UserData.TPUpgrades[0].UpgradeCount > 0);
             _isLocked = false;
         }
 
