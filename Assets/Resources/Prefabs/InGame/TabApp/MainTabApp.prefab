@@ -133,10 +133,10 @@ MonoBehaviour:
     _prevMousePos: {x: 0, y: 0, z: 0}
     _dragSpeed: 0.003
     _mainCamera: {fileID: 0}
-    _minSize: 1
+    _minSize: 4
     _maxSize: 20
     _resizeSpeedScale: 2
-    _curCameraSize: 5
+    _curCameraSize: 10
     _waitBrainClickTime: 0.3
     _brainNetwork:
       _channelList: []
