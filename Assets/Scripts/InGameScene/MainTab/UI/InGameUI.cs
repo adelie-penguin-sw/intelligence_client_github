@@ -105,6 +105,16 @@ namespace InGame
             _txtUsername.text = UserData.Username;
         }
 
+        public void OnClick_DropDownMenu()
+        {
+            DropDownMenu dropDownMenu = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "DropDownMenu", PopupType.NORMAL)
+                                .GetComponent<DropDownMenu>();
+            if (dropDownMenu != null)
+            {
+                dropDownMenu.Init();
+            }
+        }
+
         public void OnClick_LeaderBoard()
         {
             LeaderboardPopup leaderboardPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "LeaderboardPopup", PopupType.NORMAL)
