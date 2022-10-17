@@ -65,10 +65,6 @@ namespace InGame
                     _deletableSenderList.Add(brainNetwork.GetBrainForID(deletableSenderID));
                 }
             }
-            //bfs or dfs 사용해서 쭉쭉 파고들어가서 연결된 모든 브레인들의 braindata 가져온 후에 보여주면 되지 않을까..? 아마도,,?
-            //근데 큰 문제는 senderidList가 지금 뭘 넣어주고있는게 없어서 가져올 수 있는게 없어요. --> 일단 대충 구현은 했슴당
-            //복잡하게 구현하면 가져올 수 있을 것 같긴한데 금욜날 대면으로 회의하면서 어떻게 받아올지 논의 하면 좋을듯??
-            //서버에서 reverse structure비슷하게 만들어서 보내주면 엄청 쉬워지긴한데 지금 서버 짜여져있는 코드 보고 결정해야할듯
 
             UpdateInfo();
         }
@@ -92,13 +88,12 @@ namespace InGame
                 UpArrowNotation totalSenderNP = new UpArrowNotation(0);
                 foreach (Brain brain in _deletableSenderList)
                 {
-                    //totalSenderNP += Exchange.GetNPRewardForBrainDecomposition(brain.Intellect);
                     _inputMap.Clear();
                     _inputMap.Add("intellect", brain.Intellect);
                     _inputMap.Add("tpu008", new UpArrowNotation(UserData.TPUpgrades[8].UpgradeCount));
                     totalSenderNP += Managers.Definition.CalcEquation(_inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainDecomposingGainEquation));
                 }
-                _decomposeReward.text = _brain.SenderIdList.Count == 0 ?
+                _decomposeReward.text = _deletableSenderList.Count == 0 ?
                     string.Format("Decompose\nfor {0} NP\n", storedNP.ToString(ECurrencyType.NP)) :
                     string.Format("Decompose\nfor {0} NP\n+ {1} NP", storedNP.ToString(ECurrencyType.NP), totalSenderNP.ToString(ECurrencyType.NP));   // "총" 획득 NP량 계산해서 표시
             }
