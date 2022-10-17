@@ -13,6 +13,7 @@ namespace MainTab
         private Dictionary<string, UpArrowNotation> _inputMap = new Dictionary<string, UpArrowNotation>();
 
         private bool _isCollision;
+        private long _freeBrainsCount;
 
         private Brain _senderBrain = null;
         private Brain _receiverBrain = null;
@@ -25,6 +26,7 @@ namespace MainTab
         public void Set(ENPCostType type)
         {
             _costType = type;
+            _freeBrainsCount = UserData.TPUpgrades[5].UpgradeCount;
             this.gameObject.SetActive(true);
         }
         public void AdvanceTime(float dt_sec)
@@ -40,13 +42,18 @@ namespace MainTab
                             _costText.text = "Too close to other brain";
                             _costText.color = new Color32(255, 0, 0, 255);
                         }
+                        else if (_freeBrainsCount > UserData.TotalBrainGenCount - 1)
+                        {
+                            _costText.text = $"Free brains remaining: {_freeBrainsCount - UserData.TotalBrainGenCount + 1}/{_freeBrainsCount}";
+                            _costText.color = new Color32(0, 255, 0, 255);
+                        }
                         else
                         {
                             Vector2 curpos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                             float physicalDistance = curpos.magnitude;
 
                             _inputMap.Add("physicalDistance", new UpArrowNotation(physicalDistance));
-                            _inputMap.Add("pastBrainGenCount", new UpArrowNotation(UserData.TotalBrainGenCount));
+                            _inputMap.Add("pastBrainGenCount", new UpArrowNotation(UserData.TotalBrainGenCount - _freeBrainsCount));
                             _inputMap.Add("tpu011", new UpArrowNotation(UserData.TPUpgrades[11].UpgradeCount));
                             _inputMap.Add("tpu021", new UpArrowNotation(UserData.TPUpgrades[21].UpgradeCount));
 
