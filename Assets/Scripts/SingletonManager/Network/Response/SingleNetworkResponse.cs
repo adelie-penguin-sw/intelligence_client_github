@@ -179,14 +179,39 @@ public class SingleNetworkWrapper
     public List<long> GetAllDeletableSenderIdListForID(long id)
     {
         List<long> resultList = new List<long>();
+        Queue<long> toVisitQueue = new Queue<long>();
 
-        BrainData data = GetBrainDataForID(id);
-
-        foreach (long deletableSenderID in data.deletableSenderIds)
+        resultList.Add(id);
+        foreach (long brainId in GetBrainDataForID(id).senderIds)
         {
-            resultList.Add(deletableSenderID);
-            resultList.AddRange(GetAllDeletableSenderIdListForID(deletableSenderID));
+            toVisitQueue.Enqueue(brainId);
         }
+
+        long currentBrainId;
+        bool isAllReceiversDeletable;
+        while (toVisitQueue.Count > 0)
+        {
+            currentBrainId = toVisitQueue.Dequeue();
+            isAllReceiversDeletable = true;
+            foreach (long brainId in GetBrainDataForID(currentBrainId).receiverIds)
+            {
+                if (!resultList.Contains(brainId))
+                {
+                    isAllReceiversDeletable = false;
+                    break;
+                }
+            }
+            if (!resultList.Contains(currentBrainId) && isAllReceiversDeletable)
+            {
+                resultList.Add(currentBrainId);
+                foreach (long brainId in GetBrainDataForID(currentBrainId).senderIds)
+                {
+                    if (!toVisitQueue.Contains(brainId)) toVisitQueue.Enqueue(brainId);
+                }
+            }
+        }
+        resultList.RemoveAt(0);
+
         return resultList;
     }
 
