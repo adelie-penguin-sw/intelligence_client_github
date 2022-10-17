@@ -38,7 +38,14 @@ namespace InGame
 
         public void OnClick_HelpButton()
         {
+            HelpPopup dropDownMenu = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "HelpPopup", PopupType.NORMAL)
+                                .GetComponent<HelpPopup>();
+            if (dropDownMenu != null)
+            {
+                dropDownMenu.Init();
+            }
 
+            Dispose();
         }
 
         public void OnClick_AboutButton()
