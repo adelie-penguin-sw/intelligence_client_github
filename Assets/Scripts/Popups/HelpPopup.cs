@@ -7,9 +7,8 @@ namespace InGame
 {
     public class HelpPopup : PopupBase
     {
-        [SerializeField] private GameObject _howToPlayTabContent;
-        [SerializeField] private GameObject _termsTabContent;
-        [SerializeField] private GameObject _scrollBar;
+        [SerializeField] private GameObject _howToPlayTabScrollView;
+        [SerializeField] private GameObject _termsTabScrollView;
 
         [SerializeField] private Image _howToPlayTabButton;
         [SerializeField] private Image _termsTabButton;
@@ -17,19 +16,16 @@ namespace InGame
         public override void Init()
         {
             base.Init();
-            _scrollBar.SetActive(true);
         }
 
         public override void Set()
         {
             base.Set();
-            _scrollBar.SetActive(true);
         }
 
         public override void AdvanceTime(float dt_sec)
         {
             base.AdvanceTime(dt_sec);
-            _scrollBar.SetActive(true);
         }
 
         public override void Dispose()
@@ -39,8 +35,8 @@ namespace InGame
 
         public void OnClick_HowToPlayButton()
         {
-            _howToPlayTabContent.SetActive(true);
-            _termsTabContent.SetActive(false);
+            _howToPlayTabScrollView.SetActive(true);
+            _termsTabScrollView.SetActive(false);
 
             _howToPlayTabButton.color = new Color32(94, 123, 125, 255);
             _termsTabButton.color = new Color32(38, 49, 51, 255);
@@ -48,8 +44,8 @@ namespace InGame
 
         public void OnClick_TermsButton()
         {
-            _howToPlayTabContent.SetActive(false);
-            _termsTabContent.SetActive(true);
+            _howToPlayTabScrollView.SetActive(false);
+            _termsTabScrollView.SetActive(true);
 
             _howToPlayTabButton.color = new Color32(38, 49, 51, 255);
             _termsTabButton.color = new Color32(94, 123, 125, 255);
