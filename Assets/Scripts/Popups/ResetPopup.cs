@@ -15,15 +15,21 @@ namespace MainTab
         [SerializeField] private GameObject _cancelButton;
 
         [SerializeField] private TextMeshProUGUI _expLvTextComplete;
+        [SerializeField] private TextMeshProUGUI _attemptsTextComplete;
         [SerializeField] private TextMeshProUGUI _expGoalTextComplete;
         [SerializeField] private TextMeshProUGUI _elapesdTimeTextComplete;
         [SerializeField] private TextMeshProUGUI _multiplierRewardTextComplete;
         [SerializeField] private TextMeshProUGUI _tpRewardTextComplete;
 
-        [SerializeField] private TextMeshProUGUI _currentCoreIntellectTextIncomplete;
+        [SerializeField] private TextMeshProUGUI _expLvTextIncomplete;
+        [SerializeField] private TextMeshProUGUI _attemptsTextIncomplete;
         [SerializeField] private TextMeshProUGUI _expGoalTextIncomplete;
+        [SerializeField] private TextMeshProUGUI _currentCoreIntellectTextIncomplete;
         [SerializeField] private TextMeshProUGUI _multiplierRewardTextIncomplete;
         [SerializeField] private TextMeshProUGUI _tpRewardTextIncomplete;
+
+        [SerializeField] private GameObject _multiplierRewardComplete;
+        [SerializeField] private GameObject _multiplierRewardIncomplete;
 
         private Dictionary<string, UpArrowNotation> inputMap = new Dictionary<string, UpArrowNotation>();
 
@@ -34,8 +40,8 @@ namespace MainTab
             _expGoalTextComplete.text = UserData.ExpGoalStr;
             _expGoalTextIncomplete.text = UserData.ExpGoalStr;
 
-            _multiplierRewardTextComplete.gameObject.SetActive(UserData.TPUpgrades[0].UpgradeCount > 0);
-            _multiplierRewardTextIncomplete.gameObject.SetActive(UserData.TPUpgrades[0].UpgradeCount > 0);
+            _multiplierRewardComplete.SetActive(UserData.TPUpgrades[0].UpgradeCount > 0);
+            _multiplierRewardIncomplete.gameObject.SetActive(UserData.TPUpgrades[0].UpgradeCount > 0);
         }
 
         private Hashtable _sendData = new Hashtable();
@@ -49,20 +55,22 @@ namespace MainTab
             _textGroupIncomplete.SetActive(!complete);
             _cancelButton.SetActive(!complete);
 
+            _expLvTextComplete.text = $"Lv. {UserData.ExperimentLevel}";
+            _attemptsTextComplete.text = $"{UserData.ResetCounts[UserData.ExperimentLevel] + 1} Attempts";
+
             if (complete)
             {
                 _titleText.text = "Experiment Complete";
-                _expLvTextComplete.text = string.Format("You've just completed\n<b>Lv.{0} experiment</b>\nafter <b>{1} attempt(s).</b>", UserData.ExperimentLevel, UserData.ResetCounts[UserData.ExperimentLevel] + 1);
 
-                // 해당 레벨의 실험을 최초 시작하고부터 성공하기까지 소요된 총 시간, 분, 초가 들어가야함!!
-                // 팝업 내에서 시간이 계속 흐르는 문제가 있음
                 long elapsedSecsNano = DateTimeOffset.Now.ToUnixTimeMilliseconds() * 1000000 - UserData.ExperimentStartTime;
                 long elapsedSecs = elapsedSecsNano / 1000000000;
                 long elapsedMins = elapsedSecs / 60;
                 elapsedSecs %= 60;
                 long elapsedHours = elapsedMins / 60;
                 elapsedMins %= 60;
-                _elapesdTimeTextComplete.text = string.Format("{0:D4}h {1:D2}m {2:D2}s", elapsedHours, elapsedMins, elapsedSecs);
+                long elapsedDays = elapsedHours / 24;
+                elapsedHours %= 24;
+                _elapesdTimeTextComplete.text = string.Format("{0:D4}d {0:D2}h {1:D2}m {2:D2}s", elapsedDays, elapsedHours, elapsedMins, elapsedSecs);
 
                 inputMap.Clear();
                 inputMap.Add("coreBrainIntellect", UserData.CoreIntellect);
@@ -72,11 +80,11 @@ namespace MainTab
                 inputMap.Clear();
                 inputMap.Add("coreBrainIntellect", UserData.CoreIntellect);
                 inputMap.Add("tpu004", new UpArrowNotation(UserData.TPUpgrades[4].UpgradeCount));
-                _multiplierRewardTextComplete.text = "x" + Managers.Definition.CalcEquationForKey(inputMap, DefinitionKey.multiplierRewardForReset).ToString(ECurrencyType.MULTIPLIER) + " Mult.";
+                _multiplierRewardTextComplete.text = "x" + Managers.Definition.CalcEquationForKey(inputMap, DefinitionKey.multiplierRewardForReset).ToString(ECurrencyType.MULTIPLIER);
             }
             else
             {
-                _titleText.text = "Reset Network";
+                _titleText.text = "Reset Now?";
 
                 _currentCoreIntellectTextIncomplete.text = UserData.CoreIntellect.ToString();
 
@@ -88,7 +96,7 @@ namespace MainTab
                 inputMap.Clear();
                 inputMap.Add("coreBrainIntellect", UserData.CoreIntellect);
                 inputMap.Add("tpu004", new UpArrowNotation(UserData.TPUpgrades[4].UpgradeCount));
-                _multiplierRewardTextIncomplete.text = "x" + Managers.Definition.CalcEquationForKey(inputMap, DefinitionKey.multiplierRewardForReset).ToString(ECurrencyType.MULTIPLIER) + " Mult.";
+                _multiplierRewardTextIncomplete.text = "x" + Managers.Definition.CalcEquationForKey(inputMap, DefinitionKey.multiplierRewardForReset).ToString(ECurrencyType.MULTIPLIER);
             }
         }
 
