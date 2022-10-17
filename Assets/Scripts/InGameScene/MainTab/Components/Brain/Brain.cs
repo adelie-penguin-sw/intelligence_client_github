@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 using System;
@@ -16,8 +17,15 @@ namespace MainTab
         [SerializeField] private UpArrowNotation _currentIntellectLimit;
         [SerializeField] private UpArrowNotation _fullMultiplier;
 
+        [SerializeField] private Canvas _intellectVisualizerCanvas;
+        [SerializeField] private Image _coeff1Visualizer;
+        [SerializeField] private Image _coeff2Visualizer;
+        [SerializeField] private Image _coeff3Visualizer;
+
         [SerializeField] private bool _isCollision = false;
         [SerializeField] private bool _isLocked = false;
+
+        private MainTabModel _mainTabModel = null;
 
         #region property
         public HashSet<long> ReceiverIdList { get { return _brainData.receiverIds; } }
@@ -102,10 +110,11 @@ namespace MainTab
         }
         #endregion
 
-        public void Init(BrainData data, Dictionary<long, Brain> brainNetwork = null)
+        public void Init(BrainData data, Dictionary<long, Brain> brainNetwork = null, MainTabModel mainTabModel = null)
         {
             _brainData = data;
             _brainNetwork = brainNetwork;
+            _mainTabModel = mainTabModel;
             if (_brainData.brainType == EBrainType.GUIDEBRAIN)
                 gameObject.SetActive(false);
             Set();
@@ -156,15 +165,7 @@ namespace MainTab
                 {
                     UpdateLockedStatus();
                 }
-            }
-        }
-
-        private async void UpdateLockedStatus()
-        {
-            _isLocked = true;
-            if(await Managers.Network.API_LoadUserData())
-            {
-                Managers.Notification.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
+                UpdateIntellectVisualizer();
             }
         }
 
@@ -174,7 +175,33 @@ namespace MainTab
             _isLocked = false;
             _collisionCount = 0;
             Managers.Pool.DespawnObject(EPrefabsType.BRAIN, gameObject);
+        }
 
+        private void UpdateIntellectVisualizer()
+        {
+            if (_mainTabModel != null && _intellectVisualizerCanvas != null)
+            {
+                Vector3 relativePos = _mainTabModel.MainCamera.WorldToViewportPoint(transform.position);
+                bool isCloseEnough = _mainTabModel.CurCameraSize < 15;
+                bool isOnScreen = relativePos.x > -2 && relativePos.x < 2 && relativePos.y > -2 && relativePos.y < 2;
+                _intellectVisualizerCanvas.gameObject.SetActive(isCloseEnough && isOnScreen);
+            }
+
+            if (_coeff1Visualizer != null && _coeff2Visualizer != null && _coeff3Visualizer != null)
+            {
+                _coeff1Visualizer.fillAmount = (float)Intellect.Top3Layer[0] / 10f;
+                _coeff2Visualizer.fillAmount = (float)Intellect.Top3Layer[1] / 10f;
+                _coeff3Visualizer.fillAmount = (float)Intellect.Top3Layer[2] / 10f;
+            }
+        }
+
+        private async void UpdateLockedStatus()
+        {
+            _isLocked = true;
+            if (await Managers.Network.API_LoadUserData())
+            {
+                Managers.Notification.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
+            }
         }
 
         /// <summary>

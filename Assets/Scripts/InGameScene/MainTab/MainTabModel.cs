@@ -38,7 +38,7 @@ namespace MainTab
         }
 
         [BoxGroup("Camera")]
-        [SerializeField] private float _minSize = 1;
+        [SerializeField] private float _minSize = 4;
 
         [BoxGroup("Camera")]
         [SerializeField] private float _maxSize = 20;
@@ -47,7 +47,7 @@ namespace MainTab
         [SerializeField] private float _resizeSpeedScale = 2;
 
         [BoxGroup("Camera")]
-        [SerializeField] private float _curCameraSize = 5;
+        [SerializeField] private float _curCameraSize = 10;
         public float CurCameraSize
         {
             get { return _curCameraSize; }

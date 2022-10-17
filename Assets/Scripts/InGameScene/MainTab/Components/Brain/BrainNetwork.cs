@@ -9,6 +9,7 @@ namespace MainTab
     public class BrainNetwork
     {
         private Transform _brainLayer;
+        private MainTabModel _mainTabModel;
         private int _resetCount;
         [ShowInInspector] private Dictionary<long, Brain> _brainNetWork = new Dictionary<long, Brain>();
         [SerializeField] private List<Channel> _channelList = new List<Channel>();
@@ -24,9 +25,10 @@ namespace MainTab
 
         private UpArrowNotation _experimentGoal = new UpArrowNotation();
 
-        public void Init(Transform brainLayer)
+        public void Init(Transform brainLayer, MainTabModel mainTabModel)
         {
             _brainLayer = brainLayer;
+            _mainTabModel = mainTabModel;
         }
 
         public void Set()
@@ -78,13 +80,13 @@ namespace MainTab
                     if (id == 0)
                     {
                         Brain brain = Managers.Pool.GrabPrefabs(EPrefabsType.BRAIN, "CoreBrain", _brainLayer).GetComponent<Brain>();
-                        brain.Init(data, _brainNetWork);
+                        brain.Init(data, _brainNetWork, _mainTabModel);
                         _brainNetWork.Add(id, brain);
                     }
                     else
                     {
                         Brain brain = Managers.Pool.GrabPrefabs(EPrefabsType.BRAIN, "Brain", _brainLayer).GetComponent<Brain>();
-                        brain.Init(data, _brainNetWork);
+                        brain.Init(data, _brainNetWork, _mainTabModel);
                         _brainNetWork.Add(id, brain);
                     }
                     
