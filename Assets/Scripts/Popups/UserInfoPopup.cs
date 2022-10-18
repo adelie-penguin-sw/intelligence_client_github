@@ -41,7 +41,7 @@ public class UserInfoPopup : PopupBase
         _txtCoreIntellect.text = Managers.Definition.GetUIText(UITextKey.userInfoPopupCoreIntellectValue, UserData.CoreIntellect.ToString(ECurrencyType.INTELLECT));
         _txtNP.text = Managers.Definition.GetUIText(UITextKey.userInfoPopupNPValue, UserData.NP.ToString(ECurrencyType.NP));
         _txtTP.text = Managers.Definition.GetUIText(UITextKey.userInfoPopupTPValue, UserData.TP.ToString(ECurrencyType.TP));
-        _txtTotalBrainGenCount.text = Managers.Definition.GetUIText(UITextKey.userInfoPopupTPValue, (UserData.TotalBrainGenCount - 1).ToString());
-        _txtMaxDepth.text = Managers.Definition.GetUIText(UITextKey.userInfoPopupTPValue, UserData.MaxDepth.ToString());
+        _txtTotalBrainGenCount.text = Managers.Definition.GetUIText(UITextKey.userInfoPopupTotalBrainGenCountValue, (UserData.TotalBrainGenCount - 1).ToString());
+        _txtMaxDepth.text = Managers.Definition.GetUIText(UITextKey.userInfoPopupMaxDepthValue, UserData.MaxDepth.ToString());
     }
 }
