@@ -1,14 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 namespace InGame
 {
     public class DropDownMenu : PopupBase
     {
+        [SerializeField] private TextMeshProUGUI _statisticsText;
+        [SerializeField] private TextMeshProUGUI _optionsText;
+        [SerializeField] private TextMeshProUGUI _helpText;
+        [SerializeField] private TextMeshProUGUI _aboutText;
+
         public override void Init()
         {
             base.Init();
+            _statisticsText.text = Managers.Definition.GetUIText(UITextKey.dropDownMenuItemTextStatistics);
+            _optionsText.text = Managers.Definition.GetUIText(UITextKey.dropDownMenuItemTextOptions);
+            _helpText.text = Managers.Definition.GetUIText(UITextKey.dropDownMenuItemTextHelp);
+            _aboutText.text = Managers.Definition.GetUIText(UITextKey.dropDownMenuItemTextAbout);
         }
 
         public override void Set()

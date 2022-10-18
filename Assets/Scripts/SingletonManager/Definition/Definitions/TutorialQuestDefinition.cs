@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TutorialQuestDefinition : MonoBehaviour
+public class TutorialQuestDefinition
 {
     public int key;
     public string text;

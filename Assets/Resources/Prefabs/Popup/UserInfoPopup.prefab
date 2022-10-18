@@ -652,6 +652,13 @@ MonoBehaviour:
   _closeBtn:
   - {fileID: 2173094539673798791}
   _txtUserName: {fileID: 9140441336105693429}
+  _txtExperimentLevelKey: {fileID: 6394551084277554367}
+  _txtAttemptsKey: {fileID: 9007043612927562311}
+  _txtCoreIntellectKey: {fileID: 7670146316325162868}
+  _txtNPKey: {fileID: 1955043823937378858}
+  _txtTPKey: {fileID: 4943097507387418490}
+  _txtTotalBrainGenCountKey: {fileID: 4158026528926118232}
+  _txtMaxDepthKey: {fileID: 5518407712686553305}
   _txtExperimentLevel: {fileID: 5446445616832516525}
   _txtAttempts: {fileID: 2760612070653679469}
   _txtCoreIntellect: {fileID: 5142563388676913664}
