@@ -56,7 +56,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 552bbc188b6044d72968e76561d3d354, type: 2}
+  - {fileID: 2100000, guid: 9bdffbda28cc62e4f8ed05512d87fe4e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -100,8 +100,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1c579ae45bd9bc849807e76ca0b95b11, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 552bbc188b6044d72968e76561d3d354, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 27d33256482e7dc4f9751cbe43b7fd82, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 9bdffbda28cc62e4f8ed05512d87fe4e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -273,14 +273,15 @@ MonoBehaviour:
   _textMul: {fileID: 2082564065383693559}
   _brainData:
     id: 0
+    multiplierUpgradeCount: 0
+    limitUpgradeCount: 0
     distance: -1
     brainType: 0
     coordinates: {x: 0, y: 0}
     skinCode: 0
     UpgradeCondition: 0
-    lastCalcTime: 0
   _isCollision: 0
-  _lastCalcTime: 0
+  _isLocked: 0
 --- !u!58 &3377635881117314608
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -374,7 +375,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 552bbc188b6044d72968e76561d3d354, type: 2}
+  - {fileID: 2100000, guid: 9bdffbda28cc62e4f8ed05512d87fe4e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -418,8 +419,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: x1
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1c579ae45bd9bc849807e76ca0b95b11, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 552bbc188b6044d72968e76561d3d354, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 27d33256482e7dc4f9751cbe43b7fd82, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 9bdffbda28cc62e4f8ed05512d87fe4e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
