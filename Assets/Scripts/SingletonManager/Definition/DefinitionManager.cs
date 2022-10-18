@@ -53,6 +53,12 @@ public class DefinitionManager
                     break;
                 case "[][2]int":
                     if (!_definitions[EDefType.BASE].Contains((string)li["name"]))
+                        _definitions[EDefType.BASE].Add((string)li["name"], ConvertToIntPairList(value));
+                    else
+                        _definitions[EDefType.BASE][(string)li["name"]] = ConvertToIntPairList(value);
+                    break;
+                case "[]int":
+                    if (!_definitions[EDefType.BASE].Contains((string)li["name"]))
                         _definitions[EDefType.BASE].Add((string)li["name"], ConvertToIntList(value));
                     else
                         _definitions[EDefType.BASE][(string)li["name"]] = ConvertToIntList(value);
@@ -134,6 +140,26 @@ public class DefinitionManager
         {"(", 0},
     };
 
+    private List<int> ConvertToIntList(string data)
+    {
+        List<int> result = new List<int>();
+
+        data = data.Substring(1, data.Length - 2);
+        string[] intStrList = data.Replace(", ", "/").Split('/');
+
+        foreach (string intStr in intStrList)
+        {
+            int currentInt;
+            if (!int.TryParse(intStr, out currentInt))
+            {
+                Debug.LogErrorFormat("Int Parse Error : {0}", currentInt);
+            }
+            result.Add(currentInt);
+        }
+
+        return result;
+    }
+
     private List<UpArrowNotation> ConvertToUANList(string data)
     {
         List<UpArrowNotation> result = new List<UpArrowNotation>();
@@ -147,9 +173,9 @@ public class DefinitionManager
         {
             string[] coeffs = segment.Replace(", ", "/").Split('/');
             float top1Coeff, top2Coeff, top3Coeff;
-            if(!float.TryParse(coeffs[0],out top1Coeff))
+            if (!float.TryParse(coeffs[0], out top1Coeff))
             {
-                Debug.LogErrorFormat("Float Parse Error : {0}",coeffs[0]);
+                Debug.LogErrorFormat("Float Parse Error : {0}", coeffs[0]);
             }
             if (!float.TryParse(coeffs[1], out top2Coeff))
             {
@@ -166,7 +192,7 @@ public class DefinitionManager
         return result;
     }
 
-    private List<List<long>> ConvertToIntList(string data)
+    private List<List<long>> ConvertToIntPairList(string data)
     {
         List<List<long>> result = new List<List<long>>();
         int initlength = data.Length;

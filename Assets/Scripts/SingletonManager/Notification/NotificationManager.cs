@@ -245,6 +245,7 @@ public enum EDataParamKey
     CLASS_CHANNEL,
     STRUCT_BRAINRELATION,
     BRAIN_ID,
+    BULK_UPGRADE_COUNT, 
     EGAMESTATE,
 
 }
