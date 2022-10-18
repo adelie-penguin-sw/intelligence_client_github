@@ -57,7 +57,7 @@ public class UITextKey
     public const string npTerm = "NPTerm";
     public const string npDescription = "NPDescription";
     public const string tpTerm = "TPTerm";
-    public const string tpPDescription = "TPDescription";
+    public const string tpDescription = "TPDescription";
     #endregion
 
 

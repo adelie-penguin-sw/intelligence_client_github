@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UITextDefinition : MonoBehaviour
+public class UITextDefinition
 {
     public string txtName;
     public Dictionary<ELanguage, string> text = new Dictionary<ELanguage, string>();
