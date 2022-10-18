@@ -75,7 +75,18 @@ public class DefinitionManager
         if (res == null) return false;
         _definitions.Add(EDefType.TUTORIAL_QUEST, new TutorialQuestDefinitions(CSVReader.Read(res)).MakeDict());
         #endregion
+
+        #region UITexts.csv
+        res = await Managers.Network.API_S3Data("UITexts.csv");
+        if (res == null) return false;
+        _definitions.Add(EDefType.UI_TEXTS, new UITextDefinitions(CSVReader.Read(res)).MakeDict());
+        #endregion
         return true;
+    }
+
+    public string GetUIText(string dataName, params string[] formatParams)
+    {
+        return GetData<UITextDefinition>(dataName, EDefType.UI_TEXTS).GetString(formatParams);
     }
 
     public T GetData<T>(string dataName, EDefType type = EDefType.BASE)
@@ -338,4 +349,5 @@ public enum EDefType
     BASE,
     TP_UPGRADE,
     TUTORIAL_QUEST,
+    UI_TEXTS,
 }
