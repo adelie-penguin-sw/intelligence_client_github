@@ -1052,7 +1052,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 993951388051856145}
   m_HandleRect: {fileID: 993951388051856144}
   m_Direction: 2
-  m_Value: 0.12795883
+  m_Value: 1.0000001
   m_Size: 0.8067301
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -3012,7 +3012,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 96.043594, y: 0}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &8539871178428738265
 CanvasRenderer:
@@ -3105,7 +3105,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 5.202881, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -3178,8 +3178,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 0
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1c579ae45bd9bc849807e76ca0b95b11, type: 2}
-  m_sharedMaterial: {fileID: -2457906843445382093, guid: 1c579ae45bd9bc849807e76ca0b95b11, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 27d33256482e7dc4f9751cbe43b7fd82, type: 2}
+  m_sharedMaterial: {fileID: 907008920609416805, guid: 27d33256482e7dc4f9751cbe43b7fd82, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3956,7 +3956,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 293.2036, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &7946885970401164579
 CanvasRenderer:
@@ -4101,7 +4101,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 508.99487}
+  m_AnchoredPosition: {x: 0, y: 358.9949}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &5601122451517658756
@@ -4475,7 +4475,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 5.28125, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -4873,7 +4873,8 @@ MonoBehaviour:
   _popupType: 101
   _prefabType: 0
   _closeBtn: []
-  _sellBtn: {fileID: 772110585050512898}
+  _brain: {fileID: 0}
+  _decomposeBtn: {fileID: 772110585050512898}
   _resetBtn: {fileID: 2429878694255878385}
   _upgradeMultiplierBtn: {fileID: 3860375989257729994}
   _upgradeLimitBtn: {fileID: 1636398403262729870}
@@ -4882,15 +4883,24 @@ MonoBehaviour:
   _storedNPArea: {fileID: 8413464604952663917}
   _distanceArea: {fileID: 7045980443320966295}
   _statusArea: {fileID: 7337754459898679970}
-  _brain: {fileID: 0}
-  _idText: {fileID: 1116976339168513089}
-  _typeText: {fileID: 2177966030429418810}
-  _intellectText: {fileID: 6652986426895747494}
-  _intellectLimitText: {fileID: 6544926787856642274}
-  _multiplierText: {fileID: 3023431268946305766}
-  _npText: {fileID: 2654199899722328264}
-  _distanceText: {fileID: 795654822847140494}
-  _statusText: {fileID: 2932130036748162667}
+  _popupTitle: {fileID: 8088028771257823463}
+  _idKey: {fileID: 7965434003780971213}
+  _typeKey: {fileID: 7815722340378892833}
+  _intellectKey: {fileID: 4567344285981367965}
+  _intellectLimitKey: {fileID: 4972799901659573861}
+  _multiplierKey: {fileID: 670395579644195139}
+  _npKey: {fileID: 3857193886561231354}
+  _distanceKey: {fileID: 314513169204266258}
+  _statusKey: {fileID: 8405088341059930083}
+  _idValue: {fileID: 1116976339168513089}
+  _typeValue: {fileID: 2177966030429418810}
+  _intellectValue: {fileID: 6652986426895747494}
+  _intellectLimitValue: {fileID: 6544926787856642274}
+  _multiplierValue: {fileID: 3023431268946305766}
+  _npValue: {fileID: 2654199899722328264}
+  _distanceValue: {fileID: 795654822847140494}
+  _statusValue: {fileID: 2932130036748162667}
+  _resetButtonText: {fileID: 7743098340848063683}
   _upgradeMultiplierCost: {fileID: 2367493516223963537}
   _upgradeLimitCost: {fileID: 5563148225050178103}
   _decomposeReward: {fileID: 772110584286292262}
@@ -5069,7 +5079,7 @@ MonoBehaviour:
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 1
+  m_ChildControlWidth: 0
   m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
