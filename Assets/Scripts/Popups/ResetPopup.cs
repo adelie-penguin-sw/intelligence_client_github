@@ -76,7 +76,7 @@ namespace MainTab
             _expLvKeyIncomplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupExperimentLevelKey);
             _attemptsKeyIncomplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupAttemptsIncompleteKey);
             _expGoalKeyIncomplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupGoalKey);
-            _currentCoreIntellectTextIncomplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupIntellectIncompleteKey);
+            _currentCoreIntellectKeyIncomplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupIntellectIncompleteKey);
             _multiplierRewardKeyIncomplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupMultiplierKey);
             _tpRewardKeyIncomplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupTPKey);
 
