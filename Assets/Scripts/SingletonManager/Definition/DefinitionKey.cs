@@ -100,4 +100,5 @@ public class DefinitionKey
     #endregion
 
     public const string bulkUpgradeCountList = "BulkUpgradeCountList";
+    public const string multiplierUpgradeCostGrowthRate = "MultiplierUpgradeCostGrowthRate";
 }

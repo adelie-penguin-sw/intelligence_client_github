@@ -190,11 +190,6 @@ namespace InGame
             }
 
             // multiplier upgrade btn text
-            _inputMap.Clear();
-            _inputMap.Add("upgradeCount", new UpArrowNotation(_brain.BrainData.multiplierUpgradeCount));
-            _inputMap.Add("tpu012", new UpArrowNotation(UserData.TPUpgrades[12].UpgradeCount));
-            _inputMap.Add("tpu022", new UpArrowNotation(UserData.TPUpgrades[22].UpgradeCount));
-            UpArrowNotation multiplierUpgradeCost = Managers.Definition.CalcEquation(_inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainMultiplierUpgradeCostEquation));
             string multiplierUpgradeText;
             if (UserData.TPUpgrades[0].UpgradeCount > 0)
             {
@@ -206,7 +201,7 @@ namespace InGame
             {
                 multiplierUpgradeText = Managers.Definition.GetUIText(UITextKey.brainInfoUpgradeIntellectButtonText);
             }
-            _upgradeMultiplierCost.text = multiplierUpgradeText + "\n" + Managers.Definition.GetUIText(UITextKey.costText, multiplierUpgradeCost.ToString(ECurrencyType.NP));
+            _upgradeMultiplierCost.text = multiplierUpgradeText + "\n" + Managers.Definition.GetUIText(UITextKey.costText, GetTotalUpgradeCost().ToString(ECurrencyType.NP));
 
             // limit upgrade btn text
             _inputMap.Clear();
@@ -250,6 +245,7 @@ namespace InGame
                 _bulkUpgradeCountIndex--;
                 _bulkUpgradeCount = _bulkUpgradeCountList[_bulkUpgradeCountIndex];
                 _bulkUpgradeCountText.text = Managers.Definition.GetUIText(UITextKey.brainInfoBulkUpgradeText, _bulkUpgradeCount.ToString("N0"));
+                UpdateInfo();
             }
         }
 
@@ -260,6 +256,7 @@ namespace InGame
                 _bulkUpgradeCountIndex++;
                 _bulkUpgradeCount = _bulkUpgradeCountList[_bulkUpgradeCountIndex];
                 _bulkUpgradeCountText.text = Managers.Definition.GetUIText(UITextKey.brainInfoBulkUpgradeText, _bulkUpgradeCount.ToString("N0"));
+                UpdateInfo();
             }
         }
 
@@ -299,6 +296,27 @@ namespace InGame
             _storedNPArea.SetActive(isNormalBrain);
             _distanceArea.SetActive(isNormalBrain && _brain.ReceiverIdList.Count > 0);              // 네트워크에 연결하기 전까지는 표시영역 비활성화
             _statusArea.SetActive(isNormalBrain);
+        }
+
+        private UpArrowNotation GetTotalUpgradeCost()
+        {
+            float growthRate = Managers.Definition.GetData<float>(DefinitionKey.multiplierUpgradeCostGrowthRate);
+
+            _inputMap.Clear();
+            _inputMap.Add("growthRate", new UpArrowNotation(growthRate));
+            _inputMap.Add("upgradeCount", new UpArrowNotation(_brain.BrainData.multiplierUpgradeCount));
+            _inputMap.Add("tpu012", new UpArrowNotation(UserData.TPUpgrades[12].UpgradeCount));
+            _inputMap.Add("tpu022", new UpArrowNotation(UserData.TPUpgrades[22].UpgradeCount));
+            UpArrowNotation multiplierUpgradeCost = Managers.Definition.CalcEquation(_inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainMultiplierUpgradeCostEquation));
+
+            if (_brain.SenderIdList.Count == 0 || UserData.TPUpgrades[0].UpgradeCount == 0)
+            {
+                return multiplierUpgradeCost * _bulkUpgradeCount;
+            }
+            else
+            {
+                return multiplierUpgradeCost * ((Mathf.Pow(growthRate, (float)_bulkUpgradeCount) - 1) / (growthRate - 1));
+            }
         }
     }
 }
