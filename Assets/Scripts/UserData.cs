@@ -172,6 +172,9 @@ public class UserData
         }
     }
 
+    private static ELanguage _lang = ELanguage.KOR;
+    public static ELanguage Lang { get { return _lang; } set { _lang = value; } }
+
     public static long LastCalcTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
     public static Dictionary<long, QuestAttributes> DicQuest { get { return _singleNetworkWrapper.questAttributeDic; } }
