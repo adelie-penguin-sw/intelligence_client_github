@@ -45,6 +45,12 @@ public class DefinitionManager
                     else
                         _definitions[EDefType.BASE][(string)li["name"]] = int.Parse(value);
                     break;
+                case "float":
+                    if (!_definitions[EDefType.BASE].Contains((string)li["name"]))
+                        _definitions[EDefType.BASE].Add((string)li["name"], float.Parse(value));
+                    else
+                        _definitions[EDefType.BASE][(string)li["name"]] = float.Parse(value);
+                    break;
                 case "[]UpArrowNotation":
                     if (!_definitions[EDefType.BASE].Contains((string)li["name"]))
                         _definitions[EDefType.BASE].Add((string)li["name"], ConvertToUANList(value));
