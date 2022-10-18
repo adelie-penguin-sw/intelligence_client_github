@@ -315,7 +315,7 @@ namespace InGame
             }
             else
             {
-                return multiplierUpgradeCost * ((Mathf.Pow(growthRate, (float)_bulkUpgradeCount) - 1) / (growthRate - 1));
+                return multiplierUpgradeCost * (((new UpArrowNotation(growthRate)) ^ (new UpArrowNotation(_bulkUpgradeCount))) - 1) / (growthRate - 1);
             }
         }
     }
