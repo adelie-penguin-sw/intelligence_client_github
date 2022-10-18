@@ -81,11 +81,19 @@ public class LoginManager : MonoBehaviour
             {
                 if(success)
                 {
+                    PlayGamesPlatform.Instance.RequestServerSideAccess(
+                            false,
+                            code =>
+                            {
+                                Debug.Log(code);
+                            }
+                        );
+
                     this.Login(Social.localUser.id, GoogleUserIdKey);
                 }
             });
         }
-        
+
 #endif
     }
 
@@ -102,12 +110,12 @@ public class LoginManager : MonoBehaviour
             {
                 // Obtained credential, cast it to IAppleIDCredential
                 var appleIdCredential = credential as IAppleIDCredential;
-                        if (appleIdCredential != null)
-                        {
+                if (appleIdCredential != null)
+                {
                     // Apple User ID
                     // PlayerPrefs로 저장하고 있
                     var userId = appleIdCredential.User;
-                            PlayerPrefs.SetString(AppleUserIdKey, userId);
+                    PlayerPrefs.SetString(AppleUserIdKey, userId);
                     // Email 첫 로그인시 가져옴.
                     var email = appleIdCredential.Email;
 

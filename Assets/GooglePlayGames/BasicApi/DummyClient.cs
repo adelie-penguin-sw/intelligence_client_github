@@ -62,6 +62,15 @@ namespace GooglePlayGames.BasicApi
             return false;
         }
 
+        public void RequestServerSideAccess(bool forceRefreshToken, Action<string> callback)
+        {
+            LogUsage();
+            if (callback != null)
+            {
+                callback(null);
+            }
+        }
+
         /// <summary>
         /// Signs the user out.
         /// </summary>

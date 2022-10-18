@@ -519,6 +519,38 @@ namespace GooglePlayGames
             return mClient != null && mClient.IsAuthenticated();
         }
 
+        /// <summary>
+        /// Requests server-side access to Player Games Services for the currently signed in player.
+        /// </summary>
+        /// When requested an authorization code is returned that can be used by your game-server to
+        /// exchange for an access token and conditionally a refresh token (when {@code
+        /// forceRefreshToken} is true). The access token may then be used by your game-server to
+        /// access the Play Games Services web APIs. This is commonly used to complete a sign-in flow
+        /// by verifying the Play Games Services player id.
+        ///
+        /// <p>If {@code forceRefreshToken} is true, when exchanging the authorization code a refresh
+        /// token will be returned in addition to the access token. The refresh token allows the
+        /// game-server to request additional access tokens, allowing your game-server to continue
+        /// accesses Play Games Services while the user is not actively playing your app. <remarks>
+        ///
+        /// </remarks>
+        /// <param name="forceRefreshToken">If {@code true} when the returned authorization code is
+        /// exchanged a refresh token will be included in addition to an access token.</param> <param
+        /// name="callback"></param>
+        public void RequestServerSideAccess(bool forceRefreshToken, Action<string> callback)
+        {
+            Misc.CheckNotNull(callback);
+
+            if (!IsAuthenticated())
+            {
+                OurUtils.Logger.e("RequestServerSideAccess() can only be called after authentication.");
+                InvokeCallbackOnGameThread(callback, null);
+                return;
+            }
+
+            mClient.RequestServerSideAccess(forceRefreshToken, callback);
+        }
+
         /// <summary>Sign out. After signing out,
         /// Authenticate must be called again to sign back in.
         /// </summary>

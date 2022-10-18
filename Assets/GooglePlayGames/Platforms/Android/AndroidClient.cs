@@ -808,6 +808,34 @@ namespace GooglePlayGames.Android
             }
         }
 
+        public void RequestServerSideAccess(bool forceRefreshToken, Action<string> callback)
+        {
+            callback = AsOnGameThreadCallback(callback);
+
+            if (!GameInfo.WebClientIdInitialized())
+            {
+                throw new InvalidOperationException("Requesting server side access requires web " +
+                                                    "client id to be configured.");
+            }
+
+            using (var client = getGamesSignInClient())
+            using (var task = client.Call<AndroidJavaObject>("requestServerSideAccess",
+                GameInfo.WebClientId, forceRefreshToken))
+            {
+                AndroidTaskUtils.AddOnSuccessListener<string>(
+                    task,
+                    authCode => callback(authCode)
+                );
+
+                AndroidTaskUtils.AddOnFailureListener(task, exception =>
+                {
+                    OurUtils.Logger.e("Requesting server side access task failed - " +
+                                      exception.Call<string>("toString"));
+                    callback(null);
+                });
+            }
+        }
+
         ///<summary></summary>
         /// <seealso cref="GooglePlayGames.BasicApi.IPlayGamesClient.UnlockAchievement"/>
         public void UnlockAchievement(string achId, Action<bool> callback)
@@ -1258,6 +1286,12 @@ namespace GooglePlayGames.Android
         {
             return mGamesClass.CallStatic<AndroidJavaObject>("getVideosClient", AndroidHelperFragment.GetActivity(),
                 mTokenClient.GetAccount());
+        }
+
+        private AndroidJavaObject getGamesSignInClient()
+        {
+            return mGamesClass.CallStatic<AndroidJavaObject>("getGamesSignInClient",
+                AndroidHelperFragment.GetActivity());
         }
     }
 }
