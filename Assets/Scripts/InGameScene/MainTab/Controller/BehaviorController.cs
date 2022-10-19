@@ -73,6 +73,7 @@ namespace MainTab
             }
 
             long brainId;
+            long level;
             switch (noti.msg)
             {
                 case ENotiMessage.EXPERIMENT_COMPLETE:
@@ -82,7 +83,8 @@ namespace MainTab
                     break;
                 case ENotiMessage.ONCLICK_UPGRADE_BRAIN_MULTIPLIER:
                     brainId = (long)noti.data[EDataParamKey.BRAIN_ID];
-                    UpgradeBrainMultiplier(brainId);
+                    level = (long)noti.data[EDataParamKey.BULK_UPGRADE_COUNT];
+                    UpgradeBrainMultiplier(brainId, level);
                     break;
                 case ENotiMessage.ONCLICK_UPGRADE_BRAIN_LIMIT:
                     brainId = (long)noti.data[EDataParamKey.BRAIN_ID];
@@ -91,11 +93,11 @@ namespace MainTab
             }
         }
 
-        private async void UpgradeBrainMultiplier(long id)
+        private async void UpgradeBrainMultiplier(long id, long level)
         {
             var req = new UpgradeSingleNetworkBrainMultiplierRequest();
             req.brain = id;
-            req.level = 1;
+            req.level = level;
             if (await Managers.Network.API_UpgradeBrainMultiplier(req))
             {
                 Managers.Notification.PostNotification(ENotiMessage.UPDATE_BRAIN_NETWORK);
