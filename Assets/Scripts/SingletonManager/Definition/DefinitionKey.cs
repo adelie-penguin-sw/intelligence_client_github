@@ -99,4 +99,6 @@ public class DefinitionKey
     public const string baseIntellectLimitList = "BaseIntellectLimitList";
     #endregion
 
+    public const string bulkUpgradeCountList = "BulkUpgradeCountList";
+    public const string multiplierUpgradeCostGrowthRate = "MultiplierUpgradeCostGrowthRate";
 }
