@@ -1864,6 +1864,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _popupType: 0
   _prefabType: 0
+  _closeBtn: []
   _statisticsText: {fileID: 7046330624315289329}
   _optionsText: {fileID: 848016695005823966}
   _helpText: {fileID: 4024315625373218472}
