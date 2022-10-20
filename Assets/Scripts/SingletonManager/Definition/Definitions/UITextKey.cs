@@ -99,6 +99,7 @@ public class UITextKey
     public const string brainInfoDecomposeButtonTextNoSender = "BrainInfoDecomposeButtonText_NoSender";
     public const string brainInfoDecomposeButtonTextHasSender = "BrainInfoDecomposeButtonText_HasSender";
     public const string brainInfoBulkUpgradeText = "BrainInfoBulkUpgradeText";
+    public const string brainInfoBatchUpgradeButtonText = "BrainInfoBatchUpgradeButtonText";
     #endregion
 
 

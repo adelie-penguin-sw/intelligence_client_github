@@ -191,17 +191,25 @@ namespace InGame
 
             // multiplier upgrade btn text
             string multiplierUpgradeText;
-            if (UserData.TPUpgrades[0].UpgradeCount > 0)
+            if (_brain.BrainData.brainType == EBrainType.NORMALBRAIN)
             {
-                multiplierUpgradeText = _brain.SenderIdList.Count == 0 ?
-                    Managers.Definition.GetUIText(UITextKey.brainInfoUpgradeIntellectButtonText) :
-                    Managers.Definition.GetUIText(UITextKey.brainInfoUpgradeMultiplierButtonText, (UserData.TPUpgrades[1].UpgradeCount + 2).ToString());
+                if (UserData.TPUpgrades[0].UpgradeCount > 0)
+                {
+                    multiplierUpgradeText = _brain.SenderIdList.Count == 0 ?
+                        Managers.Definition.GetUIText(UITextKey.brainInfoUpgradeIntellectButtonText) :
+                        Managers.Definition.GetUIText(UITextKey.brainInfoUpgradeMultiplierButtonText, (UserData.TPUpgrades[1].UpgradeCount + 2).ToString());
+                }
+                else
+                {
+                    multiplierUpgradeText = Managers.Definition.GetUIText(UITextKey.brainInfoUpgradeIntellectButtonText);
+                }
+                _upgradeMultiplierCost.text = multiplierUpgradeText + "\n" + Managers.Definition.GetUIText(UITextKey.costText, _brain.GetBrainUpgradeCost(_bulkUpgradeCount).ToString(ECurrencyType.NP));
             }
-            else
+            else if (UserData.TPUpgrades[0].UpgradeCount > 0)       // 코어 브레인에서는 일괄업글 버튼 표시
             {
-                multiplierUpgradeText = Managers.Definition.GetUIText(UITextKey.brainInfoUpgradeIntellectButtonText);
+                multiplierUpgradeText = Managers.Definition.GetUIText(UITextKey.brainInfoBatchUpgradeButtonText, (UserData.TPUpgrades[1].UpgradeCount + 2).ToString());
+                _upgradeMultiplierCost.text = multiplierUpgradeText + "\n" + Managers.Definition.GetUIText(UITextKey.costText, GetTotalUpgradeCost().ToString(ECurrencyType.NP));
             }
-            _upgradeMultiplierCost.text = multiplierUpgradeText + "\n" + Managers.Definition.GetUIText(UITextKey.costText, GetTotalUpgradeCost().ToString(ECurrencyType.NP));
 
             // limit upgrade btn text
             _inputMap.Clear();
@@ -284,11 +292,11 @@ namespace InGame
         {
             _resetBtn.gameObject.SetActive(!isNormalBrain);
 
-            // 코어 브레인은 업그레이드 및 분해 등의 동작이 필요하지 않으므로 버튼 비활성화
+            // 코어 브레인은 업그레이드 및 분해 등의 동작이 필요하지 않으므로 버튼 비활성화 (일괄 업글할때 제외)
             _decomposeBtn.gameObject.SetActive(isNormalBrain);
-            _upgradeMultiplierBtn.gameObject.SetActive(isNormalBrain);
+            _upgradeMultiplierBtn.gameObject.SetActive(isNormalBrain || UserData.TPUpgrades[0].UpgradeCount > 0);
             _upgradeLimitBtn.gameObject.SetActive(isNormalBrain);
-            _bulkUpgradeArea.gameObject.SetActive(isNormalBrain);
+            _bulkUpgradeArea.gameObject.SetActive(isNormalBrain || UserData.TPUpgrades[0].UpgradeCount > 0);
 
             // 코어 브레인은 증폭계수, NP축적량, 거리, 상태 개념이 필요하지 않으므로 표시영역 모두 비활성화
             _intellectLimitArea.SetActive(isNormalBrain);
@@ -300,23 +308,15 @@ namespace InGame
 
         private UpArrowNotation GetTotalUpgradeCost()
         {
-            float growthRate = Managers.Definition.GetData<float>(DefinitionKey.multiplierUpgradeCostGrowthRate);
-
-            _inputMap.Clear();
-            _inputMap.Add("growthRate", new UpArrowNotation(growthRate));
-            _inputMap.Add("upgradeCount", new UpArrowNotation(_brain.BrainData.multiplierUpgradeCount));
-            _inputMap.Add("tpu012", new UpArrowNotation(UserData.TPUpgrades[12].UpgradeCount));
-            _inputMap.Add("tpu022", new UpArrowNotation(UserData.TPUpgrades[22].UpgradeCount));
-            UpArrowNotation multiplierUpgradeCost = Managers.Definition.CalcEquation(_inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainMultiplierUpgradeCostEquation));
-
-            if (_brain.SenderIdList.Count == 0 || UserData.TPUpgrades[0].UpgradeCount == 0)
+            UpArrowNotation totalCost = new UpArrowNotation();
+            foreach (Brain brain in _brain.BrainNetwork.Values)
             {
-                return multiplierUpgradeCost * _bulkUpgradeCount;
+                if (brain.SenderIdList.Count > 0 && brain.ReceiverIdList.Count > 0)
+                {
+                    totalCost += brain.GetBrainUpgradeCost(_bulkUpgradeCount);
+                }
             }
-            else
-            {
-                return multiplierUpgradeCost * (((new UpArrowNotation(growthRate)) ^ (new UpArrowNotation(_bulkUpgradeCount))) - 1) / (growthRate - 1);
-            }
+            return totalCost;
         }
     }
 }
