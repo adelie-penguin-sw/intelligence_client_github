@@ -10,6 +10,7 @@ using AppleAuth.Extensions;
 using System.Text;
 using UnityEngine.UI;
 using AppleAuth.Native;
+using GooglePlayGames.BasicApi;
 
 #if UNITY_ANDROID
 using GooglePlayGames;
@@ -27,6 +28,7 @@ public class LoginManager : MonoBehaviour
 
     [SerializeField] private Button _btnAppleLogin;
     [SerializeField] private Button _btnGoogleLogin;
+    [SerializeField] private TextMeshProUGUI _textLog;
 
     private IAppleAuthManager appleAuthManager;
     public const string AppleUserIdKey = "AppleUserIdKey";
@@ -55,6 +57,13 @@ public class LoginManager : MonoBehaviour
 #endif
 #if UNITY_ANDROID
         _btnGoogleLogin.gameObject.SetActive(true);
+        PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
+.RequestServerAuthCode(false)
+.EnableSavedGames()
+.RequestIdToken()
+.RequestEmail()
+.Build();
+        PlayGamesPlatform.InitializeInstance(config);
         PlayGamesPlatform.DebugLogEnabled = true;
         PlayGamesPlatform.Activate();
 #endif
@@ -79,9 +88,22 @@ public class LoginManager : MonoBehaviour
         {
             Social.localUser.Authenticate((bool success) =>
             {
+                Debug.Log("success: " + success);
                 if(success)
                 {
-                    this.Login(Social.localUser.id, GoogleUserIdKey);
+                    PlayGamesPlatform.Instance.GetAnotherServerAuthCode(true, code =>
+                    {
+                        _textLog.text = code;
+                        Debug.LogFormat("code : {0}",code);
+                        Debug.LogErrorFormat("code : {0}", code);
+
+                        string authCode = PlayGamesPlatform.Instance.GetServerAuthCode();
+                        string idToken = PlayGamesPlatform.Instance.GetIdToken();
+                        string userId = PlayGamesPlatform.Instance.GetUserId();
+                        Debug.LogErrorFormat("{0} {1} {2}", authCode, idToken, userId);
+                        Debug.Log("GetServerAuthCode: " + PlayGamesPlatform.Instance.GetServerAuthCode());
+                        this.Login(Social.localUser.id, GoogleUserIdKey);
+                    });
                 }
             });
         }
