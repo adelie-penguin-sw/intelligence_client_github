@@ -38,21 +38,35 @@ namespace InGame
 
         public void OnClick_StatisticsButton()
         {
+            StatisticsFullScreenPopup statisticsPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "StatisticsFullScreenPopup", PopupType.NORMAL)
+                                .GetComponent<StatisticsFullScreenPopup>();
+            if (statisticsPopup != null)
+            {
+                statisticsPopup.Init();
+            }
 
+            Dispose();
         }
 
         public void OnClick_OptionButton()
         {
+            OptionsFullScreenPopup optionsPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "OptionsFullScreenPopup", PopupType.NORMAL)
+                                .GetComponent<OptionsFullScreenPopup>();
+            if (optionsPopup != null)
+            {
+                optionsPopup.Init();
+            }
 
+            Dispose();
         }
 
         public void OnClick_HelpButton()
         {
-            HelpPopup dropDownMenu = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "HelpPopup", PopupType.NORMAL)
+            HelpPopup helpPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "HelpPopup", PopupType.NORMAL)
                                 .GetComponent<HelpPopup>();
-            if (dropDownMenu != null)
+            if (helpPopup != null)
             {
-                dropDownMenu.Init();
+                helpPopup.Init();
             }
 
             Dispose();
@@ -60,7 +74,14 @@ namespace InGame
 
         public void OnClick_AboutButton()
         {
+            AboutFullScreenPopup aboutPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "AboutFullScreenPopup", PopupType.NORMAL)
+                                .GetComponent<AboutFullScreenPopup>();
+            if (aboutPopup != null)
+            {
+                aboutPopup.Init();
+            }
 
+            Dispose();
         }
     }
 }

@@ -147,4 +147,43 @@ public class UITextKey
     public const string userInfoPopupMaxDepthKey = "UserInfoPopupMaxDepthKey";
     public const string userInfoPopupMaxDepthValue = "UserInfoPopupMaxDepthValue";
     #endregion
+
+
+    #region StatisticsPopup
+    public const string statisticsPopupTitleText = "StatisticsPopupTitle";
+    public const string statisticsGameStartTimeKey = "StatisticsGameStartTimeKey";
+    public const string statisticsGameStartTimeValue = "StatisticsGameStartTimeValue";
+    public const string statisticsTotalPlayTimeKey = "StatisticsTotalPlayTimeKey";
+    public const string statisticsTotalPlayTimeValue = "StatisticsTotalPlayTimeValue";
+    public const string statisticsTotalAttemptsKey = "StatisticsTotalAttemptsKey";
+    public const string statisticsTotalAttemptsValue = "StatisticsTotalAttemptsValue";
+    public const string statisticsExperimentLevelKey = "StatisticsExperimentLevelKey";
+    public const string statisticsExperimentLevelValue = "StatisticsExperimentLevelValue";
+    public const string statisticsExperimentStartTimeKey = "StatisticsExperimentStartTimeKey";
+    public const string statisticsExperimentStartTimeValue = "StatisticsExperimentStartTimeValue";
+    public const string statisticsExperimentPlayTimeKey = "StatisticsExperimentPlayTimeKey";
+    public const string statisticsExperimentPlayTimeValue = "StatisticsExperimentPlayTimeValue";
+    public const string statisticsCurrentAttemptsKey = "StatisticsCurrentAttemptsKey";
+    public const string statisticsCurrentAttemptsValue = "StatisticsCurrentAttemptsValue";
+    public const string statisticsCurrentCoreIntellectKey = "StatisticsCurrentCoreIntellectKey";
+    public const string statisticsCurrentCoreIntellectValue = "StatisticsCurrentCoreIntellectValue";
+    public const string statisticsHighestCoreIntellectKey = "StatisticsHighestCoreIntellectKey";
+    public const string statisticsHighestCoreIntellectValue = "StatisticsHighestCoreIntellectValue";
+    public const string statisticsBaseMultiplierKey = "StatisticsBaseMultiplierKey";
+    public const string statisticsBaseMultiplierValue = "StatisticsBaseMultiplierValue";
+    public const string statisticsTotalGeneratedBrainsKey = "StatisticsTotalGeneratedBrainsKey";
+    public const string statisticsTotalGeneratedBrainsValue = "StatisticsTotalGeneratedBrainsValue";
+    public const string statisticsTotalGeneratedChannelsKey = "StatisticsTotalGeneratedChannelsKey";
+    public const string statisticsTotalGeneratedChannelsValue = "StatisticsTotalGeneratedChannelsValue";
+    public const string statisticsTotalDecomposedBrainsKey = "StatisticsTotalDecomposedBrainsKey";
+    public const string statisticsTotalDecomposedBrainsValue = "StatisticsTotalDecomposedBrainsValue";
+    public const string statisticsTotalTapCountKey = "StatisticsTotalTapCountKey";
+    public const string statisticsTotalTapCountValue = "StatisticsTotalTapCountValue";
+    public const string statisticsTotalGeneratedASNsKey = "StatisticsTotalGeneratedASNsKey";
+    public const string statisticsTotalGeneratedASNsValue = "StatisticsTotalGeneratedASNsValue";
+    public const string statisticsTotalNPGainKey = "StatisticsTotalNPGainKey";
+    public const string statisticsTotalNPGainValue = "StatisticsTotalNPGainValue";
+    public const string statisticsTotalTPGainKey = "StatisticsTotalTPGainKey";
+    public const string statisticsTotalTPGainValue = "StatisticsTotalTPGainValue";
+    #endregion
 }
