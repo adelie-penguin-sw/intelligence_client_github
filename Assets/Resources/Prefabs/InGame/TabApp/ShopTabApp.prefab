@@ -8603,7 +8603,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8760184308369970006}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1765884409374457396}
+        m_TargetAssemblyTypeName: ShopTab.ShopTabView, Assembly-CSharp
+        m_MethodName: OnClick_AdRewardDoubleTP
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!95 &8760184308369970004
 Animator:
   serializedVersion: 3
