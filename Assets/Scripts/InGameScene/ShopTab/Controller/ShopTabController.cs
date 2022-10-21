@@ -39,7 +39,24 @@ namespace ShopTab
         {
             switch (noti.msg)
             {
-                
+                case ENotiMessage.ONCLICK_AD_REWARD_DOUBLE_TP:
+                    break;
+                case ENotiMessage.ONCLICK_AD_REWARD_SKIP:
+                    break;
+                case ENotiMessage.ONCLICK_AD_REWARD_SPEED:
+                    break;
+                case ENotiMessage.ONCLICK_PAID_REWARD_REMOVE_AD:
+                    break;
+                case ENotiMessage.ONCLICK_PAID_REWARD_SKIP:
+                    break;
+                case ENotiMessage.ONCLICK_PAID_REWARD_BUY_TP1:
+                    break;
+                case ENotiMessage.ONCLICK_PAID_REWARD_BUY_TP2:
+                    break;
+                case ENotiMessage.ONCLICK_PAID_REWARD_BUY_TP3:
+                    break;
+                case ENotiMessage.ONCLICK_PAID_REWARD_BUY_TP4:
+                    break;
             }
         }
     }
