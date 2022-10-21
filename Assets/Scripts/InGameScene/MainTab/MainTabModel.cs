@@ -66,16 +66,6 @@ namespace MainTab
 
         #endregion
 
-        #region Behavior
-        [BoxGroup("Behavior")]
-        [SerializeField] private float _waitBrainClickTime = 0.5f;
-
-        public float WaitBrainClickTime
-        {
-            get { return _waitBrainClickTime; }
-        }
-        #endregion
-
         [BoxGroup("Brain Network")]
         [SerializeField] private BrainNetwork _brainNetwork = new BrainNetwork();
         public BrainNetwork BrainNetwork {

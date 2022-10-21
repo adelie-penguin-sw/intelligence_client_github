@@ -37,6 +37,12 @@ public class UserData
         }
     }
 
+    private static float _sfxVolume;        // 0 ~ 1 까지의 실수
+    public static float SFXVolume { get { return _sfxVolume; } }
+
+    private static float _waitBrainClickTime;
+    public static float WaitBrainClickTime { get { return _waitBrainClickTime; } }
+
     public static UpArrowNotation CoreIntellect
     {
         get
@@ -173,7 +179,7 @@ public class UserData
     }
 
     private static ELanguage _lang = ELanguage.KOR;
-    public static ELanguage Lang { get { return _lang; } set { _lang = value; } }
+    public static ELanguage Lang { get { return _lang; } }
 
     public static long LastCalcTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
@@ -230,6 +236,32 @@ public class UserData
         }
     }
 
+    public static void SetInt(string key, int value)
+    {
+        PlayerPrefs.SetInt(key, value);
+
+        switch (key)
+        {
+            case "Language":
+                _lang = (ELanguage)value;
+                break;
+        }
+    }
+
+    public static void SetFloat(string key, float value)
+    {
+        PlayerPrefs.SetFloat(key, value);
+
+        switch (key)
+        {
+            case "WaitBrainClickTime":
+                _waitBrainClickTime = value;
+                break;
+            case "SFXVolume":
+                _sfxVolume = value;
+                break;
+        }
+    }
 
     public static void SetString(string key, string value)
     {
@@ -247,5 +279,11 @@ public class UserData
     {
         token = PlayerPrefs.GetString("Token");
         Debug.Log(token);
+        _waitBrainClickTime = PlayerPrefs.GetFloat("WaitBrainClickTime");
+        Debug.Log(_waitBrainClickTime);
+        _sfxVolume = PlayerPrefs.GetFloat("SFXVolume");
+        Debug.Log(_sfxVolume);
+        _lang = (ELanguage)PlayerPrefs.GetInt("Language");
+        Debug.Log(_lang);
     }
 }
