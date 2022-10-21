@@ -103,6 +103,9 @@ namespace InGame
             _goTemp = Managers.Pool.GrabPrefabs(EPrefabsType.TAP_APPLICATION, "TpTabApp", transform);
             _handlers.Add(EGameState.TP_UPGRADE_TAB, _goTemp.GetComponent<TpTab.TpTabApplication>());
 
+            _goTemp = Managers.Pool.GrabPrefabs(EPrefabsType.TAP_APPLICATION, "ShopTabApp", transform);
+            _handlers.Add(EGameState.SHOP_TAB, _goTemp.GetComponent<ShopTab.ShopTabApplication>());
+
             foreach (EGameState state in _handlers.Keys)
             {
                 _handlers[state].Init();
@@ -157,5 +160,9 @@ namespace InGame
         /// TP 사용 업그레이드 탭
         /// </summary>
         TP_UPGRADE_TAB,
+        /// <summary>
+        /// 광고 시청 및 유료 상점 탭
+        /// </summary>
+        SHOP_TAB,
     }
 }
