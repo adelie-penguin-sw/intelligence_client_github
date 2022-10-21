@@ -19,8 +19,7 @@ namespace InGame
         [SerializeField] private TextMeshProUGUI _txtUsername;
 
         public delegate void LogOutEvent();
-        public event LogOutEvent LogOut;
-        public void Init(InGameManager manager)
+        public void Init()
         {
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.UPDATE_NP);
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.UPDATE_TP);
@@ -29,9 +28,6 @@ namespace InGame
                 tab.Init();
                 tab.OnClickTab = OnClick_Tab;
             }
-
-            Set();
-            LogOut = manager.LogOut;
         }
 
         public void Set()
@@ -123,11 +119,6 @@ namespace InGame
             {
                 leaderboardPopup.Init();
             }
-        }
-
-        public void OnClick_Logout()
-        {
-            LogOut();
         }
 
         public void OnClick_UserInfo()
