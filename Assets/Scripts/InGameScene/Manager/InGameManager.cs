@@ -32,7 +32,7 @@ namespace InGame
             //Managers.Notification.AddObserver(OnNotification, ENotiMessage.CHANGE_SCENE);
             if (_ui != null)
             {
-                _ui.Init(this);
+                _ui.Init();
             }
             InitHandlers();
             ChangeState(EGameState.MAIN_TAB);
@@ -65,13 +65,6 @@ namespace InGame
                 EGameState state = (EGameState)noti.data[EDataParamKey.EGAMESTATE]; 
                 ChangeState(state);
             }
-        }
-
-        public void LogOut()
-        {
-            Dispose();
-            PlayerPrefs.DeleteAll();
-            SceneManager.LoadScene("LoginScene");
         }
 
         public void Dispose()
