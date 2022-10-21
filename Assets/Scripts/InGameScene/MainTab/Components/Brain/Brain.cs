@@ -123,7 +123,7 @@ namespace MainTab
             SetNumText(Intellect);
             SetMulText(Multiplier);
 
-            _textMul.gameObject.SetActive(_brainData.brainType != EBrainType.GUIDEBRAIN && UserData.TPUpgrades[0].UpgradeCount > 0);
+            _textMul.gameObject.SetActive(_brainData.brainType == EBrainType.NORMALBRAIN && UserData.TPUpgrades[0].UpgradeCount > 0);
             _isLocked = false;
         }
 
@@ -361,6 +361,28 @@ namespace MainTab
             inputMap.Add("tpu001", new UpArrowNotation(UserData.TPUpgrades[1].UpgradeCount));
 
             return Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainMultiplierEquation));
+        }
+
+        public UpArrowNotation GetBrainUpgradeCost(int bulkUpgradeCount)
+        {
+            Dictionary<string, UpArrowNotation> inputMap = new Dictionary<string, UpArrowNotation>();
+            float growthRate = Managers.Definition.GetData<float>(DefinitionKey.multiplierUpgradeCostGrowthRate);
+
+            inputMap.Clear();
+            inputMap.Add("growthRate", new UpArrowNotation(growthRate));
+            inputMap.Add("upgradeCount", new UpArrowNotation(BrainData.multiplierUpgradeCount));
+            inputMap.Add("tpu012", new UpArrowNotation(UserData.TPUpgrades[12].UpgradeCount));
+            inputMap.Add("tpu022", new UpArrowNotation(UserData.TPUpgrades[22].UpgradeCount));
+            UpArrowNotation multiplierUpgradeCost = Managers.Definition.CalcEquation(inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainMultiplierUpgradeCostEquation));
+
+            if (SenderIdList.Count == 0 || UserData.TPUpgrades[0].UpgradeCount == 0)
+            {
+                return multiplierUpgradeCost * bulkUpgradeCount;
+            }
+            else
+            {
+                return multiplierUpgradeCost * (((new UpArrowNotation(growthRate)) ^ (new UpArrowNotation(bulkUpgradeCount))) - 1) / (growthRate - 1);
+            }
         }
 
         private long CountAllSenders()
