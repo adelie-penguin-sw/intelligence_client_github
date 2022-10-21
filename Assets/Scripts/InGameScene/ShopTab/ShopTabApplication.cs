@@ -8,6 +8,23 @@ namespace ShopTab
     public class ShopTabApplication : BaseTabApplication
     {
         [SerializeField] private BaseTabController<ShopTabApplication>[] _controllers;
+        [SerializeField] private ShopTabView _shopTabView;
+        public ShopTabView ShopTabView
+        {
+            get
+            {
+                return _shopTabView;
+            }
+        }
+
+        [SerializeField] private ShopTabModel _shopTabModel;
+        public ShopTabModel ShopTabModel
+        {
+            get
+            {
+                return _shopTabModel;
+            }
+        }
 
         public override void Init()
         {
