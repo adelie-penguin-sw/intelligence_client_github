@@ -263,7 +263,7 @@ namespace MainTab
                 else if (_isBrainPointDown)
                 {
                     _dtBrainPointDown += dt_sec;
-                    if (_dtBrainPointDown >= _model.WaitBrainClickTime)
+                    if (_dtBrainPointDown >= UserData.WaitBrainClickTime)
                     {
                         _controller.ChangeState(EBehaviorState.CREATE_CHANNEL);
                     }
