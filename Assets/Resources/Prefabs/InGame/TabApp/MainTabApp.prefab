@@ -137,7 +137,6 @@ MonoBehaviour:
     _maxSize: 20
     _resizeSpeedScale: 2
     _curCameraSize: 10
-    _waitBrainClickTime: 0.3
     _brainNetwork:
       _channelList: []
 --- !u!1 &837340104696352692
