@@ -280,10 +280,7 @@ public class UserData
         token = PlayerPrefs.GetString("Token");
         Debug.Log(token);
         _waitBrainClickTime = PlayerPrefs.GetFloat("WaitBrainClickTime");
-        Debug.Log(_waitBrainClickTime);
         _sfxVolume = PlayerPrefs.GetFloat("SFXVolume");
-        Debug.Log(_sfxVolume);
         _lang = (ELanguage)PlayerPrefs.GetInt("Language");
-        Debug.Log(_lang);
     }
 }
