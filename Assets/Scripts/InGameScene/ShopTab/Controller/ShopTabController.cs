@@ -11,7 +11,15 @@ namespace ShopTab
         {
             base.Init(app);
 
-            //Managers.Notification.AddObserver(OnNotification, ENotiMessage.ONCLICK_TPUPGRADE);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.ONCLICK_AD_REWARD_DOUBLE_TP);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.ONCLICK_AD_REWARD_SKIP);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.ONCLICK_AD_REWARD_SPEED);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.ONCLICK_PAID_REWARD_REMOVE_AD);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.ONCLICK_PAID_REWARD_SKIP);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.ONCLICK_PAID_REWARD_BUY_TP1);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.ONCLICK_PAID_REWARD_BUY_TP2);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.ONCLICK_PAID_REWARD_BUY_TP3);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.ONCLICK_PAID_REWARD_BUY_TP4);
         }
 
         public override void Set()
@@ -27,7 +35,16 @@ namespace ShopTab
         public override void Dispose()
         {
             base.Dispose();
-            //Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_TPUPGRADE);
+
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_AD_REWARD_DOUBLE_TP);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_AD_REWARD_SKIP);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_AD_REWARD_SPEED);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_PAID_REWARD_REMOVE_AD);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_PAID_REWARD_SKIP);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_PAID_REWARD_BUY_TP1);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_PAID_REWARD_BUY_TP2);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_PAID_REWARD_BUY_TP3);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_PAID_REWARD_BUY_TP4);
         }
 
         public override void LateAdvanceTime(float dt_sec)
