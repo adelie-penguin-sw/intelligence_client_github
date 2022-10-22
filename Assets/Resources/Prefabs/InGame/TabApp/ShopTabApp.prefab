@@ -671,7 +671,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1535839379024081342}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.8756835
+  m_Size: 0.8729587
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -796,8 +796,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1565476931346117660}
+  - component: {fileID: 7968440024276746193}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: ShopTabController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -817,6 +818,18 @@ Transform:
   m_Father: {fileID: 1565476932217642113}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7968440024276746193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1565476931346117663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6f8ce99ceaff4dc9a3506bac1754897, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1565476932217642112
 GameObject:
   m_ObjectHideFlags: 0
@@ -862,7 +875,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed8341a4587524a74803b59fc7866bce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _controllers: []
+  _controllers:
+  - {fileID: 7968440024276746193}
   _shopTabView: {fileID: 1765884409374457396}
   _shopTabModel: {fileID: 0}
 --- !u!1 &1565476933003750565
@@ -1778,7 +1792,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2677692111542339117}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1765884409374457396}
+        m_TargetAssemblyTypeName: ShopTab.ShopTabView, Assembly-CSharp
+        m_MethodName: OnClick_PaidRewardBuyTP1
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!95 &8168057193994853653
 Animator:
   serializedVersion: 3
@@ -2300,7 +2326,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4693065978940633051}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1765884409374457396}
+        m_TargetAssemblyTypeName: ShopTab.ShopTabView, Assembly-CSharp
+        m_MethodName: OnClick_PaidRewardSkip
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!95 &6542475009779573294
 Animator:
   serializedVersion: 3
@@ -2993,7 +3031,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 810023619182331757}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1765884409374457396}
+        m_TargetAssemblyTypeName: ShopTab.ShopTabView, Assembly-CSharp
+        m_MethodName: OnClick_PaidRewardBuyTP3
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!95 &5535285712453176991
 Animator:
   serializedVersion: 3
@@ -3804,7 +3854,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5416341928316465667}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1765884409374457396}
+        m_TargetAssemblyTypeName: ShopTab.ShopTabView, Assembly-CSharp
+        m_MethodName: OnClick_PaidRewardRemoveAd
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!95 &4387615736560371633
 Animator:
   serializedVersion: 3
@@ -4643,7 +4705,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 9109518604567401029}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1765884409374457396}
+        m_TargetAssemblyTypeName: ShopTab.ShopTabView, Assembly-CSharp
+        m_MethodName: OnClick_PaidRewardBuyTP2
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!95 &546649311177859947
 Animator:
   serializedVersion: 3
@@ -5132,7 +5206,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4944013589480738843}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1765884409374457396}
+        m_TargetAssemblyTypeName: ShopTab.ShopTabView, Assembly-CSharp
+        m_MethodName: OnClick_PaidRewardBuyTP4
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!95 &9056848303997681897
 Animator:
   serializedVersion: 3
@@ -6018,7 +6104,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8066799655943408239}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1765884409374457396}
+        m_TargetAssemblyTypeName: ShopTab.ShopTabView, Assembly-CSharp
+        m_MethodName: OnClick_AdRewardSkip
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!95 &6014229266944442068
 Animator:
   serializedVersion: 3
@@ -7550,7 +7648,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3585906561337097972}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1765884409374457396}
+        m_TargetAssemblyTypeName: ShopTab.ShopTabView, Assembly-CSharp
+        m_MethodName: OnClick_AdRewardSpeed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!95 &944505577931311960
 Animator:
   serializedVersion: 3
