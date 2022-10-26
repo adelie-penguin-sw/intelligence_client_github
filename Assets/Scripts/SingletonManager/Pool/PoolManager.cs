@@ -127,6 +127,7 @@ public class PoolManager
                 return "Prefabs/InGame/TabApp/";
             case EPrefabsType.CHANNEL:
             case EPrefabsType.BRAIN:
+            case EPrefabsType.TP_UPGRADE_ITEM:
                 return "Prefabs/InGame/";
             case EPrefabsType.POPUP:
             case EPrefabsType.RANK_ITEM:
@@ -155,6 +156,9 @@ public enum EPrefabsType
     //MainTab
     BRAIN,
     CHANNEL,
+
+    //TpTab
+    TP_UPGRADE_ITEM, 
 
     UI,
 

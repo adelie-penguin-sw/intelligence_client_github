@@ -39,6 +39,8 @@ namespace TpTab
         {
             base.OnEnter();
 
+            _tpTabModel.MainCamera.transform.position = new Vector3(0, 0, -10);
+
             foreach (var controller in _controllers)
             {
                 controller.Set();
