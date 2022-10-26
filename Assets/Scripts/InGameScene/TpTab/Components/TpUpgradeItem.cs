@@ -129,7 +129,7 @@ public class TpUpgradeItem : MonoBehaviour
             int currentLevel = (int)UserData.TPUpgrades[upgradeNumber].UpgradeCount;
             int requirement = intPair[1];
 
-            resultTextList.Add($"{currentLevel} / {requirement}");
+            resultTextList.Add($"{currentLevel}/{requirement}");
         }
         _requirementText = resultTextList;
     }
