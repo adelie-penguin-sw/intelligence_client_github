@@ -20,6 +20,7 @@ namespace InGame
         [SerializeField] private GameObject _requirement1;
         [SerializeField] private GameObject _requirement2;
         [SerializeField] private GameObject _requirement3;
+        [SerializeField] private GameObject _hiddenText;
 
         [SerializeField] private Image _requirement1Image;
         [SerializeField] private Image _requirement2Image;
@@ -38,6 +39,8 @@ namespace InGame
         private bool _unlocked;
         private bool _maxed;
 
+        private bool _canView = false;
+
         public void Init(TpUpgradeItem item)
         {
             base.Init();
@@ -50,7 +53,9 @@ namespace InGame
 
             _item = item;
 
-            _name.text = item.NameText;
+            _canView = item.Unlocked || GetRequirementSum(item.RequirementText) > 0;
+
+            _name.text = _canView ? item.NameText : "???";
             if (!item.Unlocked)
             {
                 _currentLevel.text = "Locked";
@@ -63,36 +68,47 @@ namespace InGame
             {
                 _currentLevel.text = $"Lv. {item.CurrentLevel}";
             }
-            _description.text = item.EffectText;
+            _description.text = _canView ? item.EffectText : "??????";
             _cost.text = item.CostText;
 
             _buttonLocked.SetActive(!item.Unlocked);
             _buttonUnlocked.SetActive(item.Unlocked);
 
-            if (!item.Unlocked)
+            _hiddenText.SetActive(!_canView);
+
+            if (_canView)
             {
-                if (item.UnlockRequirement.Count >= 3)
+                if (!item.Unlocked)
                 {
-                    _requirement3.SetActive(true);
-                    _requirement3Image.sprite = LoadTPUIcon(item.UnlockRequirement[2][0]);
-                    _requirement3Level.text = item.RequirementText[2];
+                    if (item.UnlockRequirement.Count >= 3)
+                    {
+                        _requirement3.SetActive(true);
+                        _requirement3Image.sprite = LoadTPUIcon(item.UnlockRequirement[2][0]);
+                        _requirement3Level.text = item.RequirementText[2];
+                    }
+                    else { _requirement3.SetActive(false); }
+                    if (item.UnlockRequirement.Count >= 2)
+                    {
+                        _requirement2.SetActive(true);
+                        _requirement2Image.sprite = LoadTPUIcon(item.UnlockRequirement[1][0]);
+                        _requirement2Level.text = item.RequirementText[1];
+                    }
+                    else { _requirement2.SetActive(false); }
+                    _requirement1.SetActive(true);
+                    _requirement1Image.sprite = LoadTPUIcon(item.UnlockRequirement[0][0]);
+                    _requirement1Level.text = item.RequirementText[0];
                 }
-                else { _requirement3.SetActive(false); }
-                if (item.UnlockRequirement.Count >= 2)
+                else
                 {
-                    _requirement2.SetActive(true);
-                    _requirement2Image.sprite = LoadTPUIcon(item.UnlockRequirement[1][0]);
-                    _requirement2Level.text = item.RequirementText[1];
+                    _upgradeEffect.text = "Some Text...";        // TODO: csv에 TPU 수치적 효과 텍스트까지 추가되면 반영하기
+                    _upgradeText.text = item.Maxed ? "Max Level" : "Upgrade";
                 }
-                else { _requirement2.SetActive(false); }
-                _requirement1.SetActive(true);
-                _requirement1Image.sprite = LoadTPUIcon(item.UnlockRequirement[0][0]);
-                _requirement1Level.text = item.RequirementText[0];
             }
             else
             {
-                _upgradeEffect.text = "Some Text...";        // TODO: csv에 TPU 수치적 효과 텍스트까지 추가되면 반영하기
-                _upgradeText.text = item.Maxed ? "Max Level" : "Upgrade";
+                _requirement1.SetActive(false);
+                _requirement2.SetActive(false);
+                _requirement3.SetActive(false);
             }
 
             _index = item.Index;
@@ -128,6 +144,17 @@ namespace InGame
                 _sendData.Add(EDataParamKey.CLASS_TPU_ITEM, _item);
                 Managers.Notification.PostNotification(ENotiMessage.ONCLICK_TPUPGRADE, _sendData);
             }
+        }
+
+        private int GetRequirementSum(List<string> reqTextList)
+        {
+            int total = 0;
+            foreach (string txt in reqTextList)
+            {
+                string[] numList = txt.Split('/');
+                total += int.Parse(numList[0]);
+            }
+            return total;
         }
     }
 }

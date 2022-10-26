@@ -17,7 +17,6 @@ namespace TpTab
                 TpUpgradeItem item;
                 if (index >= _tpUpgradeItems.Count)
                 {
-                    Debug.Log("new");
                     item = Managers.Pool.GrabPrefabs(EPrefabsType.TP_UPGRADE_ITEM, "TpUpgradeItem", _tpuTreeLayer).GetComponent<TpUpgradeItem>();
                     _tpUpgradeItems.Add(index, item);
                 }
