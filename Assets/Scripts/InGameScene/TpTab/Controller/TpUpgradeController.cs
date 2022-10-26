@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using MainTab;
 using UnityEngine;
 namespace TpTab
@@ -7,12 +8,16 @@ namespace TpTab
     public class TpUpgradeController : BaseTabController<TpTabApplication>
     {
         private Dictionary<int, TpUpgradeDefinition> _definition;
+        private InGame.TpUpgradePopup _popup;
+        private TpUpgradeItem _currentItem;
+
         public override void Init(TpTabApplication app)
         {
             base.Init(app);
             _definition = _app.TpTabModel.TpUpgradeDefinition;
             SetAllUpgradeItems();
 
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.ONCLICK_TPUPGRADE_ICON);
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.ONCLICK_TPUPGRADE);
         }
 
@@ -29,6 +34,7 @@ namespace TpTab
         public override void Dispose()
         {
             base.Dispose();
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_TPUPGRADE_ICON);
             Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_TPUPGRADE);
         }
 
@@ -41,8 +47,16 @@ namespace TpTab
         {
             switch (noti.msg)
             {
+                case ENotiMessage.ONCLICK_TPUPGRADE_ICON:
+                    _currentItem = (TpUpgradeItem)noti.data[EDataParamKey.CLASS_TPU_ITEM];
+                    _popup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "TpUpgradePopup", PopupType.NORMAL)
+                                        .GetComponent<InGame.TpUpgradePopup>();
+                    _popup.Init(_currentItem);
+                    break;
                 case ENotiMessage.ONCLICK_TPUPGRADE:
+                    _currentItem = (TpUpgradeItem)noti.data[EDataParamKey.CLASS_TPU_ITEM];
                     SetAllUpgradeItems();
+                    UpdatePopup();
                     break;
             }
         }
@@ -64,5 +78,15 @@ namespace TpTab
             }
         }
 
+        private void UpdatePopup()
+        {
+            if (_popup != null)
+            {
+                _popup.Dispose();
+            }
+            _popup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "TpUpgradePopup", PopupType.NORMAL)
+                                .GetComponent<InGame.TpUpgradePopup>();
+            _popup.Init(_currentItem);
+        }
     }
 }
