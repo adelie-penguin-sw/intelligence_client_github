@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoolManager
+public class PoolManager : MonoBehaviour
 {
 
     private Dictionary<EPrefabsType, Dictionary<string, List<PoolObject>>> _dicPool = new Dictionary<EPrefabsType, Dictionary<string, List<PoolObject>>>();
@@ -98,7 +98,7 @@ public class PoolManager
 
     private PoolObject CreatePoolObject(EPrefabsType type, string name)
     {
-        GameObject go = Resources.Load(GetPath(type) + name, typeof(GameObject)) as GameObject;
+        GameObject go = Resources.Load(GetPath(type) + name) as GameObject;
 
         if (go == null)
             return null;

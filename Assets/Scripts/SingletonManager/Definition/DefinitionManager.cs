@@ -93,6 +93,19 @@ public class DefinitionManager
         if (res == null) return false;
         _definitions.Add(EDefType.UI_TEXTS, new UITextDefinitions(CSVReader.Read(res)).MakeDict());
         #endregion
+
+        #region Text.csv
+        res = await Managers.Network.API_S3Data("Text.csv");
+        if (res == null) return false;
+        _definitions.Add(EDefType.TEXT, new TextDefinitions(CSVReader.Read(res)).MakeDict());
+        #endregion
+
+
+        #region TextFormat.csv
+        res = await Managers.Network.API_S3Data("TextFormat.csv");
+        if (res == null) return false;
+        _definitions.Add(EDefType.TEXT_FORMAT, new TextFormatDefinitions(CSVReader.Read(res)).MakeDict());
+        #endregion
         return true;
     }
 
@@ -382,4 +395,12 @@ public enum EDefType
     TP_UPGRADE,
     TUTORIAL_QUEST,
     UI_TEXTS,
+    TEXT,
+    TEXT_FORMAT,
+}
+
+public enum ETextLanguage
+{
+    KOR,
+    ENG,
 }
