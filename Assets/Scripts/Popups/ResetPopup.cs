@@ -26,6 +26,7 @@ namespace MainTab
         [SerializeField] private TextMeshProUGUI _elapesdTimeKeyComplete;
         [SerializeField] private TextMeshProUGUI _multiplierRewardKeyComplete;
         [SerializeField] private TextMeshProUGUI _tpRewardKeyComplete;
+        [SerializeField] private TextMeshProUGUI _npCarryOverKeyComplete;
 
         [SerializeField] private TextMeshProUGUI _expLvTextComplete;
         [SerializeField] private TextMeshProUGUI _attemptsTextComplete;
@@ -33,6 +34,7 @@ namespace MainTab
         [SerializeField] private TextMeshProUGUI _elapesdTimeTextComplete;
         [SerializeField] private TextMeshProUGUI _multiplierRewardTextComplete;
         [SerializeField] private TextMeshProUGUI _tpRewardTextComplete;
+        [SerializeField] private TextMeshProUGUI _npCarryOverTextComplete;
 
         [SerializeField] private TextMeshProUGUI _expLvKeyIncomplete;
         [SerializeField] private TextMeshProUGUI _attemptsKeyIncomplete;
@@ -40,6 +42,7 @@ namespace MainTab
         [SerializeField] private TextMeshProUGUI _currentCoreIntellectKeyIncomplete;
         [SerializeField] private TextMeshProUGUI _multiplierRewardKeyIncomplete;
         [SerializeField] private TextMeshProUGUI _tpRewardKeyIncomplete;
+        [SerializeField] private TextMeshProUGUI _npCarryOverKeyIncomplete;
 
         [SerializeField] private TextMeshProUGUI _expLvTextIncomplete;
         [SerializeField] private TextMeshProUGUI _attemptsTextIncomplete;
@@ -47,6 +50,7 @@ namespace MainTab
         [SerializeField] private TextMeshProUGUI _currentCoreIntellectTextIncomplete;
         [SerializeField] private TextMeshProUGUI _multiplierRewardTextIncomplete;
         [SerializeField] private TextMeshProUGUI _tpRewardTextIncomplete;
+        [SerializeField] private TextMeshProUGUI _npCarryOverTextIncomplete;
 
         [SerializeField] private TextMeshProUGUI _messageComplete;
         [SerializeField] private TextMeshProUGUI _messageIncomplete;
@@ -54,9 +58,14 @@ namespace MainTab
         [SerializeField] private GameObject _multiplierRewardComplete;
         [SerializeField] private GameObject _multiplierRewardIncomplete;
 
+        [SerializeField] private GameObject _npCarryOverComplete;
+        [SerializeField] private GameObject _npCarryOverIncomplete;
+
+        private BrainNetwork _brainNetwork;
+
         private Dictionary<string, UpArrowNotation> inputMap = new Dictionary<string, UpArrowNotation>();
 
-        public override void Init()
+        public void Init(BrainNetwork brainNetowrk)
         {
             base.Init();
 
@@ -87,7 +96,12 @@ namespace MainTab
             _expGoalTextIncomplete.text = UserData.ExpGoalStr;
 
             _multiplierRewardComplete.SetActive(UserData.TPUpgrades[0].UpgradeCount > 0);
-            _multiplierRewardIncomplete.gameObject.SetActive(UserData.TPUpgrades[0].UpgradeCount > 0);
+            _multiplierRewardIncomplete.SetActive(UserData.TPUpgrades[0].UpgradeCount > 0);
+
+            _npCarryOverComplete.SetActive(UserData.TPUpgrades[25].UpgradeCount > 0);
+            _npCarryOverIncomplete.SetActive(UserData.TPUpgrades[25].UpgradeCount > 0);
+
+            _brainNetwork = brainNetowrk;
         }
 
         private Hashtable _sendData = new Hashtable();
@@ -120,6 +134,9 @@ namespace MainTab
             _multiplierRewardTextComplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupMultiplierValue, multStr);
             _multiplierRewardTextIncomplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupMultiplierValue, multStr);
 
+            _npCarryOverTextComplete.text = _brainNetwork.GetNPCarryOver().ToString(ECurrencyType.NP) + " NP";
+            _npCarryOverTextIncomplete.text = _brainNetwork.GetNPCarryOver().ToString(ECurrencyType.NP) + "NP";
+
             if (complete)
             {
                 _titleText.text = Managers.Definition.GetUIText(UITextKey.resetPopupCompleteTitleText);
@@ -150,6 +167,5 @@ namespace MainTab
                 Dispose();
             }
         }
-
     }
 }

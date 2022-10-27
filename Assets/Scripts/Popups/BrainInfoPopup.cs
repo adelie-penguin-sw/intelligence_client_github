@@ -113,10 +113,7 @@ namespace InGame
             // current intellect
             _intellectValue.text = _brain.BrainData.Intellect.ToString(ECurrencyType.INTELLECT);
 
-            _inputMap.Clear();
-            _inputMap.Add("intellect", _brain.BrainData.Intellect);
-            _inputMap.Add("tpu008", new UpArrowNotation(UserData.TPUpgrades[8].UpgradeCount));
-            UpArrowNotation storedNP = Managers.Definition.CalcEquation(_inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainDecomposingGainEquation));
+            UpArrowNotation storedNP = _brain.GetBrainDecomposingReward();
 
             if (_brain.BrainData.brainType == EBrainType.NORMALBRAIN)
             {
