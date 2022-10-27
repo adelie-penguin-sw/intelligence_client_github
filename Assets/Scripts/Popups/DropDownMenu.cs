@@ -16,7 +16,7 @@ namespace InGame
             base.Init();
             _statisticsText.text = Managers.Definition.GetTextData(11001);
             _optionsText.text = Managers.Definition.GetTextData(3);
-            _helpText.text = Managers.Definition.GetTextData(13);
+            _helpText.text = Managers.Definition.GetTextData(10001);
             _aboutText.text = Managers.Definition.GetTextData(4);
         }
 
