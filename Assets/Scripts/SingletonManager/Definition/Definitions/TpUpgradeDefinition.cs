@@ -8,15 +8,19 @@ public class TpUpgradeDefinition
     public int key;
     public string nameText;
     public string effectText;
+    public string effectValueText;
+    public string effectValueEquation;
     public string costEquation;
     public int maxLevel;
     public List<List<int>> unlockRequirement;
 
-    public TpUpgradeDefinition(object key, object nameText, object effectText, object costEquation, object maxLevel, object unlockRequirement)
+    public TpUpgradeDefinition(object key, object nameText, object effectText, object effectValueText, object effectValueEquation, object costEquation, object maxLevel, object unlockRequirement)
     {
         this.key = int.Parse(key.ToString());
         this.nameText = nameText.ToString();
         this.effectText = effectText.ToString();
+        this.effectValueText = effectValueText.ToString();
+        this.effectValueEquation = effectValueEquation.ToString();
         this.costEquation = costEquation.ToString();
         this.maxLevel = int.Parse(maxLevel.ToString());
         this.unlockRequirement = ConvertIntPairList(unlockRequirement.ToString());
@@ -70,7 +74,7 @@ public class TpUpgradeDefinitions : ILoader<int, TpUpgradeDefinition>
         foreach(var data in _csvData)
         {
             dict.Add(int.Parse(data["key"].ToString()),
-                new TpUpgradeDefinition(data["key"], data["nameText"], data["effectText"], data["costEquation"], data["maxLevel"], data["unlockRequirement"]));
+                new TpUpgradeDefinition(data["key"], data["nameText"], data["effectText"], data["effectValueText"], data["effectValueEquation"], data["costEquation"], data["maxLevel"], data["unlockRequirement"]));
         }
         return dict;
     }
