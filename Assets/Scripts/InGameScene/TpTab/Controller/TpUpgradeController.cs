@@ -70,6 +70,8 @@ namespace TpTab
                     _definition[id].nameText,
                     string.Format("#{0}", id),
                     _definition[id].effectText,
+                    _definition[id].effectValueText,
+                    _definition[id].effectValueEquation,
                     _definition[id].costEquation,
                     (int)UserData.TPUpgrades[id].UpgradeCount,
                     _definition[id].maxLevel,
