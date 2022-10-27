@@ -48,6 +48,10 @@ public class TpUpgradeItem : MonoBehaviour
     public string NameText { get { return _nameText; } }
     private string _effectText;
     public string EffectText { get { return _effectText; } }
+    private string _effectValueText;
+    public string EffectValueText { get { return _effectValueText; } }
+    private string _effectValueEquation;
+    public string EffectValueEquation { get { return _effectValueEquation; } }
     private string _costText;
     public string CostText { get { return _costText; } }
     //[SerializeField] private TextMeshProUGUI _upgradeLevelText;
@@ -92,6 +96,15 @@ public class TpUpgradeItem : MonoBehaviour
     {
         _effectText = str;
     }
+    public void SetEffectValueText(string str)
+    {
+        _effectValueText = str;
+    }
+    public void SetEffectValueEquation(string str)
+    {
+        _effectValueEquation = str;
+    }
+
     private Dictionary<string, UpArrowNotation> inputMap = new Dictionary<string, UpArrowNotation>();
     public void SetUpgradeLevelText()
     {
