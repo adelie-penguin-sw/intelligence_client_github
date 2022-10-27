@@ -10,7 +10,7 @@ namespace TpTab
         [SerializeField] public Dictionary<int, TpUpgradeItem> _tpUpgradeItems = new Dictionary<int, TpUpgradeItem>();
         [SerializeField] private Transform _tpuTreeLayer;
 
-        public void SetUpgradeItem(int index, string name, string num, string effect, string costEquation, int currentLevel, int maxLevel, List<List<int>> unlockRequirement)
+        public void SetUpgradeItem(int index, string name, string num, string effect, string effectValue, string effectValueEquation, string costEquation, int currentLevel, int maxLevel, List<List<int>> unlockRequirement)
         {
             if(index >= 0)
             {
@@ -42,6 +42,8 @@ namespace TpTab
                 item.SetNameText(name);
                 item.SetNumText(num);
                 item.SetEffectText(effect);
+                item.SetEffectValueText(effectValue);
+                item.SetEffectValueEquation(effectValueEquation);
             }
         }
     }
