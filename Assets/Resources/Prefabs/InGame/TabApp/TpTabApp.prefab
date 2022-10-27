@@ -25897,7 +25897,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9498f3feaf488d5439e266a44cf5f1c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tpUpgradeItems: []
   _tpuTreeLayer: {fileID: 6997747414510556137}
 --- !u!1 &7538744832362070541
 GameObject:
@@ -28775,6 +28774,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ec57e42d132c48a582d5f33f3dae1d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _smoothTime: 0.07
 --- !u!1 &8247957863489196271
 GameObject:
   m_ObjectHideFlags: 0
