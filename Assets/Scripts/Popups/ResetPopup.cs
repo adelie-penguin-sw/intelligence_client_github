@@ -61,28 +61,32 @@ namespace MainTab
             base.Init();
             //TODO: 시간이 남는다면 Popup별 csv파일을 따로 만들어서 text를 하나씩 관리하는게 아니라 배열로 관리해서 동적 생성되도록 제작할것
             //테이블은 이미 JIRA 문서에 존재
-            _headerTextComplete.text = Managers.Definition.GetTextData(12017);
+            _headerTextComplete.text = Managers.Definition.GetTextData(13005);
             _headerTextIncomplete.text = Managers.Definition.GetTextData(13006);
 
             _resetButtonText.text = Managers.Definition.GetTextData(13001);
             _cancelButtonText.text = Managers.Definition.GetTextData(13002);
 
-            _expLvKeyComplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupExperimentLevelKey);
-            _attemptsKeyComplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupAttemptsCompleteKey);
-            _expGoalKeyComplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupGoalKey);
-            _elapesdTimeKeyComplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupElapsedTimeCompleteKey);
-            _multiplierRewardKeyComplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupMultiplierKey);
-            _tpRewardKeyComplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupTPKey);
+            //TODO: 완료시 완료 아닐시 이제 텍스트키 존재하니까 따로 text를 2개씩 만들어서 껐다 켰다 하지말고 집어넣Managers.Definition.GetTextData(13002);
 
-            _expLvKeyIncomplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupExperimentLevelKey);
-            _attemptsKeyIncomplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupAttemptsIncompleteKey);
-            _expGoalKeyIncomplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupGoalKey);
-            _currentCoreIntellectKeyIncomplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupIntellectIncompleteKey);
-            _multiplierRewardKeyIncomplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupMultiplierKey);
-            _tpRewardKeyIncomplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupTPKey);
+            //실험 완료시
+            _expLvKeyComplete.text = Managers.Definition.GetTextData(13007);
+            _attemptsKeyComplete.text = Managers.Definition.GetTextData(13008);
+            _expGoalKeyComplete.text = Managers.Definition.GetTextData(13010);
+            _elapesdTimeKeyComplete.text = Managers.Definition.GetTextData(13011);
+            _multiplierRewardKeyComplete.text = Managers.Definition.GetTextData(13013);
+            _tpRewardKeyComplete.text = Managers.Definition.GetTextData(13014);
 
-            _messageComplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupCompleteMessage);
-            _messageIncomplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupIncompleteMessage);
+            //완료 안했을 때 
+            _expLvKeyIncomplete.text = Managers.Definition.GetTextData(13007);
+            _attemptsKeyIncomplete.text = Managers.Definition.GetTextData(13009);
+            _expGoalKeyIncomplete.text = Managers.Definition.GetTextData(13010);
+            _currentCoreIntellectKeyIncomplete.text = Managers.Definition.GetTextData(13012);
+            _multiplierRewardKeyIncomplete.text = Managers.Definition.GetTextData(13013);
+            _tpRewardKeyIncomplete.text = Managers.Definition.GetTextData(13014);
+
+            _messageComplete.text = Managers.Definition.GetTextData(13015);
+            _messageIncomplete.text = Managers.Definition.GetTextData(13016);
 
             _expGoalTextComplete.text = UserData.ExpGoalStr;
             _expGoalTextIncomplete.text = UserData.ExpGoalStr;
@@ -102,28 +106,28 @@ namespace MainTab
             _textGroupIncomplete.SetActive(!complete);
             _cancelButton.SetActive(!complete);
 
-            _expLvTextComplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupExperimentLevelValue, UserData.ExperimentLevel.ToString());
-            _attemptsTextComplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupAttemptsCompleteValue, (UserData.ResetCounts[UserData.ExperimentLevel] + 1).ToString());
-            _expLvTextIncomplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupExperimentLevelValue, UserData.ExperimentLevel.ToString());
-            _attemptsTextIncomplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupAttemptsIncompleteValue, (UserData.ResetCounts[UserData.ExperimentLevel] + 1).ToString());
+            _expLvTextComplete.text = Managers.Definition.GetTextFormatData(8, UserData.ExperimentLevel.ToString());
+            _attemptsTextComplete.text = Managers.Definition.GetTextFormatData(9, (UserData.ResetCounts[UserData.ExperimentLevel] + 1).ToString());
+            _expLvTextIncomplete.text = Managers.Definition.GetTextFormatData(8, UserData.ExperimentLevel.ToString());
+            _attemptsTextIncomplete.text = Managers.Definition.GetTextFormatData(9, (UserData.ResetCounts[UserData.ExperimentLevel] + 1).ToString());
 
             inputMap.Clear();
             inputMap.Add("coreBrainIntellect", UserData.CoreIntellect);
             inputMap.Add("tpu027", new UpArrowNotation(UserData.TPUpgrades[27].UpgradeCount));
             string tpStr = Managers.Definition.CalcEquationForKey(inputMap, DefinitionKey.tpRewardForReset).ToString(ECurrencyType.TP);
-            _tpRewardTextComplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupTPValue, tpStr);
-            _tpRewardTextIncomplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupTPValue, tpStr);
+            _tpRewardTextComplete.text = Managers.Definition.GetTextFormatData(13, tpStr);
+            _tpRewardTextIncomplete.text = Managers.Definition.GetTextFormatData(13, tpStr);
 
             inputMap.Clear();
             inputMap.Add("coreBrainIntellect", UserData.CoreIntellect);
             inputMap.Add("tpu004", new UpArrowNotation(UserData.TPUpgrades[4].UpgradeCount));
             string multStr = Managers.Definition.CalcEquationForKey(inputMap, DefinitionKey.multiplierRewardForReset).ToString(ECurrencyType.MULTIPLIER);
-            _multiplierRewardTextComplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupMultiplierValue, multStr);
-            _multiplierRewardTextIncomplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupMultiplierValue, multStr);
+            _multiplierRewardTextComplete.text = Managers.Definition.GetTextFormatData(12, multStr);
+            _multiplierRewardTextIncomplete.text = Managers.Definition.GetTextFormatData(12, multStr);
 
             if (complete)
             {
-                _titleText.text = Managers.Definition.GetUIText(UITextKey.resetPopupCompleteTitleText);
+                _titleText.text = Managers.Definition.GetTextData(13003);
 
                 long elapsedSecsNano = DateTimeOffset.Now.ToUnixTimeMilliseconds() * 1000000 - UserData.ExperimentStartTime;
                 long elapsedSecs = elapsedSecsNano / 1000000000;
@@ -133,11 +137,11 @@ namespace MainTab
                 elapsedMins %= 60;
                 long elapsedDays = elapsedHours / 24;
                 elapsedHours %= 24;
-                _elapesdTimeTextComplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupElapsedTimeCompleteValue, elapsedDays.ToString(), elapsedHours.ToString(), elapsedMins.ToString(), elapsedSecs.ToString());
+                _elapesdTimeTextComplete.text = Managers.Definition.GetTextFormatData(11, elapsedDays.ToString(), elapsedHours.ToString(), elapsedMins.ToString(), elapsedSecs.ToString());
             }
             else
             {
-                _titleText.text = Managers.Definition.GetUIText(UITextKey.resetPopupIncompleteTitleText);
+                _titleText.text = Managers.Definition.GetTextData(13004);
 
                 _currentCoreIntellectTextIncomplete.text = UserData.CoreIntellect.ToString();
             }
