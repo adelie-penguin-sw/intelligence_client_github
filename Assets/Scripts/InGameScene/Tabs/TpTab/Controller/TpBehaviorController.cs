@@ -155,7 +155,7 @@ namespace TpTab
 
             public void AdvanceTime(float dt_sec)
             {
-                if (InGame.InGameManager.IsCompleteExp || Managers.Popup.Count > 0)
+                if (UserData.IsCompleteExp || Managers.Popup.Count > 0)
                     return;
 
                 if (_isTwoTouch)
@@ -171,7 +171,7 @@ namespace TpTab
 
             public void LateAdvanceTime(float dt_sec)
             {
-                if (InGame.InGameManager.IsCompleteExp || Managers.Popup.Count > 0)
+                if (UserData.IsCompleteExp || Managers.Popup.Count > 0)
                     return;
 
                 if (!_isTouchStartBrain)

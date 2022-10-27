@@ -125,12 +125,12 @@ namespace MainTab
                 _brainNetWork[0].Type == EBrainType.COREBRAIN &&
                 _brainNetWork[0].Intellect >= _experimentGoal)
             {
-                InGame.InGameManager.IsCompleteExp = true;
+                UserData.IsCompleteExp = true;
                 Managers.Notification.PostNotification(ENotiMessage.EXPERIMENT_COMPLETE);
             }
             else
             {
-                InGame.InGameManager.IsCompleteExp = false;
+                UserData.IsCompleteExp = false;
             }
         }
 

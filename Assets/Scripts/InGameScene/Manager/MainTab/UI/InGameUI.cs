@@ -28,6 +28,7 @@ namespace InGame
                 tab.Init();
                 tab.OnClickTab = OnClick_Tab;
             }
+            Set();
         }
 
         public void Set()
@@ -75,7 +76,8 @@ namespace InGame
         /// <param name="intellect">변경할 intellect</param>
         public void UpdateCoreIntellectText()
         {
-            _txtCoreIntellect.text = string.Format("{0} / {1}", UserData.CoreIntellect.ToString(ECurrencyType.INTELLECT), UserData.ExpGoalStr);
+            string expGoalStr = Managers.Definition.GetData<List<UpArrowNotation>>(DefinitionKey.experimentGoalList)[UserData.ExperimentLevel].ToString();
+            _txtCoreIntellect.text = string.Format("{0} / {1}", UserData.CoreIntellect.ToString(ECurrencyType.INTELLECT), expGoalStr);
         }
 
         /// <summary>
@@ -98,7 +100,7 @@ namespace InGame
 
         public void SetUsernameText()
         {
-            _txtUsername.text = UserData.Username;
+            _txtUsername.text = UserData.username;
         }
 
         public void OnClick_DropDownMenu()
