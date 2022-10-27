@@ -253,7 +253,7 @@ public enum ENotiMessage
     UPDATE_TP,
     UPDATE_NP,
 
-    CHANGE_SCENE,
+    LOGOUT,
 }
 
 /// <summary>

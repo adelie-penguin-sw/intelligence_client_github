@@ -178,8 +178,8 @@ public class UserData
         }
     }
 
-    private static ELanguage _lang = ELanguage.KOR;
-    public static ELanguage Lang { get { return _lang; } }
+    private static ETextLanguage _lang = ETextLanguage.KOR;
+    public static ETextLanguage Lang { get { return _lang; } }
 
     public static long LastCalcTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
@@ -243,7 +243,7 @@ public class UserData
         switch (key)
         {
             case "Language":
-                _lang = (ELanguage)value;
+                _lang = (ETextLanguage)value;
                 break;
         }
     }
@@ -281,6 +281,6 @@ public class UserData
         Debug.Log(token);
         _waitBrainClickTime = PlayerPrefs.GetFloat("WaitBrainClickTime");
         _sfxVolume = PlayerPrefs.GetFloat("SFXVolume");
-        _lang = (ELanguage)PlayerPrefs.GetInt("Language");
+        _lang = (ETextLanguage)PlayerPrefs.GetInt("Language");
     }
 }
