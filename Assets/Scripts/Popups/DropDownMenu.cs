@@ -11,14 +11,13 @@ namespace InGame
         [SerializeField] private TextMeshProUGUI _optionsText;
         [SerializeField] private TextMeshProUGUI _helpText;
         [SerializeField] private TextMeshProUGUI _aboutText;
-
         public override void Init()
         {
             base.Init();
-            _statisticsText.text = Managers.Definition.GetUIText(UITextKey.dropDownMenuItemTextStatistics);
-            _optionsText.text = Managers.Definition.GetUIText(UITextKey.dropDownMenuItemTextOptions);
-            _helpText.text = Managers.Definition.GetUIText(UITextKey.dropDownMenuItemTextHelp);
-            _aboutText.text = Managers.Definition.GetUIText(UITextKey.dropDownMenuItemTextAbout);
+            _statisticsText.text = Managers.Definition.GetTextData(11001);
+            _optionsText.text = Managers.Definition.GetTextData(3);
+            _helpText.text = Managers.Definition.GetTextData(10001);
+            _aboutText.text = Managers.Definition.GetTextData(4);
         }
 
         public override void Set()

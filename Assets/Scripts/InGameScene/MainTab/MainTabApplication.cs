@@ -85,7 +85,6 @@ namespace MainTab
             {
                 controller.Dispose();
             }
-            Managers.Pool.DespawnObject(EPrefabsType.TAP_APPLICATION, this.gameObject);
         }
 
         public void OnClick_ResetButton()
