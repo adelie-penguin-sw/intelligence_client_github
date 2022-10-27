@@ -59,12 +59,13 @@ namespace MainTab
         public override void Init()
         {
             base.Init();
+            //TODO: 시간이 남는다면 Popup별 csv파일을 따로 만들어서 text를 하나씩 관리하는게 아니라 배열로 관리해서 동적 생성되도록 제작할것
+            //테이블은 이미 JIRA 문서에 존재
+            _headerTextComplete.text = Managers.Definition.GetTextData(12017);
+            _headerTextIncomplete.text = Managers.Definition.GetTextData(13006);
 
-            _headerTextComplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupCompleteHeaderText);
-            _headerTextIncomplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupIncompleteHeaderText);
-
-            _resetButtonText.text = Managers.Definition.GetUIText(UITextKey.resetPopupResetButtonText);
-            _cancelButtonText.text = Managers.Definition.GetUIText(UITextKey.resetPopupCancelButtonText);
+            _resetButtonText.text = Managers.Definition.GetTextData(13001);
+            _cancelButtonText.text = Managers.Definition.GetTextData(13002);
 
             _expLvKeyComplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupExperimentLevelKey);
             _attemptsKeyComplete.text = Managers.Definition.GetUIText(UITextKey.resetPopupAttemptsCompleteKey);

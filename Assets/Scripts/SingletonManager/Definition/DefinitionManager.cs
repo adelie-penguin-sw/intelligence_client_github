@@ -88,11 +88,11 @@ public class DefinitionManager
         _definitions.Add(EDefType.TUTORIAL_QUEST, new TutorialQuestDefinitions(CSVReader.Read(res)).MakeDict());
         #endregion
 
-        #region UITexts.csv
-        res = await Managers.Network.API_S3Data("UITexts.csv");
-        if (res == null) return false;
-        _definitions.Add(EDefType.UI_TEXTS, new UITextDefinitions(CSVReader.Read(res)).MakeDict());
-        #endregion
+        //#region UITexts.csv
+        //res = await Managers.Network.API_S3Data("UITexts.csv");
+        //if (res == null) return false;
+        //_definitions.Add(EDefType.UI_TEXTS, new UITextDefinitions(CSVReader.Read(res)).MakeDict());
+        //#endregion
 
         #region Text.csv
         res = await Managers.Network.API_S3Data("Text.csv");
@@ -104,15 +104,15 @@ public class DefinitionManager
         #region TextFormat.csv
         res = await Managers.Network.API_S3Data("TextFormat.csv");
         if (res == null) return false;
-        _definitions.Add(EDefType.TEXT_FORMAT, new TextFormatDefinitions(CSVReader.Read(res)).MakeDict());
+        _definitions.Add(EDefType.TEXT_FORMAT, new TextDefinitions(CSVReader.Read(res)).MakeDict());
         #endregion
         return true;
     }
 
-    public string GetUIText(string dataName, params string[] formatParams)
-    {
-        return GetData<UITextDefinition>(dataName, EDefType.UI_TEXTS).GetString(formatParams);
-    }
+    //public string GetUIText(string dataName, params string[] formatParams)
+    //{
+    //    
+    //}
 
     public T GetData<T>(string dataName, EDefType type = EDefType.BASE)
     {
@@ -125,6 +125,25 @@ public class DefinitionManager
         if (dic.Contains(dataName))
         {
             return (T)dic[dataName];
+        }
+        else
+        {
+            Debug.LogError("NULL DATA IN DICTIONARY");
+            return default;
+        }
+    }
+
+    public T GetData<T>(int dataKey, EDefType type = EDefType.BASE)
+    {
+        var dic = GetDatas<IDictionary>(type);
+        if (dic == null)
+        {
+            return default;
+        }
+
+        if (dic.Contains(dataKey))
+        {
+            return (T)dic[dataKey];
         }
         else
         {
@@ -146,6 +165,16 @@ public class DefinitionManager
         }
     }
 
+    public string GetTextData(int textKey)
+    {
+        return GetData<TextDefinition>(textKey, EDefType.TEXT).GetText();
+    }
+
+    public string GetTextFormatData(int textKey, params string[] formatParams)
+    {
+        return GetData<TextDefinition>(textKey, EDefType.TEXT_FORMAT).GetText(formatParams);
+    }
+
     private Dictionary<string, int> PRIORITY = new Dictionary<string, int>()
     {
         {"log10", 4},
@@ -159,6 +188,7 @@ public class DefinitionManager
         {"(", 0},
     };
 
+    #region Convert
     private List<int> ConvertToIntList(string data)
     {
         List<int> result = new List<int>();
@@ -387,6 +417,7 @@ public class DefinitionManager
     {
         return CalcPostfix(inputMap, ConvEquationToPostfix(GetData<string>(equationKey))).ToString();
     }
+    #endregion
 }
 
 public enum EDefType
@@ -394,7 +425,7 @@ public enum EDefType
     BASE,
     TP_UPGRADE,
     TUTORIAL_QUEST,
-    UI_TEXTS,
+    //UI_TEXTS,
     TEXT,
     TEXT_FORMAT,
 }

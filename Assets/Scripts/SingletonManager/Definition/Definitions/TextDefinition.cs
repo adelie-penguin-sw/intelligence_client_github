@@ -13,6 +13,11 @@ public class TextDefinition
         this.text.Add(ETextLanguage.KOR, txtKor);
         this.text.Add(ETextLanguage.ENG, txtEng);
     }
+
+    public string GetText(params string[] formatParams)
+    {
+        return string.Format(text[UserData.Lang], formatParams);
+    }
 }
 
 public class TextDefinitions : ILoader<int, TextDefinition>
