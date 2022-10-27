@@ -110,6 +110,8 @@ namespace MainTab
         }
         #endregion
 
+        private Dictionary<string, UpArrowNotation> _inputMap = new Dictionary<string, UpArrowNotation>();
+
         public void Init(BrainData data, Dictionary<long, Brain> brainNetwork = null, MainTabModel mainTabModel = null)
         {
             _brainData = data;
@@ -383,6 +385,14 @@ namespace MainTab
             {
                 return multiplierUpgradeCost * (((new UpArrowNotation(growthRate)) ^ (new UpArrowNotation(bulkUpgradeCount))) - 1) / (growthRate - 1);
             }
+        }
+
+        public UpArrowNotation GetBrainDecomposingReward()
+        {
+            _inputMap.Clear();
+            _inputMap.Add("intellect", _brainData.Intellect);
+            _inputMap.Add("tpu008", new UpArrowNotation(UserData.TPUpgrades[8].UpgradeCount));
+            return Managers.Definition.CalcEquation(_inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainDecomposingGainEquation));
         }
 
         private long CountAllSenders()

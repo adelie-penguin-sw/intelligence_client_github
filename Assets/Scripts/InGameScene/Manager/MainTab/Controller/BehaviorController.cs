@@ -80,6 +80,7 @@ namespace MainTab
                     Managers.Popup.DeleteAll(PopupType.NORMAL);  // 현재 떠있는 모든 팝업 닫음
                     ResetPopup resetPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "ResetPopup", PopupType.NORMAL)
                         .GetComponent<ResetPopup>();
+                    resetPopup.Init(_model.BrainNetwork);
                     break;
                 case ENotiMessage.ONCLICK_UPGRADE_BRAIN_MULTIPLIER:
                     brainId = (long)noti.data[EDataParamKey.BRAIN_ID];
@@ -306,8 +307,9 @@ namespace MainTab
                     case ENotiMessage.EXPERIMENT_COMPLETE:
                     case ENotiMessage.ONCLICK_RESET_BUTTON:
                         Managers.Popup.DeleteAll(PopupType.NORMAL);  // 현재 떠있는 모든 팝업 닫음
-                        ResetPopup infoPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "ResetPopup", PopupType.NORMAL)
+                        ResetPopup resetPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "ResetPopup", PopupType.NORMAL)
                             .GetComponent<ResetPopup>();
+                        resetPopup.Init(_model.BrainNetwork);
                         break;
                 }
             }
