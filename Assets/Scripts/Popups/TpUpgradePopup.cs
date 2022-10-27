@@ -127,6 +127,7 @@ namespace InGame
         public override void Dispose()
         {
             base.Dispose();
+            Managers.Notification.PostNotification(ENotiMessage.EXIT_TPUPGRADE_POPUP);
         }
 
         private Sprite LoadTPUIcon(int index)
