@@ -73,19 +73,19 @@ namespace InGame
 
             _bulkUpgradeCountList = Managers.Definition.GetData<List<int>>(DefinitionKey.bulkUpgradeCountList);
             _bulkUpgradeCount = _bulkUpgradeCountList[_bulkUpgradeCountIndex];
-            _bulkUpgradeCountText.text = Managers.Definition.GetUIText(UITextKey.brainInfoBulkUpgradeText, _bulkUpgradeCount.ToString("N0"));
+            _bulkUpgradeCountText.text = Managers.Definition.GetTextFormatData(7, _bulkUpgradeCount.ToString("N0"));
 
             // 값 표시하는 부분 제외한 모든 텍스트 영역 표시
-            _popupTitle.text = Managers.Definition.GetUIText(UITextKey.brainInfoPopupTitleText);
-            _idKey.text = Managers.Definition.GetUIText(UITextKey.brainInfoIDTitle);
-            _typeKey.text = Managers.Definition.GetUIText(UITextKey.brainInfoTypeTitle);
-            _intellectKey.text = Managers.Definition.GetUIText(UITextKey.brainInfoIntellectTitle);
-            _intellectLimitKey.text = Managers.Definition.GetUIText(UITextKey.brainInfoIntellectLimitTitle);
-            _multiplierKey.text = Managers.Definition.GetUIText(UITextKey.brainInfoMultiplierTitle);
-            _npKey.text = Managers.Definition.GetUIText(UITextKey.brainInfoStoredNPTitle);
-            _distanceKey.text = Managers.Definition.GetUIText(UITextKey.brainInfoDistanceTitle);
-            _statusKey.text = Managers.Definition.GetUIText(UITextKey.brainInfoStatusTitle);
-            _resetButtonText.text = Managers.Definition.GetUIText(UITextKey.brainInfoResetButtonText);
+            _popupTitle.text = Managers.Definition.GetTextData(12001);
+            _idKey.text = Managers.Definition.GetTextData(12002);
+            _typeKey.text = Managers.Definition.GetTextData(12003);
+            _intellectKey.text = Managers.Definition.GetTextData(12006);
+            _intellectLimitKey.text = Managers.Definition.GetTextData(12007);
+            _multiplierKey.text = Managers.Definition.GetTextData(12008);
+            _npKey.text = Managers.Definition.GetTextData(12009);
+            _distanceKey.text = Managers.Definition.GetTextData(12010);
+            _statusKey.text = Managers.Definition.GetTextData(12011);
+            _resetButtonText.text = Managers.Definition.GetTextData(12017);
 
             _brain = brain;
             _deletableSenderList.Clear();
@@ -132,8 +132,8 @@ namespace InGame
                     totalSenderNP += Managers.Definition.CalcEquation(_inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainDecomposingGainEquation));
                 }
                 _decomposeReward.text = _deletableSenderList.Count == 0 ?
-                    Managers.Definition.GetUIText(UITextKey.brainInfoDecomposeButtonTextNoSender, storedNP.ToString(ECurrencyType.NP)) :
-                    Managers.Definition.GetUIText(UITextKey.brainInfoDecomposeButtonTextHasSender, storedNP.ToString(ECurrencyType.NP), totalSenderNP.ToString(ECurrencyType.NP));   // "총" 획득 NP량 계산해서 표시
+                    Managers.Definition.GetTextFormatData(5, storedNP.ToString(ECurrencyType.NP)) :
+                    Managers.Definition.GetTextFormatData(6, storedNP.ToString(ECurrencyType.NP), totalSenderNP.ToString(ECurrencyType.NP));   // "총" 획득 NP량 계산해서 표시
             }
         }
         public override void Dispose()
@@ -151,10 +151,10 @@ namespace InGame
             switch (_brain.BrainData.brainType)
             {
                 case EBrainType.COREBRAIN:
-                    _typeValue.text = Managers.Definition.GetUIText(UITextKey.brainInfoTypeCoreBrain);
+                    _typeValue.text = Managers.Definition.GetTextData(12004);
                     break;
                 case EBrainType.NORMALBRAIN:
-                    _typeValue.text = Managers.Definition.GetUIText(UITextKey.brainInfoTypeNormalBrain);
+                    _typeValue.text = Managers.Definition.GetTextData(12005);
                     break;
             }
 
@@ -167,25 +167,26 @@ namespace InGame
             // current distance
             _distanceValue.text = _brain.BrainData.distance.ToString();
 
+            //TODO: 나중에 text 색 모두 rich text로 변경하셔야 해요.
             // current status
             if (_brain.ReceiverIdList.Count == 0)
             {
-                _statusValue.text = Managers.Definition.GetUIText(UITextKey.brainInfoStatusNotConnected);
+                _statusValue.text = Managers.Definition.GetTextData(12013);
                 _statusValue.color = new Color32(255, 0, 0, 255);
             }
             else if (_brain.Intellect.Top3Layer[0] == 0f)
             {
-                _statusValue.text = Managers.Definition.GetUIText(UITextKey.brainInfoStatusIdle);
+                _statusValue.text = Managers.Definition.GetTextData(12014);
                 _statusValue.color = new Color32(255, 255, 255, 255);
             }
             else if (_brain.IsLocked)
             {
-                _statusValue.text = Managers.Definition.GetUIText(UITextKey.brainInfoStatusLimitExceeded);
+                _statusValue.text = Managers.Definition.GetTextData(12016);
                 _statusValue.color = new Color32(255, 0, 0, 255);
             }
             else
             {
-                _statusValue.text = Managers.Definition.GetUIText(UITextKey.brainInfoStatusWorking);
+                _statusValue.text = Managers.Definition.GetTextData(12015);
                 _statusValue.color = new Color32(255, 255, 255, 255);
             }
 
@@ -196,19 +197,19 @@ namespace InGame
                 if (UserData.TPUpgrades[0].UpgradeCount > 0)
                 {
                     multiplierUpgradeText = _brain.SenderIdList.Count == 0 ?
-                        Managers.Definition.GetUIText(UITextKey.brainInfoUpgradeIntellectButtonText) :
-                        Managers.Definition.GetUIText(UITextKey.brainInfoUpgradeMultiplierButtonText, (UserData.TPUpgrades[1].UpgradeCount + 2).ToString());
+                        Managers.Definition.GetTextData(12012) :
+                        Managers.Definition.GetTextFormatData(2, (UserData.TPUpgrades[1].UpgradeCount + 2).ToString());
                 }
                 else
                 {
-                    multiplierUpgradeText = Managers.Definition.GetUIText(UITextKey.brainInfoUpgradeIntellectButtonText);
+                    multiplierUpgradeText = Managers.Definition.GetTextData(12012);
                 }
-                _upgradeMultiplierCost.text = multiplierUpgradeText + "\n" + Managers.Definition.GetUIText(UITextKey.costText, _brain.GetBrainUpgradeCost(_bulkUpgradeCount).ToString(ECurrencyType.NP));
+                _upgradeMultiplierCost.text = multiplierUpgradeText + "\n" + Managers.Definition.GetTextFormatData(1, _brain.GetBrainUpgradeCost(_bulkUpgradeCount).ToString(ECurrencyType.NP));
             }
             else if (UserData.TPUpgrades[0].UpgradeCount > 0)       // 코어 브레인에서는 일괄업글 버튼 표시
             {
-                multiplierUpgradeText = Managers.Definition.GetUIText(UITextKey.brainInfoBatchUpgradeButtonText, (UserData.TPUpgrades[1].UpgradeCount + 2).ToString());
-                _upgradeMultiplierCost.text = multiplierUpgradeText + "\n" + Managers.Definition.GetUIText(UITextKey.costText, GetTotalUpgradeCost().ToString(ECurrencyType.NP));
+                multiplierUpgradeText = Managers.Definition.GetTextFormatData(3, (UserData.TPUpgrades[1].UpgradeCount + 2).ToString());
+                _upgradeMultiplierCost.text = multiplierUpgradeText + "\n" + Managers.Definition.GetTextFormatData(1, GetTotalUpgradeCost().ToString(ECurrencyType.NP));
             }
 
             // limit upgrade btn text
@@ -218,8 +219,8 @@ namespace InGame
             _inputMap.Add("tpu002", new UpArrowNotation(UserData.TPUpgrades[2].UpgradeCount));
             UpArrowNotation limitUpgradeCost = Managers.Definition.CalcEquation(_inputMap, Managers.Definition.GetData<string>(DefinitionKey.brainLimitUpgradeCostEquation));
 
-            string limitUpgradeText = Managers.Definition.GetUIText(UITextKey.brainInfoUpgradeLimitButtonText, _brain.GetNextIntellectLimit().ToString(ECurrencyType.INTELLECT));
-            _upgradeLimitCost.text = limitUpgradeText + "\n" + Managers.Definition.GetUIText(UITextKey.costText, limitUpgradeCost.ToString(ECurrencyType.NP));
+            string limitUpgradeText = Managers.Definition.GetTextFormatData(4, _brain.GetNextIntellectLimit().ToString(ECurrencyType.INTELLECT));
+            _upgradeLimitCost.text = limitUpgradeText + "\n" + Managers.Definition.GetTextFormatData(1, limitUpgradeCost.ToString(ECurrencyType.NP));
         }
 
         public void OnClick_DecomposeBrain()
@@ -252,7 +253,7 @@ namespace InGame
             {
                 _bulkUpgradeCountIndex--;
                 _bulkUpgradeCount = _bulkUpgradeCountList[_bulkUpgradeCountIndex];
-                _bulkUpgradeCountText.text = Managers.Definition.GetUIText(UITextKey.brainInfoBulkUpgradeText, _bulkUpgradeCount.ToString("N0"));
+                _bulkUpgradeCountText.text = Managers.Definition.GetTextFormatData(7, _bulkUpgradeCount.ToString("N0"));
                 UpdateInfo();
             }
         }
@@ -263,7 +264,7 @@ namespace InGame
             {
                 _bulkUpgradeCountIndex++;
                 _bulkUpgradeCount = _bulkUpgradeCountList[_bulkUpgradeCountIndex];
-                _bulkUpgradeCountText.text = Managers.Definition.GetUIText(UITextKey.brainInfoBulkUpgradeText, _bulkUpgradeCount.ToString("N0"));
+                _bulkUpgradeCountText.text = Managers.Definition.GetTextFormatData(7, _bulkUpgradeCount.ToString("N0"));
                 UpdateInfo();
             }
         }
