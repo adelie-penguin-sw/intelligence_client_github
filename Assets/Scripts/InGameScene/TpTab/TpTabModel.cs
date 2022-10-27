@@ -62,8 +62,15 @@ namespace TpTab
             get { return _curCameraSize; }
             set
             {
-                _curCameraSize *= Mathf.Pow(_resizeSpeedScale, -value);
-                _curCameraSize = Math.Min(Math.Max(_curCameraSize, _minSize), _maxSize);
+                if (value != 0f || _curCameraSize < _minSize || _curCameraSize > _maxSize)
+                {
+                    _curCameraSize *= Mathf.Pow(_resizeSpeedScale, -value);
+                    _curCameraSize = Math.Min(Math.Max(_curCameraSize, _minSize), _maxSize);
+                }
+                else
+                {
+                    _curCameraSize = MainCamera.orthographicSize;
+                }
                 MainCamera.orthographicSize = _curCameraSize;
             }
         }
