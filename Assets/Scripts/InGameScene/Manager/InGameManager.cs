@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.SceneManagement;
+using Sirenix.OdinInspector;
 
 namespace InGame
 {
@@ -16,6 +17,7 @@ namespace InGame
         [SerializeField] private Canvas _canvas;
         [SerializeField] private GameObject _anchor;
         [SerializeField] private InGameUI _ui;
+        [SerializeField] private List<TabApp> _tabAppList;
 
         /// <summary>
         /// 연구 달성 상태 여부
@@ -28,8 +30,9 @@ namespace InGame
 
         void Start()
         {
-            Managers.Notification.AddObserver(OnNotiChangeTab, ENotiMessage.ONCLICK_CHANGE_TAB);
-            //Managers.Notification.AddObserver(OnNotification, ENotiMessage.CHANGE_SCENE);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.LOGOUT);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.ONCLICK_CHANGE_TAB);
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.LOGOUT);
             if (_ui != null)
             {
                 _ui.Init();
@@ -58,21 +61,28 @@ namespace InGame
             }
         }
 
-        public void OnNotiChangeTab(Notification noti)
+        public void OnNotification(Notification noti)
         {
-            if (noti.msg == ENotiMessage.ONCLICK_CHANGE_TAB)
+            switch(noti.msg)
             {
-                EGameState state = (EGameState)noti.data[EDataParamKey.EGAMESTATE]; 
-                ChangeState(state);
+                case ENotiMessage.ONCLICK_CHANGE_TAB:
+
+                    EGameState state = (EGameState)noti.data[EDataParamKey.EGAMESTATE];
+                    ChangeState(state);
+                    break;
+                case ENotiMessage.LOGOUT:
+                    Dispose();
+                    break;
             }
         }
 
         public void Dispose()
         {
-            Managers.Notification.RemoveObserver(OnNotiChangeTab, ENotiMessage.ONCLICK_CHANGE_TAB);
             _ui.Dispose();
-            this.Dispose(true);
             GC.SuppressFinalize(this);
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_CHANGE_TAB);
+            //Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.LOGOUT);
+            this.Dispose(true);
         }
 
         private bool _disposed;
@@ -87,27 +97,20 @@ namespace InGame
                 }
             }
             this._disposed = true;
+            PlayerPrefs.DeleteAll();
+            SceneManager.LoadScene("LoginScene");
         }
 
-
-        private Dictionary<EGameState, IGameStateBasicModule> _handlers = new Dictionary<EGameState, IGameStateBasicModule>();
+        [ShowInInspector] private Dictionary<EGameState, IGameStateBasicModule> _handlers = new Dictionary<EGameState, IGameStateBasicModule>();
         private EGameState _currentState = EGameState.UNKNOWN;
         private GameObject _goTemp;
         private void InitHandlers()
         {
             _handlers.Clear();
-
-            _goTemp = Managers.Pool.GrabPrefabs(EPrefabsType.TAP_APPLICATION, "MainTabApp", transform);
-            _handlers.Add(EGameState.MAIN_TAB, _goTemp.GetComponent<MainTab.MainTabApplication>());
-
-            _goTemp = Managers.Pool.GrabPrefabs(EPrefabsType.TAP_APPLICATION, "TpTabApp", transform);
-            _handlers.Add(EGameState.TP_UPGRADE_TAB, _goTemp.GetComponent<TpTab.TpTabApplication>());
-
-            _goTemp = Managers.Pool.GrabPrefabs(EPrefabsType.TAP_APPLICATION, "ShopTabApp", transform);
-            _handlers.Add(EGameState.SHOP_TAB, _goTemp.GetComponent<ShopTab.ShopTabApplication>());
-
-            _goTemp = Managers.Pool.GrabPrefabs(EPrefabsType.TAP_APPLICATION, "UserTabApp", transform);
-            _handlers.Add(EGameState.USER_TAB, _goTemp.GetComponent<UserTab.UserTabApplication>());
+            foreach(var tab in _tabAppList)
+            {
+                _handlers.Add(tab.tabType, tab.tabApp);
+            }
 
             foreach (EGameState state in _handlers.Keys)
             {
@@ -171,5 +174,12 @@ namespace InGame
         /// 광고 시청 및 유료 상점 탭
         /// </summary>
         SHOP_TAB,
+    }
+
+    [Serializable]
+    struct TabApp
+    {
+        public EGameState tabType;
+        public BaseTabApplication tabApp;
     }
 }
