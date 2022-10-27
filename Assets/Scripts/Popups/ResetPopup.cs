@@ -26,6 +26,7 @@ namespace MainTab
         [SerializeField] private TextMeshProUGUI _elapesdTimeKeyComplete;
         [SerializeField] private TextMeshProUGUI _multiplierRewardKeyComplete;
         [SerializeField] private TextMeshProUGUI _tpRewardKeyComplete;
+        [SerializeField] private TextMeshProUGUI _npCarryOverKeyComplete;
 
         [SerializeField] private TextMeshProUGUI _expLvTextComplete;
         [SerializeField] private TextMeshProUGUI _attemptsTextComplete;
@@ -33,6 +34,7 @@ namespace MainTab
         [SerializeField] private TextMeshProUGUI _elapesdTimeTextComplete;
         [SerializeField] private TextMeshProUGUI _multiplierRewardTextComplete;
         [SerializeField] private TextMeshProUGUI _tpRewardTextComplete;
+        [SerializeField] private TextMeshProUGUI _npCarryOverTextComplete;
 
         [SerializeField] private TextMeshProUGUI _expLvKeyIncomplete;
         [SerializeField] private TextMeshProUGUI _attemptsKeyIncomplete;
@@ -40,6 +42,7 @@ namespace MainTab
         [SerializeField] private TextMeshProUGUI _currentCoreIntellectKeyIncomplete;
         [SerializeField] private TextMeshProUGUI _multiplierRewardKeyIncomplete;
         [SerializeField] private TextMeshProUGUI _tpRewardKeyIncomplete;
+        [SerializeField] private TextMeshProUGUI _npCarryOverKeyIncomplete;
 
         [SerializeField] private TextMeshProUGUI _expLvTextIncomplete;
         [SerializeField] private TextMeshProUGUI _attemptsTextIncomplete;
@@ -47,6 +50,7 @@ namespace MainTab
         [SerializeField] private TextMeshProUGUI _currentCoreIntellectTextIncomplete;
         [SerializeField] private TextMeshProUGUI _multiplierRewardTextIncomplete;
         [SerializeField] private TextMeshProUGUI _tpRewardTextIncomplete;
+        [SerializeField] private TextMeshProUGUI _npCarryOverTextIncomplete;
 
         [SerializeField] private TextMeshProUGUI _messageComplete;
         [SerializeField] private TextMeshProUGUI _messageIncomplete;
@@ -54,9 +58,14 @@ namespace MainTab
         [SerializeField] private GameObject _multiplierRewardComplete;
         [SerializeField] private GameObject _multiplierRewardIncomplete;
 
+        [SerializeField] private GameObject _npCarryOverComplete;
+        [SerializeField] private GameObject _npCarryOverIncomplete;
+
+        private BrainNetwork _brainNetwork;
+
         private Dictionary<string, UpArrowNotation> inputMap = new Dictionary<string, UpArrowNotation>();
 
-        public override void Init()
+        public void Init(BrainNetwork brainNetowrk)
         {
             base.Init();
             //TODO: 시간이 남는다면 Popup별 csv파일을 따로 만들어서 text를 하나씩 관리하는게 아니라 배열로 관리해서 동적 생성되도록 제작할것
@@ -92,7 +101,12 @@ namespace MainTab
             _expGoalTextIncomplete.text = Managers.Definition.GetData<List<UpArrowNotation>>(DefinitionKey.experimentGoalList)[UserData.ExperimentLevel].ToString();
 
             _multiplierRewardComplete.SetActive(UserData.TPUpgrades[0].UpgradeCount > 0);
-            _multiplierRewardIncomplete.gameObject.SetActive(UserData.TPUpgrades[0].UpgradeCount > 0);
+            _multiplierRewardIncomplete.SetActive(UserData.TPUpgrades[0].UpgradeCount > 0);
+
+            _npCarryOverComplete.SetActive(UserData.TPUpgrades[25].UpgradeCount > 0);
+            _npCarryOverIncomplete.SetActive(UserData.TPUpgrades[25].UpgradeCount > 0);
+
+            _brainNetwork = brainNetowrk;
         }
 
         private Hashtable _sendData = new Hashtable();
@@ -125,6 +139,9 @@ namespace MainTab
             _multiplierRewardTextComplete.text = Managers.Definition.GetTextFormatData(12, multStr);
             _multiplierRewardTextIncomplete.text = Managers.Definition.GetTextFormatData(12, multStr);
 
+            _npCarryOverTextComplete.text = _brainNetwork.GetNPCarryOver().ToString(ECurrencyType.NP) + " NP";
+            _npCarryOverTextIncomplete.text = _brainNetwork.GetNPCarryOver().ToString(ECurrencyType.NP) + "NP";
+
             if (complete)
             {
                 _titleText.text = Managers.Definition.GetTextData(13003);
@@ -155,6 +172,5 @@ namespace MainTab
                 Dispose();
             }
         }
-
     }
 }
