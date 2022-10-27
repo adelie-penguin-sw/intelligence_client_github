@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TpTab;
 using UnityEngine;
 namespace MainTab
 {
@@ -43,7 +44,7 @@ namespace MainTab
         {
             base.OnEnter();
 
-            Camera.main.transform.position = new Vector3(0, 0, -10);
+            _mainTabModel.MainCamera.transform.position = new Vector3(0, 0, -10);
 
             if (await Managers.Network.API_LoadUserData())
             {
