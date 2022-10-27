@@ -26,7 +26,7 @@ public class UserInfoPopup : PopupBase
     public override void Init()
     {
         base.Init();
-        _txtUserName.text = UserData.Username;
+        _txtUserName.text = UserData.username;
 
         _txtExperimentLevelKey.text = Managers.Definition.GetTextData(14002);
         _txtAttemptsKey.text = Managers.Definition.GetTextData(14003);

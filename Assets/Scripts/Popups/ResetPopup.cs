@@ -88,8 +88,8 @@ namespace MainTab
             _messageComplete.text = Managers.Definition.GetTextData(13015);
             _messageIncomplete.text = Managers.Definition.GetTextData(13016);
 
-            _expGoalTextComplete.text = UserData.ExpGoalStr;
-            _expGoalTextIncomplete.text = UserData.ExpGoalStr;
+            _expGoalTextComplete.text = Managers.Definition.GetData<List<UpArrowNotation>>(DefinitionKey.experimentGoalList)[UserData.ExperimentLevel].ToString();
+            _expGoalTextIncomplete.text = Managers.Definition.GetData<List<UpArrowNotation>>(DefinitionKey.experimentGoalList)[UserData.ExperimentLevel].ToString();
 
             _multiplierRewardComplete.SetActive(UserData.TPUpgrades[0].UpgradeCount > 0);
             _multiplierRewardIncomplete.gameObject.SetActive(UserData.TPUpgrades[0].UpgradeCount > 0);
@@ -100,7 +100,7 @@ namespace MainTab
         {
             base.AdvanceTime(dt_sec);
 
-            bool complete = InGame.InGameManager.IsCompleteExp;
+            bool complete = UserData.IsCompleteExp;
 
             _textGroupComplete.SetActive(complete);
             _textGroupIncomplete.SetActive(!complete);

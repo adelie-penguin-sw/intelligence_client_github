@@ -19,10 +19,6 @@ namespace InGame
         [SerializeField] private InGameUI _ui;
         [SerializeField] private List<TabApp> _tabAppList;
 
-        /// <summary>
-        /// 연구 달성 상태 여부
-        /// </summary>
-        public static bool IsCompleteExp = false;
         void Awake()
         {
             

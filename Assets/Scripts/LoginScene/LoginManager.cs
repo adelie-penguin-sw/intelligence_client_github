@@ -42,7 +42,7 @@ public class LoginManager : MonoBehaviour
         _btnAppleLogin.gameObject.SetActive(false);
         _btnGoogleLogin.gameObject.SetActive(false);
 
-        UserData.LoadAllData();
+        SaveUserData.LoadAllData();
         CheckChangeScene();
 
 #if UNITY_IOS
@@ -176,7 +176,7 @@ public class LoginManager : MonoBehaviour
                 }
                 else                        // 이미 유저네임을 가진 상태에서 로그인할때
                 {
-                    UserData.Username = res.username;
+                    UserData.username = res.username;
                     CheckChangeScene();
                 }
             }
@@ -189,7 +189,7 @@ public class LoginManager : MonoBehaviour
 
     private async void CheckChangeScene()
     {
-        if (!string.IsNullOrEmpty(UserData.token))
+        if (!string.IsNullOrEmpty(SaveUserData.Token))
         {
             AuthValidationResponse res = await Managers.Network.API_TokenValidation();
             if (res != null)
@@ -202,7 +202,7 @@ public class LoginManager : MonoBehaviour
                         if (await Managers.Definition.LoadS3Data())
                         {
                             usernameRes = await Managers.Network.API_GetUsername();
-                            UserData.Username = usernameRes.username;
+                            UserData.username = usernameRes.username;
 
                             if (await Managers.Network.API_LoadUserData())
                             {
@@ -211,11 +211,11 @@ public class LoginManager : MonoBehaviour
                         }
                         break;
                     case EStatusCode.JWT_REFRESH:
-                        UserData.SetString("Token", res.token);
+                        SaveUserData.Token = res.token;
                         if (await Managers.Definition.LoadS3Data())
                         {
                             usernameRes = await Managers.Network.API_GetUsername();
-                            UserData.Username = usernameRes.username;
+                            UserData.username = usernameRes.username;
 
                             if (await Managers.Network.API_LoadUserData())
                             {

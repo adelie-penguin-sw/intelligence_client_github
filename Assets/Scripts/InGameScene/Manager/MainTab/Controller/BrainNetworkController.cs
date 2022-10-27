@@ -37,7 +37,7 @@ namespace MainTab
         {
             if (_brainNetwork != null)
             {
-                if (!InGame.InGameManager.IsCompleteExp)
+                if (!UserData.IsCompleteExp)
                 {
                     _brainNetwork.AdvanceTime(dt_sec);
                 }
@@ -95,7 +95,7 @@ namespace MainTab
 
             Set();
 
-            InGame.InGameManager.IsCompleteExp = false;
+            UserData.IsCompleteExp = false;
         }
     }
 }

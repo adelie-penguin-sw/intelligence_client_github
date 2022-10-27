@@ -137,7 +137,7 @@ public class NetworkManager
     {
         //필요한 Header 추가.
         request.SetRequestHeader("Content-Type", "application/json");
-        request.SetRequestHeader("Authorization", "Bearer " + UserData.token);
+        request.SetRequestHeader("Authorization", "Bearer " + SaveUserData.Token);
     }
 
     #endregion
@@ -189,7 +189,7 @@ public class NetworkManager
         //if (res != null)
         {
             Debug.Log(res.token);
-            UserData.SetString("Token", res.token);
+            SaveUserData.Token =  res.token;
         }
 
         return (res != null);
@@ -204,7 +204,7 @@ public class NetworkManager
                 ENetworkSendType.POST,
                 json);
 
-        UserData.Username = userName;
+        UserData.username = userName;
         return (res != null);
     }
 

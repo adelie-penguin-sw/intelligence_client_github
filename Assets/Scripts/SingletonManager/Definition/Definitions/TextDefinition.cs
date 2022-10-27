@@ -16,7 +16,7 @@ public class TextDefinition
 
     public string GetText(params string[] formatParams)
     {
-        return string.Format(text[UserData.Lang], formatParams);
+        return string.Format(text[SaveUserData.Lang], formatParams);
     }
 }
 
