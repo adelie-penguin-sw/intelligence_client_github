@@ -58,21 +58,20 @@ namespace InGame
         {
             _setKoreanButton.color = new Color32(120, 120, 120, 255);
             _setEnglishButton.color = new Color32(40, 40, 40, 255);
-            UserData.SetInt("Language", (int)ELanguage.KOR);
+            UserData.SetInt("Language", (int)ETextLanguage.KOR);
         }
 
         public void OnClick_SetEnglishButton()
         {
             _setEnglishButton.color = new Color32(120, 120, 120, 255);
             _setKoreanButton.color = new Color32(40, 40, 40, 255);
-            UserData.SetInt("Language", (int)ELanguage.ENG);
+            UserData.SetInt("Language", (int)ETextLanguage.ENG);
         }
 
         public void OnClick_LogoutButton()
         {
+            Managers.Notification.PostNotification(ENotiMessage.LOGOUT);
             Dispose();
-            PlayerPrefs.DeleteAll();
-            SceneManager.LoadScene("LoginScene");
         }
 
         public void OnClick_DeleteAccountButton()
@@ -90,11 +89,11 @@ namespace InGame
 
             switch (UserData.Lang)
             {
-                case ELanguage.KOR:
+                case ETextLanguage.KOR:
                     _setKoreanButton.color = new Color32(120, 120, 120, 255);
                     _setEnglishButton.color = new Color32(40, 40, 40, 255);
                     break;
-                case ELanguage.ENG:
+                case ETextLanguage.ENG:
                     _setEnglishButton.color = new Color32(120, 120, 120, 255);
                     _setKoreanButton.color = new Color32(40, 40, 40, 255);
                     break;
