@@ -5,13 +5,13 @@ using UnityEngine;
 public class UITextDefinition
 {
     public string txtName;
-    public Dictionary<ELanguage, string> text = new Dictionary<ELanguage, string>();
+    public Dictionary<ETextLanguage, string> text = new Dictionary<ETextLanguage, string>();
 
     public UITextDefinition(string txtName, string txtKor, string txtEng)
     {
         this.txtName = txtName;
-        this.text.Add(ELanguage.KOR, txtKor);
-        this.text.Add(ELanguage.ENG, txtEng);
+        this.text.Add(ETextLanguage.KOR, txtKor);
+        this.text.Add(ETextLanguage.ENG, txtEng);
     }
 
     public string GetString(params string[] formatParams)
@@ -38,10 +38,4 @@ public class UITextDefinitions : ILoader<string, UITextDefinition>
         }
         return dict;
     }
-}
-
-public enum ELanguage
-{
-    KOR,
-    ENG, 
 }
