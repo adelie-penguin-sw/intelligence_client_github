@@ -23,6 +23,7 @@ namespace InGame
             base.Init();
 
             LoadSettings();
+            
         }
 
         public override void Set()
@@ -43,14 +44,14 @@ namespace InGame
         public void OnValueChange_SFX()
         {
             float currentValue = (float)_sfxVolumeSlider.value / 100f;
-            UserData.SetFloat("SFXVolume", currentValue);
+            SaveUserData.SFXVolume = currentValue;
             _currentSFXVolumeText.text = _sfxVolumeSlider.value.ToString() + "%";
         }
 
         public void OnValueChange_BrainHoldingTime()
         {
             float currentValue = (float)_brainHoldingTimeSlider.value / 1000f;
-            UserData.SetFloat("WaitBrainClickTime", currentValue);
+            SaveUserData.WaitBrainClickTime = currentValue;
             _currentBrainHoldingTimeText.text = currentValue.ToString("N1") + "s";
         }
 
@@ -58,14 +59,14 @@ namespace InGame
         {
             _setKoreanButton.color = new Color32(120, 120, 120, 255);
             _setEnglishButton.color = new Color32(40, 40, 40, 255);
-            UserData.SetInt("Language", (int)ETextLanguage.KOR);
+            SaveUserData.Lang = ETextLanguage.KOR;
         }
 
         public void OnClick_SetEnglishButton()
         {
             _setEnglishButton.color = new Color32(120, 120, 120, 255);
             _setKoreanButton.color = new Color32(40, 40, 40, 255);
-            UserData.SetInt("Language", (int)ETextLanguage.ENG);
+            SaveUserData.Lang = ETextLanguage.ENG;
         }
 
         public void OnClick_LogoutButton()
@@ -81,13 +82,13 @@ namespace InGame
 
         private void LoadSettings()
         {
-            _sfxVolumeSlider.SetValueWithoutNotify((int)(UserData.SFXVolume * 100f));
+            _sfxVolumeSlider.SetValueWithoutNotify((int)(SaveUserData.SFXVolume * 100f));
             _currentSFXVolumeText.text = _sfxVolumeSlider.value.ToString() + "%";
 
-            _brainHoldingTimeSlider.SetValueWithoutNotify((int)(UserData.WaitBrainClickTime * 1000f));
-            _currentBrainHoldingTimeText.text = UserData.WaitBrainClickTime.ToString("N1") + "s";
+            _brainHoldingTimeSlider.SetValueWithoutNotify((int)(SaveUserData.WaitBrainClickTime * 1000f));
+            _currentBrainHoldingTimeText.text = SaveUserData.WaitBrainClickTime.ToString("N1") + "s";
 
-            switch (UserData.Lang)
+            switch (SaveUserData.Lang)
             {
                 case ETextLanguage.KOR:
                     _setKoreanButton.color = new Color32(120, 120, 120, 255);

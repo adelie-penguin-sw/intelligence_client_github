@@ -233,7 +233,7 @@ namespace MainTab
 
             public void AdvanceTime(float dt_sec)
             {
-                if (InGame.InGameManager.IsCompleteExp || Managers.Popup.Count > 0)
+                if (UserData.IsCompleteExp || Managers.Popup.Count > 0)
                     return;
 
                 if (_isTwoTouch)
@@ -249,7 +249,7 @@ namespace MainTab
 
             public void LateAdvanceTime(float dt_sec)
             {
-                if (InGame.InGameManager.IsCompleteExp || Managers.Popup.Count > 0)
+                if (UserData.IsCompleteExp || Managers.Popup.Count > 0)
                     return;
 
                 if (!_isTouchStartBrain)
@@ -263,7 +263,7 @@ namespace MainTab
                 else if (_isBrainPointDown)
                 {
                     _dtBrainPointDown += dt_sec;
-                    if (_dtBrainPointDown >= UserData.WaitBrainClickTime)
+                    if (_dtBrainPointDown >= SaveUserData.WaitBrainClickTime)
                     {
                         _controller.ChangeState(EBehaviorState.CREATE_CHANNEL);
                     }
