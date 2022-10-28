@@ -156,6 +156,22 @@ namespace MainTab
                 }
             }
         }
+
+        /// <summary>
+        /// 초기화 시 이월될 총 NP량 계산
+        /// </summary>
+        /// <returns>초기화 시 이월되는 총 NP량</returns>
+        public UpArrowNotation GetNPCarryOver()
+        {
+            UpArrowNotation totalNP = new UpArrowNotation();
+
+            foreach (Brain brain in _brainNetWork.Values)
+            {
+                if (brain.ID != 0) totalNP += brain.GetBrainDecomposingReward();
+            }
+
+            return totalNP * 0.1f * UserData.TPUpgrades[25].UpgradeCount;
+        }
     }
 
     /// <summary>
