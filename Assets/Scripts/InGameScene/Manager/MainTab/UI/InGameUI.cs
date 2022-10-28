@@ -63,7 +63,7 @@ namespace InGame
             Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.UPDATE_TP);
         }
 
-        private void OnClick_Tab(EGameState tab)
+        public void OnClick_Tab(EGameState tab)
         {
             Hashtable sendData = new Hashtable();
             sendData.Add(EDataParamKey.EGAMESTATE, tab);
