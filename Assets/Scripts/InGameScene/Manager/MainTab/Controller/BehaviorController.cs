@@ -13,6 +13,8 @@ namespace MainTab
         protected MainTabView _view;
         [SerializeField] private Brain _recentSelectBrain;
 
+        private bool _fnEditMode = false;
+
         public override void Init(MainTabApplication app)
         {
             base.Init(app);
@@ -138,6 +140,8 @@ namespace MainTab
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.ONCLICK_RESET_BUTTON);
 
             Managers.Notification.AddObserver(OnNotification, ENotiMessage.EXPERIMENT_COMPLETE);
+
+            Managers.Notification.AddObserver(OnNotification, ENotiMessage.FN_EDIT_MODE_TOGGLE);
         }
         private void RemoveObservers()
         {
@@ -155,6 +159,8 @@ namespace MainTab
             Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.ONCLICK_RESET_BUTTON);
 
             Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.EXPERIMENT_COMPLETE);
+
+            Managers.Notification.RemoveObserver(OnNotification, ENotiMessage.FN_EDIT_MODE_TOGGLE);
         }
 
         #region StateHandler Function
@@ -215,6 +221,7 @@ namespace MainTab
             private bool _isTouchStartBrain = false;
             private float _dtBrainPointDown = 0f;
             private const float _limitTowTouch = 0.6f;
+
             public void Init(BehaviorController controller)
             {
                 _controller = controller;
@@ -309,6 +316,17 @@ namespace MainTab
                         ResetPopup resetPopup = Managers.Popup.CreatePopup(EPrefabsType.POPUP, "ResetPopup", PopupType.NORMAL)
                             .GetComponent<ResetPopup>();
                         resetPopup.Init(_model.BrainNetwork);
+                        break;
+                    case ENotiMessage.FN_EDIT_MODE_TOGGLE:
+                        if (_controller._fnEditMode)
+                        {
+                            Debug.Log("FN Off");
+                        }
+                        else
+                        {
+                            Debug.Log("FN On");
+                        }
+                        _controller._fnEditMode = !_controller._fnEditMode;
                         break;
                 }
             }
